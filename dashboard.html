@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>客服中心实时看板 · 爱回收（爱分类/分类）</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+:root {
+  --bg: #0f172a; --card: #1e293b; --border: #334155;
+  --text: #e2e8f0; --dim: #94a3b8;
+  --pink: #f472b6; --purple: #a78bfa; --blue: #93c5fd;
+  --green: #34d399; --orange: #fbbf24; --red: #f87171;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: "PingFang SC","Microsoft YaHei",-apple-system,sans-serif;
+  color: var(--text); min-height:100vh;
+  background:
+    radial-gradient(1000px 500px at 85% -10%, rgba(244,114,182,0.08), transparent 60%),
+    radial-gradient(900px 450px at -10% 30%, rgba(147,197,253,0.07), transparent 55%),
+    var(--bg);
+  background-attachment: fixed; padding: 18px;
+}
+.wrap { max-width: 1480px; margin: 0 auto; }
+.header {
+  display:flex; align-items:center; justify-content:space-between;
+  padding: 16px 24px; margin-bottom:16px;
+  background: var(--card); border:1px solid var(--border);
+  border-radius:10px; box-shadow: 0 4px 20px rgba(0,0,0,.3);
+}
+.header h1 { font-size:20px; font-weight:700; color: var(--blue); letter-spacing:.5px; }
+.header .sub { font-size:12px; color:var(--dim); margin-top:4px; }
+.header .time { text-align:right; font-size:13px; color:var(--dim); }
+.header .time b { display:block; font-size:20px; color:var(--pink); font-weight:700; }
+.toggle-row { display:flex; align-items:center; justify-content:flex-end; gap:8px; margin-bottom:4px; }
+.toggle-label { font-size:12px; color:var(--dim); }
+.switch { position:relative; display:inline-block; width:40px; height:20px; }
+.switch input { opacity:0; width:0; height:0; }
+.slider { position:absolute; cursor:pointer; inset:0; background:#334155; border-radius:20px; transition:.3s; }
+.slider:before { content:""; position:absolute; height:14px; width:14px; left:3px; top:3px; background:#94a3b8; border-radius:50%; transition:.3s; }
+.switch input:checked + .slider { background:var(--pink); }
+.switch input:checked + .slider:before { transform:translateX(20px); background:#fff; }
+.kpis { display:grid; grid-template-columns: repeat(auto-fit,minmax(180px,1fr)); gap:12px; margin-bottom:16px; }
+.kpi {
+  padding:14px 16px; border-radius:8px; background: var(--card);
+  border:1px solid var(--border); border-top:3px solid var(--blue);
+  box-shadow: 0 2px 10px rgba(0,0,0,.25); position:relative;
+}
+.kpi .label { font-size:12px; color:var(--dim); }
+.kpi .value { font-size:28px; font-weight:800; margin-top:4px; line-height:1.15; color: var(--blue); }
+.kpi .value.small { font-size:20px; }
+.kpi .extra { font-size:11px; color:var(--dim); margin-top:4px; line-height:1.4; }
+.kpi.pink { border-top-color: var(--pink); } .kpi.pink .value { color: var(--pink); }
+.kpi.purple { border-top-color: var(--purple); } .kpi.purple .value { color: var(--purple); }
+.kpi.green { border-top-color: var(--green); } .kpi.green .value { color: var(--green); }
+.kpi.orange { border-top-color: var(--orange); } .kpi.orange .value { color: var(--orange); }
+.kpi.red { border-top-color: var(--red); } .kpi.red .value { color: var(--red); }
+.grid { display:grid; gap:12px; margin-bottom:12px; }
+.grid.cols-2 { grid-template-columns: 1.2fr 1fr; }
+@media (max-width: 1100px) { .grid.cols-2 { grid-template-columns: 1fr; } }
+.card {
+  background: var(--card); border:1px solid var(--border);
+  border-radius:10px; box-shadow: 0 2px 10px rgba(0,0,0,.25); padding: 16px 18px;
+}
+.card h3 { font-size:14px; font-weight:700; margin-bottom:12px; color:var(--text); display:flex; align-items:center; gap:8px; }
+.card h3 .dot { width:8px; height:8px; border-radius:50%; display:inline-block; }
+.dot.pink { background:var(--pink); } .dot.purple { background:var(--purple); }
+.dot.blue { background:var(--blue); } .dot.green { background:var(--green); } .dot.orange { background:var(--orange); }
+table { width:100%; border-collapse:collapse; font-size:12.5px; }
+th { text-align:left; font-weight:600; color:var(--dim); padding:6px 8px; border-bottom:1px solid var(--border); white-space:nowrap; font-size:11.5px; }
+td { padding:6px 8px; border-bottom:1px solid rgba(51,65,85,.5); }
+tr:hover td { background:rgba(147,197,253,.05); }
+.num { text-align:right; font-variant-numeric:tabular-nums; }
+.chips { display:flex; flex-wrap:wrap; gap:6px; }
+.chip { padding:3px 10px; border-radius:4px; font-size:12px; background:#273449; color:var(--text); }
+.chip.on { background:rgba(52,211,153,.15); color:var(--green); border:1px solid rgba(52,211,153,.4); }
+.chip.off { background:rgba(248,113,113,.15); color:var(--red); border:1px solid rgba(248,113,113,.4); }
+.chip.rest { background:#273449; color:var(--dim); text-decoration:line-through; }
+.bar { height:8px; border-radius:4px; background:#273449; overflow:hidden; margin-top:8px; }
+.bar > div { height:100%; border-radius:4px; background:linear-gradient(90deg,var(--pink),var(--purple)); transition:width .6s ease; }
+.chart-box { position:relative; height: 230px; }
+.status-line { display:flex; gap:8px; flex-wrap:wrap; margin-top:8px; }
+.status-item { flex:1; min-width:110px; background:#273449; border-radius:6px; padding:8px 12px; text-align:center; }
+.status-item .n { font-size:20px; font-weight:800; color: var(--blue); }
+.status-item .l { font-size:11px; color:var(--dim); margin-top:2px; }
+.note { font-size:11px; color:var(--dim); margin-top:8px; line-height:1.5; }
+.footer { text-align:center; color:var(--dim); font-size:11px; margin-top:18px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="header">
+    <div>
+      <h1>客服中心实时看板</h1>
+      <div class="sub">7x24cc 云客服 · 爱回收 · 仅「爱分类/分类」业务（400 + 在线）· 每 90 秒刷新</div>
+    </div>
+    <div class="time">
+      <div class="toggle-row">
+        <span class="toggle-label" id="toggleLabel">自动刷新：开</span>
+        <label class="switch">
+          <input type="checkbox" id="autoRefreshSwitch" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+      <b id="clock">--:--:--</b>
+      <span id="updateTime">上次采集：--</span>
+    </div>
+  </div>
+
+  <div class="kpis">
+    <div class="kpi pink"><div class="label">📞 400 接通率</div><div class="value" id="kpi400">--</div><div class="extra" id="kpi400Extra">分类回收400技能组合计</div></div>
+    <div class="kpi blue"><div class="label">📞 400 实际签入</div><div class="value" id="kpiSignIn">--</div><div class="extra" id="kpiSignInExtra">按人去重（一人可挂多线）</div></div>
+    <div class="kpi purple"><div class="label">💬 在线会话</div><div class="value" id="kpiOSess">--</div><div class="extra" id="kpiOSessExtra">分类在线技能组 · 今日</div></div>
+    <div class="kpi green"><div class="label">💬 在线坐席</div><div class="value" id="kpiOSeat">--</div><div class="extra" id="kpiOSeatExtra">分类在线技能组当前</div></div>
+    <div class="kpi orange"><div class="label">400 出勤率</div><div class="value small" id="kpiDuty400">--</div><div class="extra" id="kpiDuty400Extra">--</div></div>
+    <div class="kpi red"><div class="label">在线出勤率</div><div class="value small" id="kpiDutyOnline">--</div><div class="extra" id="kpiDutyOnlineExtra">--</div></div>
+  </div>
+
+  <div class="grid cols-2">
+    <div class="card">
+      <h3><span class="dot pink"></span>📞 400 · 分类回收技能组监控</h3>
+      <div class="status-line">
+        <div class="status-item"><div class="n" id="s400Rate">--</div><div class="l">合计接通率</div></div>
+        <div class="status-item"><div class="n" id="s400Total">--</div><div class="l">呼入总数</div></div>
+        <div class="status-item"><div class="n" id="s400Ans">--</div><div class="l">接通数</div></div>
+        <div class="status-item"><div class="n" id="s400Queue">--</div><div class="l">当前排队</div></div>
+        <div class="status-item"><div class="n" id="s400Sign">--</div><div class="l">实际签入(去重)</div></div>
+      </div>
+      <div style="margin-top:10px; font-size:12px; color:var(--dim);">技能组明细</div>
+      <div style="max-height:280px; overflow-y:auto; margin-top:6px;">
+        <table>
+          <thead><tr><th>技能组</th><th class="num">接通率</th><th class="num">接通</th><th class="num">呼入</th><th class="num">未接</th><th class="num">排队</th><th class="num">签入</th><th class="num">平均通话</th></tr></thead>
+          <tbody id="skill400Rows"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3><span class="dot purple"></span>💬 在线 · 分类在线技能组</h3>
+      <div class="status-line">
+        <div class="status-item"><div class="n" id="oTotal">--</div><div class="l">会话总数</div></div>
+        <div class="status-item"><div class="n" id="oAssigned">--</div><div class="l">已分配坐席</div></div>
+        <div class="status-item"><div class="n" id="oQueue">--</div><div class="l">当前排队</div></div>
+        <div class="status-item"><div class="n" id="oSatisfy">--</div><div class="l">满意率</div></div>
+      </div>
+      <div style="margin-top:10px; font-size:12px; color:var(--dim);">在线坐席</div>
+      <div class="chips" id="onlineSeats" style="margin-top:6px;"></div>
+      <div style="margin-top:12px; font-size:12px; color:var(--dim);">分类在线技能组（非工作）</div>
+      <div id="fenleiNW" style="margin-top:4px; font-size:13px;">--</div>
+      <div style="margin-top:12px; font-size:12px; color:var(--dim);">在线技能组明细</div>
+      <div style="max-height:150px; overflow-y:auto; margin-top:6px;">
+        <table>
+          <thead><tr><th>技能组</th><th class="num">会话</th><th class="num">已分配</th><th class="num">排队</th><th class="num">在线坐席</th><th class="num">满意率</th></tr></thead>
+          <tbody id="onlineGroupRows"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid cols-2">
+    <div class="card">
+      <h3><span class="dot orange"></span>📋 400 业务出勤（对照 400 技能组实际签入名单）</h3>
+      <div class="status-line">
+        <div class="status-item"><div class="n" id="d400Total">--</div><div class="l">今日应出勤</div></div>
+        <div class="status-item"><div class="n" style="color:var(--green)" id="d400On">--</div><div class="l">已签入</div></div>
+        <div class="status-item"><div class="n" style="color:var(--red)" id="d400Off">--</div><div class="l">未上线</div></div>
+        <div class="status-item"><div class="n" style="color:var(--purple)" id="d400Rate">--</div><div class="l">出勤率</div></div>
+      </div>
+      <div class="chips" id="d400Chips" style="margin-top:10px;"></div>
+      <div style="margin-top:12px; font-size:12px; color:var(--dim);">当前实际签入人员（<span id="signInCount">--</span> 人）</div>
+      <div class="chips" id="signInList" style="margin-top:6px;"></div>
+      <div class="note">签入 = 已登录并接入 400 技能组（一人可挂多条线，按人去重）</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="dot green"></span>📋 在线业务出勤（对照 在线技能组在线坐席）</h3>
+      <div class="status-line">
+        <div class="status-item"><div class="n" id="dOTotal">--</div><div class="l">今日应出勤</div></div>
+        <div class="status-item"><div class="n" style="color:var(--green)" id="dOOn">--</div><div class="l">已上线</div></div>
+        <div class="status-item"><div class="n" style="color:var(--red)" id="dOOff">--</div><div class="l">未上线</div></div>
+        <div class="status-item"><div class="n" style="color:var(--purple)" id="dORate">--</div><div class="l">出勤率</div></div>
+      </div>
+      <div class="chips" id="dOChips" style="margin-top:10px;"></div>
+      <div style="margin-top:12px; font-size:12px; color:var(--dim);">当前在线业务签入人员（<span id="oSeatCount">--</span> 人）</div>
+      <div class="chips" id="onlineSeats2" style="margin-top:6px;"></div>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <h3><span class="dot purple"></span>📈 进线量 & 接通率趋势（90s 采样）</h3>
+      <div class="chart-box"><canvas id="trendChart"></canvas></div>
+    </div>
+  </div>
+
+  <div class="footer">数据来源：合力亿捷云客服监控中心 · 仅统计爱分类/分类业务 · 每 90 秒自动刷新 · 延迟 ≤ 3 分钟</div>
+</div>
+
+<script>
+let chart = null;
+let SCHEDULE = {};
+
+async function loadSchedule() {
+  try { const r = await fetch('schedule.json', { cache: 'no-store' }); SCHEDULE = await r.json(); } catch (e) {}
+}
+async function loadStats() {
+  try {
+    const r = await fetch('stats.json?t=' + Date.now(), { cache: 'no-store' });
+    render(await r.json());
+  } catch (e) { document.getElementById('updateTime').textContent = '加载失败'; }
+}
+
+function render(d) {
+  document.getElementById('updateTime').textContent = '上次采集：' + (d.collectedAtCn || '--');
+  const ss = d.skillSummary || {};
+  setVal('kpi400', ss.rate != null ? ss.rate.toFixed(2) + '%' : '--');
+  setVal('kpi400Extra', '接通' + (ss.answered ?? '-') + ' / 呼入' + (ss.total ?? '-'));
+  const signInCount = d.signInAgents400 ? d.signInAgents400.length : 0;
+  setVal('kpiSignIn', signInCount || '--');
+  setVal('kpiSignInExtra', '实际签入人数（按人去重）');
+  const fl = (d.online && d.online.fenlei) || {};
+  setVal('kpiOSess', fl.sessions ?? '--');
+  setVal('kpiOSessExtra', '已分配' + (fl.assigned ?? '-') + ' · 排队' + (fl.queue ?? '-'));
+  setVal('kpiOSeat', d.onlineAgents ? d.onlineAgents.length : '--');
+  setVal('kpiOSeatExtra', d.onlineAgents ? d.onlineAgents.join('、') : '');
+
+  const rows = document.getElementById('skill400Rows');
+  rows.innerHTML = (d.skillGroups || []).map(g =>
+    `<tr><td>${esc(g.name)}</td><td class="num"><b style="color:var(--pink)">${g.rate != null ? g.rate.toFixed(2) + '%' : '--'}</b></td><td class="num">${g.todayAnswered ?? 0}</td><td class="num">${g.total ?? 0}</td><td class="num">${g.missed ?? 0}</td><td class="num">${g.queue ?? 0}</td><td class="num">${g.signIn ?? 0}</td><td class="num">${g.avgDuration || '--'}</td></tr>`
+  ).join('') || '<tr><td colspan="8" style="color:var(--dim)">暂无数据</td></tr>';
+  setVal('s400Rate', ss.rate != null ? ss.rate.toFixed(2) + '%' : '--');
+  setVal('s400Total', ss.total ?? '--');
+  setVal('s400Ans', ss.answered ?? '--');
+  setVal('s400Queue', ss.queue ?? '--');
+  setVal('s400Sign', signInCount || '--');
+
+  setVal('oTotal', fl.sessions ?? '--');
+  setVal('oAssigned', fl.assigned ?? '--');
+  setVal('oQueue', fl.queue ?? '--');
+  setVal('oSatisfy', fl.satisfactionRate != null ? fl.satisfactionRate.toFixed(2) + '%' : '--');
+  const seats = document.getElementById('onlineSeats');
+  seats.innerHTML = (d.onlineAgents || []).map(n => `<span class="chip on">${esc(n)}</span>`).join('') || '<span style="color:var(--dim)">暂无</span>';
+  const nw = (d.online && d.online.fenleiNW) || {};
+  document.getElementById('fenleiNW').textContent = nw.sessions != null ? `会话 ${nw.sessions} · 在线坐席 ${nw.onlineSeats || '-'}` : '--';
+  const og = document.getElementById('onlineGroupRows');
+  og.innerHTML = (d.online && d.online.groups || []).map(g =>
+    `<tr><td>${esc(g.name)}</td><td class="num">${g.sessions ?? 0}</td><td class="num">${g.assigned ?? 0}</td><td class="num">${g.queue ?? 0}</td><td class="num">${g.onlineSeats || '-'}</td><td class="num">${g.satisfactionRate != null ? g.satisfactionRate.toFixed(2) + '%' : '--'}</td></tr>`
+  ).join('') || '<tr><td colspan="6" style="color:var(--dim)">暂无</td></tr>';
+
+  const kv = d.keyServices || {};
+  // 400/在线 签入人员名单
+  const signInList = document.getElementById('signInList');
+  setVal('signInCount', (d.signInAgents400 || []).length);
+  signInList.innerHTML = (d.signInAgents400 || []).map(n => `<span class="chip on">${esc(n)}</span>`).join('') || '<span style="color:var(--dim)">暂无</span>';
+  setVal('oSeatCount', (d.onlineAgents || []).length);
+  document.getElementById('onlineSeats2').innerHTML = (d.onlineAgents || []).map(n => `<span class="chip on">${esc(n)}</span>`).join('') || '<span style="color:var(--dim)">暂无</span>';
+
+  const at = d.attendance || {};
+  if (at.duty400) {
+    setVal('d400Total', at.duty400.length);
+    setVal('d400On', at.on400.length);
+    setVal('d400Off', at.off400.length);
+    setVal('d400Rate', at.duty400.length ? Math.round(at.on400.length / at.duty400.length * 100) + '%' : '--');
+    setVal('kpiDuty400', at.duty400.length ? Math.round(at.on400.length / at.duty400.length * 100) + '%' : '--');
+    setVal('kpiDuty400Extra', at.on400.length + '/' + at.duty400.length + ' 人');
+    document.getElementById('d400Chips').innerHTML = at.duty400.map(n => `<span class="chip ${at.on400.includes(n) ? 'on' : 'off'}">${esc(n)}${at.on400.includes(n) ? '' : '·未上线'}</span>`).join('');
+    setVal('dOTotal', at.dutyOnline.length);
+    setVal('dOOn', at.onOnline.length);
+    setVal('dOOff', at.offOnline.length);
+    setVal('dORate', at.dutyOnline.length ? Math.round(at.onOnline.length / at.dutyOnline.length * 100) + '%' : '--');
+    setVal('kpiDutyOnline', at.dutyOnline.length ? Math.round(at.onOnline.length / at.dutyOnline.length * 100) + '%' : '--');
+    setVal('kpiDutyOnlineExtra', at.onOnline.length + '/' + at.dutyOnline.length + ' 人');
+    document.getElementById('dOChips').innerHTML = at.dutyOnline.map(n => `<span class="chip ${at.onOnline.includes(n) ? 'on' : 'off'}">${esc(n)}${at.onOnline.includes(n) ? '' : '·未上线'}</span>`).join('');
+  }
+
+  renderTrend(d.history || []);
+}
+
+function renderTrend(hist) {
+  const labels = hist.map(h => { const t = new Date(h.ts); return t.getHours() + ':' + String(t.getMinutes()).padStart(2, '0'); });
+  const ds = [
+    { label: '📞 400 进线量', data: hist.map(h => h.callIn400), borderColor: '#93c5fd', backgroundColor: 'rgba(147,197,253,.1)', tension: .35, pointRadius: 2, yAxisID: 'y' },
+    { label: '💬 在线进线量', data: hist.map(h => h.onlineSessions), borderColor: '#a78bfa', backgroundColor: 'rgba(167,139,250,.1)', tension: .35, pointRadius: 2, yAxisID: 'y' },
+    { label: '400 接通率%', data: hist.map(h => h.skillRate400), borderColor: '#f472b6', backgroundColor: 'rgba(244,114,182,.08)', tension: .35, pointRadius: 2, yAxisID: 'y2' }
+  ];
+  if (chart) chart.destroy();
+  chart = new Chart(document.getElementById('trendChart'), {
+    type: 'line', data: { labels, datasets: ds },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { labels: { color: '#94a3b8', font: { size: 11 } } } },
+      scales: {
+        x: { ticks: { color: '#94a3b8', maxTicksLimit: 8, font: { size: 10 } }, grid: { color: 'rgba(51,65,85,.4)' } },
+        y: { position: 'left', ticks: { color: '#94a3b8', font: { size: 10 } }, grid: { color: 'rgba(51,65,85,.4)' }, beginAtZero: true },
+        y2: { position: 'right', min: 0, max: 100, grid: { display: false }, ticks: { color: '#94a3b8', font: { size: 10 } } }
+      }
+    }
+  });
+}
+
+function setVal(id, v) { document.getElementById(id).textContent = v; }
+function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' }[c])); }
+function tick() { document.getElementById('clock').textContent = new Date().toLocaleTimeString('zh-CN', { hour12: false }); }
+
+// ---- 自动刷新开关 ----
+let autoRefresh = true;
+let refreshTimer = null;
+
+function setAutoRefresh(on) {
+  autoRefresh = on;
+  const sw = document.getElementById('autoRefreshSwitch');
+  sw.checked = on;
+  document.getElementById('toggleLabel').textContent = '自动刷新：' + (on ? '开' : '关');
+  if (on) {
+    if (!refreshTimer) refreshTimer = setInterval(loadStats, 30000);
+    loadStats();  // 打开时立即刷一次
+  } else {
+    if (refreshTimer) { clearInterval(refreshTimer); refreshTimer = null; }
+  }
+  try { localStorage.setItem('ccAutoRefresh', on ? '1' : '0'); } catch (e) {}
+}
+
+document.getElementById('autoRefreshSwitch').addEventListener('change', function () {
+  setAutoRefresh(this.checked);
+});
+
+// 恢复上次开关状态（默认开）
+let saved = '1';
+try { saved = localStorage.getItem('ccAutoRefresh') || '1'; } catch (e) {}
+setAutoRefresh(saved === '1');
+
+loadSchedule(); tick();
+setInterval(tick, 1000);
+</script>
+</body>
+</html>
