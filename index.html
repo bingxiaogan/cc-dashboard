@@ -225,7 +225,7 @@ details[open] summary { color:var(--accent); }
       <button class="btn" style="padding:4px 12px;font-size:12px;" onclick="goDrill('time')">时长×量级</button>
     </span>
   </h3>
-  <div id="breadcrumb" style="display:none;margin-bottom:12px;font-size:13px;"></div>
+  <div id="backRow" style="display:none;margin-bottom:12px;"><button class="btn" onclick="drill={level:0};renderDrill()" style="padding:5px 14px;font-size:12.5px;">← 返回总览</button></div>
   <div id="drillContent"><div class="empty">点击「投诉 / 工单 / 舆情 / 城市升级工单」或上方「状态×量级 / 时长×量级」开始下钻</div></div>
 </div>
 
@@ -319,20 +319,15 @@ function goDrill(d) {
 }
 
 function renderDrill() {
-  const dc = $('drillContent'), bc = $('breadcrumb');
+  const dc = $('drillContent');
   if (drill.level === 0) {
-    bc.style.display = 'none';
     $('drillHint').textContent = '点击上方大数字进入';
+    $('backRow').style.display = 'none';
     dc.innerHTML = '<div class="empty">点击「投诉 / 工单 / 舆情 / 城市升级工单」任意一个开始下钻</div>';
     return;
   }
-  bc.style.display = 'block';
-  $('drillHint').textContent = '面包屑可返回上一级';
-  const deptName = { cs: '投诉', gd: '工单', op: '舆情', city: '城市升级工单', matrix: '状态×量级', time: '时长×量级' }[drill.dept] || '';
-  const crumbs = [{ t: '总览', fn: () => { drill = { level: 0 }; renderDrill(); } }];
-  if (drill.dept) crumbs.push({ t: deptName, fn: () => { drill = { level: 1, dept: drill.dept, top: null }; renderDrill(); } });
-  if (drill.top) crumbs.push({ t: drill.top, fn: () => { drill = { level: 2, dept: drill.dept, top: null }; renderDrill(); } });
-  bc.innerHTML = crumbs.map((c, i) => `<span class="bc${i === crumbs.length - 1 ? ' active' : ''}" onclick="${c.fn.toString().replace(/"/g, '&quot;')}">${esc(c.t)}</span>${i < crumbs.length - 1 ? '<span class="bc sep"> ▸ </span>' : ''}`).join('');
+  $('drillHint').textContent = '';
+  $('backRow').style.display = 'block';
 
   // 状态×量级 矩阵
   if (drill.dept === 'matrix') {
