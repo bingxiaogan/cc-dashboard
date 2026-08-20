@@ -90,6 +90,13 @@ td.num { text-align:right; font-variant-numeric:tabular-nums; }
 .legend { display:flex; gap:14px; font-size:11px; color:var(--dim); margin-top:10px; flex-wrap:wrap; }
 .legend span { display:inline-flex; align-items:center; gap:5px; }
 .legend i { width:10px; height:10px; border-radius:3px; display:inline-block; }
+.bar-detail { font-size:11px; color:var(--dim); margin-top:4px; display:flex; gap:12px; flex-wrap:wrap; }
+.bar-detail span { display:inline-flex; align-items:center; gap:4px; }
+.bar-detail i { width:8px; height:8px; border-radius:2px; display:inline-block; }
+.scroll { max-height:280px; overflow-y:auto; scrollbar-gutter:stable; scrollbar-width:thin; scrollbar-color:#3a4a66 var(--card); }
+.scroll::-webkit-scrollbar { width:6px; }
+.scroll::-webkit-scrollbar-thumb { background:#3a4a66; border-radius:3px; }
+.scroll::-webkit-scrollbar-track { background:transparent; }
 
 /* ===== 状态分布（总览）===== */
 .stats { display:flex; gap:16px; flex-wrap:wrap; }
@@ -294,7 +301,10 @@ function renderTicket() {
   const stackedBar = (m, max) => {
     const segs = [['待分配', 'red'], ['待处理', 'amber'], ['处理中', 'blue']]
       .map(([k, c]) => { const v = m[k] || 0; return v ? `<div class="bar-seg ${c}" style="width:${(v / max * 100).toFixed(1)}%"></div>` : ''; }).join('');
-    return `<div class="bar-track">${segs}</div>`;
+    const detail = [['待分配', 'red'], ['待处理', 'amber'], ['处理中', 'blue']]
+      .filter(([k]) => (m[k] || 0) > 0)
+      .map(([k, c]) => `<span><i style="background:var(--${c})"></i>${k} ${m[k]}</span>`).join('');
+    return `<div class="bar-track">${segs}</div>${detail ? `<div class="bar-detail">${detail}</div>` : ''}`;
   };
   $('topList').innerHTML = topRows.map(([k, m]) => {
     const n = pick(m);
