@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>客服中心 · 工单监控 合并看板</title>
+<style>
+:root {
+  --bg: #0b1220; --card: #151e30; --card2: #1a2438; --border: #24304a;
+  --text: #e8edf5; --dim: #8b98ad; --accent: #5da8ff;
+  --red: #ff6b6b; --red-bg: rgba(255,107,107,.12);
+  --green: #3ddc84; --green-bg: rgba(61,220,132,.12);
+  --amber: #ffb454; --amber-bg: rgba(255,180,84,.12);
+  --blue-bg: rgba(93,168,255,.12);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background: var(--bg); color: var(--text); font-family: "Microsoft YaHei", system-ui, -apple-system, sans-serif; min-height:100vh; padding:20px; }
+.wrap { max-width:1280px; margin:0 auto; }
+
+/* ===== 顶部 ===== */
+.top { display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap; margin-bottom:18px; }
+.logo { display:flex; align-items:center; gap:10px; }
+.logo .ic { width:38px; height:38px; border-radius:10px; background:linear-gradient(135deg,#5da8ff,#7c5dff); display:flex; align-items:center; justify-content:center; font-size:19px; box-shadow:0 4px 14px rgba(93,168,255,.35); }
+.logo h1 { font-size:17px; font-weight:800; letter-spacing:.3px; }
+.logo .sub { font-size:11px; color:var(--dim); margin-top:2px; }
+.meta { display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+.meta .t { background:var(--card); border:1px solid var(--border); padding:6px 12px; border-radius:8px; font-size:12px; color:var(--dim); }
+.meta .t b { color:var(--text); font-weight:600; }
+.btn { background:var(--card2); color:var(--text); border:1px solid var(--border); padding:7px 16px; border-radius:8px; cursor:pointer; font-size:13px; transition:.15s; }
+.btn:hover { border-color:var(--accent); color:var(--accent); }
+.btn.pri { background:linear-gradient(135deg,#5da8ff,#7c5dff); border:none; color:#fff; font-weight:700; }
+.switch { display:inline-flex; align-items:center; gap:6px; font-size:12px; color:var(--dim); cursor:pointer; }
+
+/* ===== 筛选器 ===== */
+.filters { display:flex; gap:16px; flex-wrap:wrap; align-items:center; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:12px 18px; margin-bottom:18px; }
+.fg { display:flex; align-items:center; gap:8px; }
+.fg label { font-size:12px; color:var(--dim); white-space:nowrap; }
+.fg select { background:var(--card2); color:var(--text); border:1px solid var(--border); padding:6px 12px; border-radius:8px; font-size:13px; outline:none; cursor:pointer; }
+.fg select:focus { border-color:var(--accent); }
+
+/* ===== 板块标题 ===== */
+.sec { display:flex; align-items:center; gap:10px; margin:22px 0 12px; }
+.sec .bar { width:4px; height:16px; border-radius:2px; background:linear-gradient(180deg,#5da8ff,#7c5dff); }
+.sec h2 { font-size:15px; font-weight:800; }
+.sec .hint { font-size:11px; color:var(--dim); }
+
+/* ===== 网格 ===== */
+.grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+.grid.cols3 { grid-template-columns:1fr 1fr 1fr; }
+@media (max-width:1080px) { .grid, .grid.cols3 { grid-template-columns:1fr; } }
+.card { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:18px; }
+.card h3 { font-size:13px; font-weight:700; margin-bottom:14px; display:flex; align-items:center; gap:8px; color:var(--text); }
+.card h3 .dot { width:8px; height:8px; border-radius:50%; }
+.card h3 .extra { font-size:11px; color:var(--dim); font-weight:400; margin-left:auto; }
+
+/* ===== 指标卡 ===== */
+.kpis { display:grid; grid-template-columns:repeat(auto-fit,minmax(115px,1fr)); gap:10px; }
+.kpi { background:var(--card2); border:1px solid var(--border); border-radius:10px; padding:12px 14px; position:relative; overflow:hidden; }
+.kpi::before { content:""; position:absolute; left:0; top:0; bottom:0; width:3px; }
+.kpi.red::before { background:var(--red); }
+.kpi.green::before { background:var(--green); }
+.kpi.amber::before { background:var(--amber); }
+.kpi.blue::before { background:var(--accent); }
+.kpi .n { font-size:22px; font-weight:800; line-height:1.2; }
+.kpi .l { font-size:11px; color:var(--dim); margin-top:3px; }
+.kpi .ic { position:absolute; right:10px; top:10px; font-size:16px; opacity:.35; }
+
+/* ===== 表格 ===== */
+table { width:100%; border-collapse:collapse; font-size:12.5px; }
+th { text-align:left; color:var(--dim); font-weight:600; padding:7px 8px; border-bottom:1px solid var(--border); font-size:11.5px; white-space:nowrap; }
+td { padding:7px 8px; border-bottom:1px solid #1c273c; }
+tr:last-child td { border-bottom:none; }
+td.num { text-align:right; font-variant-numeric:tabular-nums; }
+.scroll { max-height:280px; overflow-y:auto; }
+
+/* ===== 条形图 ===== */
+.bars { display:flex; flex-direction:column; gap:12px; }
+.bar-row .bar-top { display:flex; justify-content:space-between; font-size:12.5px; margin-bottom:5px; }
+.bar-row .bar-top b { font-size:14px; }
+.bar-track { height:9px; border-radius:5px; background:var(--card2); overflow:hidden; }
+.bar-fill { height:100%; border-radius:5px; transition:width .5s; }
+.bar-fill.blue { background:linear-gradient(90deg,#5da8ff,#7c5dff); }
+.bar-fill.red { background:linear-gradient(90deg,#ff6b6b,#ff9a6b); }
+.bar-fill.green { background:linear-gradient(90deg,#3ddc84,#6ee7a7); }
+.bar-fill.amber { background:linear-gradient(90deg,#ffb454,#ffd88a); }
+
+/* ===== 状态分布（总览）===== */
+.stats { display:flex; gap:16px; flex-wrap:wrap; }
+.stat-block { flex:1; min-width:150px; background:var(--card2); border:1px solid var(--border); border-radius:12px; padding:16px; text-align:center; }
+.stat-block .num { font-size:26px; font-weight:800; }
+.stat-block .num.red { color:var(--red); }
+.stat-block .num.amber { color:var(--amber); }
+.stat-block .num.blue { color:var(--accent); }
+.stat-block .num.green { color:var(--green); }
+.stat-block .lbl { font-size:11.5px; color:var(--dim); margin-top:4px; }
+.stat-block .pct { font-size:11px; color:var(--dim); margin-top:2px; }
+
+/* ===== 名字 ===== */
+.names { display:flex; flex-wrap:wrap; gap:8px; }
+.name-chip { background:var(--green-bg); color:var(--green); border:1px solid rgba(61,220,132,.25); padding:4px 12px; border-radius:16px; font-size:12.5px; font-weight:600; }
+.name-chip.dim { background:var(--card2); color:var(--dim); border-color:var(--border); }
+
+/* ===== 告警 ===== */
+.alert-item { background:var(--red-bg); border:1px solid rgba(255,107,107,.25); border-radius:10px; padding:10px 14px; margin-bottom:8px; font-size:12.5px; display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap; }
+.alert-item b { color:var(--red); }
+.alert-item .s { color:var(--dim); font-size:11.5px; }
+.empty { color:var(--dim); font-size:12.5px; padding:14px 0; text-align:center; }
+details summary { cursor:pointer; color:var(--dim); font-size:12.5px; margin-top:12px; }
+details[open] summary { color:var(--accent); }
+.footer { color:var(--dim); font-size:11px; text-align:center; margin-top:22px; padding-top:12px; border-top:1px solid var(--border); }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="top">
+  <div class="logo">
+    <div class="ic">📊</div>
+    <div>
+      <h1>客服中心 · 工单监控</h1>
+      <div class="sub">7x24cc 实时 · 爱回收工单</div>
+    </div>
+  </div>
+  <div class="meta">
+    <span class="t">📞 客服 <b id="mCcTime">--</b></span>
+    <span class="t">🗂 工单 <b id="mTkTime">--</b></span>
+    <label class="switch"><input type="checkbox" id="autoRef" checked> 30s 自动刷新</label>
+    <button class="btn pri" onclick="load()">🔄 刷新</button>
+  </div>
+</div>
+
+<div class="filters">
+  <div class="fg"><label>工单池</label><select id="fBucket"><option>全部</option><option>客诉处理</option><option>工单处理</option><option>舆情客诉单</option></select></div>
+  <div class="fg"><label>状态</label><select id="fStatus"><option>全部</option><option>待分配</option><option>待处理</option><option>处理中</option></select></div>
+  <div class="fg"><label>投诉大类</label><select id="fTop"><option>全部</option></select></div>
+  <div class="fg" style="margin-left:auto;"><label>业务线</label><select id="fBiz"><option>全部</option><option>400</option><option>在线</option></select></div>
+</div>
+
+<!-- ===== 板块 A：客服中心 ===== -->
+<div class="sec"><div class="bar"></div><h2>客服中心实时</h2><span class="hint">90 秒采集刷新</span></div>
+<div class="grid">
+  <div class="card">
+    <h3><span class="dot" style="background:var(--accent)"></span>📞 400 电话</h3>
+    <div class="kpis">
+      <div class="kpi blue"><div class="n" id="sRate">--</div><div class="l">接通率</div><div class="ic">📈</div></div>
+      <div class="kpi" id="sQueueBox"><div class="n" id="sQueue">--</div><div class="l">当前排队</div><div class="ic">⏳</div></div>
+      <div class="kpi blue"><div class="n" id="sCallIn">--</div><div class="l">呼入总数</div><div class="ic">📞</div></div>
+      <div class="kpi green"><div class="n" id="sSign">--</div><div class="l">签入坐席</div><div class="ic">👥</div></div>
+      <div class="kpi amber"><div class="n" id="sAtt400">--</div><div class="l">出勤</div><div class="ic">✅</div></div>
+    </div>
+    <div style="margin-top:14px;">
+      <div style="font-size:11.5px;color:var(--dim);margin-bottom:8px;">400 签入坐席（去重）</div>
+      <div class="names" id="sign400List"></div>
+    </div>
+    <details><summary>技能组明细（点击展开）</summary>
+      <div class="scroll"><table><thead><tr><th>技能组</th><th class="num">接通率</th><th class="num">接通</th><th class="num">呼入</th><th class="num">排队</th><th class="num">签入</th></tr></thead>
+      <tbody id="skill400Rows"></tbody></table></div>
+    </details>
+  </div>
+  <div class="card">
+    <h3><span class="dot" style="background:var(--green)"></span>💬 在线客服</h3>
+    <div class="kpis">
+      <div class="kpi green"><div class="n" id="oTotal">--</div><div class="l">会话数</div><div class="ic">💬</div></div>
+      <div class="kpi blue"><div class="n" id="oAssigned">--</div><div class="l">已分配</div><div class="ic">📤</div></div>
+      <div class="kpi" id="oQueueBox"><div class="n" id="oQueue">--</div><div class="l">排队</div><div class="ic">⏳</div></div>
+      <div class="kpi green"><div class="n" id="oSatisfy">--</div><div class="l">满意度</div><div class="ic">⭐</div></div>
+      <div class="kpi amber"><div class="n" id="oAtt">--</div><div class="l">出勤</div><div class="ic">✅</div></div>
+    </div>
+    <div style="margin-top:14px;">
+      <div style="font-size:11.5px;color:var(--dim);margin-bottom:8px;">在线坐席</div>
+      <div class="names" id="onlineSeats"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 板块 B：工单监控 ===== -->
+<div class="sec"><div class="bar"></div><h2>工单监控</h2><span class="hint">升级工单 · 覆盖全部状态</span></div>
+
+<div class="card" style="margin-bottom:16px;">
+  <h3><span class="dot" style="background:var(--accent)"></span>🗂 工单总览与状态分布</h3>
+  <div class="stats" id="statusStats"></div>
+  <div style="margin-top:16px;">
+    <div style="font-size:11.5px;color:var(--dim);margin-bottom:8px;">状态分布（当前筛选下）</div>
+    <div class="bars" id="statusBars"></div>
+  </div>
+</div>
+
+<div class="grid">
+  <div class="card">
+    <h3><span class="dot" style="background:var(--amber)"></span>🏷 工单池分布</h3>
+    <div class="bars" id="bucketBars"></div>
+  </div>
+  <div class="card">
+    <h3><span class="dot" style="background:var(--red)"></span>⚖️ 投诉类型分布 <span class="extra">大类</span></h3>
+    <div class="bars" id="topList"></div>
+  </div>
+  <div class="card">
+    <h3><span class="dot" style="background:var(--red)"></span>🚨 命中告警 <span class="extra">待分配 + 投诉类型</span></h3>
+    <div id="alertList"></div>
+  </div>
+  <div class="card">
+    <h3><span class="dot" style="background:var(--blue)"></span>📋 投诉中类明细 <span class="extra">二级分类</span></h3>
+    <div class="scroll" id="midList"></div>
+  </div>
+</div>
+
+<div class="footer">数据源：7x24cc（8601）实时采集 · 爱回收工单系统（8600）｜合并看板 v2.0</div>
+</div>
+
+<script>
+let ccData = null, tkData = null;
+const $ = id => document.getElementById(id);
+
+async function load() {
+  try { ccData = await fetch('http://127.0.0.1:8601/stats.json').then(r => r.json()); }
+  catch (e) { $('mCcTime').textContent = '获取失败'; }
+  try { tkData = await fetch('http://127.0.0.1:8600/stats.json').then(r => r.json()); }
+  catch (e) { $('mTkTime').textContent = '获取失败'; }
+  renderCC(); renderTicket();
+}
+
+function renderCC() {
+  if (!ccData) return;
+  $('mCcTime').textContent = ccData.collectedAtCn || '--';
+  const sm = ccData.skillSummary || {};
+  $('sRate').textContent = sm.rate != null ? sm.rate + '%' : '--';
+  $('sCallIn').textContent = sm.callInTotal ?? '--';
+  const q = sm.queue ?? 0;
+  $('sQueue').textContent = q;
+  $('sQueueBox').className = 'kpi' + (q > 0 ? ' amber' : ' blue');
+  $('sSign').textContent = (ccData.signInAgents400 || []).length;
+  const s400 = ccData.signInAgents400 || [];
+  $('sign400List').innerHTML = s400.map(n => `<span class="name-chip">${esc(n)}</span>`).join('') || '<span class="name-chip dim">暂无签入</span>';
+  const att = ccData.attendance || {};
+  $('sAtt400').textContent = att.duty400 != null ? att.duty400 + '/' + att.total400 : '--';
+  $('skill400Rows').innerHTML = (ccData.skillGroups || []).map(g =>
+    `<tr><td>${esc(g.name)}</td><td class="num">${g.rate != null ? g.rate + '%' : '-'}</td><td class="num">${g.answered ?? 0}</td><td class="num">${g.total ?? 0}</td><td class="num">${g.queue ?? 0}</td><td class="num">${g.signIn ?? 0}</td></tr>`
+  ).join('') || '<tr><td colspan="6" class="empty">暂无</td></tr>';
+  const fl = (ccData.online && ccData.online.fenlei) || {};
+  $('oTotal').textContent = fl.sessions ?? '--';
+  $('oAssigned').textContent = fl.assigned ?? '--';
+  const oq = fl.queue ?? 0;
+  $('oQueue').textContent = oq;
+  $('oQueueBox').className = 'kpi' + (oq > 0 ? ' amber' : ' blue');
+  $('oSatisfy').textContent = fl.satisfactionRate != null ? fl.satisfactionRate.toFixed(2) + '%' : '--';
+  $('oAtt').textContent = att.online != null ? att.online + '/' + att.totalOnline : '--';
+  const seats = ccData.onlineAgents || [];
+  $('onlineSeats').innerHTML = seats.map(n => `<span class="name-chip">${esc(n)}</span>`).join('') || '<span class="name-chip dim">暂无在线</span>';
+}
+
+function renderTicket() {
+  if (!tkData) return;
+  $('mTkTime').textContent = tkData.generated_at || '--';
+  const fb = $('fBucket').value, fs = $('fStatus').value, ft = $('fTop').value;
+  const st = tkData.status_totals || {};
+  const bt = tkData.bucket_totals || {};
+  const pick = m => Object.entries(m).filter(([k]) => fs === '全部' || k === fs).reduce((a, [, v]) => a + (typeof v === 'number' ? v : 0), 0);
+
+  // 状态分布（含百分比）
+  const total = pick({ total: tkData.grand_total ?? 0 }) || 1;
+  const sDef = [['待分配', st['待分配'] ?? 0, 'red'], ['待处理', st['待处理'] ?? 0, 'amber'], ['处理中', st['处理中'] ?? 0, 'blue']];
+  $('statusStats').innerHTML = sDef.map(([k, v, c]) =>
+    `<div class="stat-block"><div class="num ${c}">${fs === '全部' || fs === k ? v : 0}</div><div class="lbl">${k}</div><div class="pct">${(v / total * 100).toFixed(1)}%</div></div>`
+  ).join('') + `<div class="stat-block"><div class="num green">${total}</div><div class="lbl">工单总量</div><div class="pct">${fs === '全部' ? '全部状态' : fs}</div></div>`;
+  const sMax = Math.max(1, ...sDef.map(([, v]) => v));
+  $('statusBars').innerHTML = sDef.map(([k, v, c]) =>
+    `<div class="bar-row"><div class="bar-top"><span>${k}</span><b>${v} 单</b></div><div class="bar-track"><div class="bar-fill ${c}" style="width:${(v / sMax * 100).toFixed(1)}%"></div></div></div>`
+  ).join('');
+
+  // 工单池
+  const btArr = Object.entries(bt).filter(([k]) => fb === '全部' || k === fb);
+  const btMax = Math.max(1, ...btArr.map(([, v]) => v));
+  $('bucketBars').innerHTML = btArr.map(([k, v]) =>
+    `<div class="bar-row"><div class="bar-top"><span>${esc(k)}</span><b>${v} 单</b></div><div class="bar-track"><div class="bar-fill blue" style="width:${(v / btMax * 100).toFixed(1)}%"></div></div></div>`
+  ).join('') || '<div class="empty">无数据</div>';
+
+  // 投诉大类
+  const tops = tkData.complaint_by_top || {};
+  const topRows = Object.entries(tops).filter(([k]) => ft === '全部' || k === ft);
+  const topMax = Math.max(1, ...topRows.map(([, m]) => pick(m)));
+  $('topList').innerHTML = topRows.map(([k, m]) => {
+    const n = pick(m);
+    return `<div class="bar-row"><div class="bar-top"><span>${esc(k)}</span><b>${n} 单</b></div><div class="bar-track"><div class="bar-fill ${n > 0 ? 'red' : 'blue'}" style="width:${(n / topMax * 100).toFixed(1)}%"></div></div></div>`;
+  }).join('') || '<div class="empty">无匹配</div>';
+
+  // 告警
+  const ac = tkData.alert_counts || {};
+  const alertRows = Object.entries(ac).filter(([k]) => ft === '全部' || k.startsWith(ft));
+  const sum = m => Object.values(m || {}).reduce((a, v) => a + v, 0);
+  $('alertList').innerHTML = alertRows.map(([k, m]) => {
+    const n = sum(m);
+    if (n === 0) return '';
+    return `<div class="alert-item"><span>⚠️ <b>${esc(k)}</b></span><span class="s">${n} 单 · ${Object.entries(m).map(([s, v]) => s + ' ' + v).join(' / ')}</span></div>`;
+  }).join('') || '<div class="empty">当前无命中告警</div>';
+
+  // 中类
+  const mids = tkData.complaint_by_mid || {};
+  const midRows = Object.entries(mids).filter(([k]) => ft === '全部' || k.startsWith(ft));
+  $('midList').innerHTML = midRows.map(([k, m]) => {
+    const n = pick(m);
+    if (n === 0) return '';
+    return `<div class="bar-row"><div class="bar-top"><span>${esc(k)}</span><b>${n}</b></div></div>`;
+  }).join('') || '<div class="empty">无数据</div>';
+}
+
+function esc(s) { return String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
+
+$('fBucket').onchange = renderTicket;
+$('fStatus').onchange = renderTicket;
+$('fTop').onchange = renderTicket;
+$('fBiz').onchange = () => {
+  const v = $('fBiz').value;
+  document.querySelectorAll('#cc400Card').forEach(() => {});
+  const cards = document.querySelectorAll('.grid .card');
+  if (v === '400') { cards[0].style.display = ''; cards[1].style.display = 'none'; }
+  else if (v === '在线') { cards[0].style.display = 'none'; cards[1].style.display = ''; }
+  else { cards[0].style.display = ''; cards[1].style.display = ''; }
+};
+
+async function fillTopOptions() {
+  try {
+    const t = await fetch('http://127.0.0.1:8600/stats.json').then(r => r.json());
+    const tops = Object.keys(t.complaint_by_top || {});
+    $('fTop').innerHTML = '<option>全部</option>' + tops.map(k => `<option>${esc(k)}</option>`).join('');
+  } catch (e) {}
+}
+
+load(); fillTopOptions();
+setInterval(() => { if ($('autoRef').checked) load(); }, 30000);
+</script>
+</body>
+</html>
