@@ -232,7 +232,7 @@ function renderCC() {
   const s400 = ccData.signInAgents400 || [];
   $('sign400List').innerHTML = s400.map(n => `<span class="name-chip">${esc(n)}</span>`).join('') || '<span class="name-chip dim">暂无签入</span>';
   const att = ccData.attendance || {};
-  $('sAtt400').textContent = att.duty400 != null ? att.duty400 + '/' + att.total400 : '--';
+  $('sAtt400').textContent = att.duty400 ? `${att.on400 ? att.on400.length : 0} / ${att.duty400.length}` : '--';
   $('skill400Rows').innerHTML = (ccData.skillGroups || []).map(g =>
     `<tr><td>${esc(g.name)}</td><td class="num">${g.rate != null ? g.rate + '%' : '-'}</td><td class="num">${g.answered ?? 0}</td><td class="num">${g.total ?? 0}</td><td class="num">${g.queue ?? 0}</td><td class="num">${g.signIn ?? 0}</td></tr>`
   ).join('') || '<tr><td colspan="6" class="empty">暂无</td></tr>';
@@ -243,7 +243,7 @@ function renderCC() {
   $('oQueue').textContent = oq;
   $('oQueueBox').className = 'kpi' + (oq > 0 ? ' amber' : ' blue');
   $('oSatisfy').textContent = fl.satisfactionRate != null ? fl.satisfactionRate.toFixed(2) + '%' : '--';
-  $('oAtt').textContent = att.online != null ? att.online + '/' + att.totalOnline : '--';
+  $('oAtt').textContent = att.dutyOnline ? `${att.onOnline ? att.onOnline.length : 0} / ${att.dutyOnline.length}` : '--';
   const seats = ccData.onlineAgents || [];
   $('onlineSeats').innerHTML = seats.map(n => `<span class="name-chip">${esc(n)}</span>`).join('') || '<span class="name-chip dim">暂无在线</span>';
 }
