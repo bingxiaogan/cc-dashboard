@@ -250,8 +250,12 @@ const $ = id => document.getElementById(id);
 async function load() {
   try { ccData = await fetch('http://127.0.0.1:8601/stats.json').then(r => r.json()); }
   catch (e) { $('mCcTime').textContent = '获取失败'; }
-  try { tkData = await fetch('http://127.0.0.1:8600/stats.json').then(r => r.json()); }
-  catch (e) { $('mTkTime').textContent = '获取失败'; }
+  // 工单数据：本地走 /ticket-stats 代理，公网 fallback 到同目录 ticket_stats.json
+  try { tkData = await fetch('/ticket-stats').then(r => r.json()); }
+  catch (e) {
+    try { tkData = await fetch('ticket_stats.json').then(r => r.json()); }
+    catch (e2) { $('mTkTime').textContent = '获取失败'; }
+  }
   renderCC(); renderTicket();
 }
 
@@ -441,7 +445,7 @@ $('fBiz').onchange = () => {
 
 async function fillTopOptions() {
   try {
-    const t = await fetch('http://127.0.0.1:8600/stats.json').then(r => r.json());
+    const t = await fetch('/ticket-stats').then(r => r.json()).catch(() => fetch('ticket_stats.json').then(r => r.json()));
     const tops = Object.keys(t.complaint_by_top || {});
     $('fTop').innerHTML = '<option>全部</option>' + tops.map(k => `<option>${esc(k)}</option>`).join('');
   } catch (e) {}
