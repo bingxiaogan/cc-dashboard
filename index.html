@@ -108,6 +108,19 @@ td.num { text-align:right; font-variant-numeric:tabular-nums; }
 .stat-block .num.green { color:var(--green); }
 .stat-block .lbl { font-size:11.5px; color:var(--dim); margin-top:4px; }
 .stat-block .pct { font-size:11px; color:var(--dim); margin-top:2px; }
+.stat-block.drill { cursor:pointer; transition:.15s; }
+.stat-block.drill:hover { border-color:var(--accent); transform:translateY(-2px); box-shadow:0 4px 12px rgba(93,168,255,.15); }
+.stat-block.drill .pct { color:var(--accent); }
+.drill-list { display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:10px; }
+.drill-item { background:var(--card2); border:1px solid var(--border); border-radius:10px; padding:14px; cursor:pointer; transition:.15s; }
+.drill-item:hover { border-color:var(--accent); transform:translateY(-1px); }
+.drill-item .n { font-size:22px; font-weight:800; }
+.drill-item .l { font-size:12px; color:var(--dim); margin-top:3px; }
+.drill-item .go { font-size:11px; color:var(--accent); margin-top:6px; }
+.bc { cursor:pointer; color:var(--dim); font-size:13px; }
+.bc:hover { color:var(--accent); }
+.bc.sep { cursor:default; color:var(--border); }
+.bc.active { color:var(--accent); font-weight:700; cursor:default; }
 
 /* ===== 名字 ===== */
 .names { display:flex; flex-wrap:wrap; gap:8px; }
@@ -189,38 +202,42 @@ details[open] summary { color:var(--accent); }
   </div>
 </div>
 
-<!-- ===== 板块 B：工单监控 ===== -->
-<div class="sec"><div class="bar"></div><h2>工单监控</h2><span class="hint">升级工单 · 覆盖全部状态</span></div>
+<!-- ===== 板块 B：工单监控（钻取式） ===== -->
+<div class="sec"><div class="bar"></div><h2>工单监控</h2><span class="hint">升级工单 · 点击数字逐层下钻</span></div>
 
+<!-- 总览（只展示总量，可点击进入） -->
 <div class="card" style="margin-bottom:16px;">
-  <h3><span class="dot" style="background:var(--accent)"></span>🗂 工单总览与状态分布</h3>
-  <div class="stats" id="statusStats"></div>
-  <div style="margin-top:16px;">
-    <div style="font-size:11.5px;color:var(--dim);margin-bottom:8px;">状态分布（当前筛选下）</div>
-    <div class="bars" id="statusBars"></div>
+  <h3><span class="dot" style="background:var(--accent)"></span>🗂 工单总览 <span class="extra">点击大数字下钻</span></h3>
+  <div class="stats">
+    <div class="stat-block drill" onclick="goDrill(1)"><div class="num green">${''}<span id="tTotal">--</span></div><div class="lbl">工单总量</div><div class="pct">点击下钻 ▸</div></div>
+    <div class="stat-block drill" onclick="goDrill(2)"><div class="num red" id="tAssign">--</div><div class="lbl">待分配</div><div class="pct">点击下钻 ▸</div></div>
+    <div class="stat-block drill" onclick="goDrill(3)"><div class="num amber" id="tPending">--</div><div class="lbl">待处理</div><div class="pct">点击下钻 ▸</div></div>
+    <div class="stat-block drill" onclick="goDrill(4)"><div class="num blue" id="tDoing">--</div><div class="lbl">处理中</div><div class="pct">点击下钻 ▸</div></div>
+    <div class="stat-block"><div class="num" style="color:var(--dim)" id="tComplaint">--</div><div class="lbl">投诉相关</div><div class="pct">工单池分布见下</div></div>
   </div>
+  <div class="block-label">工单池分布（仅总量）</div>
+  <div class="bars" id="bucketBars"></div>
+</div>
+
+<!-- 下钻区 -->
+<div class="card" style="margin-bottom:16px;">
+  <h3><span class="dot" style="background:var(--amber)"></span>🔍 下钻查看 <span class="extra" id="drillHint">点击上方大数字进入</span></h3>
+  <div id="breadcrumb" style="display:none;margin-bottom:12px;font-size:13px;"></div>
+  <div id="drillContent"><div class="empty">点击「工单总量 / 待分配 / 待处理 / 处理中」任意一个开始下钻，逐步查看状态 → 大类 → 中类</div></div>
 </div>
 
 <div class="grid">
-  <div class="card">
-    <h3><span class="dot" style="background:var(--amber)"></span>🏷 工单池分布</h3>
-    <div class="bars" id="bucketBars"></div>
-  </div>
-  <div class="card">
-    <h3><span class="dot" style="background:var(--red)"></span>⚖️ 投诉类型分布 <span class="extra">大类</span></h3>
-    <div class="bars" id="topList"></div>
-  </div>
   <div class="card">
     <h3><span class="dot" style="background:var(--red)"></span>🚨 命中告警 <span class="extra">待分配 + 投诉类型</span></h3>
     <div id="alertList"></div>
   </div>
   <div class="card">
-    <h3><span class="dot" style="background:var(--blue)"></span>📋 投诉中类明细 <span class="extra">二级分类</span></h3>
+    <h3><span class="dot" style="background:var(--blue)"></span>📋 投诉中类明细 <span class="extra">全部 · 独立展示</span></h3>
     <div class="scroll" id="midList"></div>
   </div>
 </div>
 
-<div class="footer">数据源：7x24cc（8601）实时采集 · 爱回收工单系统（8600）｜合并看板 v2.0</div>
+<div class="footer">数据源：7x24cc（8601）实时采集 · 爱回收工单系统（8600）｜合并看板 v2.3</div>
 </div>
 
 <script>
@@ -276,43 +293,78 @@ function renderTicket() {
   const bt = tkData.bucket_totals || {};
   const pick = m => Object.entries(m).filter(([k]) => fs === '全部' || k === fs).reduce((a, [, v]) => a + (typeof v === 'number' ? v : 0), 0);
 
-  // 状态分布（含百分比）
-  const total = pick({ total: tkData.grand_total ?? 0 }) || 1;
-  const sDef = [['待分配', st['待分配'] ?? 0, 'red'], ['待处理', st['待处理'] ?? 0, 'amber'], ['处理中', st['处理中'] ?? 0, 'blue']];
-  $('statusStats').innerHTML = sDef.map(([k, v, c]) =>
-    `<div class="stat-block"><div class="num ${c}">${fs === '全部' || fs === k ? v : 0}</div><div class="lbl">${k}</div><div class="pct">${(v / total * 100).toFixed(1)}%</div></div>`
-  ).join('') + `<div class="stat-block"><div class="num green">${total}</div><div class="lbl">工单总量</div><div class="pct">${fs === '全部' ? '全部状态' : fs}</div></div>`;
-  const sMax = Math.max(1, ...sDef.map(([, v]) => v));
-  $('statusBars').innerHTML = sDef.map(([k, v, c]) =>
-    `<div class="bar-row"><div class="bar-top"><span>${k}</span><b>${v} 单</b></div><div class="bar-track"><div class="bar-fill ${c}" style="width:${(v / sMax * 100).toFixed(1)}%"></div></div></div>`
-  ).join('');
+  // 总览大数字
+  $('tTotal').textContent = tkData.grand_total ?? 0;
+  $('tAssign').textContent = st['待分配'] ?? 0;
+  $('tPending').textContent = st['待处理'] ?? 0;
+  $('tDoing').textContent = st['处理中'] ?? 0;
+  $('tComplaint').textContent = tkData.complaint_total ?? 0;
 
-  // 工单池
+  // 工单池（仅总量）
   const btArr = Object.entries(bt).filter(([k]) => fb === '全部' || k === fb);
   const btMax = Math.max(1, ...btArr.map(([, v]) => v));
   $('bucketBars').innerHTML = btArr.map(([k, v]) =>
     `<div class="bar-row"><div class="bar-top"><span>${esc(k)}</span><b>${v} 单</b></div><div class="bar-track"><div class="bar-fill blue" style="width:${(v / btMax * 100).toFixed(1)}%"></div></div></div>`
   ).join('') || '<div class="empty">无数据</div>';
 
-  // 投诉大类（堆叠：待分配红/待处理琥珀/处理中蓝）
-  const tops = tkData.complaint_by_top || {};
-  const topRows = Object.entries(tops).filter(([k]) => ft === '全部' || k === ft);
-  const topMax = Math.max(1, ...topRows.map(([, m]) => pick(m)));
-  const stackedBar = (m, max) => {
-    const segs = [['待分配', 'red'], ['待处理', 'amber'], ['处理中', 'blue']]
-      .map(([k, c]) => { const v = m[k] || 0; return v ? `<div class="bar-seg ${c}" style="width:${(v / max * 100).toFixed(1)}%"></div>` : ''; }).join('');
-    const detail = [['待分配', 'red'], ['待处理', 'amber'], ['处理中', 'blue']]
-      .filter(([k]) => (m[k] || 0) > 0)
-      .map(([k, c]) => `<span><i style="background:var(--${c})"></i>${k} ${m[k]}</span>`).join('');
-    return `<div class="bar-track">${segs}</div>${detail ? `<div class="bar-detail">${detail}</div>` : ''}`;
-  };
-  $('topList').innerHTML = topRows.map(([k, m]) => {
-    const n = pick(m);
-    return `<div class="bar-row"><div class="bar-top"><span>${esc(k)}</span><b>${n} 单</b></div>${stackedBar(m, topMax)}</div>`;
-  }).join('') || '<div class="empty">无匹配</div>';
-  $('topList').insertAdjacentHTML('beforeend', '<div class="legend"><span><i style="background:var(--red)"></i>待分配</span><span><i style="background:var(--amber)"></i>待处理</span><span><i style="background:var(--accent)"></i>处理中</span></div>');
+  renderDrill();
+  renderAlert(ft);
+  renderMid(ft, fs);
+}
 
-  // 告警
+// ===== 下钻 =====
+let drill = { level: 0, status: null, top: null };  // level: 0=未进入 1=状态 2=大类 3=中类
+function goDrill(n) {
+  if (n === 1) drill = { level: 1, status: null, top: null };
+  else if (n === 2) drill = { level: 2, status: '待分配', top: null };
+  else if (n === 3) drill = { level: 3, status: '待处理', top: null };
+  else if (n === 4) drill = { level: 3, status: '处理中', top: null };
+  renderDrill();
+}
+
+function renderDrill() {
+  const dc = $('drillContent'), bc = $('breadcrumb');
+  if (drill.level === 0) {
+    bc.style.display = 'none';
+    $('drillHint').textContent = '点击上方大数字进入';
+    dc.innerHTML = '<div class="empty">点击「工单总量 / 待分配 / 待处理 / 处理中」任意一个开始下钻，逐步查看状态 → 大类 → 中类</div>';
+    return;
+  }
+  bc.style.display = 'block';
+  $('drillHint').textContent = '面包屑可返回上一级';
+  // 面包屑
+  const crumbs = [{ t: '总览', fn: () => { drill = { level: 1, status: null, top: null }; renderDrill(); } }];
+  if (drill.status) crumbs.push({ t: drill.status, fn: () => { drill = { level: 1, status: null, top: null }; renderDrill(); } });
+  if (drill.top) crumbs.push({ t: drill.top, fn: () => { drill = { level: 2, status: drill.status, top: null }; renderDrill(); } });
+  bc.innerHTML = crumbs.map((c, i) => `<span class="bc${i === crumbs.length - 1 ? ' active' : ''}" onclick="${c.fn.toString().replace(/"/g, '&quot;')}">${esc(c.t)}</span>${i < crumbs.length - 1 ? '<span class="bc sep"> ▸ </span>' : ''}`).join('');
+
+  const st = tkData.status_totals || {};
+  const tops = tkData.complaint_by_top || {};
+  const mids = tkData.complaint_by_mid || {};
+
+  if (drill.level === 1) {
+    // 状态层：三个状态，点击进入该状态的大类
+    const sDef = [['待分配', st['待分配'] ?? 0, 'red'], ['待处理', st['待处理'] ?? 0, 'amber'], ['处理中', st['处理中'] ?? 0, 'blue']];
+    dc.innerHTML = '<div class="drill-list">' + sDef.map(([k, v, c]) =>
+      `<div class="drill-item" onclick="drill={level:2,status:'${k}',top:null};renderDrill()"><div class="n" style="color:var(--${c})">${v}</div><div class="l">${k} 工单</div><div class="go">点击查看该状态下的大类 ▸</div></div>`
+    ).join('') + '</div>';
+  } else if (drill.level === 2) {
+    // 大类层：当前状态下各大类
+    const rows = Object.entries(tops).filter(([, m]) => (m[drill.status] || 0) > 0).sort((a, b) => (b[1][drill.status] || 0) - (a[1][drill.status] || 0));
+    if (!rows.length) { dc.innerHTML = '<div class="empty">「' + drill.status + '」状态暂无投诉大类数据</div>'; return; }
+    dc.innerHTML = '<div class="drill-list">' + rows.map(([k, m]) =>
+      `<div class="drill-item" onclick="drill={level:3,status:'${drill.status}',top:'${escAttr(k)}'};renderDrill()"><div class="n">${m[drill.status]}</div><div class="l">${esc(k)}</div><div class="go">点击查看中类 ▸</div></div>`
+    ).join('') + '</div>';
+  } else if (drill.level === 3) {
+    // 中类层：该状态下+大类的中类
+    const rows = Object.entries(mids).filter(([k]) => k.startsWith(drill.top)).map(([k, m]) => [k.replace(drill.top + '-', ''), m[drill.status] || 0]).filter(([, v]) => v > 0).sort((a, b) => b[1] - a[1]);
+    dc.innerHTML = rows.length ? '<div class="drill-list">' + rows.map(([k, v]) =>
+      `<div class="drill-item"><div class="n">${v}</div><div class="l">${esc(k)}</div></div>`
+    ).join('') + '</div>' : '<div class="empty">「' + drill.top + '」在该状态下暂无中类明细</div>';
+  }
+}
+
+function renderAlert(ft) {
   const ac = tkData.alert_counts || {};
   const alertRows = Object.entries(ac).filter(([k]) => ft === '全部' || k.startsWith(ft));
   const sum = m => Object.values(m || {}).reduce((a, v) => a + v, 0);
@@ -321,17 +373,20 @@ function renderTicket() {
     if (n === 0) return '';
     return `<div class="alert-item"><span>⚠️ <b>${esc(k)}</b></span><span class="s">${n} 单 · ${Object.entries(m).map(([s, v]) => s + ' ' + v).join(' / ')}</span></div>`;
   }).join('') || '<div class="empty">当前无命中告警</div>';
+}
 
-  // 中类（堆叠）
+function renderMid(ft, fs) {
   const mids = tkData.complaint_by_mid || {};
   const midRows = Object.entries(mids).filter(([k]) => ft === '全部' || k.startsWith(ft));
   const midMax = Math.max(1, ...midRows.map(([, m]) => pick(m)));
   $('midList').innerHTML = midRows.map(([k, m]) => {
     const n = pick(m);
     if (n === 0) return '';
-    return `<div class="bar-row"><div class="bar-top"><span>${esc(k)}</span><b>${n}</b></div>${stackedBar(m, midMax)}</div>`;
+    return `<div class="bar-row"><div class="bar-top"><span>${esc(k)}</span><b>${n}</b></div></div>`;
   }).join('') || '<div class="empty">无数据</div>';
 }
+
+function escAttr(s) { return String(s ?? '').replace(/["'<>]/g, c => ({ '"': '&quot;', "'": '&#39;', '<': '&lt;', '>': '&gt;' }[c])); }
 
 function esc(s) { return String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
 
