@@ -77,12 +77,19 @@ td.num { text-align:right; font-variant-numeric:tabular-nums; }
 .bars { display:flex; flex-direction:column; gap:12px; }
 .bar-row .bar-top { display:flex; justify-content:space-between; font-size:12.5px; margin-bottom:5px; }
 .bar-row .bar-top b { font-size:14px; }
-.bar-track { height:9px; border-radius:5px; background:var(--card2); overflow:hidden; }
+.bar-track { height:9px; border-radius:5px; background:var(--card2); overflow:hidden; display:flex; }
 .bar-fill { height:100%; border-radius:5px; transition:width .5s; }
 .bar-fill.blue { background:linear-gradient(90deg,#5da8ff,#7c5dff); }
 .bar-fill.red { background:linear-gradient(90deg,#ff6b6b,#ff9a6b); }
 .bar-fill.green { background:linear-gradient(90deg,#3ddc84,#6ee7a7); }
 .bar-fill.amber { background:linear-gradient(90deg,#ffb454,#ffd88a); }
+.bar-seg { height:100%; display:block; }
+.bar-seg.red { background:var(--red); }
+.bar-seg.amber { background:var(--amber); }
+.bar-seg.blue { background:var(--accent); }
+.legend { display:flex; gap:14px; font-size:11px; color:var(--dim); margin-top:10px; flex-wrap:wrap; }
+.legend span { display:inline-flex; align-items:center; gap:5px; }
+.legend i { width:10px; height:10px; border-radius:3px; display:inline-block; }
 
 /* ===== 状态分布（总览）===== */
 .stats { display:flex; gap:16px; flex-wrap:wrap; }
@@ -99,6 +106,8 @@ td.num { text-align:right; font-variant-numeric:tabular-nums; }
 .names { display:flex; flex-wrap:wrap; gap:8px; }
 .name-chip { background:var(--green-bg); color:var(--green); border:1px solid rgba(61,220,132,.25); padding:4px 12px; border-radius:16px; font-size:12.5px; font-weight:600; }
 .name-chip.dim { background:var(--card2); color:var(--dim); border-color:var(--border); }
+.name-chip.off { background:var(--red-bg); color:var(--red); border:1px solid rgba(255,107,107,.35); }
+.block-label { font-size:11.5px; color:var(--dim); margin:14px 0 8px; }
 
 /* ===== 告警 ===== */
 .alert-item { background:var(--red-bg); border:1px solid rgba(255,107,107,.25); border-radius:10px; padding:10px 14px; margin-bottom:8px; font-size:12.5px; display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap; }
@@ -148,10 +157,10 @@ details[open] summary { color:var(--accent); }
       <div class="kpi green"><div class="n" id="sSign">--</div><div class="l">签入坐席</div><div class="ic">👥</div></div>
       <div class="kpi amber"><div class="n" id="sAtt400">--</div><div class="l">出勤</div><div class="ic">✅</div></div>
     </div>
-    <div style="margin-top:14px;">
-      <div style="font-size:11.5px;color:var(--dim);margin-bottom:8px;">400 签入坐席（去重）</div>
+    <div class="block-label">400 签入坐席（去重）</div>
       <div class="names" id="sign400List"></div>
-    </div>
+    <div class="block-label">400 未出勤（红色）</div>
+      <div class="names" id="off400List"></div>
     <details><summary>技能组明细（点击展开）</summary>
       <div class="scroll"><table><thead><tr><th>技能组</th><th class="num">接通率</th><th class="num">接通</th><th class="num">呼入</th><th class="num">排队</th><th class="num">签入</th></tr></thead>
       <tbody id="skill400Rows"></tbody></table></div>
@@ -166,10 +175,10 @@ details[open] summary { color:var(--accent); }
       <div class="kpi green"><div class="n" id="oSatisfy">--</div><div class="l">满意度</div><div class="ic">⭐</div></div>
       <div class="kpi amber"><div class="n" id="oAtt">--</div><div class="l">出勤</div><div class="ic">✅</div></div>
     </div>
-    <div style="margin-top:14px;">
-      <div style="font-size:11.5px;color:var(--dim);margin-bottom:8px;">在线坐席</div>
+    <div class="block-label">在线坐席</div>
       <div class="names" id="onlineSeats"></div>
-    </div>
+    <div class="block-label">在线未出勤（红色）</div>
+      <div class="names" id="offOnlineList"></div>
   </div>
 </div>
 
@@ -233,6 +242,8 @@ function renderCC() {
   $('sign400List').innerHTML = s400.map(n => `<span class="name-chip">${esc(n)}</span>`).join('') || '<span class="name-chip dim">暂无签入</span>';
   const att = ccData.attendance || {};
   $('sAtt400').textContent = att.duty400 ? `${att.on400 ? att.on400.length : 0} / ${att.duty400.length}` : '--';
+  const off400 = att.off400 || [];
+  $('off400List').innerHTML = off400.map(n => `<span class="name-chip off">${esc(n)}</span>`).join('') || '<span class="name-chip dim">全员出勤</span>';
   $('skill400Rows').innerHTML = (ccData.skillGroups || []).map(g =>
     `<tr><td>${esc(g.name)}</td><td class="num">${g.rate != null ? g.rate + '%' : '-'}</td><td class="num">${g.answered ?? 0}</td><td class="num">${g.total ?? 0}</td><td class="num">${g.queue ?? 0}</td><td class="num">${g.signIn ?? 0}</td></tr>`
   ).join('') || '<tr><td colspan="6" class="empty">暂无</td></tr>';
@@ -244,6 +255,8 @@ function renderCC() {
   $('oQueueBox').className = 'kpi' + (oq > 0 ? ' amber' : ' blue');
   $('oSatisfy').textContent = fl.satisfactionRate != null ? fl.satisfactionRate.toFixed(2) + '%' : '--';
   $('oAtt').textContent = att.dutyOnline ? `${att.onOnline ? att.onOnline.length : 0} / ${att.dutyOnline.length}` : '--';
+  const offOnline = att.offOnline || [];
+  $('offOnlineList').innerHTML = offOnline.map(n => `<span class="name-chip off">${esc(n)}</span>`).join('') || '<span class="name-chip dim">全员出勤</span>';
   const seats = ccData.onlineAgents || [];
   $('onlineSeats').innerHTML = seats.map(n => `<span class="name-chip">${esc(n)}</span>`).join('') || '<span class="name-chip dim">暂无在线</span>';
 }
@@ -274,14 +287,20 @@ function renderTicket() {
     `<div class="bar-row"><div class="bar-top"><span>${esc(k)}</span><b>${v} 单</b></div><div class="bar-track"><div class="bar-fill blue" style="width:${(v / btMax * 100).toFixed(1)}%"></div></div></div>`
   ).join('') || '<div class="empty">无数据</div>';
 
-  // 投诉大类
+  // 投诉大类（堆叠：待分配红/待处理琥珀/处理中蓝）
   const tops = tkData.complaint_by_top || {};
   const topRows = Object.entries(tops).filter(([k]) => ft === '全部' || k === ft);
   const topMax = Math.max(1, ...topRows.map(([, m]) => pick(m)));
+  const stackedBar = (m, max) => {
+    const segs = [['待分配', 'red'], ['待处理', 'amber'], ['处理中', 'blue']]
+      .map(([k, c]) => { const v = m[k] || 0; return v ? `<div class="bar-seg ${c}" style="width:${(v / max * 100).toFixed(1)}%"></div>` : ''; }).join('');
+    return `<div class="bar-track">${segs}</div>`;
+  };
   $('topList').innerHTML = topRows.map(([k, m]) => {
     const n = pick(m);
-    return `<div class="bar-row"><div class="bar-top"><span>${esc(k)}</span><b>${n} 单</b></div><div class="bar-track"><div class="bar-fill ${n > 0 ? 'red' : 'blue'}" style="width:${(n / topMax * 100).toFixed(1)}%"></div></div></div>`;
+    return `<div class="bar-row"><div class="bar-top"><span>${esc(k)}</span><b>${n} 单</b></div>${stackedBar(m, topMax)}</div>`;
   }).join('') || '<div class="empty">无匹配</div>';
+  $('topList').insertAdjacentHTML('beforeend', '<div class="legend"><span><i style="background:var(--red)"></i>待分配</span><span><i style="background:var(--amber)"></i>待处理</span><span><i style="background:var(--accent)"></i>处理中</span></div>');
 
   // 告警
   const ac = tkData.alert_counts || {};
@@ -293,13 +312,14 @@ function renderTicket() {
     return `<div class="alert-item"><span>⚠️ <b>${esc(k)}</b></span><span class="s">${n} 单 · ${Object.entries(m).map(([s, v]) => s + ' ' + v).join(' / ')}</span></div>`;
   }).join('') || '<div class="empty">当前无命中告警</div>';
 
-  // 中类
+  // 中类（堆叠）
   const mids = tkData.complaint_by_mid || {};
   const midRows = Object.entries(mids).filter(([k]) => ft === '全部' || k.startsWith(ft));
+  const midMax = Math.max(1, ...midRows.map(([, m]) => pick(m)));
   $('midList').innerHTML = midRows.map(([k, m]) => {
     const n = pick(m);
     if (n === 0) return '';
-    return `<div class="bar-row"><div class="bar-top"><span>${esc(k)}</span><b>${n}</b></div></div>`;
+    return `<div class="bar-row"><div class="bar-top"><span>${esc(k)}</span><b>${n}</b></div>${stackedBar(m, midMax)}</div>`;
   }).join('') || '<div class="empty">无数据</div>';
 }
 
