@@ -1,0 +1,1013 @@
+{
+  "generated_at": "2026-08-20 15:53:55",
+  "buckets": [
+    "客诉处理",
+    "工单处理",
+    "舆情客诉单"
+  ],
+  "bucket_def": {
+    "客诉处理": "【爱分类】投诉工单+用户申诉工单，当前执行部门=客诉客服",
+    "工单处理": "【爱分类】投诉工单+用户申诉工单，当前执行部门≠客诉客服",
+    "舆情客诉单": "【分类】 舆情客诉单"
+  },
+  "statuses": [
+    "待处理",
+    "处理中",
+    "待分配"
+  ],
+  "matrix": {
+    "待处理": {
+      "客诉处理": 87,
+      "工单处理": 153,
+      "舆情客诉单": 0
+    },
+    "处理中": {
+      "客诉处理": 11,
+      "工单处理": 3,
+      "舆情客诉单": 11
+    },
+    "待分配": {
+      "客诉处理": 18,
+      "工单处理": 342,
+      "舆情客诉单": 0
+    }
+  },
+  "bucket_totals": {
+    "客诉处理": 116,
+    "工单处理": 498,
+    "舆情客诉单": 11
+  },
+  "status_totals": {
+    "待处理": 240,
+    "处理中": 25,
+    "待分配": 360
+  },
+  "grand_total": 625,
+  "ticket_count": 731,
+  "complaint_total": 116,
+  "complaint_by_top": {
+    "活动类": {
+      "待处理": 43,
+      "处理中": 3,
+      "待分配": 10
+    },
+    "回收机运营反馈": {
+      "待处理": 34,
+      "处理中": 3,
+      "待分配": 3
+    },
+    "风控类": {
+      "待处理": 6,
+      "处理中": 1,
+      "待分配": 4
+    },
+    "其他": {
+      "待处理": 2,
+      "处理中": 1,
+      "待分配": 1
+    },
+    "钱包类": {
+      "待处理": 1,
+      "处理中": 2
+    },
+    "投诉类": {
+      "待处理": 1,
+      "处理中": 1
+    }
+  },
+  "complaint_by_mid": {
+    "活动类-返航新生": {
+      "待处理": 30,
+      "处理中": 3,
+      "待分配": 6
+    },
+    "回收机运营反馈-投递无积分": {
+      "待处理": 19,
+      "处理中": 1,
+      "待分配": 3
+    },
+    "回收机运营反馈-称重不准": {
+      "待处理": 15,
+      "处理中": 2
+    },
+    "活动类-权益活动": {
+      "待处理": 12,
+      "待分配": 4
+    },
+    "风控类-投递违规": {
+      "待处理": 5,
+      "处理中": 1,
+      "待分配": 4
+    },
+    "其他-其他*": {
+      "待处理": 2,
+      "处理中": 1,
+      "待分配": 1
+    },
+    "钱包类-钱包问题": {
+      "待处理": 1,
+      "处理中": 2
+    },
+    "投诉类-投诉公司人员": {
+      "待处理": 1,
+      "处理中": 1
+    },
+    "风控类-超重投递": {
+      "待处理": 1
+    },
+    "活动类-自助地推": {
+      "待处理": 1
+    }
+  },
+  "complaint_by_leaf": {
+    "活动类-返航新生-其他": {
+      "待处理": 14,
+      "处理中": 3,
+      "待分配": 3
+    },
+    "回收机运营反馈-投递无积分-其他": {
+      "待处理": 16,
+      "处理中": 1,
+      "待分配": 3
+    },
+    "回收机运营反馈-称重不准-不认可补积分": {
+      "待处理": 11,
+      "处理中": 1
+    },
+    "活动类-权益活动-畅投月卡": {
+      "待处理": 7,
+      "待分配": 3
+    },
+    "风控类-投递违规-不认可物品违规": {
+      "待处理": 3,
+      "待分配": 4
+    },
+    "活动类-返航新生-违规投递": {
+      "待处理": 5,
+      "待分配": 1
+    },
+    "活动类-权益活动-品类加价券": {
+      "待处理": 5
+    },
+    "回收机运营反馈-称重不准-其他": {
+      "待处理": 4,
+      "处理中": 1
+    },
+    "其他-其他*": {
+      "待处理": 2,
+      "处理中": 1,
+      "待分配": 1
+    },
+    "活动类-返航新生-投递无积分": {
+      "待处理": 4
+    },
+    "回收机运营反馈-投递无积分-不认可补积分": {
+      "待处理": 3
+    },
+    "活动类-返航新生-不认可二次付款": {
+      "待处理": 2,
+      "待分配": 1
+    },
+    "活动类-返航新生-时效外催发货": {
+      "待处理": 2
+    },
+    "钱包类-钱包问题-反向开票不认可实名认证": {
+      "待处理": 1,
+      "处理中": 1
+    },
+    "投诉类-投诉公司人员-服务态度": {
+      "待处理": 1,
+      "处理中": 1
+    },
+    "活动类-返航新生-到货后损坏": {
+      "待处理": 1
+    },
+    "风控类-投递违规-不认可扣款金额": {
+      "待处理": 1
+    },
+    "活动类-返航新生-逾期未兑换": {
+      "待处理": 1
+    },
+    "风控类-投递违规-不认可限重/封号": {
+      "待处理": 1
+    },
+    "活动类-返航新生-缺货无法兑换": {
+      "待处理": 1
+    },
+    "风控类-超重投递-不认可补积分": {
+      "待处理": 1
+    },
+    "活动类-自助地推": {
+      "待处理": 1
+    },
+    "风控类-投递违规-不认可红线违规": {
+      "处理中": 1
+    },
+    "钱包类-钱包问题-钱包提现失败": {
+      "处理中": 1
+    },
+    "活动类-权益活动-碳索家会员": {
+      "待分配": 1
+    },
+    "活动类-返航新生-发货后退回": {
+      "待分配": 1
+    }
+  },
+  "alert_types": [
+    "风控类-投递违规-不认可物品违规",
+    "风控类-投递违规-不认可红线违规",
+    "风控类-投递违规-不认可限重/封号",
+    "活动类-返航新生-用户无法参与（ahs风控）",
+    "活动类-返航新生-京东风控"
+  ],
+  "alert_counts": {
+    "风控类-投递违规-不认可物品违规": {
+      "待处理": 3,
+      "待分配": 4
+    },
+    "风控类-投递违规-不认可红线违规": {
+      "处理中": 1
+    },
+    "风控类-投递违规-不认可限重/封号": {
+      "待处理": 1
+    },
+    "活动类-返航新生-用户无法参与（ahs风控）": {},
+    "活动类-返航新生-京东风控": {}
+  },
+  "time_buckets": {
+    "倒计时≤24h": {
+      "待处理": 27,
+      "处理中": 1,
+      "待分配": 18
+    },
+    "超时≤24h": {
+      "待处理": 41
+    },
+    "超时24~48h": {
+      "待处理": 19,
+      "处理中": 8
+    },
+    "超时>48h": {
+      "处理中": 2
+    }
+  },
+  "enum_model": {
+    "id": 19132,
+    "identify": "19132",
+    "valueName": "枚举根节点",
+    "creator": "王璐瑶",
+    "createDt": 1729304016000,
+    "parentId": 0,
+    "parentIdentify": "0",
+    "path": "",
+    "childs": [
+      {
+        "id": 19133,
+        "identify": "19133",
+        "valueName": "回收投递业务",
+        "creator": "王璐瑶",
+        "createDt": 1729304016000,
+        "parentId": 19132,
+        "parentIdentify": "19132",
+        "path": "回收投递业务",
+        "childs": [
+          {
+            "id": 19134,
+            "identify": "19134",
+            "valueName": "误投取回",
+            "creator": "王璐瑶",
+            "createDt": 1729304016000,
+            "parentId": 19133,
+            "parentIdentify": "19133",
+            "path": "回收投递业务-误投取回",
+            "childs": [
+              {
+                "id": 19135,
+                "identify": "19135",
+                "valueName": "真实误投取回-未清运",
+                "creator": "王璐瑶",
+                "createDt": 1729304016000,
+                "parentId": 19134,
+                "parentIdentify": "19134",
+                "path": "回收投递业务-误投取回-真实误投取回-未清运",
+                "childs": []
+              },
+              {
+                "id": 19136,
+                "identify": "19136",
+                "valueName": "真实误投取回-已清运",
+                "creator": "王璐瑶",
+                "createDt": 1729304016000,
+                "parentId": 19134,
+                "parentIdentify": "19134",
+                "path": "回收投递业务-误投取回-真实误投取回-已清运",
+                "childs": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": 19138,
+        "identify": "19138",
+        "valueName": "回收机运营反馈",
+        "creator": "王璐瑶",
+        "createDt": 1729304016000,
+        "parentId": 19132,
+        "parentIdentify": "19132",
+        "path": "回收机运营反馈",
+        "childs": [
+          {
+            "id": 19158,
+            "identify": "19158",
+            "valueName": "投递无积分",
+            "creator": "王璐瑶",
+            "createDt": 1729304016000,
+            "parentId": 19138,
+            "parentIdentify": "19138",
+            "path": "回收机运营反馈-投递无积分",
+            "childs": [
+              {
+                "id": 19159,
+                "identify": "19159",
+                "valueName": "认可补积分",
+                "creator": "王璐瑶",
+                "createDt": 1729304016000,
+                "parentId": 19158,
+                "parentIdentify": "19158",
+                "path": "回收机运营反馈-投递无积分-认可补积分",
+                "childs": []
+              },
+              {
+                "id": 19160,
+                "identify": "19160",
+                "valueName": "不认可补积分",
+                "creator": "王璐瑶",
+                "createDt": 1729304016000,
+                "parentId": 19158,
+                "parentIdentify": "19158",
+                "path": "回收机运营反馈-投递无积分-不认可补积分",
+                "childs": []
+              },
+              {
+                "id": 19161,
+                "identify": "19161",
+                "valueName": "其他",
+                "creator": "王璐瑶",
+                "createDt": 1729304016000,
+                "parentId": 19158,
+                "parentIdentify": "19158",
+                "path": "回收机运营反馈-投递无积分-其他",
+                "childs": []
+              }
+            ]
+          },
+          {
+            "id": 19162,
+            "identify": "19162",
+            "valueName": "称重不准",
+            "creator": "王璐瑶",
+            "createDt": 1729304016000,
+            "parentId": 19138,
+            "parentIdentify": "19138",
+            "path": "回收机运营反馈-称重不准",
+            "childs": [
+              {
+                "id": 19163,
+                "identify": "19163",
+                "valueName": "认可补积分",
+                "creator": "王璐瑶",
+                "createDt": 1729304016000,
+                "parentId": 19162,
+                "parentIdentify": "19162",
+                "path": "回收机运营反馈-称重不准-认可补积分",
+                "childs": []
+              },
+              {
+                "id": 19164,
+                "identify": "19164",
+                "valueName": "不认可补积分",
+                "creator": "王璐瑶",
+                "createDt": 1729304016000,
+                "parentId": 19162,
+                "parentIdentify": "19162",
+                "path": "回收机运营反馈-称重不准-不认可补积分",
+                "childs": []
+              },
+              {
+                "id": 19165,
+                "identify": "19165",
+                "valueName": "其他",
+                "creator": "王璐瑶",
+                "createDt": 1729304016000,
+                "parentId": 19162,
+                "parentIdentify": "19162",
+                "path": "回收机运营反馈-称重不准-其他",
+                "childs": []
+              }
+            ]
+          },
+          {
+            "id": 21151,
+            "identify": "21151",
+            "valueName": "机器夹手",
+            "creator": "王璐瑶",
+            "createDt": 1732975626000,
+            "parentId": 19138,
+            "parentIdentify": "19138",
+            "path": "回收机运营反馈-机器夹手",
+            "childs": []
+          }
+        ]
+      },
+      {
+        "id": 19180,
+        "identify": "19180",
+        "valueName": "风控类",
+        "creator": "王璐瑶",
+        "createDt": 1729304016000,
+        "parentId": 19132,
+        "parentIdentify": "19132",
+        "path": "风控类",
+        "childs": [
+          {
+            "id": 19181,
+            "identify": "19181",
+            "valueName": "投递违规",
+            "creator": "王璐瑶",
+            "createDt": 1729304016000,
+            "parentId": 19180,
+            "parentIdentify": "19180",
+            "path": "风控类-投递违规",
+            "childs": [
+              {
+                "id": 31063,
+                "identify": "31063",
+                "valueName": "不认可物品违规",
+                "creator": "马悦荣",
+                "createDt": 1768202620000,
+                "parentId": 19181,
+                "parentIdentify": "19181",
+                "path": "风控类-投递违规-不认可物品违规",
+                "childs": []
+              },
+              {
+                "id": 31064,
+                "identify": "31064",
+                "valueName": "不认可扣款金额",
+                "creator": "马悦荣",
+                "createDt": 1768202647000,
+                "parentId": 19181,
+                "parentIdentify": "19181",
+                "path": "风控类-投递违规-不认可扣款金额",
+                "childs": []
+              },
+              {
+                "id": 31065,
+                "identify": "31065",
+                "valueName": "不认可红线违规",
+                "creator": "马悦荣",
+                "createDt": 1768202647000,
+                "parentId": 19181,
+                "parentIdentify": "19181",
+                "path": "风控类-投递违规-不认可红线违规",
+                "childs": []
+              },
+              {
+                "id": 31066,
+                "identify": "31066",
+                "valueName": "不认可限重/封号",
+                "creator": "马悦荣",
+                "createDt": 1768202647000,
+                "parentId": 19181,
+                "parentIdentify": "19181",
+                "path": "风控类-投递违规-不认可限重/封号",
+                "childs": []
+              }
+            ]
+          },
+          {
+            "id": 19185,
+            "identify": "19185",
+            "valueName": "超重投递",
+            "creator": "王璐瑶",
+            "createDt": 1729304016000,
+            "parentId": 19180,
+            "parentIdentify": "19180",
+            "path": "风控类-超重投递",
+            "childs": [
+              {
+                "id": 19186,
+                "identify": "19186",
+                "valueName": "认可补积分",
+                "creator": "王璐瑶",
+                "createDt": 1729304016000,
+                "parentId": 19185,
+                "parentIdentify": "19185",
+                "path": "风控类-超重投递-认可补积分",
+                "childs": []
+              },
+              {
+                "id": 19187,
+                "identify": "19187",
+                "valueName": "不认可补积分",
+                "creator": "王璐瑶",
+                "createDt": 1729304016000,
+                "parentId": 19185,
+                "parentIdentify": "19185",
+                "path": "风控类-超重投递-不认可补积分",
+                "childs": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": 19188,
+        "identify": "19188",
+        "valueName": "活动类",
+        "creator": "王璐瑶",
+        "createDt": 1729304016000,
+        "parentId": 19132,
+        "parentIdentify": "19132",
+        "path": "活动类",
+        "childs": [
+          {
+            "id": 19216,
+            "identify": "19216",
+            "valueName": "小金库活动",
+            "creator": "王璐瑶",
+            "createDt": 1729304016000,
+            "parentId": 19188,
+            "parentIdentify": "19188",
+            "path": "活动类-小金库活动",
+            "childs": []
+          },
+          {
+            "id": 21150,
+            "identify": "21150",
+            "valueName": "返航新生",
+            "creator": "王璐瑶",
+            "createDt": 1732975471000,
+            "parentId": 19188,
+            "parentIdentify": "19188",
+            "path": "活动类-返航新生",
+            "childs": [
+              {
+                "id": 21152,
+                "identify": "21152",
+                "valueName": "时效外催发货",
+                "creator": "王璐瑶",
+                "createDt": 1732975661000,
+                "parentId": 21150,
+                "parentIdentify": "21150",
+                "path": "活动类-返航新生-时效外催发货",
+                "childs": []
+              },
+              {
+                "id": 21153,
+                "identify": "21153",
+                "valueName": "到货后损坏",
+                "creator": "王璐瑶",
+                "createDt": 1732975661000,
+                "parentId": 21150,
+                "parentIdentify": "21150",
+                "path": "活动类-返航新生-到货后损坏",
+                "childs": []
+              },
+              {
+                "id": 21154,
+                "identify": "21154",
+                "valueName": "京东风控",
+                "creator": "王璐瑶",
+                "createDt": 1732975722000,
+                "parentId": 21150,
+                "parentIdentify": "21150",
+                "path": "活动类-返航新生-京东风控",
+                "childs": []
+              },
+              {
+                "id": 21155,
+                "identify": "21155",
+                "valueName": "缺货无法兑换",
+                "creator": "王璐瑶",
+                "createDt": 1732975742000,
+                "parentId": 21150,
+                "parentIdentify": "21150",
+                "path": "活动类-返航新生-缺货无法兑换",
+                "childs": []
+              },
+              {
+                "id": 21156,
+                "identify": "21156",
+                "valueName": "活动配置失误",
+                "creator": "王璐瑶",
+                "createDt": 1732975840000,
+                "parentId": 21150,
+                "parentIdentify": "21150",
+                "path": "活动类-返航新生-活动配置失误",
+                "childs": []
+              },
+              {
+                "id": 21157,
+                "identify": "21157",
+                "valueName": "用户多次参与",
+                "creator": "王璐瑶",
+                "createDt": 1732975840000,
+                "parentId": 21150,
+                "parentIdentify": "21150",
+                "path": "活动类-返航新生-用户多次参与",
+                "childs": []
+              },
+              {
+                "id": 21158,
+                "identify": "21158",
+                "valueName": "合作宣发",
+                "creator": "王璐瑶",
+                "createDt": 1732975840000,
+                "parentId": 21150,
+                "parentIdentify": "21150",
+                "path": "活动类-返航新生-合作宣发",
+                "childs": []
+              },
+              {
+                "id": 21159,
+                "identify": "21159",
+                "valueName": "投递无积分",
+                "creator": "王璐瑶",
+                "createDt": 1732975840000,
+                "parentId": 21150,
+                "parentIdentify": "21150",
+                "path": "活动类-返航新生-投递无积分",
+                "childs": []
+              },
+              {
+                "id": 21160,
+                "identify": "21160",
+                "valueName": "称重不准",
+                "creator": "王璐瑶",
+                "createDt": 1732975840000,
+                "parentId": 21150,
+                "parentIdentify": "21150",
+                "path": "活动类-返航新生-称重不准",
+                "childs": []
+              },
+              {
+                "id": 21161,
+                "identify": "21161",
+                "valueName": "违规投递",
+                "creator": "王璐瑶",
+                "createDt": 1732975840000,
+                "parentId": 21150,
+                "parentIdentify": "21150",
+                "path": "活动类-返航新生-违规投递",
+                "childs": []
+              },
+              {
+                "id": 21162,
+                "identify": "21162",
+                "valueName": "风控审核失误",
+                "creator": "王璐瑶",
+                "createDt": 1732975840000,
+                "parentId": 21150,
+                "parentIdentify": "21150",
+                "path": "活动类-返航新生-风控审核失误",
+                "childs": []
+              },
+              {
+                "id": 21196,
+                "identify": "21196",
+                "valueName": "不认可运费",
+                "creator": "王璐瑶",
+                "createDt": 1733145767000,
+                "parentId": 21150,
+                "parentIdentify": "21150",
+                "path": "活动类-返航新生-不认可运费",
+                "childs": []
+              },
+              {
+                "id": 21197,
+                "identify": "21197",
+                "valueName": "逾期未兑换",
+                "creator": "王璐瑶",
+                "createDt": 1733145802000,
+                "parentId": 21150,
+                "parentIdentify": "21150",
+                "path": "活动类-返航新生-逾期未兑换",
+                "childs": []
+              },
+              {
+                "id": 21695,
+                "identify": "21695",
+                "valueName": "用户无法参与（ahs风控）",
+                "creator": "王璐瑶",
+                "createDt": 1739169626000,
+                "parentId": 21150,
+                "parentIdentify": "21150",
+                "path": "活动类-返航新生-用户无法参与（ahs风控）",
+                "childs": []
+              },
+              {
+                "id": 25267,
+                "identify": "25267",
+                "valueName": "物流停滞",
+                "creator": "李光祝",
+                "createDt": 1749717787000,
+                "parentId": 21150,
+                "parentIdentify": "21150",
+                "path": "活动类-返航新生-物流停滞",
+                "childs": []
+              },
+              {
+                "id": 25687,
+                "identify": "25687",
+                "valueName": "不认可二次付款",
+                "creator": "李光祝",
+                "createDt": 1754296876000,
+                "parentId": 21150,
+                "parentIdentify": "21150",
+                "path": "活动类-返航新生-不认可二次付款",
+                "childs": []
+              },
+              {
+                "id": 30388,
+                "identify": "30388",
+                "valueName": "其他",
+                "creator": "沈邦应",
+                "createDt": 1766720618000,
+                "parentId": 21150,
+                "parentIdentify": "21150",
+                "path": "活动类-返航新生-其他",
+                "childs": []
+              },
+              {
+                "id": 32195,
+                "identify": "32195",
+                "valueName": "券码无法兑换",
+                "creator": "马悦荣",
+                "createDt": 1774314758000,
+                "parentId": 21150,
+                "parentIdentify": "21150",
+                "path": "活动类-返航新生-券码无法兑换",
+                "childs": []
+              },
+              {
+                "id": 32220,
+                "identify": "32220",
+                "valueName": "发货后退回",
+                "creator": "马悦荣",
+                "createDt": 1774600732000,
+                "parentId": 21150,
+                "parentIdentify": "21150",
+                "path": "活动类-返航新生-发货后退回",
+                "childs": []
+              }
+            ]
+          },
+          {
+            "id": 21495,
+            "identify": "21495",
+            "valueName": "绿动城市",
+            "creator": "王璐瑶",
+            "createDt": 1735481776000,
+            "parentId": 19188,
+            "parentIdentify": "19188",
+            "path": "活动类-绿动城市",
+            "childs": []
+          },
+          {
+            "id": 29813,
+            "identify": "29813",
+            "valueName": "自助地推",
+            "creator": "沈邦应",
+            "createDt": 1763430649000,
+            "parentId": 19188,
+            "parentIdentify": "19188",
+            "path": "活动类-自助地推",
+            "childs": []
+          },
+          {
+            "id": 32242,
+            "identify": "32242",
+            "valueName": "权益活动",
+            "creator": "马悦荣",
+            "createDt": 1775038660000,
+            "parentId": 19188,
+            "parentIdentify": "19188",
+            "path": "活动类-权益活动",
+            "childs": [
+              {
+                "id": 33246,
+                "identify": "33246",
+                "valueName": "碳索家会员",
+                "creator": "马悦荣",
+                "createDt": 1778492728000,
+                "parentId": 32242,
+                "parentIdentify": "32242",
+                "path": "活动类-权益活动-碳索家会员",
+                "childs": []
+              },
+              {
+                "id": 33245,
+                "identify": "33245",
+                "valueName": "畅投月卡",
+                "creator": "马悦荣",
+                "createDt": 1778492728000,
+                "parentId": 32242,
+                "parentIdentify": "32242",
+                "path": "活动类-权益活动-畅投月卡",
+                "childs": []
+              },
+              {
+                "id": 33243,
+                "identify": "33243",
+                "valueName": "品类加价券",
+                "creator": "马悦荣",
+                "createDt": 1778490003000,
+                "parentId": 32242,
+                "parentIdentify": "32242",
+                "path": "活动类-权益活动-品类加价券",
+                "childs": []
+              },
+              {
+                "id": 33244,
+                "identify": "33244",
+                "valueName": "补贴权益",
+                "creator": "马悦荣",
+                "createDt": 1778492683000,
+                "parentId": 32242,
+                "parentIdentify": "32242",
+                "path": "活动类-权益活动-补贴权益",
+                "childs": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": 19217,
+        "identify": "19217",
+        "valueName": "投诉类",
+        "creator": "王璐瑶",
+        "createDt": 1729304016000,
+        "parentId": 19132,
+        "parentIdentify": "19132",
+        "path": "投诉类",
+        "childs": [
+          {
+            "id": 19218,
+            "identify": "19218",
+            "valueName": "投诉公司人员",
+            "creator": "王璐瑶",
+            "createDt": 1729304016000,
+            "parentId": 19217,
+            "parentIdentify": "19217",
+            "path": "投诉类-投诉公司人员",
+            "childs": [
+              {
+                "id": 19219,
+                "identify": "19219",
+                "valueName": "服务态度",
+                "creator": "王璐瑶",
+                "createDt": 1729304016000,
+                "parentId": 19218,
+                "parentIdentify": "19218",
+                "path": "投诉类-投诉公司人员-服务态度",
+                "childs": []
+              },
+              {
+                "id": 19220,
+                "identify": "19220",
+                "valueName": "操作失误",
+                "creator": "王璐瑶",
+                "createDt": 1729304016000,
+                "parentId": 19218,
+                "parentIdentify": "19218",
+                "path": "投诉类-投诉公司人员-操作失误",
+                "childs": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": 19221,
+        "identify": "19221",
+        "valueName": "钱包类",
+        "creator": "王璐瑶",
+        "createDt": 1729304016000,
+        "parentId": 19132,
+        "parentIdentify": "19132",
+        "path": "钱包类",
+        "childs": [
+          {
+            "id": 19223,
+            "identify": "19223",
+            "valueName": "钱包问题",
+            "creator": "王璐瑶",
+            "createDt": 1729304016000,
+            "parentId": 19221,
+            "parentIdentify": "19221",
+            "path": "钱包类-钱包问题",
+            "childs": [
+              {
+                "id": 19224,
+                "identify": "19224",
+                "valueName": "钱包提现失败",
+                "creator": "王璐瑶",
+                "createDt": 1729304016000,
+                "parentId": 19223,
+                "parentIdentify": "19223",
+                "path": "钱包类-钱包问题-钱包提现失败",
+                "childs": []
+              },
+              {
+                "id": 19226,
+                "identify": "19226",
+                "valueName": "未投递发放积分要扣除",
+                "creator": "王璐瑶",
+                "createDt": 1729304016000,
+                "parentId": 19223,
+                "parentIdentify": "19223",
+                "path": "钱包类-钱包问题-未投递发放积分要扣除",
+                "childs": []
+              },
+              {
+                "id": 19227,
+                "identify": "19227",
+                "valueName": "更换收款账户",
+                "creator": "王璐瑶",
+                "createDt": 1729304016000,
+                "parentId": 19223,
+                "parentIdentify": "19223",
+                "path": "钱包类-钱包问题-更换收款账户",
+                "childs": []
+              },
+              {
+                "id": 30045,
+                "identify": "30045",
+                "valueName": "不认可实名认证",
+                "creator": "沈邦应",
+                "createDt": 1764751206000,
+                "parentId": 19223,
+                "parentIdentify": "19223",
+                "path": "钱包类-钱包问题-不认可实名认证",
+                "childs": []
+              },
+              {
+                "id": 32178,
+                "identify": "32178",
+                "valueName": "反向开票不认可实名认证",
+                "creator": "马悦荣",
+                "createDt": 1773995574000,
+                "parentId": 19223,
+                "parentIdentify": "19223",
+                "path": "钱包类-钱包问题-反向开票不认可实名认证",
+                "childs": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": 19228,
+        "identify": "19228",
+        "valueName": "其他",
+        "creator": "王璐瑶",
+        "createDt": 1729304016000,
+        "parentId": 19132,
+        "parentIdentify": "19132",
+        "path": "其他",
+        "childs": [
+          {
+            "id": 19229,
+            "identify": "19229",
+            "valueName": "其他*",
+            "creator": "王璐瑶",
+            "createDt": 1729304016000,
+            "parentId": 19228,
+            "parentIdentify": "19228",
+            "path": "其他-其他*",
+            "childs": []
+          }
+        ]
+      }
+    ]
+  },
+  "city_totals": {
+    "南京": 2,
+    "天津": 16,
+    "北京": 57,
+    "武汉": 7,
+    "杭州": 2,
+    "上海杨浦": 3,
+    "徐州": 7,
+    "淮安": 1,
+    "青岛": 2,
+    "太原": 2,
+    "南通": 4,
+    "石家庄": 1,
+    "黄石": 1,
+    "西安": 1
+  }
+}
