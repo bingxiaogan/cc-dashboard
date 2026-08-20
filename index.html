@@ -219,9 +219,14 @@ details[open] summary { color:var(--accent); }
 
 <!-- 下钻区 -->
 <div class="card" style="margin-bottom:16px;">
-  <h3><span class="dot" style="background:var(--amber)"></span>🔍 下钻查看 <span class="extra" id="drillHint">点击上方大数字进入</span></h3>
+  <h3><span class="dot" style="background:var(--amber)"></span>🔍 下钻查看 <span class="extra" id="drillHint">点击上方大数字进入</span>
+    <span class="extra" style="margin-left:auto;display:flex;gap:6px;">
+      <button class="btn" style="padding:4px 12px;font-size:12px;" onclick="goDrill('matrix')">状态×量级</button>
+      <button class="btn" style="padding:4px 12px;font-size:12px;" onclick="goDrill('time')">时长×量级</button>
+    </span>
+  </h3>
   <div id="breadcrumb" style="display:none;margin-bottom:12px;font-size:13px;"></div>
-  <div id="drillContent"><div class="empty">点击「工单总量 / 待分配 / 待处理 / 处理中」任意一个开始下钻，逐步查看状态 → 大类 → 中类</div></div>
+  <div id="drillContent"><div class="empty">点击「投诉 / 工单 / 舆情 / 城市升级工单」或上方「状态×量级 / 时长×量级」开始下钻</div></div>
 </div>
 
 <div class="grid">
@@ -307,6 +312,8 @@ function renderTicket() {
 let drill = { level: 0, dept: null, top: null };  // level: 0=未进入 1=部门 2=大类 3=中类 4=城市
 function goDrill(d) {
   if (d === 'city') drill = { level: 4, dept: 'city', top: null };
+  else if (d === 'matrix') drill = { level: 10, dept: 'matrix', top: null };
+  else if (d === 'time') drill = { level: 11, dept: 'time', top: null };
   else drill = { level: 2, dept: d, top: null };
   renderDrill();
 }
@@ -321,11 +328,45 @@ function renderDrill() {
   }
   bc.style.display = 'block';
   $('drillHint').textContent = '面包屑可返回上一级';
-  const deptName = { cs: '投诉', gd: '工单', op: '舆情', city: '城市升级工单' }[drill.dept] || '';
+  const deptName = { cs: '投诉', gd: '工单', op: '舆情', city: '城市升级工单', matrix: '状态×量级', time: '时长×量级' }[drill.dept] || '';
   const crumbs = [{ t: '总览', fn: () => { drill = { level: 0 }; renderDrill(); } }];
   if (drill.dept) crumbs.push({ t: deptName, fn: () => { drill = { level: 1, dept: drill.dept, top: null }; renderDrill(); } });
   if (drill.top) crumbs.push({ t: drill.top, fn: () => { drill = { level: 2, dept: drill.dept, top: null }; renderDrill(); } });
   bc.innerHTML = crumbs.map((c, i) => `<span class="bc${i === crumbs.length - 1 ? ' active' : ''}" onclick="${c.fn.toString().replace(/"/g, '&quot;')}">${esc(c.t)}</span>${i < crumbs.length - 1 ? '<span class="bc sep"> ▸ </span>' : ''}`).join('');
+
+  // 状态×量级 矩阵
+  if (drill.dept === 'matrix') {
+    const mx = tkData.matrix || {};
+    const statuses = ['待分配', '待处理', '处理中'];
+    const buckets = ['客诉处理', '工单处理', '舆情客诉单'];
+    const rowSum = s => Object.values(mx[s] || {}).reduce((a, v) => a + v, 0);
+    const colSum = b => statuses.reduce((a, s) => a + ((mx[s] || {})[b] || 0), 0);
+    const total = statuses.reduce((a, s) => a + rowSum(s), 0) || 1;
+    let html = '<div class="scroll"><table><thead><tr><th>状态 \\ 量级</th>' + buckets.map(b => `<th class="num">${esc(b)}</th>`).join('') + '<th class="num">合计</th></tr></thead><tbody>';
+    for (const s of statuses) {
+      html += `<tr><td><b>${s}</b></td>` + buckets.map(b => `<td class="num">${(mx[s] || {})[b] || 0}</td>`).join('') + `<td class="num"><b>${rowSum(s)}</b>（${(rowSum(s) / total * 100).toFixed(1)}%）</td></tr>`;
+    }
+    html += `<tr><td><b>合计</b></td>` + buckets.map(b => `<td class="num"><b>${colSum(b)}</b></td>`).join('') + `<td class="num"><b>${total}</b></td></tr></tbody></table></div>`;
+    html += '<div class="legend" style="margin-top:8px;"><span>量级=工单池：客诉处理(执行部门=客诉客服)、工单处理(≠客诉客服)、舆情客诉单</span></div>';
+    dc.innerHTML = html;
+    return;
+  }
+  // 处理时长×状态
+  if (drill.dept === 'time') {
+    const tb = tkData.time_buckets || {};
+    const statuses = ['待分配', '待处理', '处理中'];
+    let html = '<div class="scroll"><table><thead><tr><th>处理时长</th>' + statuses.map(s => `<th class="num">${s}</th>`).join('') + '<th class="num">合计</th></tr></thead><tbody>';
+    const rows = Object.entries(tb);
+    const total = rows.reduce((a, [, m]) => a + Object.values(m).reduce((x, y) => x + y, 0), 0) || 1;
+    for (const [k, m] of rows) {
+      const sum = Object.values(m).reduce((a, v) => a + v, 0);
+      html += `<tr><td><b>${esc(k)}</b></td>` + statuses.map(s => `<td class="num">${m[s] || 0}</td>`).join('') + `<td class="num"><b>${sum}</b>（${(sum / total * 100).toFixed(1)}%）</td></tr>`;
+    }
+    html += '</tbody></table></div>';
+    html += '<div class="legend" style="margin-top:8px;"><span>倒计时=未超时（SLA 内）｜超时=已超 SLA 时长</span></div>';
+    dc.innerHTML = html;
+    return;
+  }
 
   const bt = tkData.bucket_totals || {};
   const bd = tkData.bucket_def || {};
