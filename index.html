@@ -260,7 +260,7 @@ function renderCC() {
   $('mCcTime').textContent = ccData.collectedAtCn || '--';
   const sm = ccData.skillSummary || {};
   $('sRate').textContent = sm.rate != null ? sm.rate + '%' : '--';
-  $('sCallIn').textContent = sm.callInTotal ?? '--';
+  $('sCallIn').textContent = sm.total != null ? sm.total : (sm.answered ?? '--');
   const q = sm.queue ?? 0;
   $('sQueue').textContent = q;
   $('sQueueBox').className = 'kpi' + (q > 0 ? ' amber' : ' blue');
