@@ -153,7 +153,8 @@ details[open] summary { color:var(--accent); }
   <div class="meta">
     <span class="t">📞 客服 <b id="mCcTime">--</b></span>
     <span class="t">🗂 工单 <b id="mTkTime">--</b></span>
-    <label class="switch"><input type="checkbox" id="autoRef" checked> 30s 自动刷新</label>
+    <label class="switch"><input type="checkbox" id="ccRef" checked> 实时刷新 90s</label>
+    <label class="switch"><input type="checkbox" id="tkRef" checked> 工单刷新 2h</label>
     <button class="btn pri" onclick="load()">🔄 刷新</button>
   </div>
 </div>
@@ -247,16 +248,25 @@ details[open] summary { color:var(--accent); }
 let ccData = null, tkData = null;
 const $ = id => document.getElementById(id);
 
-async function load() {
+async function loadCC() {
   try { ccData = await fetch('http://127.0.0.1:8601/stats.json').then(r => r.json()); }
   catch (e) { $('mCcTime').textContent = '获取失败'; }
+  renderCC();
+}
+
+async function loadTicket() {
   // 工单数据：本地走 /ticket-stats 代理，公网 fallback 到同目录 ticket_stats.json
   try { tkData = await fetch('/ticket-stats').then(r => r.json()); }
   catch (e) {
     try { tkData = await fetch('ticket_stats.json').then(r => r.json()); }
     catch (e2) { $('mTkTime').textContent = '获取失败'; }
   }
-  renderCC(); renderTicket();
+  renderTicket();
+  fillTopOptions();
+}
+
+async function load() {
+  await Promise.all([loadCC(), loadTicket()]);
 }
 
 function renderCC() {
@@ -451,8 +461,9 @@ async function fillTopOptions() {
   } catch (e) {}
 }
 
-load(); fillTopOptions();
-setInterval(() => { if ($('autoRef').checked) load(); }, 30000);
+load();
+setInterval(() => { if ($('ccRef').checked) loadCC(); }, 90000);      // 实时数据 90s
+setInterval(() => { if ($('tkRef').checked) loadTicket(); }, 7200000); // 工单数据 2h
 </script>
 </body>
 </html>
