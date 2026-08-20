@@ -292,7 +292,6 @@ function renderTicket() {
   const pick = m => Object.entries(m).filter(([k]) => fs === '全部' || k === fs).reduce((a, [, v]) => a + (typeof v === 'number' ? v : 0), 0);
 
   // 总览大数字（按部门/池）
-  const bt = tkData.bucket_totals || {};
   $('tTotal').textContent = tkData.grand_total ?? 0;
   $('tCs').textContent = bt['客诉处理'] ?? 0;
   $('tGd').textContent = bt['工单处理'] ?? 0;
