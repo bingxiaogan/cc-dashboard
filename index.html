@@ -203,6 +203,17 @@ details[open] summary { color:var(--accent); }
   </div>
 </div>
 
+<!-- 运能负荷 -->
+<div class="card" style="margin-bottom:16px;">
+  <h3><span class="dot" style="background:var(--amber)"></span>⚡ 运能负荷 <span class="extra" id="capDate">进线量 ÷ 排班运能（400人效130/天 · 在线350/天）</span></h3>
+  <div class="stats">
+    <div class="stat-block"><div class="num blue" id="cp400">--</div><div class="lbl">📞 400 当日负荷</div><div class="pct" id="cp400d">进线 -- / 运能 --</div></div>
+    <div class="stat-block"><div class="num green" id="cpOn">--</div><div class="lbl">💬 在线当日负荷</div><div class="pct" id="cpOnd">进线 -- / 运能 --</div></div>
+    <div class="stat-block"><div class="num amber" id="cpRate">--</div><div class="lbl">📞 400 接通率</div><div class="pct">当日实时</div></div>
+    <div class="stat-block"><div class="num" id="cpWeek" style="color:var(--dim)">--</div><div class="lbl">📅 周负荷（待数据）</div><div class="pct" id="cpWeekd">本周进线量数据待补</div></div>
+  </div>
+</div>
+
 <!-- ===== 板块 B：工单监控（钻取式） ===== -->
 <div class="sec"><div class="bar"></div><h2>工单监控</h2><span class="hint">升级工单 · 点击数字逐层下钻</span></div>
 
@@ -298,6 +309,14 @@ function renderCC() {
   $('oAtt').textContent = att.dutyOnline ? `${att.onOnline ? att.onOnline.length : 0} / ${att.dutyOnline.length}` : '--';
   const offOnline = att.offOnline || [];
   $('offOnlineList').innerHTML = offOnline.map(n => `<span class="name-chip off">${esc(n)}</span>`).join('') || '<span class="name-chip dim">全员出勤</span>';
+  // 运能负荷
+  const cp = ccData.capacity || {};
+  $('capDate').textContent = (cp.date || '') + ' · 进线量 ÷ 排班运能（400人效130/天 · 在线350/天）';
+  $('cp400').textContent = cp.load400 != null ? cp.load400 + '%' : '--';
+  $('cp400d').textContent = cp.in400 != null ? `进线 ${cp.in400} / 运能 ${cp.cap400}（${cp.p400}人）` : '--';
+  $('cpOn').textContent = cp.loadOn != null ? cp.loadOn + '%' : '--';
+  $('cpOnd').textContent = cp.inOn != null ? `进线 ${cp.inOn} / 运能 ${cp.capOn}（${cp.pOn}人）` : '--';
+  $('cpRate').textContent = cp.rate400 != null ? cp.rate400 + '%' : '--';
   const seats = ccData.onlineAgents || [];
   $('onlineSeats').innerHTML = seats.map(n => `<span class="name-chip">${esc(n)}</span>`).join('') || '<span class="name-chip dim">暂无在线</span>';
 }
