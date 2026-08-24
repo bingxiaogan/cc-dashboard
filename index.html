@@ -210,7 +210,7 @@ details[open] summary { color:var(--accent); }
     <div class="stat-block"><div class="num blue" id="cp400">--</div><div class="lbl">📞 400 当日负荷</div><div class="pct" id="cp400d">进线 -- / 运能 --</div></div>
     <div class="stat-block"><div class="num green" id="cpOn">--</div><div class="lbl">💬 在线当日负荷</div><div class="pct" id="cpOnd">进线 -- / 运能 --</div></div>
     <div class="stat-block"><div class="num amber" id="cpRate">--</div><div class="lbl">📞 400 接通率</div><div class="pct">当日实时</div></div>
-    <div class="stat-block"><div class="num" id="cpWeek" style="color:var(--dim)">--</div><div class="lbl">📅 周负荷（待数据）</div><div class="pct" id="cpWeekd">本周进线量数据待补</div></div>
+    <div class="stat-block"><div class="num" id="cpWeek" style="color:var(--dim)">--</div><div class="lbl">📅 周负荷（本周累计）</div><div class="pct" id="cpWeekd">本周 0 天</div></div>
   </div>
 </div>
 
@@ -317,6 +317,10 @@ function renderCC() {
   $('cpOn').textContent = cp.loadOn != null ? cp.loadOn + '%' : '--';
   $('cpOnd').textContent = cp.inOn != null ? `进线 ${cp.inOn} / 运能 ${cp.capOn}（${cp.pOn}人）` : '--';
   $('cpRate').textContent = cp.rate400 != null ? cp.rate400 + '%' : '--';
+  // 周维度（本周累计）
+  const wk = ccData.capacity_week || {};
+  $('cpWeek').textContent = wk.load400 != null ? wk.load400 + '%' : '--';
+  $('cpWeekd').textContent = wk.wDays ? `400 ${wk.load400}% · 在线 ${wk.loadOn}% · 400接通率 ${wk.rate400}%（本周 ${wk.wDays} 天 · 进线 ${wk.wIn400}/${wk.wInOn}）` : '本周数据从今天开始累计';
   const seats = ccData.onlineAgents || [];
   $('onlineSeats').innerHTML = seats.map(n => `<span class="name-chip">${esc(n)}</span>`).join('') || '<span class="name-chip dim">暂无在线</span>';
 }
