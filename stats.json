@@ -1,6 +1,6 @@
 {
- "ts": 1787572185647,
- "collectedAtCn": "2026/8/24 19:49:45",
+ "ts": 1787572353162,
+ "collectedAtCn": "2026/8/24 19:52:33",
  "overview": {
   "总排队数": "0",
   "满意率": "78.08%"
@@ -48,28 +48,28 @@
    },
    {
     "name": "官网严选寄卖售后咨询",
-    "sessions": 324,
-    "assigned": 296,
-    "current": 20,
-    "max": 147,
+    "sessions": 326,
+    "assigned": 298,
+    "current": 22,
+    "max": 117,
     "queue": 0,
-    "onlineSeats": "5(王鹏,刘亚森,李宜慢,丁萌萌,陈可)",
+    "onlineSeats": "4(王鹏,刘亚森,丁萌萌,陈可)",
     "done": 276,
-    "answerRate": 91.36,
+    "answerRate": 91.41,
     "abandon": 28,
     "voicemail": 0,
     "satisfactionRate": 0
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 985,
-    "assigned": 948,
-    "current": 88,
-    "max": 147,
+    "sessions": 989,
+    "assigned": 952,
+    "current": 89,
+    "max": 117,
     "queue": 0,
-    "onlineSeats": "5(王鹏,刘亚森,李宜慢,丁萌萌,陈可)",
-    "done": 811,
-    "answerRate": 96.24,
+    "onlineSeats": "4(王鹏,刘亚森,丁萌萌,陈可)",
+    "done": 814,
+    "answerRate": 96.26,
     "abandon": 37,
     "voicemail": 0,
     "satisfactionRate": 0
@@ -135,9 +135,9 @@
     "sessions": 67,
     "assigned": 67,
     "current": 7,
-    "max": 147,
+    "max": 117,
     "queue": 0,
-    "onlineSeats": "5(王鹏,刘亚森,李宜慢,丁萌萌,陈可)",
+    "onlineSeats": "4(王鹏,刘亚森,丁萌萌,陈可)",
     "done": 60,
     "answerRate": 100,
     "abandon": 0,
@@ -146,27 +146,27 @@
    },
    {
     "name": "官网严选自营售前咨询",
-    "sessions": 262,
-    "assigned": 257,
-    "current": 20,
-    "max": 147,
+    "sessions": 264,
+    "assigned": 259,
+    "current": 21,
+    "max": 117,
     "queue": 0,
-    "onlineSeats": "5(王鹏,刘亚森,李宜慢,丁萌萌,陈可)",
-    "done": 234,
-    "answerRate": 98.09,
+    "onlineSeats": "4(王鹏,刘亚森,丁萌萌,陈可)",
+    "done": 235,
+    "answerRate": 98.11,
     "abandon": 5,
     "voicemail": 0,
     "satisfactionRate": 0
    },
    {
     "name": "分类在线技能组",
-    "sessions": 892,
-    "assigned": 890,
-    "current": 13,
-    "max": 30,
+    "sessions": 898,
+    "assigned": 896,
+    "current": 15,
+    "max": 80,
     "queue": 0,
-    "onlineSeats": "1(陈凯)",
-    "done": 874,
+    "onlineSeats": "2(陈凯,刘丽娜)",
+    "done": 878,
     "answerRate": 99.78,
     "abandon": 2,
     "voicemail": 0,
@@ -174,13 +174,13 @@
    },
    {
     "name": "爱回收官网接待组",
-    "sessions": 704,
-    "assigned": 704,
+    "sessions": 706,
+    "assigned": 706,
     "current": 16,
     "max": 60,
     "queue": 0,
     "onlineSeats": "2(齐猛,杨青)",
-    "done": 656,
+    "done": 658,
     "answerRate": 100,
     "abandon": 0,
     "voicemail": 0,
@@ -189,13 +189,13 @@
   ],
   "fenlei": {
    "name": "分类在线技能组",
-   "sessions": 892,
-   "assigned": 890,
-   "current": 13,
-   "max": 30,
+   "sessions": 898,
+   "assigned": 896,
+   "current": 15,
+   "max": 80,
    "queue": 0,
-   "onlineSeats": "1(陈凯)",
-   "done": 874,
+   "onlineSeats": "2(陈凯,刘丽娜)",
+   "done": 878,
    "answerRate": 99.78,
    "abandon": 2,
    "voicemail": 0,
@@ -204,7 +204,8 @@
   "fenleiNW": null
  },
  "onlineAgents": [
-  "陈凯"
+  "陈凯",
+  "刘丽娜"
  ],
  "satisfaction": {
   "ok": true,
@@ -347,22 +348,12 @@
    "王雅雯"
   ],
   "onOnline": [
+   "刘丽娜",
    "陈凯"
   ],
-  "offOnline": [
-   "刘丽娜"
-  ]
+  "offOnline": []
  },
  "history": [
-  {
-   "ts": 1786416764041,
-   "skillRate400": 67.33,
-   "skillQueue400": 0,
-   "callIn400": 251,
-   "signIn400": 11,
-   "onlineSessions": 125,
-   "onlineSeat": 1
-  },
   {
    "ts": 1786416900218,
    "skillRate400": 67.45,
@@ -4853,6 +4844,15 @@
    "signIn400": 0,
    "onlineSessions": 892,
    "onlineSeat": 1
+  },
+  {
+   "ts": 1787572353162,
+   "skillRate400": null,
+   "skillQueue400": null,
+   "callIn400": null,
+   "signIn400": 0,
+   "onlineSessions": 898,
+   "onlineSeat": 2
   }
  ]
 }
