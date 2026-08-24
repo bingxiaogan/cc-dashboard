@@ -1,14 +1,14 @@
 {
- "ts": 1787584714198,
- "collectedAtCn": "2026/8/24 23:18:34",
+ "ts": 1787584856786,
+ "collectedAtCn": "2026/8/24 23:20:56",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "1",
   "坐席忙碌数": "0 (0)",
-  "接通率": "24.13%",
+  "接通率": "24.12%",
   "满意率": "100.00%",
-  "呼入总数": "9730",
-  "当前呼入数": "1",
+  "呼入总数": "9732",
+  "当前呼入数": "0",
   "外呼总数": "6745",
   "当前外呼数": "0",
   "呼入平均通话时长": "00:02:27",
@@ -224,8 +224,8 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 1836,
-   "ivr": 819,
+   "callIn": 1838,
+   "ivr": 821,
    "ringMissed": 11,
    "queueAbandon": 266,
    "answered": 740,
@@ -870,8 +870,8 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 1836,
-    "ivr": 819,
+    "callIn": 1838,
+    "ivr": 821,
     "ringMissed": 11,
     "queueAbandon": 266,
     "answered": 740,
@@ -879,10 +879,10 @@
     "transferred": 0
    }
   ],
-  "total": 1863,
+  "total": 1865,
   "answered": 753,
-  "ivr": 829,
-  "connectRate": 84.92
+  "ivr": 831,
+  "connectRate": 84.93
  },
  "online": {
   "groups": [
@@ -920,7 +920,7 @@
     "assigned": 365,
     "current": 13,
     "max": 60,
-    "queue": 0,
+    "queue": 1,
     "onlineSeats": "2(王鹏,李宜慢)",
     "done": 352,
     "answerRate": 92.88,
@@ -934,7 +934,7 @@
     "assigned": 1103,
     "current": 29,
     "max": 60,
-    "queue": 0,
+    "queue": 2,
     "onlineSeats": "2(王鹏,李宜慢)",
     "done": 1016,
     "answerRate": 96.75,
@@ -1242,15 +1242,6 @@
   "rate400": null
  },
  "history": [
-  {
-   "ts": 1786444903189,
-   "skillRate400": 72.88,
-   "skillQueue400": 0,
-   "callIn400": 719,
-   "signIn400": 8,
-   "onlineSessions": 525,
-   "onlineSeat": 2
-  },
   {
    "ts": 1786445044086,
    "skillRate400": 72.92,
@@ -5735,6 +5726,15 @@
   },
   {
    "ts": 1787584714198,
+   "skillRate400": 62.5,
+   "skillQueue400": 0,
+   "callIn400": 32,
+   "signIn400": 1,
+   "onlineSessions": 988,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1787584856786,
    "skillRate400": 62.5,
    "skillQueue400": 0,
    "callIn400": 32,
