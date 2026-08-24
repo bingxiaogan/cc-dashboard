@@ -205,10 +205,10 @@ details[open] summary { color:var(--accent); }
 
 <!-- 运能负荷 -->
 <div class="card" style="margin-bottom:16px;">
-  <h3><span class="dot" style="background:var(--amber)"></span>⚡ 运能负荷 <span class="extra" id="capDate">进线量 ÷ 排班运能（400人效130/天 · 在线350/天）</span></h3>
+  <h3><span class="dot" style="background:var(--amber)"></span>⚡ 运能负荷 <span class="extra" id="capDate">进线量 ÷ 当前应接量（400高峰13单/人/时·8-9/20-21半量）</span></h3>
   <div class="stats">
-    <div class="stat-block"><div class="num blue" id="cp400">--</div><div class="lbl">📞 400 当日负荷</div><div class="pct" id="cp400d">进线 -- / 运能 --</div></div>
-    <div class="stat-block"><div class="num green" id="cpOn">--</div><div class="lbl">💬 在线当日负荷</div><div class="pct" id="cpOnd">进线 -- / 运能 --</div></div>
+    <div class="stat-block"><div class="num blue" id="cp400">--</div><div class="lbl">📞 400 当日负荷</div><div class="pct" id="cp400d">进线 -- / 应接 --</div></div>
+    <div class="stat-block"><div class="num green" id="cpOn">--</div><div class="lbl">💬 在线当日负荷</div><div class="pct" id="cpOnd">进线 -- / 应接 --</div></div>
     <div class="stat-block"><div class="num amber" id="cpRate">--</div><div class="lbl">📞 400 接通率</div><div class="pct">当日实时</div></div>
     <div class="stat-block"><div class="num" id="cpWeek" style="color:var(--dim)">--</div><div class="lbl">📅 周负荷（本周累计）</div><div class="pct" id="cpWeekd">本周 0 天</div></div>
   </div>
@@ -311,16 +311,16 @@ function renderCC() {
   $('offOnlineList').innerHTML = offOnline.map(n => `<span class="name-chip off">${esc(n)}</span>`).join('') || '<span class="name-chip dim">全员出勤</span>';
   // 运能负荷
   const cp = ccData.capacity || {};
-  $('capDate').textContent = (cp.date || '') + ' · 进线量 ÷ 排班运能（400人效130/天 · 在线350/天）';
+  $('capDate').textContent = (cp.date || '') + ' · 进线量 ÷ 当前应接量';
   $('cp400').textContent = cp.load400 != null ? cp.load400 + '%' : '--';
-  $('cp400d').textContent = cp.in400 != null ? `进线 ${cp.in400} / 运能 ${cp.cap400}（${cp.p400}人）` : '--';
+  $('cp400d').textContent = cp.in400 != null ? `进线 ${cp.in400} / 应接 ${cp.cap400}（${cp.p400}人）` : '--';
   $('cpOn').textContent = cp.loadOn != null ? cp.loadOn + '%' : '--';
-  $('cpOnd').textContent = cp.inOn != null ? `进线 ${cp.inOn} / 运能 ${cp.capOn}（${cp.pOn}人）` : '--';
+  $('cpOnd').textContent = cp.inOn != null ? `进线 ${cp.inOn} / 应接 ${cp.capOn}（${cp.pOn}人）` : '--';
   $('cpRate').textContent = cp.rate400 != null ? cp.rate400 + '%' : '--';
   // 周维度（本周累计）
   const wk = ccData.capacity_week || {};
   $('cpWeek').textContent = wk.load400 != null ? wk.load400 + '%' : '--';
-  $('cpWeekd').textContent = wk.wDays ? `400 ${wk.load400}% · 在线 ${wk.loadOn}% · 400接通率 ${wk.rate400}%（本周 ${wk.wDays} 天 · 进线 ${wk.wIn400}/${wk.wInOn}）` : '本周数据从今天开始累计';
+  $('cpWeekd').textContent = wk.wDays ? `400 ${wk.load400}% · 在线 ${wk.loadOn}% · 400接通率 ${wk.rate400}%（本周 ${wk.wDays} 天 · 进线 ${wk.wIn400}/${wk.wInOn} / 应接 ${wk.wExp400}/${wk.wExpOn}）` : '本周数据从今天开始累计';
   const seats = ccData.onlineAgents || [];
   $('onlineSeats').innerHTML = seats.map(n => `<span class="name-chip">${esc(n)}</span>`).join('') || '<span class="name-chip dim">暂无在线</span>';
 }
