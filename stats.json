@@ -1,13 +1,13 @@
 {
- "ts": 1788366417265,
- "collectedAtCn": "2026/9/3 00:26:57",
+ "ts": 1788366641583,
+ "collectedAtCn": "2026/9/3 00:30:41",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "3",
   "坐席忙碌数": "0 (0)",
   "接通率": "0%",
   "满意率": "100.00%",
-  "呼入总数": "5",
+  "呼入总数": "6",
   "当前呼入数": "0",
   "外呼总数": "0",
   "当前外呼数": "0",
@@ -224,8 +224,8 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 3,
-   "ivr": 3,
+   "callIn": 4,
+   "ivr": 4,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -870,8 +870,8 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 3,
-    "ivr": 3,
+    "callIn": 4,
+    "ivr": 4,
     "ringMissed": 0,
     "queueAbandon": 0,
     "answered": 0,
@@ -879,27 +879,13 @@
     "transferred": 0
    }
   ],
-  "total": 3,
+  "total": 4,
   "answered": 0,
-  "ivr": 3,
+  "ivr": 4,
   "connectRate": 100
  },
  "online": {
   "groups": [
-   {
-    "name": "爱回收官网接待组-【会员】",
-    "sessions": 28,
-    "assigned": 28,
-    "current": 0,
-    "max": 0,
-    "queue": 0,
-    "onlineSeats": "0",
-    "done": 27,
-    "answerRate": 100,
-    "abandon": 0,
-    "voicemail": 0,
-    "satisfactionRate": 100
-   },
    {
     "name": "多品奢侈品技能组",
     "sessions": 25,
@@ -1186,24 +1172,6 @@
   "rate400": 73.4
  },
  "history": [
-  {
-   "ts": 1788255898890,
-   "skillRate400": 72.03,
-   "skillQueue400": 0,
-   "callIn400": 1094,
-   "signIn400": 16,
-   "onlineSessions": 586,
-   "onlineSeat": 1
-  },
-  {
-   "ts": 1788256015111,
-   "skillRate400": 72.05,
-   "skillQueue400": 0,
-   "callIn400": 1095,
-   "signIn400": 16,
-   "onlineSessions": 587,
-   "onlineSeat": 0
-  },
   {
    "ts": 1788256134991,
    "skillRate400": 72,
@@ -5679,6 +5647,24 @@
   },
   {
    "ts": 1788366417265,
+   "skillRate400": null,
+   "skillQueue400": 0,
+   "callIn400": 0,
+   "signIn400": 1,
+   "onlineSessions": 923,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1788366529418,
+   "skillRate400": null,
+   "skillQueue400": 0,
+   "callIn400": 0,
+   "signIn400": 1,
+   "onlineSessions": 923,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1788366641583,
    "skillRate400": null,
    "skillQueue400": 0,
    "callIn400": 0,
