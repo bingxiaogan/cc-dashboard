@@ -383,19 +383,22 @@ function renderDrill() {
     dc.innerHTML = html;
     return;
   }
-  // 处理时长×状态
+  // 升级时长×状态（点击行下钻场景分布）
   if (drill.dept === 'time') {
     const tb = tkData.time_buckets || {};
     const statuses = ['待分配', '待处理', '处理中'];
-    let html = '<div class="scroll"><table><thead><tr><th>处理时长</th>' + statuses.map(s => `<th class="num">${s}</th>`).join('') + '<th class="num">合计</th></tr></thead><tbody>';
+    const BNAME = {'24h内': '升级24h内', '24h以上': '升级24h以上', '48h以上': '升级48h以上', '72h以上': '升级72h以上', '96h以上': '升级96h以上'};
+    const sumSt = m => statuses.reduce((a, s) => a + (m[s] || 0), 0);
+    let html = '<div class="scroll"><table><thead><tr><th>升级时长</th>' + statuses.map(s => `<th class="num">${s}</th>`).join('') + '<th class="num">合计</th><th></th></tr></thead><tbody>';
     const rows = Object.entries(tb);
-    const total = rows.reduce((a, [, m]) => a + Object.values(m).reduce((x, y) => x + y, 0), 0) || 1;
+    const total = rows.reduce((a, [, m]) => a + sumSt(m), 0) || 1;
     for (const [k, m] of rows) {
-      const sum = Object.values(m).reduce((a, v) => a + v, 0);
-      html += `<tr><td><b>${esc(k)}</b></td>` + statuses.map(s => `<td class="num">${m[s] || 0}</td>`).join('') + `<td class="num"><b>${sum}</b>（${(sum / total * 100).toFixed(1)}%）</td></tr>`;
+      const sum = sumSt(m);
+      html += `<tr onclick="timeDrill('${k}')" style="cursor:pointer;" title="点击查看该桶场景分布"><td><b>${BNAME[k] || esc(k)}</b></td>` + statuses.map(s => `<td class="num">${m[s] || 0}</td>`).join('') + `<td class="num"><b>${sum}</b>（${(sum / total * 100).toFixed(1)}%）</td><td class="num">▸</td></tr>`;
     }
     html += '</tbody></table></div>';
-    html += '<div class="legend" style="margin-top:8px;"><span>倒计时=未超时（SLA 内）｜超时=已超 SLA 时长</span></div>';
+    html += '<div class="legend" style="margin-top:8px;"><span>升级时长=工单升级入库起计时：24h − 剩余倒计时（剩3h→21h，归零后继续累加）；按 24h 一组累计分布（24h以上 含 48h/72h/96h以上）。点击行查看该桶场景分布。</span></div>';
+    html += '<div id="timeDrillDetail"></div>';
     dc.innerHTML = html;
     return;
   }
@@ -463,6 +466,35 @@ function renderMid(ft, fs) {
 function escAttr(s) { return String(s ?? '').replace(/["'<>]/g, c => ({ '"': '&quot;', "'": '&#39;', '<': '&lt;', '>': '&gt;' }[c])); }
 
 function esc(s) { return String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
+
+// 时长桶下钻：查看该桶场景分布（大类 + 完整场景 TOP10）
+function timeDrill(b) {
+  const tb = (tkData.time_buckets || {})[b] || {};
+  const statuses = ['待分配', '待处理', '处理中'];
+  const BNAME = {'24h内': '升级24h内', '24h以上': '升级24h以上', '48h以上': '升级48h以上', '72h以上': '升级72h以上', '96h以上': '升级96h以上'};
+  const sumSt = m => statuses.reduce((a, s) => a + (m[s] || 0), 0);
+  const el = document.getElementById('timeDrillDetail');
+  if (!el) return;
+  const tops = tb.by_top || {};
+  const leaves = tb.by_leaf || {};
+  const tk = Object.keys(tops);
+  const lk = Object.keys(leaves).slice(0, 10);
+  const rowHtml = (list) => list.map(k => {
+    const m = tb.by_top[k] || tb.by_leaf[k] || {};
+    const n = sumSt(m);
+    return '<div style="display:flex;gap:10px;padding:4px 2px;font-size:12.5px;border-bottom:1px solid var(--border);">' +
+           '<span style="width:220px;flex-shrink:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="' + esc(k) + '">' + esc(k) + '</span>' +
+           '<b style="width:40px;flex-shrink:0;">' + n + '</b>' +
+           '<span style="color:var(--ink-soft);font-variant-numeric:tabular-nums;">' + statuses.map(s => s + ':' + (m[s] || 0)).join(' / ') + '</span></div>';
+  }).join('');
+  let html = '<div style="margin-top:12px;border-top:1px solid var(--border);padding-top:10px;">' +
+             '<b style="color:var(--primary);font-size:13.5px;">' + (BNAME[b] || b) + '</b> 场景分布（客诉处理 · ' + statuses.map(s => s + ' ' + (tb[s] || 0)).join(' / ') + '）</div>';
+  html += '<div style="margin-top:8px;font-size:12px;color:var(--ink-soft);">投诉类型大类：</div>' +
+          (tk.length ? rowHtml(tk) : '<div class="empty">无数据</div>');
+  html += '<div style="margin-top:10px;font-size:12px;color:var(--ink-soft);">完整场景 TOP10：</div>' +
+          (lk.length ? rowHtml(lk) : '<div class="empty">无数据</div>');
+  el.innerHTML = html;
+}
 
 $('fBucket').onchange = renderTicket;
 $('fStatus').onchange = renderTicket;
