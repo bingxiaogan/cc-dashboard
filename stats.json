@@ -1,13 +1,13 @@
 {
- "ts": 1788365856512,
- "collectedAtCn": "2026/9/3 00:17:36",
+ "ts": 1788366080812,
+ "collectedAtCn": "2026/9/3 00:21:20",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "3",
   "坐席忙碌数": "0 (0)",
   "接通率": "0%",
   "满意率": "100.00%",
-  "呼入总数": "4",
+  "呼入总数": "5",
   "当前呼入数": "0",
   "外呼总数": "0",
   "当前外呼数": "0",
@@ -454,8 +454,8 @@
   },
   {
    "service": "88236602(其他渠道4000166088)",
-   "callIn": 0,
-   "ivr": 0,
+   "callIn": 1,
+   "ivr": 1,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -887,20 +887,6 @@
  "online": {
   "groups": [
    {
-    "name": "抖音售后",
-    "sessions": 25,
-    "assigned": 25,
-    "current": 0,
-    "max": 0,
-    "queue": 0,
-    "onlineSeats": "0",
-    "done": 25,
-    "answerRate": 100,
-    "abandon": 0,
-    "voicemail": 4,
-    "satisfactionRate": 100
-   },
-   {
     "name": "爱回收官网接待组-【会员】",
     "sessions": 28,
     "assigned": 28,
@@ -1200,24 +1186,6 @@
   "rate400": 73.4
  },
  "history": [
-  {
-   "ts": 1788255366196,
-   "skillRate400": 71.89,
-   "skillQueue400": 1,
-   "callIn400": 1078,
-   "signIn400": 14,
-   "onlineSessions": 576,
-   "onlineSeat": 1
-  },
-  {
-   "ts": 1788255472196,
-   "skillRate400": 71.85,
-   "skillQueue400": 0,
-   "callIn400": 1080,
-   "signIn400": 15,
-   "onlineSessions": 581,
-   "onlineSeat": 1
-  },
   {
    "ts": 1788255580336,
    "skillRate400": 71.86,
@@ -5693,6 +5661,24 @@
   },
   {
    "ts": 1788365856512,
+   "skillRate400": null,
+   "skillQueue400": 0,
+   "callIn400": 0,
+   "signIn400": 1,
+   "onlineSessions": 923,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1788365968672,
+   "skillRate400": null,
+   "skillQueue400": 0,
+   "callIn400": 0,
+   "signIn400": 1,
+   "onlineSessions": 923,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1788366080812,
    "skillRate400": null,
    "skillQueue400": 0,
    "callIn400": 0,
