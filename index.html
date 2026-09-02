@@ -404,9 +404,17 @@ function renderDrill() {
   }
 
   const bt = tkData.bucket_totals || {};
-  const bd = tkData.bucket_def || {};
-  const tops = tkData.complaint_by_top || {};
-  const mids = tkData.complaint_by_mid || {};
+  const POOL = { cs: '客诉处理', gd: '工单处理', op: '舆情客诉单' };
+  const DEPTNAME = { cs: '投诉', gd: '工单', op: '舆情' };
+  // 池类型分布数据源：cs 用顶层键（兼容旧数据），gd/op 用 complaint_by_pool
+  const tkType = which => {
+    if (drill.dept === 'cs') return tkData[which] || {};
+    const p = (tkData.complaint_by_pool || {})[POOL[drill.dept]] || {};
+    const key = { complaint_by_top: 'by_top', complaint_by_mid: 'by_mid', complaint_by_leaf: 'by_leaf' }[which];
+    return p[key] || {};
+  };
+  const tops = tkType('complaint_by_top');
+  const mids = tkType('complaint_by_mid');
 
   if (drill.level === 1) {
     // 部门层：四个部门，点击进入
@@ -421,20 +429,17 @@ function renderDrill() {
     dc.innerHTML = rows.length ? '<div class="drill-list">' + rows.map(([k, v]) =>
       `<div class="drill-item"><div class="n">${v}</div><div class="l">${esc(k)}</div></div>`
     ).join('') + '</div>' : '<div class="empty">暂无城市数据（工单系统登录后自动补充）</div>';
-  } else if (drill.dept === 'gd' || drill.dept === 'op') {
-    // 工单/舆情池：显示说明
-    dc.innerHTML = `<div class="empty" style="text-align:left;padding:16px;"><b>${deptName}池（${bt[drill.dept === 'gd' ? '工单处理' : '舆情客诉单'] ?? 0} 单）</b><br><br>${esc(bd[drill.dept === 'gd' ? '工单处理' : '舆情客诉单'] || '暂无说明')}<br><br>该池暂未细分到投诉类型（投诉类型统计覆盖「投诉」池）。</div>`;
   } else {
-    // 投诉池 → 大类 → 中类
+    // 投诉/工单/舆情池 → 大类 → 中类
+    const rows = Object.entries(tops).filter(([, m]) => Object.values(m).reduce((a, v) => a + v, 0) > 0).sort((a, b) => Object.values(b[1]).reduce((x, y) => x + y, 0) - Object.values(a[1]).reduce((x, y) => x + y, 0));
     if (drill.level === 2) {
-      const rows = Object.entries(tops).filter(([, m]) => Object.values(m).reduce((a, v) => a + v, 0) > 0).sort((a, b) => Object.values(b[1]).reduce((x, y) => x + y, 0) - Object.values(a[1]).reduce((x, y) => x + y, 0));
-      dc.innerHTML = '<div class="drill-list">' + rows.map(([k, m]) => {
+      dc.innerHTML = rows.length ? '<div class="drill-list">' + rows.map(([k, m]) => {
         const n = Object.values(m).reduce((a, v) => a + v, 0);
-        return `<div class="drill-item" onclick="drill={level:3,dept:'cs',top:'${escAttr(k)}'};renderDrill()"><div class="n">${n}</div><div class="l">${esc(k)}</div><div class="go">点击查看中类 ▸</div></div>`;
-      }).join('') + '</div>' || '<div class="empty">暂无投诉大类</div>';
+        return `<div class="drill-item" onclick="drill={level:3,dept:'${drill.dept}',top:'${escAttr(k)}'};renderDrill()"><div class="n">${n}</div><div class="l">${esc(k)}</div><div class="go">点击查看中类 ▸</div></div>`;
+      }).join('') + '</div>' : `<div class="empty">${DEPTNAME[drill.dept] || ''}池暂无类型细分（该池工单无「创建投诉类型」字段或暂无数据）</div>`;
     } else if (drill.level === 3) {
-      const rows = Object.entries(mids).filter(([k]) => k.startsWith(drill.top)).map(([k, m]) => [k.replace(drill.top + '-', ''), Object.values(m).reduce((a, v) => a + v, 0)]).filter(([, v]) => v > 0).sort((a, b) => b[1] - a[1]);
-      dc.innerHTML = rows.length ? '<div class="drill-list">' + rows.map(([k, v]) =>
+      const rows3 = Object.entries(mids).filter(([k]) => k.startsWith(drill.top)).map(([k, m]) => [k.replace(drill.top + '-', ''), Object.values(m).reduce((a, v) => a + v, 0)]).filter(([, v]) => v > 0).sort((a, b) => b[1] - a[1]);
+      dc.innerHTML = rows3.length ? '<div class="drill-list">' + rows3.map(([k, v]) =>
         `<div class="drill-item"><div class="n">${v}</div><div class="l">${esc(k)}</div></div>`
       ).join('') + '</div>' : '<div class="empty">「' + drill.top + '」暂无中类明细</div>';
     }
