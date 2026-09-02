@@ -1,13 +1,13 @@
 {
- "ts": 1788359571720,
- "collectedAtCn": "2026/9/2 22:32:51",
+ "ts": 1788359796846,
+ "collectedAtCn": "2026/9/2 22:36:36",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "3",
   "坐席忙碌数": "0 (0)",
   "接通率": "24.23%",
   "满意率": "100.00%",
-  "呼入总数": "9744",
+  "呼入总数": "9746",
   "当前呼入数": "0",
   "外呼总数": "6456",
   "当前外呼数": "0",
@@ -424,8 +424,8 @@
   },
   {
    "service": "81199(门店按键转接)",
-   "callIn": 328,
-   "ivr": 225,
+   "callIn": 329,
+   "ivr": 226,
    "ringMissed": 0,
    "queueAbandon": 22,
    "answered": 83,
@@ -464,8 +464,8 @@
   },
   {
    "service": "81198(上门按键转接)",
-   "callIn": 492,
-   "ivr": 274,
+   "callIn": 493,
+   "ivr": 275,
    "ringMissed": 3,
    "queueAbandon": 35,
    "answered": 187,
@@ -904,11 +904,11 @@
     "name": "官网严选寄卖售后咨询",
     "sessions": 317,
     "assigned": 316,
-    "current": 25,
+    "current": 24,
     "max": 120,
     "queue": 0,
     "onlineSeats": "4(刘谊鸽,陈可,张馨月,刘亚森)",
-    "done": 291,
+    "done": 292,
     "answerRate": 99.68,
     "abandon": 1,
     "voicemail": 0,
@@ -1270,24 +1270,6 @@
   "rate400": 73.4
  },
  "history": [
-  {
-   "ts": 1788249082852,
-   "skillRate400": 71.64,
-   "skillQueue400": 0,
-   "callIn400": 892,
-   "signIn400": 13,
-   "onlineSessions": 487,
-   "onlineSeat": 3
-  },
-  {
-   "ts": 1788249190166,
-   "skillRate400": 71.49,
-   "skillQueue400": 2,
-   "callIn400": 898,
-   "signIn400": 13,
-   "onlineSessions": 492,
-   "onlineSeat": 3
-  },
   {
    "ts": 1788249295945,
    "skillRate400": 71.7,
@@ -5763,6 +5745,24 @@
   },
   {
    "ts": 1788359571720,
+   "skillRate400": 80,
+   "skillQueue400": 0,
+   "callIn400": 25,
+   "signIn400": 1,
+   "onlineSessions": 923,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1788359684661,
+   "skillRate400": 80,
+   "skillQueue400": 0,
+   "callIn400": 25,
+   "signIn400": 1,
+   "onlineSessions": 923,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1788359796846,
    "skillRate400": 80,
    "skillQueue400": 0,
    "callIn400": 25,
