@@ -1,14 +1,14 @@
 {
- "ts": 1788356313595,
- "collectedAtCn": "2026/9/2 21:38:33",
+ "ts": 1788356537895,
+ "collectedAtCn": "2026/9/2 21:42:17",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "3",
   "坐席忙碌数": "0 (0)",
   "接通率": "24.38%",
   "满意率": "100.00%",
-  "呼入总数": "9684",
-  "当前呼入数": "1",
+  "呼入总数": "9687",
+  "当前呼入数": "0",
   "外呼总数": "6456",
   "当前外呼数": "0",
   "呼入平均通话时长": "00:02:43",
@@ -18,8 +18,8 @@
   {
    "name": "分类回收400-1分类回收客服组（常）",
    "idleSeats": 0,
-   "signIn": 2,
-   "members": "李华,蔡凌天",
+   "signIn": 1,
+   "members": "李华",
    "ring": 0,
    "queue": 0,
    "todayAnswered": 718,
@@ -34,8 +34,8 @@
   {
    "name": "分类回收400-2分类回收B端客服组",
    "idleSeats": 0,
-   "signIn": 2,
-   "members": "李华,蔡凌天",
+   "signIn": 1,
+   "members": "李华",
    "ring": 0,
    "queue": 0,
    "todayAnswered": 0,
@@ -50,8 +50,8 @@
   {
    "name": "分类回收400-3收益到账咨询（爱分类）",
    "idleSeats": 0,
-   "signIn": 3,
-   "members": "李华,蔡凌天,赵锦超",
+   "signIn": 2,
+   "members": "李华,赵锦超",
    "ring": 0,
    "queue": 0,
    "todayAnswered": 20,
@@ -66,8 +66,8 @@
   {
    "name": "分类回收400-4返航新生活动（爱分类）",
    "idleSeats": 0,
-   "signIn": 2,
-   "members": "李华,蔡凌天",
+   "signIn": 1,
+   "members": "李华",
    "ring": 0,
    "queue": 0,
    "todayAnswered": 56,
@@ -82,8 +82,8 @@
   {
    "name": "分类回收400-5提现流程（爱分类）",
    "idleSeats": 0,
-   "signIn": 2,
-   "members": "李华,蔡凌天",
+   "signIn": 1,
+   "members": "李华",
    "ring": 0,
    "queue": 0,
    "todayAnswered": 0,
@@ -98,8 +98,8 @@
   {
    "name": "分类回收400-6催清运（爱分类）",
    "idleSeats": 0,
-   "signIn": 2,
-   "members": "李华,蔡凌天",
+   "signIn": 1,
+   "members": "李华",
    "ring": 0,
    "queue": 0,
    "todayAnswered": 10,
@@ -114,8 +114,8 @@
   {
    "name": "分类回收400-7订单金额被扣（爱分类）",
    "idleSeats": 0,
-   "signIn": 2,
-   "members": "李华,蔡凌天",
+   "signIn": 1,
+   "members": "李华",
    "ring": 0,
    "queue": 0,
    "todayAnswered": 0,
@@ -130,8 +130,8 @@
   {
    "name": "分类回收400-8机器故障（爱分类）",
    "idleSeats": 0,
-   "signIn": 2,
-   "members": "李华,蔡凌天",
+   "signIn": 1,
+   "members": "李华",
    "ring": 0,
    "queue": 0,
    "todayAnswered": 82,
@@ -146,8 +146,8 @@
   {
    "name": "分类回收400-9回收品类咨询（爱分类）",
    "idleSeats": 0,
-   "signIn": 2,
-   "members": "李华,蔡凌天",
+   "signIn": 1,
+   "members": "李华",
    "ring": 0,
    "queue": 0,
    "todayAnswered": 0,
@@ -199,7 +199,7 @@
   "rate": 83.18,
   "total": 1183,
   "queue": 0,
-  "signIn": 3
+  "signIn": 2
  },
  "services": [
   {
@@ -444,8 +444,8 @@
   },
   {
    "service": "88236634(pjt-卖家)",
-   "callIn": 59,
-   "ivr": 59,
+   "callIn": 60,
+   "ivr": 60,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -624,8 +624,8 @@
   },
   {
    "service": "81198(上门按键转接)",
-   "callIn": 476,
-   "ivr": 258,
+   "callIn": 477,
+   "ivr": 259,
    "ringMissed": 3,
    "queueAbandon": 35,
    "answered": 187,
@@ -1005,7 +1005,6 @@
  ],
  "signInAgents400": [
   "李华",
-  "蔡凌天",
   "赵锦超"
  ],
  "keyServices": {
@@ -1064,13 +1063,13 @@
    },
    {
     "name": "官网严选寄卖售后咨询",
-    "sessions": 303,
-    "assigned": 302,
-    "current": 27,
+    "sessions": 305,
+    "assigned": 304,
+    "current": 28,
     "max": 120,
     "queue": 0,
     "onlineSeats": "4(刘亚森,陈可,张馨月,刘谊鸽)",
-    "done": 275,
+    "done": 276,
     "answerRate": 99.67,
     "abandon": 1,
     "voicemail": 0,
@@ -1092,13 +1091,13 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1096,
-    "assigned": 1081,
+    "sessions": 1097,
+    "assigned": 1082,
     "current": 56,
     "max": 120,
     "queue": 0,
     "onlineSeats": "4(刘亚森,陈可,张馨月,刘谊鸽)",
-    "done": 979,
+    "done": 980,
     "answerRate": 98.63,
     "abandon": 15,
     "voicemail": 0,
@@ -1190,13 +1189,13 @@
    },
    {
     "name": "官网严选寄卖售前咨询",
-    "sessions": 55,
-    "assigned": 55,
+    "sessions": 56,
+    "assigned": 56,
     "current": 5,
     "max": 120,
     "queue": 0,
     "onlineSeats": "4(刘亚森,陈可,张馨月,刘谊鸽)",
-    "done": 49,
+    "done": 50,
     "answerRate": 100,
     "abandon": 0,
     "voicemail": 0,
@@ -1206,11 +1205,11 @@
     "name": "官网严选自营售前咨询",
     "sessions": 335,
     "assigned": 335,
-    "current": 18,
+    "current": 17,
     "max": 120,
     "queue": 0,
     "onlineSeats": "4(刘亚森,陈可,张馨月,刘谊鸽)",
-    "done": 317,
+    "done": 318,
     "answerRate": 100,
     "abandon": 0,
     "voicemail": 0,
@@ -1433,24 +1432,6 @@
   "rate400": 78.8
  },
  "history": [
-  {
-   "ts": 1788245978176,
-   "skillRate400": 69.99,
-   "skillQueue400": 0,
-   "callIn400": 823,
-   "signIn400": 14,
-   "onlineSessions": 426,
-   "onlineSeat": 1
-  },
-  {
-   "ts": 1788246085206,
-   "skillRate400": 70.22,
-   "skillQueue400": 0,
-   "callIn400": 826,
-   "signIn400": 14,
-   "onlineSessions": 429,
-   "onlineSeat": 1
-  },
   {
    "ts": 1788246191922,
    "skillRate400": 70.22,
@@ -5930,6 +5911,24 @@
    "skillQueue400": 0,
    "callIn400": 1183,
    "signIn400": 3,
+   "onlineSessions": 923,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1788356425734,
+   "skillRate400": 83.18,
+   "skillQueue400": 0,
+   "callIn400": 1183,
+   "signIn400": 2,
+   "onlineSessions": 923,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1788356537895,
+   "skillRate400": 83.18,
+   "skillQueue400": 0,
+   "callIn400": 1183,
+   "signIn400": 2,
    "onlineSessions": 923,
    "onlineSeat": 0
   }
