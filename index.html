@@ -490,9 +490,9 @@ function timeDrill(b) {
   let html = '<div style="margin-top:12px;border-top:1px solid var(--border);padding-top:10px;">' +
              '<b style="color:var(--primary);font-size:13.5px;">' + (BNAME[b] || b) + '</b> 场景分布（客诉处理 · ' + statuses.map(s => s + ' ' + (tb[s] || 0)).join(' / ') + '）</div>';
   html += '<div style="margin-top:8px;font-size:12px;color:var(--ink-soft);">投诉类型大类：</div>' +
-          (tk.length ? rowHtml(tk) : '<div class="empty">无数据</div>');
+          (tk.length ? rowHtml(tk, tops) : '<div class="empty">无数据</div>');
   html += '<div style="margin-top:10px;font-size:12px;color:var(--ink-soft);">完整场景 TOP10：</div>' +
-          (lk.length ? rowHtml(lk) : '<div class="empty">无数据</div>');
+          (lk.length ? rowHtml(lk, leaves) : '<div class="empty">无数据</div>');
   el.innerHTML = html;
 }
 
