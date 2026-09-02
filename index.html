@@ -479,8 +479,8 @@ function timeDrill(b) {
   const leaves = tb.by_leaf || {};
   const tk = Object.keys(tops);
   const lk = Object.keys(leaves).slice(0, 10);
-  const rowHtml = (list) => list.map(k => {
-    const m = tb.by_top[k] || tb.by_leaf[k] || {};
+  const rowHtml = (list, src) => list.map(k => {
+    const m = src[k] || {};
     const n = sumSt(m);
     return '<div style="display:flex;gap:10px;padding:4px 2px;font-size:12.5px;border-bottom:1px solid var(--border);">' +
            '<span style="width:220px;flex-shrink:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="' + esc(k) + '">' + esc(k) + '</span>' +
