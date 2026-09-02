@@ -438,10 +438,11 @@ function renderDrill() {
         return `<div class="drill-item" onclick="drill={level:3,dept:'${drill.dept}',top:'${escAttr(k)}'};renderDrill()"><div class="n">${n}</div><div class="l">${esc(k)}</div><div class="go">点击查看中类 ▸</div></div>`;
       }).join('') + '</div>' : `<div class="empty">${DEPTNAME[drill.dept] || ''}池暂无类型细分（该池工单无「创建投诉类型」字段或暂无数据）</div>`;
     } else if (drill.level === 3) {
-      const rows3 = Object.entries(mids).filter(([k]) => k.startsWith(drill.top)).map(([k, m]) => [k.replace(drill.top + '-', ''), Object.values(m).reduce((a, v) => a + v, 0)]).filter(([, v]) => v > 0).sort((a, b) => b[1] - a[1]);
-      dc.innerHTML = rows3.length ? '<div class="drill-list">' + rows3.map(([k, v]) =>
+      const sub = Object.entries(mids).filter(([k]) => k.startsWith(drill.top + '-')).map(([k, m]) => [k.replace(drill.top + '-', ''), Object.values(m).reduce((a, v) => a + v, 0)]).filter(([, v]) => v > 0).sort((a, b) => b[1] - a[1]);
+      const selfN = (mids[drill.top] ? Object.values(mids[drill.top]).reduce((a, v) => a + v, 0) : 0);
+      dc.innerHTML = sub.length ? '<div class="drill-list">' + sub.map(([k, v]) =>
         `<div class="drill-item"><div class="n">${v}</div><div class="l">${esc(k)}</div></div>`
-      ).join('') + '</div>' : '<div class="empty">「' + drill.top + '」暂无中类明细</div>';
+      ).join('') + '</div>' : (selfN > 0 ? '<div class="empty">「' + drill.top + '」为单级类型，无更细分类</div>' : '<div class="empty">「' + drill.top + '」暂无中类明细</div>');
     }
   }
 }
