@@ -137,6 +137,18 @@ td.num { text-align:right; font-variant-numeric:tabular-nums; }
 details summary { cursor:pointer; color:var(--dim); font-size:12.5px; margin-top:12px; }
 details[open] summary { color:var(--accent); }
 .footer { color:var(--dim); font-size:11px; text-align:center; margin-top:22px; padding-top:12px; border-top:1px solid var(--border); }
+
+/* ===== 日进线量趋势 ===== */
+.di-sw { gap:5px; }
+.di-sw i { width:9px; height:9px; border-radius:50%; display:inline-block; flex:none; }
+.di-sw input { accent-color:var(--accent); }
+.di-note { display:flex; gap:16px; flex-wrap:wrap; margin-top:10px; font-size:11.5px; color:var(--dim); }
+.di-note b { color:var(--text); font-variant-numeric:tabular-nums; }
+.di-chart-svg { display:block; width:100%; }
+.di-axis { fill:var(--dim); font-size:10px; }
+.di-grid { stroke:#1c273c; stroke-width:1; }
+.di-last { font-size:10.5px; font-weight:700; }
+.di-tip { fill:var(--dim); font-size:10.5px; }
 </style>
 </head>
 <body>
@@ -214,6 +226,27 @@ details[open] summary { color:var(--accent); }
   </div>
 </div>
 
+<!-- 日进线量趋势 -->
+<div class="sec"><div class="bar"></div><h2>📈 日进线量趋势</h2><span class="hint" id="diMeta">飞书日报-客服 · 加载中</span></div>
+<div class="card" style="margin-bottom:16px;">
+  <h3><span class="dot" style="background:var(--green)"></span>分线趋势
+    <span class="extra" style="margin-left:auto;display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+      <label class="switch di-sw"><input type="checkbox" data-di="400" checked><i style="background:#5da8ff"></i>400呼入24H</label>
+      <label class="switch di-sw"><input type="checkbox" data-di="400wk"><i style="background:#4ad0d0"></i>400工作时间</label>
+      <label class="switch di-sw"><input type="checkbox" data-di="onlineBot" checked><i style="background:#3ddc84"></i>在线机器人</label>
+      <label class="switch di-sw"><input type="checkbox" data-di="onlineHuman" checked><i style="background:#ffb454"></i>在线人工</label>
+      <select id="diRange" onchange="renderTrend()">
+        <option value="30">近 30 天</option>
+        <option value="90" selected>近 90 天</option>
+        <option value="180">近 180 天</option>
+        <option value="0">全部 246 天</option>
+      </select>
+    </span>
+  </h3>
+  <div id="diChart" style="width:100%;height:250px;"></div>
+  <div class="di-note" id="diNote"></div>
+</div>
+
 <!-- ===== 板块 B：工单监控（钻取式） ===== -->
 <div class="sec"><div class="bar"></div><h2>工单监控</h2><span class="hint">升级工单 · 点击数字逐层下钻</span></div>
 
@@ -252,7 +285,7 @@ details[open] summary { color:var(--accent); }
   </div>
 </div>
 
-<div class="footer">数据源：7x24cc（8601）实时采集 · 爱回收工单系统（8600）｜合并看板 v2.3</div>
+<div class="footer">数据源：7x24cc（8601）实时采集 · 爱回收工单系统（8600）· 飞书日报-客服（日进线量）｜合并看板 v2.4</div>
 </div>
 
 <script>
@@ -277,7 +310,96 @@ async function loadTicket() {
 }
 
 async function load() {
-  await Promise.all([loadCC(), loadTicket()]);
+  await Promise.all([loadCC(), loadTicket(), loadDaily()]);
+}
+
+/* ===== 日进线量趋势（飞书日报-客服） ===== */
+let diData = null;
+const DI_LINES = {
+  '400':      { key: '400呼入量24H',         color: '#5da8ff', name: '400呼入24H' },
+  '400wk':    { key: '400呼入量-工作时间',    color: '#4ad0d0', name: '400工作时间' },
+  'onlineBot':{ key: '在线机器人总接待量',    color: '#3ddc84', name: '在线机器人' },
+  'onlineHuman':{ key: '在线人工接待量',      color: '#ffb454', name: '在线人工' },
+};
+async function loadDaily() {
+  try {
+    diData = await fetch('daily_inflow.json').then(r => r.json());
+    const n = diData.days ? diData.days.length : 0;
+    $('diMeta').textContent = `飞书日报-客服 · ${n} 天 · ${diData.fetched_at || ''}`;
+    renderTrend();
+  } catch (e) { $('diMeta').textContent = '日报数据不可用'; }
+}
+function dayMean(rec, days) {
+  const ks = Object.keys(rec).sort().slice(-days);
+  const vals = ks.map(k => rec[k]).filter(v => typeof v === 'number');
+  if (!vals.length) return null;
+  return Math.round(vals.reduce((a, b) => a + b, 0) / vals.length);
+}
+function renderTrend() {
+  if (!diData) return;
+  const range = parseInt($('diRange').value || '90', 10);
+  const all = diData.days.slice();
+  const days = range > 0 ? all.slice(-range) : all;
+  const on = ['400', '400wk', 'onlineBot', 'onlineHuman'].filter(k => document.querySelector(`[data-di="${k}"]`).checked);
+  const recs = on.map(k => ({ ...DI_LINES[k], rec: diData.series[DI_LINES[k].key] || {} }));
+  // 近 7 日均值小结
+  $('diNote').innerHTML = recs.map(l => {
+    const m7 = dayMean(l.rec, 7);
+    return `<span><i style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${l.color};margin-right:4px;"></i>${l.name} 近7日均值 <b>${m7 == null ? '--' : m7.toLocaleString()}</b></span>`;
+  }).join('') || '<span>勾选上方线路查看趋势</span>';
+  // SVG
+  const el = $('diChart');
+  const W = el.clientWidth || 1000;
+  const H = 250, PL = 48, PR = 18, PT = 14, PB = 26;
+  const iw = W - PL - PR, ih = H - PT - PB;
+  let mx = 0;
+  days.forEach(d => { recs.forEach(l => { const v = l.rec[d]; if (typeof v === 'number' && v > mx) mx = v; }); });
+  if (!mx) { el.innerHTML = '<div class="empty">无数据</div>'; return; }
+  const xAt = d => days.indexOf(d);
+  const yAt = v => PT + ih - (v / mx) * ih;
+  const lines = recs.map(l => {
+    const pts = [];
+    let seg = [], prev = null;
+    days.forEach(d => {
+      const v = l.rec[d];
+      if (typeof v === 'number') { seg.push([xAt(d), yAt(v)]); }
+      else if (seg.length) { pts.push(seg); seg = []; }
+    });
+    if (seg.length) pts.push(seg);
+    const polys = pts.map(s => s.map(p => p[0].toFixed(1) + ',' + p[1].toFixed(1)).join(' '));
+    return { l, polys, lastVal: l.rec[days[days.length - 1]] };
+  });
+  // x 轴刻度：取 ~8 个标签
+  const ticks = [];
+  const step = Math.ceil(days.length / 8);
+  for (let i = 0; i < days.length; i += step) ticks.push(i);
+  if (ticks[ticks.length - 1] !== days.length - 1) ticks.push(days.length - 1);
+  const yticks = [0, 0.25, 0.5, 0.75, 1].map(f => Math.round(mx * f));
+  let svg = `<svg class="di-chart-svg" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">`;
+  yticks.forEach(yv => {
+    const y = yAt(yv);
+    svg += `<line class="di-grid" x1="${PL}" y1="${y}" x2="${W - PR}" y2="${y}"/>`;
+    svg += `<text class="di-axis" x="${PL - 6}" y="${y + 3}" text-anchor="end">${yv.toLocaleString()}</text>`;
+  });
+  ticks.forEach(i => {
+    const d = days[i];
+    const x = PL + xAt(d) * (iw / Math.max(days.length - 1, 1));
+    const lb = d.slice(5).replace('-', '/');
+    svg += `<text class="di-axis" x="${x}" y="${H - 8}" text-anchor="middle">${lb}</text>`;
+  });
+  lines.forEach(({ l, polys }) => {
+    svg += polys.map(p => `<polyline fill="none" stroke="${l.color}" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" points="${p}" opacity="0.9"/>`).join('');
+  });
+  // 末端值标签
+  lines.forEach(({ l, lastVal }) => {
+    if (typeof lastVal !== 'number') return;
+    const x = W - PR - 2, y = yAt(lastVal);
+    svg += `<text class="di-last" fill="${l.color}" x="${x}" y="${Math.max(y - 4, PT + 8)}" text-anchor="end">${lastVal.toLocaleString()}</text>`;
+  });
+  svg += '</svg>';
+  el.innerHTML = svg;
+  // checkbox 重绘绑定
+  document.querySelectorAll('.di-sw input').forEach(cb => cb.onchange = renderTrend);
 }
 
 function renderCC() {
