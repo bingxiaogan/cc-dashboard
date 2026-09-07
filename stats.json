@@ -1,15 +1,15 @@
 {
- "ts": 1788792846683,
- "collectedAtCn": "2026/9/7 22:54:06",
+ "ts": 1788793099419,
+ "collectedAtCn": "2026/9/7 22:58:19",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "1",
   "坐席忙碌数": "0 (0)",
-  "接通率": "23.72%",
+  "接通率": "23.71%",
   "满意率": "100.00%",
-  "呼入总数": "9981",
+  "呼入总数": "9982",
   "当前呼入数": "0",
-  "外呼总数": "6512",
+  "外呼总数": "6513",
   "当前外呼数": "0",
   "呼入平均通话时长": "00:02:48",
   "AI通话数": "0 (3)"
@@ -400,8 +400,8 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 1943,
-   "ivr": 860,
+   "callIn": 1944,
+   "ivr": 861,
    "ringMissed": 7,
    "queueAbandon": 155,
    "answered": 923,
@@ -1046,8 +1046,8 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 1943,
-    "ivr": 860,
+    "callIn": 1944,
+    "ivr": 861,
     "ringMissed": 7,
     "queueAbandon": 155,
     "answered": 923,
@@ -1055,10 +1055,10 @@
     "transferred": 2
    }
   ],
-  "total": 1965,
+  "total": 1966,
   "answered": 931,
-  "ivr": 869,
-  "connectRate": 91.6
+  "ivr": 870,
+  "connectRate": 91.61
  },
  "online": {
   "groups": [
@@ -1078,14 +1078,14 @@
    },
    {
     "name": "官网严选寄卖售后咨询",
-    "sessions": 273,
-    "assigned": 272,
-    "current": 16,
-    "max": 87,
+    "sessions": 274,
+    "assigned": 273,
+    "current": 17,
+    "max": 57,
     "queue": 0,
-    "onlineSeats": "3(张慧敏,王鹏,丁萌萌)",
+    "onlineSeats": "2(王鹏,丁萌萌)",
     "done": 256,
-    "answerRate": 99.63,
+    "answerRate": 99.64,
     "abandon": 1,
     "voicemail": 0,
     "satisfactionRate": 0
@@ -1106,13 +1106,13 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1032,
-    "assigned": 1028,
-    "current": 46,
-    "max": 87,
+    "sessions": 1038,
+    "assigned": 1034,
+    "current": 51,
+    "max": 57,
     "queue": 0,
-    "onlineSeats": "3(张慧敏,王鹏,丁萌萌)",
-    "done": 932,
+    "onlineSeats": "2(王鹏,丁萌萌)",
+    "done": 933,
     "answerRate": 99.61,
     "abandon": 4,
     "voicemail": 0,
@@ -1204,13 +1204,13 @@
    },
    {
     "name": "官网严选自营售前咨询",
-    "sessions": 324,
-    "assigned": 324,
-    "current": 15,
-    "max": 87,
+    "sessions": 325,
+    "assigned": 325,
+    "current": 14,
+    "max": 57,
     "queue": 0,
-    "onlineSeats": "3(张慧敏,王鹏,丁萌萌)",
-    "done": 308,
+    "onlineSeats": "2(王鹏,丁萌萌)",
+    "done": 310,
     "answerRate": 100,
     "abandon": 0,
     "voicemail": 0,
@@ -1432,24 +1432,6 @@
   "rate400": 81.4
  },
  "history": [
-  {
-   "ts": 1788501069297,
-   "skillRate400": 64.33,
-   "skillQueue400": 0,
-   "callIn400": 642,
-   "signIn400": 14,
-   "onlineSessions": 315,
-   "onlineSeat": 1
-  },
-  {
-   "ts": 1788501185769,
-   "skillRate400": 64.65,
-   "skillQueue400": 0,
-   "callIn400": 645,
-   "signIn400": 14,
-   "onlineSessions": 316,
-   "onlineSeat": 1
-  },
   {
    "ts": 1788501291086,
    "skillRate400": 64.71,
@@ -5925,6 +5907,24 @@
   },
   {
    "ts": 1788792846683,
+   "skillRate400": 81.41,
+   "skillQueue400": 0,
+   "callIn400": 1178,
+   "signIn400": 1,
+   "onlineSessions": 997,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1788792987060,
+   "skillRate400": 81.41,
+   "skillQueue400": 0,
+   "callIn400": 1178,
+   "signIn400": 1,
+   "onlineSessions": 997,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1788793099419,
    "skillRate400": 81.41,
    "skillQueue400": 0,
    "callIn400": 1178,
