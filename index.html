@@ -144,6 +144,10 @@ details[open] summary { color:var(--accent); }
 .di-sw input { accent-color:var(--accent); }
 .di-note { display:flex; gap:16px; flex-wrap:wrap; margin-top:10px; font-size:11.5px; color:var(--dim); }
 .di-note b { color:var(--text); font-variant-numeric:tabular-nums; }
+.seg { display:inline-flex; gap:2px; margin-left:12px; vertical-align:2px; background:rgba(148,163,184,.12); border-radius:6px; padding:2px; }
+.seg-btn { border:0; background:transparent; color:var(--dim); font-size:11px; padding:3px 12px; border-radius:5px; cursor:pointer; font-family:inherit; }
+.seg-btn.on { background:#334155; color:#e2e8f0; font-weight:600; box-shadow:0 1px 3px rgba(0,0,0,.35); }
+.seg-btn:hover:not(.on) { color:var(--text); }
 .di-chart-svg { display:block; width:100%; }
 .di-axis { fill:var(--dim); font-size:10px; }
 .di-grid { stroke:#1c273c; stroke-width:1; }
@@ -226,11 +230,17 @@ details[open] summary { color:var(--accent); }
   </div>
 </div>
 
-<!-- 400 半小时进线量（合力呼入时间趋势） -->
-<div class="sec"><div class="bar"></div><h2>📞 400 半小时进线量</h2><span class="hint" id="hhMeta">合力呼入时间趋势 · 加载中</span></div>
+<!-- 时段量级板块（400 电话 / 在线会话 切换） -->
+<div class="sec"><div class="bar"></div>
+  <h2>📊 时段量级<span class="seg" id="hhSeg">
+    <button class="seg-btn on" data-tab="call" onclick="switchHalf('call')">📞 400</button>
+    <button class="seg-btn" data-tab="chat" onclick="switchHalf('chat')">💬 在线</button>
+  </span></h2>
+  <span class="hint" id="hhMeta">加载中</span>
+</div>
 <div class="card" style="margin-bottom:16px;">
-  <h3><span class="dot" style="background:#5da8ff"></span>当日每半小时呼入 · 400 三线（88236628 / 88236629 / 4001581707）
-    <span class="extra" style="margin-left:auto">柱=进线量 · 实时时段描边高亮</span>
+  <h3><span class="dot" id="hhDot" style="background:#5da8ff"></span><span id="hhSub">当日每半小时呼入 · 400 三线（88236628 / 88236629 / 4001581707）</span>
+    <span class="extra" style="margin-left:auto">柱=量级 · 最新时段高亮</span>
   </h3>
   <div id="hhChart" style="width:100%;height:240px;"></div>
   <div class="di-note" id="hhNote"></div>
@@ -274,7 +284,7 @@ details[open] summary { color:var(--accent); }
   </div>
 </div>
 
-<div class="footer">数据源：7x24cc（8601）实时采集 · 爱回收工单系统（8600）· 合力呼入时间趋势 400 半小时 ｜合并看板 v2.5</div>
+<div class="footer">数据源：7x24cc（8601）实时采集 · 爱回收工单系统（8600）· 时段量级：400 呼入时间趋势 / 在线技能组时间趋势 ｜合并看板 v2.6</div>
 </div>
 
 <script>
@@ -302,24 +312,36 @@ async function load() {
   await Promise.all([loadCC(), loadTicket(), loadHalf()]);
 }
 
-/* ===== 400 半小时进线量（合力呼入时间趋势） ===== */
+/* ===== 时段量级（400 电话 / 在线会话 半小时） ===== */
 let hhData = null;
-async function loadHalf() {
-  try {
-    hhData = await fetch('call_halfhour.json').then(r => r.json());
-    const n = (hhData.slots || []).length;
-    $('hhMeta').textContent = `合力呼入时间趋势 · 400 三线 · ${hhData.date || ''} · 更新 ${hhData.collectedAtCn || ''}`;
-    renderHalf();
-  } catch (e) { $('hhMeta').textContent = '半小时数据暂不可用（首轮采集完成后出现）'; }
+let hhTab = 'call';
+const HH_FILES = { call: 'call_halfhour.json', chat: 'chat_halfhour.json' };
+function switchHalf(tab) {
+  hhTab = tab;
+  document.querySelectorAll('#hhSeg .seg-btn').forEach(b => b.classList.toggle('on', b.dataset.tab === tab));
+  loadHalf();
 }
+async function loadHalf() {
+  const isChat = hhTab === 'chat';
+  try {
+    hhData = await fetch(HH_FILES[hhTab]).then(r => r.json());
+    const n = (hhData.slots || []).length;
+    $('hhMeta').textContent = `${isChat ? '技能组时间趋势 · 分类在线技能组' : '呼入时间趋势 · 400 三线'} · ${hhData.date || ''} · 更新 ${hhData.collectedAtCn || ''}`;
+    $('hhDot').style.background = isChat ? '#3ddc84' : '#5da8ff';
+    $('hhSub').textContent = isChat ? '当日每半小时会话量 · 分类在线技能组' : '当日每半小时呼入 · 400 三线（88236628 / 88236629 / 4001581707）';
+    renderHalf();
+  } catch (e) { $('hhMeta').textContent = isChat ? '在线数据暂不可用（collector 首轮在线采集后出现）' : '400 数据暂不可用'; }
+}
+function halfTime(s) { return s.t.length > 8 ? s.t.slice(11, 16) : s.t.slice(0, 5); }  // 400: 'YYYY-MM-DD HH:MM:SS' → HH:MM
 function renderHalf() {
   const el = $('hhChart');
+  const isChat = hhTab === 'chat';
   if (!hhData || !hhData.slots || !hhData.slots.length) {
     el.innerHTML = '<div class="empty">暂无数据</div>';
     $('hhNote').innerHTML = '';
     return;
   }
-  const slots = hhData.slots;               // [{t:'2026-09-07 09:00:00', total, answered, ivr, queueAbandon...}]
+  const slots = hhData.slots;
   const sum = hhData.sum || {};
   const W = el.clientWidth || 1000;
   const H = 240, PL = 42, PR = 14, PT = 16, PB = 26;
@@ -329,13 +351,12 @@ function renderHalf() {
   const slotW = iw / n;
   const bw = Math.min(slotW * 0.62, 30);
   const yAt = v => PT + ih - (v / mx) * ih;
-  const lastIdx = n - 1;                    // 最新已出时段（近似实时）
-  const isNow = t => {                       // 当前进行中的半小时
+  const lastIdx = n - 1;
+  const isNow = st => {
     const now = new Date();
     const hm = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes() < 30 ? '00' : '30');
-    return t.slice(11, 16) === hm;
+    return st === hm;
   };
-  // y 刻度（整 4 档）
   let svg = `<svg class="di-chart-svg" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">`;
   for (let f = 0; f <= 4; f++) {
     const yv = Math.round(mx / 4 * f);
@@ -343,42 +364,48 @@ function renderHalf() {
     svg += `<line class="di-grid" x1="${PL}" y1="${y}" x2="${W - PR}" y2="${y}"/>`;
     svg += `<text class="di-axis" x="${PL - 6}" y="${y + 3}" text-anchor="end">${yv.toLocaleString()}</text>`;
   }
-  // x 轴标签：每 ~4 个时段显示一个（首尾必显）
   const showAt = new Set();
   for (let i = 0; i < n; i++) if (i % Math.ceil(n / 9) === 0) showAt.add(i);
   showAt.add(0); showAt.add(n - 1);
   slots.forEach((s, i) => {
+    const st = halfTime(s);
     const cx = PL + slotW * i + slotW / 2;
     const x0 = cx - bw / 2, x1 = cx + bw / 2;
     const yTop = yAt(s.total);
-    const live = isNow(s.t);
+    const live = isNow(st);
     const last = (i === lastIdx);
-    const fill = last ? '#ffd76a' : '#5da8ff';
-    svg += `<title>${s.t.slice(11, 16)} 进线 ${s.total} · 已接听 ${s.answered} · IVR ${s.ivr} · 排队放弃 ${s.queueAbandon}</title>`;
+    const fill = last ? '#ffd76a' : (isChat ? '#3ddc84' : '#5da8ff');
+    const tip = isChat ? `${st} 会话 ${s.total} · 接起率 ${s.rate || '--'}` : `${st} 进线 ${s.total} · 已接听 ${s.answered} · IVR ${s.ivr} · 排队放弃 ${s.queueAbandon}`;
+    svg += `<title>${tip}</title>`;
     svg += `<rect x="${x0}" y="${yTop}" width="${bw}" height="${PT + ih - yTop}" rx="2" fill="${fill}" opacity="${last ? 0.95 : 0.82}"/>`;
     if (live || last) svg += `<rect x="${x0 - 1}" y="${yTop - 1}" width="${bw + 2}" height="${PT + ih - yTop + 2}" rx="3" fill="none" stroke="#ffd76a" stroke-width="1.4" stroke-dasharray="${live ? '3,2' : '0'}"/>`;
-    if (showAt.has(i)) {
-      svg += `<text class="di-axis" x="${cx}" y="${H - 8}" text-anchor="middle">${s.t.slice(11, 16)}</text>`;
-    }
-    // 末端柱顶数值
-    if (i === lastIdx) {
-      svg += `<text class="di-last" fill="#ffd76a" x="${cx}" y="${Math.max(yTop - 5, PT + 8)}" text-anchor="middle">${s.total}</text>`;
-    }
+    if (showAt.has(i)) svg += `<text class="di-axis" x="${cx}" y="${H - 8}" text-anchor="middle">${st}</text>`;
+    if (i === lastIdx) svg += `<text class="di-last" fill="#ffd76a" x="${cx}" y="${Math.max(yTop - 5, PT + 8)}" text-anchor="middle">${s.total}</text>`;
   });
   svg += '</svg>';
   el.innerHTML = svg;
   // 小结
   const lastS = slots[lastIdx];
-  const rate = (sum.total - sum.ivr) > 0 ? +((sum.answered / (sum.total - sum.ivr)) * 100).toFixed(1) : null;  // 人工接通率
-  const avg = Math.round(sum.total / n);
-  $('hhNote').innerHTML =
-    `<span>今日累计 <b>${sum.total.toLocaleString()}</b></span>` +
-    `<span>已接听(人工) <b>${sum.answered.toLocaleString()}</b></span>` +
-    `<span>IVR 分流 <b>${sum.ivr.toLocaleString()}</b></span>` +
-    `<span>人工接通率 <b>${rate == null ? '--' : rate + '%'}</b></span>` +
-    `<span>时段均值 <b>${avg.toLocaleString()}</b></span>` +
-    `<span>最新 ${lastS.t.slice(11, 16)} <b>${lastS.total}</b></span>` +
-    (hhData.history && Object.keys(hhData.history).length ? `<span style="opacity:.6">历史存档 ${Object.keys(hhData.history).length} 天（每日 21:30 后固化）</span>` : '');
+  const avg = n ? Math.round(sum.total / n) : null;
+  if (isChat) {
+    $('hhNote').innerHTML =
+      `<span>今日累计 <b>${(sum.total || 0).toLocaleString()}</b></span>` +
+      `<span>已出时段 <b>${n}</b></span>` +
+      `<span>时段均值 <b>${avg == null ? '--' : avg.toLocaleString()}</b></span>` +
+      `<span>最新 ${halfTime(lastS)} <b>${lastS.total}</b></span>` +
+      (lastS.rate ? `<span>最新接起率 <b>${lastS.rate}</b></span>` : '') +
+      (hhData.history && Object.keys(hhData.history).length ? `<span style="opacity:.6">历史存档 ${Object.keys(hhData.history).length} 天</span>` : '');
+  } else {
+    const rate = (sum.total - sum.ivr) > 0 ? +((sum.answered / (sum.total - sum.ivr)) * 100).toFixed(1) : null;  // 人工接通率
+    $('hhNote').innerHTML =
+      `<span>今日累计 <b>${sum.total.toLocaleString()}</b></span>` +
+      `<span>已接听(人工) <b>${sum.answered.toLocaleString()}</b></span>` +
+      `<span>IVR 分流 <b>${sum.ivr.toLocaleString()}</b></span>` +
+      `<span>人工接通率 <b>${rate == null ? '--' : rate + '%'}</b></span>` +
+      `<span>时段均值 <b>${avg == null ? '--' : avg.toLocaleString()}</b></span>` +
+      `<span>最新 ${halfTime(lastS)} <b>${lastS.total}</b></span>` +
+      (hhData.history && Object.keys(hhData.history).length ? `<span style="opacity:.6">历史存档 ${Object.keys(hhData.history).length} 天（每日 21:30 后固化）</span>` : '');
+  }
 }
 
 function renderCC() {
