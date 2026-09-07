@@ -1,14 +1,14 @@
 {
- "ts": 1788787652174,
- "collectedAtCn": "2026/9/7 21:27:32",
+ "ts": 1788787764933,
+ "collectedAtCn": "2026/9/7 21:29:24",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "3",
   "坐席忙碌数": "0 (0)",
   "接通率": "24.01%",
   "满意率": "100.00%",
-  "呼入总数": "9857",
-  "当前呼入数": "1",
+  "呼入总数": "9860",
+  "当前呼入数": "0",
   "外呼总数": "6503",
   "当前外呼数": "0",
   "呼入平均通话时长": "00:02:48",
@@ -640,8 +640,8 @@
   },
   {
    "service": "81198(上门按键转接)",
-   "callIn": 493,
-   "ivr": 303,
+   "callIn": 494,
+   "ivr": 304,
    "ringMissed": 4,
    "queueAbandon": 26,
    "answered": 169,
@@ -770,8 +770,8 @@
   },
   {
    "service": "80409(奢侈品商家-门店验货报价)",
-   "callIn": 1114,
-   "ivr": 1114,
+   "callIn": 1116,
+   "ivr": 1116,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -1079,13 +1079,13 @@
    },
    {
     "name": "官网严选寄卖售后咨询",
-    "sessions": 249,
-    "assigned": 248,
+    "sessions": 250,
+    "assigned": 249,
     "current": 23,
     "max": 117,
     "queue": 0,
     "onlineSeats": "4(张慧敏,王鹏,王凌,丁萌萌)",
-    "done": 225,
+    "done": 226,
     "answerRate": 99.6,
     "abandon": 1,
     "voicemail": 0,
@@ -1109,11 +1109,11 @@
     "name": "官网严选自营售后咨询",
     "sessions": 970,
     "assigned": 966,
-    "current": 58,
+    "current": 56,
     "max": 117,
     "queue": 0,
     "onlineSeats": "4(张慧敏,王鹏,王凌,丁萌萌)",
-    "done": 866,
+    "done": 867,
     "answerRate": 99.59,
     "abandon": 4,
     "voicemail": 0,
@@ -1433,15 +1433,6 @@
   "rate400": 81.4
  },
  "history": [
-  {
-   "ts": 1788496497695,
-   "skillRate400": 62.31,
-   "skillQueue400": 0,
-   "callIn400": 528,
-   "signIn400": 13,
-   "onlineSessions": 240,
-   "onlineSeat": 2
-  },
   {
    "ts": 1788496602628,
    "skillRate400": 62.45,
@@ -5926,6 +5917,15 @@
   },
   {
    "ts": 1788787652174,
+   "skillRate400": 81.41,
+   "skillQueue400": 0,
+   "callIn400": 1178,
+   "signIn400": 2,
+   "onlineSessions": 997,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1788787764933,
    "skillRate400": 81.41,
    "skillQueue400": 0,
    "callIn400": 1178,
