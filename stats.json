@@ -1,15 +1,15 @@
 {
- "ts": 1788786919509,
- "collectedAtCn": "2026/9/7 21:15:19",
+ "ts": 1788787173171,
+ "collectedAtCn": "2026/9/7 21:19:33",
  "overview": {
   "总排队数": "0",
-  "坐席空闲数": "5",
+  "坐席空闲数": "3",
   "坐席忙碌数": "0 (0)",
-  "接通率": "24.13%",
+  "接通率": "24.11%",
   "满意率": "100.00%",
-  "呼入总数": "9808",
-  "当前呼入数": "2",
-  "外呼总数": "6496",
+  "呼入总数": "9819",
+  "当前呼入数": "1",
+  "外呼总数": "6499",
   "当前外呼数": "1",
   "呼入平均通话时长": "00:02:48",
   "AI通话数": "0 (3)"
@@ -400,8 +400,8 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 1914,
-   "ivr": 831,
+   "callIn": 1916,
+   "ivr": 833,
    "ringMissed": 7,
    "queueAbandon": 155,
    "answered": 923,
@@ -600,8 +600,8 @@
   },
   {
    "service": "81199(门店按键转接)",
-   "callIn": 341,
-   "ivr": 254,
+   "callIn": 342,
+   "ivr": 255,
    "ringMissed": 4,
    "queueAbandon": 7,
    "answered": 76,
@@ -640,8 +640,8 @@
   },
   {
    "service": "81198(上门按键转接)",
-   "callIn": 480,
-   "ivr": 290,
+   "callIn": 483,
+   "ivr": 293,
    "ringMissed": 4,
    "queueAbandon": 26,
    "answered": 169,
@@ -770,8 +770,8 @@
   },
   {
    "service": "80409(奢侈品商家-门店验货报价)",
-   "callIn": 1105,
-   "ivr": 1105,
+   "callIn": 1106,
+   "ivr": 1106,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -1049,8 +1049,8 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 1914,
-    "ivr": 831,
+    "callIn": 1916,
+    "ivr": 833,
     "ringMissed": 7,
     "queueAbandon": 155,
     "answered": 923,
@@ -1058,10 +1058,10 @@
     "transferred": 2
    }
   ],
-  "total": 1935,
+  "total": 1937,
   "answered": 931,
-  "ivr": 839,
-  "connectRate": 91.47
+  "ivr": 841,
+  "connectRate": 91.48
  },
  "online": {
   "groups": [
@@ -1069,11 +1069,11 @@
     "name": "抖音售后",
     "sessions": 26,
     "assigned": 26,
-    "current": 5,
+    "current": 4,
     "max": 0,
     "queue": 0,
     "onlineSeats": "0",
-    "done": 21,
+    "done": 22,
     "answerRate": 100,
     "abandon": 0,
     "voicemail": 1,
@@ -1081,14 +1081,14 @@
    },
    {
     "name": "官网严选寄卖售后咨询",
-    "sessions": 246,
-    "assigned": 245,
+    "sessions": 248,
+    "assigned": 247,
     "current": 22,
     "max": 117,
     "queue": 0,
     "onlineSeats": "4(张慧敏,王鹏,王凌,丁萌萌)",
-    "done": 223,
-    "answerRate": 99.59,
+    "done": 225,
+    "answerRate": 99.6,
     "abandon": 1,
     "voicemail": 0,
     "satisfactionRate": 0
@@ -1109,13 +1109,13 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 961,
-    "assigned": 957,
-    "current": 65,
+    "sessions": 963,
+    "assigned": 959,
+    "current": 62,
     "max": 117,
     "queue": 0,
     "onlineSeats": "4(张慧敏,王鹏,王凌,丁萌萌)",
-    "done": 851,
+    "done": 855,
     "answerRate": 99.58,
     "abandon": 4,
     "voicemail": 0,
@@ -1207,13 +1207,13 @@
    },
    {
     "name": "官网严选自营售前咨询",
-    "sessions": 294,
-    "assigned": 294,
-    "current": 22,
+    "sessions": 295,
+    "assigned": 295,
+    "current": 21,
     "max": 117,
     "queue": 0,
     "onlineSeats": "4(张慧敏,王鹏,王凌,丁萌萌)",
-    "done": 271,
+    "done": 273,
     "answerRate": 100,
     "abandon": 0,
     "voicemail": 0,
@@ -1436,24 +1436,6 @@
   "rate400": 81.4
  },
  "history": [
-  {
-   "ts": 1788495865497,
-   "skillRate400": 62.5,
-   "skillQueue400": 0,
-   "callIn400": 520,
-   "signIn400": 15,
-   "onlineSessions": 226,
-   "onlineSeat": 2
-  },
-  {
-   "ts": 1788495970055,
-   "skillRate400": 62.38,
-   "skillQueue400": 1,
-   "callIn400": 521,
-   "signIn400": 13,
-   "onlineSessions": 228,
-   "onlineSeat": 2
-  },
   {
    "ts": 1788496075365,
    "skillRate400": 62.45,
@@ -5929,6 +5911,24 @@
   },
   {
    "ts": 1788786919509,
+   "skillRate400": 81.41,
+   "skillQueue400": 0,
+   "callIn400": 1178,
+   "signIn400": 4,
+   "onlineSessions": 997,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1788787031957,
+   "skillRate400": 81.41,
+   "skillQueue400": 0,
+   "callIn400": 1178,
+   "signIn400": 4,
+   "onlineSessions": 997,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1788787173171,
    "skillRate400": 81.41,
    "skillQueue400": 0,
    "callIn400": 1178,
