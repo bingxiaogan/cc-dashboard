@@ -1,13 +1,13 @@
 {
- "ts": 1788795150771,
- "collectedAtCn": "2026/9/7 23:32:30",
+ "ts": 1788795311084,
+ "collectedAtCn": "2026/9/7 23:35:11",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "1",
   "坐席忙碌数": "0 (0)",
-  "接通率": "23.69%",
+  "接通率": "23.68%",
   "满意率": "100.00%",
-  "呼入总数": "9993",
+  "呼入总数": "9995",
   "当前呼入数": "0",
   "外呼总数": "6513",
   "当前外呼数": "0",
@@ -407,8 +407,8 @@
   },
   {
    "service": "81199(门店按键转接)",
-   "callIn": 348,
-   "ivr": 261,
+   "callIn": 349,
+   "ivr": 262,
    "ringMissed": 4,
    "queueAbandon": 7,
    "answered": 76,
@@ -437,8 +437,8 @@
   },
   {
    "service": "88236602(其他渠道4000166088)",
-   "callIn": 521,
-   "ivr": 258,
+   "callIn": 522,
+   "ivr": 259,
    "ringMissed": 2,
    "queueAbandon": 27,
    "answered": 239,
@@ -911,13 +911,13 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1048,
-    "assigned": 1044,
-    "current": 26,
+    "sessions": 1049,
+    "assigned": 1045,
+    "current": 24,
     "max": 57,
     "queue": 0,
     "onlineSeats": "2(王鹏,丁萌萌)",
-    "done": 968,
+    "done": 971,
     "answerRate": 99.62,
     "abandon": 4,
     "voicemail": 0,
@@ -1237,15 +1237,6 @@
   "rate400": 81.4
  },
  "history": [
-  {
-   "ts": 1788504032830,
-   "skillRate400": 66.24,
-   "skillQueue400": 3,
-   "callIn400": 708,
-   "signIn400": 12,
-   "onlineSessions": 370,
-   "onlineSeat": 2
-  },
   {
    "ts": 1788504138682,
    "skillRate400": 66.34,
@@ -5730,6 +5721,15 @@
   },
   {
    "ts": 1788795150771,
+   "skillRate400": null,
+   "skillQueue400": 0,
+   "callIn400": 0,
+   "signIn400": 0,
+   "onlineSessions": 997,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1788795311084,
    "skillRate400": null,
    "skillQueue400": 0,
    "callIn400": 0,
