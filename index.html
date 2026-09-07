@@ -274,7 +274,7 @@ details[open] summary { color:var(--accent); }
   </div>
 </div>
 
-<div class="footer">数据源：7x24cc（8601）实时采集 · 爱回收工单系统（8600）· 飞书日报-客服（日进线量）｜合并看板 v2.4</div>
+<div class="footer">数据源：7x24cc（8601）实时采集 · 爱回收工单系统（8600）· 合力呼入时间趋势 400 半小时 ｜合并看板 v2.5</div>
 </div>
 
 <script>
@@ -299,96 +299,86 @@ async function loadTicket() {
 }
 
 async function load() {
-  await Promise.all([loadCC(), loadTicket(), loadDaily()]);
+  await Promise.all([loadCC(), loadTicket(), loadHalf()]);
 }
 
-/* ===== 日进线量趋势（飞书日报-客服） ===== */
-let diData = null;
-const DI_LINES = {
-  '400':      { key: '400呼入量24H',         color: '#5da8ff', name: '400呼入24H' },
-  '400wk':    { key: '400呼入量-工作时间',    color: '#4ad0d0', name: '400工作时间' },
-  'onlineBot':{ key: '在线机器人总接待量',    color: '#3ddc84', name: '在线机器人' },
-  'onlineHuman':{ key: '在线人工接待量',      color: '#ffb454', name: '在线人工' },
-};
-async function loadDaily() {
+/* ===== 400 半小时进线量（合力呼入时间趋势） ===== */
+let hhData = null;
+async function loadHalf() {
   try {
-    diData = await fetch('daily_inflow.json').then(r => r.json());
-    const n = diData.days ? diData.days.length : 0;
-    $('diMeta').textContent = `飞书日报-客服 · ${n} 天 · ${diData.fetched_at || ''}`;
-    renderTrend();
-  } catch (e) { $('diMeta').textContent = '日报数据不可用'; }
+    hhData = await fetch('call_halfhour.json').then(r => r.json());
+    const n = (hhData.slots || []).length;
+    $('hhMeta').textContent = `合力呼入时间趋势 · 400 三线 · ${hhData.date || ''} · 更新 ${hhData.collectedAtCn || ''}`;
+    renderHalf();
+  } catch (e) { $('hhMeta').textContent = '半小时数据暂不可用（首轮采集完成后出现）'; }
 }
-function dayMean(rec, days) {
-  const ks = Object.keys(rec).sort().slice(-days);
-  const vals = ks.map(k => rec[k]).filter(v => typeof v === 'number');
-  if (!vals.length) return null;
-  return Math.round(vals.reduce((a, b) => a + b, 0) / vals.length);
-}
-function renderTrend() {
-  if (!diData) return;
-  const range = parseInt($('diRange').value || '90', 10);
-  const all = diData.days.slice();
-  const days = range > 0 ? all.slice(-range) : all;
-  const on = ['400', '400wk', 'onlineBot', 'onlineHuman'].filter(k => document.querySelector(`[data-di="${k}"]`).checked);
-  const recs = on.map(k => ({ ...DI_LINES[k], rec: diData.series[DI_LINES[k].key] || {} }));
-  // 近 7 日均值小结
-  $('diNote').innerHTML = recs.map(l => {
-    const m7 = dayMean(l.rec, 7);
-    return `<span><i style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${l.color};margin-right:4px;"></i>${l.name} 近7日均值 <b>${m7 == null ? '--' : m7.toLocaleString()}</b></span>`;
-  }).join('') || '<span>勾选上方线路查看趋势</span>';
-  // SVG
-  const el = $('diChart');
+function renderHalf() {
+  const el = $('hhChart');
+  if (!hhData || !hhData.slots || !hhData.slots.length) {
+    el.innerHTML = '<div class="empty">暂无数据</div>';
+    $('hhNote').innerHTML = '';
+    return;
+  }
+  const slots = hhData.slots;               // [{t:'2026-09-07 09:00:00', total, answered, ivr, queueAbandon...}]
+  const sum = hhData.sum || {};
   const W = el.clientWidth || 1000;
-  const H = 250, PL = 48, PR = 18, PT = 14, PB = 26;
+  const H = 240, PL = 42, PR = 14, PT = 16, PB = 26;
   const iw = W - PL - PR, ih = H - PT - PB;
-  let mx = 0;
-  days.forEach(d => { recs.forEach(l => { const v = l.rec[d]; if (typeof v === 'number' && v > mx) mx = v; }); });
-  if (!mx) { el.innerHTML = '<div class="empty">无数据</div>'; return; }
-  const xAt = d => days.indexOf(d);
+  const mx = Math.max(...slots.map(s => s.total), 1) * 1.12;
+  const n = slots.length;
+  const slotW = iw / n;
+  const bw = Math.min(slotW * 0.62, 30);
   const yAt = v => PT + ih - (v / mx) * ih;
-  const lines = recs.map(l => {
-    const pts = [];
-    let seg = [], prev = null;
-    days.forEach(d => {
-      const v = l.rec[d];
-      if (typeof v === 'number') { seg.push([xAt(d), yAt(v)]); }
-      else if (seg.length) { pts.push(seg); seg = []; }
-    });
-    if (seg.length) pts.push(seg);
-    const polys = pts.map(s => s.map(p => p[0].toFixed(1) + ',' + p[1].toFixed(1)).join(' '));
-    return { l, polys, lastVal: l.rec[days[days.length - 1]] };
-  });
-  // x 轴刻度：取 ~8 个标签
-  const ticks = [];
-  const step = Math.ceil(days.length / 8);
-  for (let i = 0; i < days.length; i += step) ticks.push(i);
-  if (ticks[ticks.length - 1] !== days.length - 1) ticks.push(days.length - 1);
-  const yticks = [0, 0.25, 0.5, 0.75, 1].map(f => Math.round(mx * f));
+  const lastIdx = n - 1;                    // 最新已出时段（近似实时）
+  const isNow = t => {                       // 当前进行中的半小时
+    const now = new Date();
+    const hm = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes() < 30 ? '00' : '30');
+    return t.slice(11, 16) === hm;
+  };
+  // y 刻度（整 4 档）
   let svg = `<svg class="di-chart-svg" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">`;
-  yticks.forEach(yv => {
+  for (let f = 0; f <= 4; f++) {
+    const yv = Math.round(mx / 4 * f);
     const y = yAt(yv);
     svg += `<line class="di-grid" x1="${PL}" y1="${y}" x2="${W - PR}" y2="${y}"/>`;
     svg += `<text class="di-axis" x="${PL - 6}" y="${y + 3}" text-anchor="end">${yv.toLocaleString()}</text>`;
-  });
-  ticks.forEach(i => {
-    const d = days[i];
-    const x = PL + xAt(d) * (iw / Math.max(days.length - 1, 1));
-    const lb = d.slice(5).replace('-', '/');
-    svg += `<text class="di-axis" x="${x}" y="${H - 8}" text-anchor="middle">${lb}</text>`;
-  });
-  lines.forEach(({ l, polys }) => {
-    svg += polys.map(p => `<polyline fill="none" stroke="${l.color}" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" points="${p}" opacity="0.9"/>`).join('');
-  });
-  // 末端值标签
-  lines.forEach(({ l, lastVal }) => {
-    if (typeof lastVal !== 'number') return;
-    const x = W - PR - 2, y = yAt(lastVal);
-    svg += `<text class="di-last" fill="${l.color}" x="${x}" y="${Math.max(y - 4, PT + 8)}" text-anchor="end">${lastVal.toLocaleString()}</text>`;
+  }
+  // x 轴标签：每 ~4 个时段显示一个（首尾必显）
+  const showAt = new Set();
+  for (let i = 0; i < n; i++) if (i % Math.ceil(n / 9) === 0) showAt.add(i);
+  showAt.add(0); showAt.add(n - 1);
+  slots.forEach((s, i) => {
+    const cx = PL + slotW * i + slotW / 2;
+    const x0 = cx - bw / 2, x1 = cx + bw / 2;
+    const yTop = yAt(s.total);
+    const live = isNow(s.t);
+    const last = (i === lastIdx);
+    const fill = last ? '#ffd76a' : '#5da8ff';
+    svg += `<title>${s.t.slice(11, 16)} 进线 ${s.total} · 已接听 ${s.answered} · IVR ${s.ivr} · 排队放弃 ${s.queueAbandon}</title>`;
+    svg += `<rect x="${x0}" y="${yTop}" width="${bw}" height="${PT + ih - yTop}" rx="2" fill="${fill}" opacity="${last ? 0.95 : 0.82}"/>`;
+    if (live || last) svg += `<rect x="${x0 - 1}" y="${yTop - 1}" width="${bw + 2}" height="${PT + ih - yTop + 2}" rx="3" fill="none" stroke="#ffd76a" stroke-width="1.4" stroke-dasharray="${live ? '3,2' : '0'}"/>`;
+    if (showAt.has(i)) {
+      svg += `<text class="di-axis" x="${cx}" y="${H - 8}" text-anchor="middle">${s.t.slice(11, 16)}</text>`;
+    }
+    // 末端柱顶数值
+    if (i === lastIdx) {
+      svg += `<text class="di-last" fill="#ffd76a" x="${cx}" y="${Math.max(yTop - 5, PT + 8)}" text-anchor="middle">${s.total}</text>`;
+    }
   });
   svg += '</svg>';
   el.innerHTML = svg;
-  // checkbox 重绘绑定
-  document.querySelectorAll('.di-sw input').forEach(cb => cb.onchange = renderTrend);
+  // 小结
+  const lastS = slots[lastIdx];
+  const rate = sum.total ? +(((sum.answered + sum.ivr) / sum.total) * 100).toFixed(1) : null;
+  const avg = Math.round(sum.total / n);
+  $('hhNote').innerHTML =
+    `<span>今日累计 <b>${sum.total.toLocaleString()}</b></span>` +
+    `<span>已接听(人工) <b>${sum.answered.toLocaleString()}</b></span>` +
+    `<span>IVR 分流 <b>${sum.ivr.toLocaleString()}</b></span>` +
+    `<span>接通率 <b>${rate == null ? '--' : rate + '%'}</b></span>` +
+    `<span>时段均值 <b>${avg.toLocaleString()}</b></span>` +
+    `<span>最新 ${lastS.t.slice(11, 16)} <b>${lastS.total}</b></span>` +
+    (hhData.history && Object.keys(hhData.history).length ? `<span style="opacity:.6">历史存档 ${Object.keys(hhData.history).length} 天（每日 21:30 后固化）</span>` : '');
 }
 
 function renderCC() {
@@ -634,7 +624,7 @@ async function fillTopOptions() {
 }
 
 load();
-setInterval(() => { if ($('ccRef').checked) loadCC(); }, 90000);      // 实时数据 90s
+setInterval(() => { if ($('ccRef').checked) { loadCC(); loadHalf(); } }, 90000);      // 实时数据 90s（含 400 半小时）
 setInterval(() => { if ($('tkRef').checked) loadTicket(); }, 7200000); // 工单数据 2h
 </script>
 </body>
