@@ -369,13 +369,13 @@ function renderHalf() {
   el.innerHTML = svg;
   // 小结
   const lastS = slots[lastIdx];
-  const rate = sum.total ? +(((sum.answered + sum.ivr) / sum.total) * 100).toFixed(1) : null;
+  const rate = (sum.total - sum.ivr) > 0 ? +((sum.answered / (sum.total - sum.ivr)) * 100).toFixed(1) : null;  // 人工接通率
   const avg = Math.round(sum.total / n);
   $('hhNote').innerHTML =
     `<span>今日累计 <b>${sum.total.toLocaleString()}</b></span>` +
     `<span>已接听(人工) <b>${sum.answered.toLocaleString()}</b></span>` +
     `<span>IVR 分流 <b>${sum.ivr.toLocaleString()}</b></span>` +
-    `<span>接通率 <b>${rate == null ? '--' : rate + '%'}</b></span>` +
+    `<span>人工接通率 <b>${rate == null ? '--' : rate + '%'}</b></span>` +
     `<span>时段均值 <b>${avg.toLocaleString()}</b></span>` +
     `<span>最新 ${lastS.t.slice(11, 16)} <b>${lastS.total}</b></span>` +
     (hhData.history && Object.keys(hhData.history).length ? `<span style="opacity:.6">历史存档 ${Object.keys(hhData.history).length} 天（每日 21:30 后固化）</span>` : '');
