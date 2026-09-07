@@ -226,25 +226,14 @@ details[open] summary { color:var(--accent); }
   </div>
 </div>
 
-<!-- 日进线量趋势 -->
-<div class="sec"><div class="bar"></div><h2>📈 日进线量趋势</h2><span class="hint" id="diMeta">飞书日报-客服 · 加载中</span></div>
+<!-- 400 半小时进线量（合力呼入时间趋势） -->
+<div class="sec"><div class="bar"></div><h2>📞 400 半小时进线量</h2><span class="hint" id="hhMeta">合力呼入时间趋势 · 加载中</span></div>
 <div class="card" style="margin-bottom:16px;">
-  <h3><span class="dot" style="background:var(--green)"></span>分线趋势
-    <span class="extra" style="margin-left:auto;display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
-      <label class="switch di-sw"><input type="checkbox" data-di="400" checked><i style="background:#5da8ff"></i>400呼入24H</label>
-      <label class="switch di-sw"><input type="checkbox" data-di="400wk"><i style="background:#4ad0d0"></i>400工作时间</label>
-      <label class="switch di-sw"><input type="checkbox" data-di="onlineBot" checked><i style="background:#3ddc84"></i>在线机器人</label>
-      <label class="switch di-sw"><input type="checkbox" data-di="onlineHuman" checked><i style="background:#ffb454"></i>在线人工</label>
-      <select id="diRange" onchange="renderTrend()">
-        <option value="30">近 30 天</option>
-        <option value="90" selected>近 90 天</option>
-        <option value="180">近 180 天</option>
-        <option value="0">全部 246 天</option>
-      </select>
-    </span>
+  <h3><span class="dot" style="background:#5da8ff"></span>当日每半小时呼入 · 400 三线（88236628 / 88236629 / 4001581707）
+    <span class="extra" style="margin-left:auto">柱=进线量 · 实时时段描边高亮</span>
   </h3>
-  <div id="diChart" style="width:100%;height:250px;"></div>
-  <div class="di-note" id="diNote"></div>
+  <div id="hhChart" style="width:100%;height:240px;"></div>
+  <div class="di-note" id="hhNote"></div>
 </div>
 
 <!-- ===== 板块 B：工单监控（钻取式） ===== -->
