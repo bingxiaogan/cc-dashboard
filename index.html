@@ -272,6 +272,26 @@ details[open] summary { color:var(--accent); }
   <div class="di-note" id="trNoteO"></div>
 </div>
 
+<!-- 工单量级日记录（升级/库存/处理 · 日报 8-9月） -->
+<div class="sec"><div class="bar"></div>
+  <h2>🗂 工单量级<span class="seg" id="ttSeg">
+    <button class="seg-btn on" data-tab="cs" onclick="switchTicketTrend('cs')">投诉</button>
+    <button class="seg-btn" data-tab="gd" onclick="switchTicketTrend('gd')">工单(纠纷+申诉)</button>
+    <button class="seg-btn" data-tab="yq" onclick="switchTicketTrend('yq')">舆情</button>
+  </span></h2>
+  <span class="hint" id="ttMeta">加载中</span>
+</div>
+<div class="card" style="margin-bottom:16px;">
+  <h3>
+    <span class="dot" style="background:#f59e0b"></span>升级量
+    <span class="dot" style="background:#f87171;margin-left:14px"></span>库存量
+    <span class="dot" style="background:#3ddc84;margin-left:14px"></span>处理量
+    <span class="extra" style="margin-left:auto" id="ttSub">升级=当日创建 · 库存=遗留 · 处理=当日结案</span>
+  </h3>
+  <div id="ttChart" style="width:100%;height:230px;"></div>
+  <div class="di-note" id="ttNote"></div>
+</div>
+
 <!-- ===== 板块 B：工单监控（钻取式） ===== -->
 <div class="sec"><div class="bar"></div><h2>工单监控</h2><span class="hint">升级工单 · 点击数字逐层下钻</span></div>
 
@@ -335,7 +355,7 @@ async function loadTicket() {
 }
 
 async function load() {
-  await Promise.all([loadCC(), loadTicket(), loadHalf(), loadTrend()]);
+  await Promise.all([loadCC(), loadTicket(), loadHalf(), loadTrend(), loadTicketTrend()]);
 }
 
 /* ===== 时段量级（400 电话 / 在线会话 半小时） ===== */
@@ -545,6 +565,105 @@ function renderTrend() {
     ` · 在线覆盖 ${Object.keys(onl).length} 天（8-9月报表 ${oc.feishu || 0} / 实时 ${oc.half || 0} / 快照 ${oc.cap || 0}）` +
     (trData.meta && trData.meta.updated ? ` · 封存 ${trData.meta.updated.slice(5, 16)}` : '');
 }
+
+/* ===== 工单量级（升级 / 库存 / 处理 · 投诉 / 工单(纠纷+申诉) / 舆情） ===== */
+let ttData = null;
+let ttTab = 'cs';
+const TT_NAME = { cs: '投诉', gd: '工单(纠纷+申诉)', yq: '舆情' };
+const TT_COL = ['#f59e0b', '#f87171', '#3ddc84']; // 升级 / 库存 / 处理
+async function loadTicketTrend() {
+  try {
+    ttData = await fetch('ticket_trend.json').then(r => r.json());
+    renderTicketTrend();
+  } catch (e) { $('ttMeta').textContent = '工单量级数据暂不可用'; }
+}
+function switchTicketTrend(tab) {
+  ttTab = tab;
+  document.querySelectorAll('#ttSeg .seg-btn').forEach(b => b.classList.toggle('on', b.dataset.tab === tab));
+  renderTicketTrend();
+}
+// 三序列分组柱：v1=升级 v2=库存 v3=处理（可 null）
+function drawTicketBars(el, items) {
+  const W = el.clientWidth || 1100, H = 230, PL = 46, PR = 14, PT = 14, PB = 24;
+  const iw = W - PL - PR, ih = H - PT - PB;
+  const vals = [];
+  items.forEach(it => { [it.v1, it.v2, it.v3].forEach(v => { if (v != null) vals.push(v); }); });
+  const mx = Math.max(...vals, 1) * 1.08;
+  const n = items.length, slotW = iw / n;
+  const grp = Math.min(slotW * 0.72, 40);
+  const bw = Math.max(grp / 3 - 2, 2);
+  const yAt = v => PT + ih - (v / mx) * ih;
+  let svg = `<svg class="di-chart-svg" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">`;
+  for (let f = 0; f <= 4; f++) {
+    const yv = Math.round(mx / 4 * f);
+    const y = yAt(yv);
+    svg += `<line class="di-grid" x1="${PL}" y1="${y}" x2="${W - PR}" y2="${y}"/>`;
+    svg += `<text class="di-axis" x="${PL - 6}" y="${y + 3}" text-anchor="end">${yv.toLocaleString()}</text>`;
+  }
+  const showAt = new Set();
+  for (let i = 0; i < n; i++) if (i % Math.ceil(n / (Math.min(n, 12)))) showAt.add(i);
+  showAt.add(0); showAt.add(n - 1);
+  const NAMES = ['升级', '库存', '处理'];
+  items.forEach((it, i) => {
+    const cx = PL + slotW * i + slotW / 2;
+    const g0 = cx - grp / 2;
+    const isLast = i === n - 1;
+    [['v1', 0], ['v2', 1], ['v3', 2]].forEach(([k, ki]) => {
+      const v = it[k];
+      if (v == null) return;
+      const x0 = g0 + ki * (grp / 3) + (grp / 3 - bw) / 2, yT = yAt(v);
+      svg += `<title>${it.label} · ${NAMES[ki]} ${v.toLocaleString()}</title>`;
+      svg += `<rect x="${x0}" y="${yT}" width="${bw}" height="${PT + ih - yT}" rx="1.5" fill="${TT_COL[ki]}" opacity="${isLast ? 1 : .85}"/>`;
+    });
+    if (showAt.has(i) || slotW > 26) svg += `<text class="di-axis" x="${cx}" y="${H - 8}" text-anchor="middle" font-size="10">${it.label}</text>`;
+    if (isLast && items.length > 1) {
+      const lastV = it.v2 ?? it.v1 ?? it.v3;
+      if (lastV != null) svg += `<text class="di-last" fill="#ffd76a" x="${cx}" y="${Math.max(yAt(lastV) - 4, PT + 8)}" text-anchor="middle" font-size="10.5">${lastV.toLocaleString()}</text>`;
+    }
+  });
+  svg += '</svg>';
+  el.innerHTML = svg;
+}
+function renderTicketTrend() {
+  const el = $('ttChart');
+  if (!ttData) { el.innerHTML = '<div class="empty">暂无工单量级数据</div>'; return; }
+  const t = (ttData.types || {})[ttTab];
+  if (!t) { el.innerHTML = '<div class="empty">类型数据缺失</div>'; return; }
+  const days = ttData.days || [];
+  const items = days.map(d => ({
+    label: d.slice(5).replace('-', '/'),
+    v1: (t.new || {})[d] != null ? t.new[d] : null,
+    v2: (t.stock || {})[d] != null ? t.stock[d] : null,
+    v3: (t.done || {})[d] != null ? t.done[d] : null
+  }));
+  drawTicketBars(el, items);
+  const last = days[days.length - 1], prev = days[days.length - 2];
+  const chip = (lab, v, pv) => {
+    if (v == null) return '';
+    let diff = '';
+    if (pv != null) {
+      const d = v - pv;
+      diff = `<span>较昨日 <b style="color:${d >= 0 ? 'var(--red)' : 'var(--green)'}">${d >= 0 ? '+' : ''}${d.toLocaleString()}</b></span>`;
+    }
+    return `<span><b>${lab}</b> ${v.toLocaleString()}</span>` + diff;
+  };
+  const cv = x => (t[x] || {})[last];
+  const pv = x => (t[x] || {})[prev];
+  $('ttNote').innerHTML =
+    (ttTab === 'cs' ? chip('升级量', cv('new'), pv('new')) : '') +
+    (ttTab === 'gd' ? chip('升级量', cv('new'), pv('new')) : '') +
+    (ttTab === 'yq' ? chip('升级量', cv('new'), pv('new')) : '') +
+    chip('库存量', cv('stock'), pv('stock')) +
+    chip('处理量', cv('done'), pv('done')) +
+    `<span style="opacity:.6">最新 ${last}</span>`;
+  const cov = (ttData.meta && ttData.meta.coverage) || {};
+  $('ttMeta').textContent =
+    `数据截至 ${last} · ${TT_NAME[ttTab]} 覆盖 ${(cov[ttTab] || 0)} 天` +
+    ` · 源 ${(ttData.meta && ttData.meta.src) || ''}` +
+    (ttData.meta && ttData.meta.updated ? ` · 构建 ${ttData.meta.updated.slice(5, 16)}` : '');
+  $('ttSub').textContent = ttTab === 'yq' ? '升级=当日创建 · 处理=当日结案（舆情日报无库存行）' : '升级=当日创建 · 库存=遗留(前日+升级-处理) · 处理=当日结案';
+}
+
 function renderCC() {
   if (!ccData) return;
   $('mCcTime').textContent = ccData.collectedAtCn || '--';
