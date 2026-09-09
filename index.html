@@ -257,12 +257,19 @@ details[open] summary { color:var(--accent); }
 </div>
 <div class="card" style="margin-bottom:16px;">
   <h3>
-    <span class="dot" style="background:#5da8ff"></span>📞 400 呼入
-    <span class="dot" style="background:#3ddc84;margin-left:14px"></span>💬 在线接待
-    <span class="extra" style="margin-left:auto" id="trSub">双序列柱状 · 数据每日 21:50 自动封存</span>
+    <span class="dot" style="background:#5da8ff"></span>📞 400 呼入（人工量）
+    <span class="extra" style="margin-left:auto" id="trSubC">每日 21:50 自动封存</span>
   </h3>
-  <div id="trChart" style="width:100%;height:260px;"></div>
-  <div class="di-note" id="trNote"></div>
+  <div id="trChartC" style="width:100%;height:210px;"></div>
+  <div class="di-note" id="trNoteC"></div>
+</div>
+<div class="card" style="margin-bottom:16px;">
+  <h3>
+    <span class="dot" style="background:#3ddc84"></span>💬 在线接待
+    <span class="extra" style="margin-left:auto" id="trSubO">每日 21:50 自动封存</span>
+  </h3>
+  <div id="trChartO" style="width:100%;height:210px;"></div>
+  <div class="di-note" id="trNoteO"></div>
 </div>
 
 <!-- ===== 板块 B：工单监控（钻取式） ===== -->
@@ -427,7 +434,7 @@ function renderHalf() {
   }
 }
 
-/* ===== 进线量趋势（日 / 周 / 月 · 400呼入 + 在线接待） ===== */
+/* ===== 进线量趋势（日 / 周 / 月 · 400 与 在线 分开展示） ===== */
 let trData = null;
 let trTab = 'day';
 async function loadTrend() {
@@ -441,15 +448,15 @@ function switchTrend(tab) {
   document.querySelectorAll('#trSeg .seg-btn').forEach(b => b.classList.toggle('on', b.dataset.tab === tab));
   renderTrend();
 }
-// 双序列分组柱状图：items = [{label, v1, v2, tip}], v1/v2 可 null
-function drawTrendBars(el, items, colors) {
-  const W = el.clientWidth || 1100, H = 260, PL = 46, PR = 14, PT = 16, PB = 26;
+// 单序列柱状图：items = [{label, v, tip}], v 可 null
+function drawTrendBars(el, items, color) {
+  const W = el.clientWidth || 1100, H = 210, PL = 46, PR = 14, PT = 14, PB = 24;
   const iw = W - PL - PR, ih = H - PT - PB;
   const vals = [];
-  items.forEach(it => { if (it.v1 != null) vals.push(it.v1); if (it.v2 != null) vals.push(it.v2); });
+  items.forEach(it => { if (it.v != null) vals.push(it.v); });
   const mx = Math.max(...vals, 1) * 1.1;
   const n = items.length, slotW = iw / n;
-  const bw = Math.max(Math.min(slotW * 0.72, 26), 2);
+  const bw = Math.max(Math.min(slotW * 0.62, 30), 2);
   const yAt = v => PT + ih - (v / mx) * ih;
   let svg = `<svg class="di-chart-svg" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">`;
   for (let f = 0; f <= 4; f++) {
@@ -463,22 +470,15 @@ function drawTrendBars(el, items, colors) {
   showAt.add(0); showAt.add(n - 1);
   items.forEach((it, i) => {
     const cx = PL + slotW * i + slotW / 2;
-    const half = bw / 2;
     const isLast = i === n - 1;
-    if (it.v1 != null) {
-      const x0 = cx - half - (it.v2 != null ? 0.8 : 0), yT = yAt(it.v1);
-      svg += `<title>${it.label} · 400呼入 ${it.v1.toLocaleString()}${it.tip1 ? ' · ' + it.tip1 : ''}</title>`;
-      svg += `<rect x="${x0}" y="${yT}" width="${half}" height="${PT + ih - yT}" rx="1.5" fill="#5da8ff" opacity="${isLast ? 1 : .82}"/>`;
-    }
-    if (it.v2 != null) {
-      const x0 = cx + (it.v1 != null ? 0.8 : 0), yT = yAt(it.v2);
-      svg += `<title>${it.label} · 在线接待 ${it.v2.toLocaleString()}${it.tip2 ? ' · ' + it.tip2 : ''}</title>`;
-      svg += `<rect x="${x0}" y="${yT}" width="${half}" height="${PT + ih - yT}" rx="1.5" fill="#3ddc84" opacity="${isLast ? 1 : .82}"/>`;
+    if (it.v != null) {
+      const yT = yAt(it.v);
+      svg += `<title>${it.label} · ${it.v.toLocaleString()}${it.tip ? ' · ' + it.tip : ''}</title>`;
+      svg += `<rect x="${cx - bw / 2}" y="${yT}" width="${bw}" height="${PT + ih - yT}" rx="1.5" fill="${color}" opacity="${isLast ? 1 : .82}"/>`;
     }
     if (showAt.has(i) || slotW > 26) svg += `<text class="di-axis" x="${cx}" y="${H - 8}" text-anchor="middle" font-size="10">${it.label}</text>`;
-    if (isLast && items.length > 1) {
-      const yT2 = it.v1 != null ? yAt(it.v1) : (it.v2 != null ? yAt(it.v2) : PT);
-      svg += `<text class="di-last" fill="#ffd76a" x="${cx}" y="${Math.max(yT2 - 4, PT + 8)}" text-anchor="middle" font-size="10.5">${(it.v1 ?? it.v2).toLocaleString()}</text>`;
+    if (isLast && items.length > 1 && it.v != null) {
+      svg += `<text class="di-last" fill="#ffd76a" x="${cx}" y="${Math.max(yAt(it.v) - 4, PT + 8)}" text-anchor="middle" font-size="10.5">${it.v.toLocaleString()}</text>`;
     }
   });
   svg += '</svg>';
@@ -488,53 +488,56 @@ function trendChip(label, val, extra) {
   return `<span><b>${label}</b> ${val == null ? '--' : val.toLocaleString()}${extra ? '<em style="opacity:.75;font-style:normal"> ' + extra + '</em>' : ''}</span>`;
 }
 function renderTrend() {
-  const el = $('trChart');
-  if (!trData) { el.innerHTML = '<div class="empty">暂无趋势数据</div>'; return; }
+  const elC = $('trChartC'), elO = $('trChartO');
+  if (!trData) { elC.innerHTML = '<div class="empty">暂无趋势数据</div>'; elO.innerHTML = ''; return; }
   const days = trData.days || [], c400 = trData.call400 || {}, onl = trData.online || {};
   const weeks = trData.weeks || [], months = trData.months || [];
   const src = (trData.meta && trData.meta.src_count) || {};
-  let items = [], note = '';
-  const twoSeries = d => { const a = c400[d], b = onl[d]; return { v1: a != null ? a : null, v2: b != null ? b : null }; };
+  let itemsC = [], itemsO = [], noteC = '', noteO = '';
+  const build = (v1, v2) => ({ v: v1 != null ? v1 : null, tip: v2 != null ? v2 : '' });
   if (trTab === 'day') {
     const win = days.slice(-31);
-    items = win.map(d => Object.assign({ label: d.slice(5).replace('-', '/'), tip1: '', tip2: '' }, twoSeries(d)));
+    itemsC = win.map(d => build(c400[d]));
+    itemsO = win.map(d => build(onl[d]));
     const last = days[days.length - 1], prev = days[days.length - 2];
     const l1 = c400[last], l2 = onl[last];
-    note =
-      trendChip('今日 400', l1) +
+    noteC = trendChip('今日', l1) +
       (l1 != null && c400[prev] ? `<span>较昨日 <b style="color:${l1 >= c400[prev] ? 'var(--red)' : 'var(--green)'}">${l1 - c400[prev] >= 0 ? '+' : ''}${(l1 - c400[prev]).toLocaleString()}</b></span>` : '') +
-      trendChip('今日在线', l2) +
+      `<span style="opacity:.6">近 31 天 · 今日为实时累计</span>`;
+    noteO = trendChip('今日', l2) +
       (l2 != null && onl[prev] ? `<span>较昨日 <b style="color:${l2 >= onl[prev] ? 'var(--red)' : 'var(--green)'}">${l2 - onl[prev] >= 0 ? '+' : ''}${(l2 - onl[prev]).toLocaleString()}</b></span>` : '') +
-      `<span style="opacity:.6">近 31 天 · 今日为实时累计，21:50 后固化</span>`;
-    $('trSub').textContent = '日维度 · 近 31 天（历史 400 起 1/1，在线起 8/24）';
+      `<span style="opacity:.6">近 31 天 · 今日为实时累计</span>`;
+    $('trSubC').textContent = '日维度 · 近 31 天（历史起 1/1）';
+    $('trSubO').textContent = '日维度 · 近 31 天（历史起 8/24）';
   } else if (trTab === 'week') {
     const win = weeks.slice(-14);
-    items = win.map(w => ({ label: w.label, v1: w.call400 != null ? w.call400 : null, v2: w.online != null ? w.online : null,
-      tip1: w.call400_wow != null ? '环比 ' + (w.call400_wow >= 0 ? '+' : '') + w.call400_wow + '%' : '',
-      tip2: w.online_wow != null ? '环比 ' + (w.online_wow >= 0 ? '+' : '') + w.online_wow + '%' : '' }));
+    itemsC = win.map(w => build(w.call400, w.call400_wow != null ? '环比 ' + (w.call400_wow >= 0 ? '+' : '') + w.call400_wow + '%' : ''));
+    itemsO = win.map(w => build(w.online, w.online_wow != null ? '环比 ' + (w.online_wow >= 0 ? '+' : '') + w.online_wow + '%' : ''));
     const wl = weeks[weeks.length - 1], wl2 = weeks[weeks.length - 2];
-    note =
-      trendChip('本周 400', wl.call400, wl.call400_wow != null ? `周环比 ${wl.call400_wow >= 0 ? '+' : ''}${wl.call400_wow}%` : null) +
-      trendChip('本周在线', wl.online, wl.online_wow != null ? `周环比 ${wl.online_wow >= 0 ? '+' : ''}${wl.online_wow}%` : null) +
-      trendChip('本周已过', wl.days, '天') +
-      (wl2 && wl2.call400 != null ? trendChip('上周 400', wl2.call400) : '') +
-      `<span style="opacity:.6">周 = 周一~周日 · 近 14 周</span>`;
-    $('trSub').textContent = '周维度 · 周一~周日自然周（与周负荷口径一致）';
+    noteC = trendChip('本周', wl.call400, wl.call400_wow != null ? `周环比 ${wl.call400_wow >= 0 ? '+' : ''}${wl.call400_wow}%` : null) +
+      (wl2 && wl2.call400 != null ? trendChip('上周', wl2.call400) : '') +
+      `<span style="opacity:.6">周一~周日自然周 · 近 14 周</span>`;
+    noteO = trendChip('本周', wl.online, wl.online_wow != null ? `周环比 ${wl.online_wow >= 0 ? '+' : ''}${wl.online_wow}%` : null) +
+      (wl2 && wl2.online != null ? trendChip('上周', wl2.online) : '') +
+      `<span style="opacity:.6">周一~周日自然周 · 近 14 周</span>`;
+    $('trSubC').textContent = '周维度 · 近 14 周';
+    $('trSubO').textContent = '周维度 · 近 14 周';
   } else {
     const win = months.slice(-9);
-    items = win.map(m => ({ label: m.m, v1: m.call400 != null ? m.call400 : null, v2: m.online != null ? m.online : null,
-      tip1: m.call400_mom != null ? '环比 ' + (m.call400_mom >= 0 ? '+' : '') + m.call400_mom + '%' : '',
-      tip2: m.online_mom != null ? '环比 ' + (m.online_mom >= 0 ? '+' : '') + m.online_mom + '%' : '' }));
+    itemsC = win.map(m => build(m.call400, m.call400_mom != null ? '环比 ' + (m.call400_mom >= 0 ? '+' : '') + m.call400_mom + '%' : ''));
+    itemsO = win.map(m => build(m.online, m.online_mom != null ? '环比 ' + (m.online_mom >= 0 ? '+' : '') + m.online_mom + '%' : ''));
     const ml = months[months.length - 1];
-    note =
-      trendChip('本月 400', ml.call400, ml.call400_mom != null ? `月环比 ${ml.call400_mom >= 0 ? '+' : ''}${ml.call400_mom}%` : null) +
-      trendChip('本月在线', ml.online, ml.online_mom != null ? `月环比 ${ml.online_mom >= 0 ? '+' : ''}${ml.online_mom}%` : null) +
-      trendChip('本月天数', ml.days, '天') +
+    noteC = trendChip('本月', ml.call400, ml.call400_mom != null ? `月环比 ${ml.call400_mom >= 0 ? '+' : ''}${ml.call400_mom}%` : null) +
       (ml.days < 31 ? `<span style="opacity:.6">当月进行中</span>` : '');
-    $('trSub').textContent = '月维度 · 自然月';
+    noteO = trendChip('本月', ml.online, ml.online_mom != null ? `月环比 ${ml.online_mom >= 0 ? '+' : ''}${ml.online_mom}%` : null) +
+      (ml.days < 31 ? `<span style="opacity:.6">当月进行中</span>` : '');
+    $('trSubC').textContent = '月维度 · 自然月';
+    $('trSubO').textContent = '月维度 · 自然月';
   }
-  drawTrendBars(el, items);
-  $('trNote').innerHTML = note;
+  drawTrendBars(elC, itemsC, '#5da8ff');
+  drawTrendBars(elO, itemsO, '#3ddc84');
+  $('trNoteC').innerHTML = noteC;
+  $('trNoteO').innerHTML = noteO;
   // 数据源提示
   const cc = src.call400 || {}, oc = src.online || {};
   $('trMeta').textContent =
