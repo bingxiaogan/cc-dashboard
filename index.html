@@ -357,8 +357,12 @@ let ccData = null, tkData = null;
 const $ = id => document.getElementById(id);
 
 async function loadCC() {
-  try { ccData = await fetch('http://127.0.0.1:8601/stats.json').then(r => r.json()); }
-  catch (e) { $('mCcTime').textContent = '获取失败'; }
+  // 客服实时：公网/本地 http 用同目录 stats.json；file:// 直接打开时 fallback 本机 8601
+  try { ccData = await fetch('stats.json').then(r => r.json()); }
+  catch (e) {
+    try { ccData = await fetch('http://127.0.0.1:8601/stats.json').then(r => r.json()); }
+    catch (e2) { $('mCcTime').textContent = '获取失败'; }
+  }
   renderCC();
 }
 
