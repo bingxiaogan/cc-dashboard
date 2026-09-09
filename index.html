@@ -526,12 +526,12 @@ function renderTrend() {
   const dkw = dk + '_wow', dkm = dk + '_mom';
   $('trDot').style.background = cfg.color;
   $('trTitle').textContent = cfg.name;
-  const build = (v1, v2) => ({ v: v1 != null ? v1 : null, tip: v2 != null ? v2 : '' });
+  const build = (d, v, tip) => ({ label: lab(d), v: v != null ? v : null, tip: tip != null ? tip : '' });
   let items = [], note = '';
   const lab = d => d.slice(5).replace('-', '/');
   if (trTab === 'day') {
     const win = days.slice(-31);
-    items = win.map(d => build(series[d], ''));
+    items = win.map(d => build(d, series[d], ''));
     const last = days[days.length - 1], prev = days[days.length - 2];
     const l1 = series[last];
     note = trendChip('今日', l1) +
