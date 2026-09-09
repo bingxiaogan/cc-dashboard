@@ -153,6 +153,21 @@ details[open] summary { color:var(--accent); }
 .di-grid { stroke:#1c273c; stroke-width:1; }
 .di-last { font-size:10.5px; font-weight:700; }
 .di-tip { fill:var(--dim); font-size:10.5px; }
+
+/* ===== 分级预警状态卡 ===== */
+.al-wrap { display:flex; gap:10px; flex-wrap:wrap; }
+.al-pill { flex:1 1 170px; max-width:230px; border-radius:10px; padding:10px 12px; border:1px solid var(--border); background:var(--card2); }
+.al-pill .t { font-size:11px; color:var(--dim); display:flex; justify-content:space-between; align-items:center; }
+.al-pill .lv { font-size:17px; font-weight:700; margin:4px 0 2px; }
+.al-pill .v { font-size:11px; color:var(--dim); line-height:1.5; }
+.al-pill.lv0 { border-color:rgba(61,220,132,.45); } .al-pill.lv0 .lv { color:#3ddc84; }
+.al-pill.lv1 { border-color:rgba(93,168,255,.45); } .al-pill.lv1 .lv { color:#5da8ff; }
+.al-pill.lv2 { border-color:rgba(251,191,36,.6); background:rgba(251,191,36,.08); } .al-pill.lv2 .lv { color:#fbbf24; }
+.al-pill.lv3 { border-color:rgba(245,158,11,.65); background:rgba(245,158,11,.10); } .al-pill.lv3 .lv { color:#f59e0b; }
+.al-pill.lv4 { border-color:rgba(255,107,107,.7); background:rgba(255,107,107,.10); } .al-pill.lv4 .lv { color:#ff6b6b; }
+.al-pill.lv-1 { opacity:.65; } .al-pill .dim { color:var(--dim); font-weight:400; }
+.al-legend { margin-top:9px; font-size:11px; color:var(--dim); opacity:.85; }
+.al-dot { display:inline-block; width:8px; height:8px; border-radius:50%; margin-right:4px; vertical-align:1px; }
 </style>
 </head>
 <body>
@@ -359,7 +374,7 @@ async function loadTicket() {
 }
 
 async function load() {
-  await Promise.all([loadCC(), loadTicket(), loadHalf(), loadTrend(), loadTicketTrend()]);
+  await Promise.all([loadCC(), loadTicket(), loadHalf(), loadTrend(), loadTicketTrend(), loadAlerts()]);
 }
 
 /* ===== 时段量级（400 电话 / 在线会话 半小时） ===== */
@@ -570,6 +585,41 @@ function renderTrend() {
     `数据截至 ${trData.days && trData.days[trData.days.length - 1]} · 400 覆盖 ${Object.keys(c400).length} 天（8-9月报表 ${cc.feishu || 0} / 历史报表 ${cc.xlsx || 0} / 实时 ${cc.half || 0} / 快照 ${cc.cap || 0}）` +
     ` · 在线覆盖 ${Object.keys(onl).length} 天（8-9月报表 ${oc.feishu || 0} / 实时 ${oc.half || 0} / 快照 ${oc.cap || 0}）` +
     (trData.meta && trData.meta.updated ? ` · 封存 ${trData.meta.updated.slice(5, 16)}` : '');
+}
+
+/* ===== 分级预警状态（alert_state.json · 90s 随实时刷新） ===== */
+const AL_ORDER = ['c400d', 'c400w', 'onld', 'onlw', 'ks'];
+const AL_NAME = { c400d: '📞 400呼入·日', c400w: '📞 400呼入·周', onld: '💬 在线接待·日', onlw: '💬 在线接待·周', ks: '🗂 客诉工单·日' };
+const AL_LVNAME = { '-1': '无数据', '0': '低负荷', '1': '正常', '2': '一级', '3': '二级', '4': '三级' };
+async function loadAlerts() {
+  try {
+    const d = await fetch('alert_state.json').then(r => r.json());
+    renderAlerts(d);
+  } catch (e) {
+    const el = $('alRow'); if (el) el.innerHTML = '<div class="empty">预警模块未运行（alert_eval.js）</div>';
+    const m = $('alMeta'); if (m) m.textContent = '—';
+  }
+}
+function renderAlerts(d) {
+  const row = $('alRow'); if (!row) return;
+  const objs = d.objects || {};
+  let html = '';
+  AL_ORDER.forEach(k => {
+    const o = objs[k]; if (!o) return;
+    const lv = o.level != null ? o.level : -1;
+    const v = o.vals || {};
+    const bits = [];
+    if (v.load != null) bits.push('负荷 ' + v.load + '%');
+    if (v.rate != null) bits.push('接通率 ' + v.rate + '%');
+    if (v.un != null) bits.push('未分配 ' + v.un + ' 单');
+    if (v.stock != null) bits.push('库存 ' + v.stock + ' 单');
+    const mark = lv >= 2 ? '⚠️' : (lv === 1 ? '✓' : '·');
+    html += `<div class="al-pill lv${lv}"><div class="t">${AL_NAME[k] || k}<span class="dim">${mark}</span></div>` +
+      `<div class="lv">${AL_LVNAME[lv]}</div><div class="v">${bits.join(' · ') || '—'}</div></div>`;
+  });
+  row.innerHTML = html || '<div class="empty">暂无预警对象</div>';
+  const m = $('alMeta');
+  if (m) m.textContent = d.updated ? '更新 ' + String(d.updated).split(' ')[1] : '—';
 }
 
 /* ===== 工单量级（切片器：类型 × 升级/库存/处理 · 单图） ===== */
@@ -868,7 +918,7 @@ async function fillTopOptions() {
 }
 
 load();
-setInterval(() => { if ($('ccRef').checked) { loadCC(); loadHalf(); } }, 90000);      // 实时数据 90s（含 400 半小时）
+setInterval(() => { if ($('ccRef').checked) { loadCC(); loadHalf(); loadAlerts(); } }, 90000);      // 实时数据 90s（含 400 半小时）
 setInterval(() => { if ($('tkRef').checked) loadTicket(); }, 7200000); // 工单数据 2h
 </script>
 </body>
