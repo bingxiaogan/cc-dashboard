@@ -246,6 +246,25 @@ details[open] summary { color:var(--accent); }
   <div class="di-note" id="hhNote"></div>
 </div>
 
+<!-- 进线量趋势板块（日/周/月 维度 · 400呼入 + 在线接待） -->
+<div class="sec"><div class="bar"></div>
+  <h2>📈 进线量趋势<span class="seg" id="trSeg">
+    <button class="seg-btn on" data-tab="day" onclick="switchTrend('day')">日</button>
+    <button class="seg-btn" data-tab="week" onclick="switchTrend('week')">周</button>
+    <button class="seg-btn" data-tab="month" onclick="switchTrend('month')">月</button>
+  </span></h2>
+  <span class="hint" id="trMeta">加载中</span>
+</div>
+<div class="card" style="margin-bottom:16px;">
+  <h3>
+    <span class="dot" style="background:#5da8ff"></span>📞 400 呼入
+    <span class="dot" style="background:#3ddc84;margin-left:14px"></span>💬 在线接待
+    <span class="extra" style="margin-left:auto" id="trSub">双序列柱状 · 数据每日 21:50 自动封存</span>
+  </h3>
+  <div id="trChart" style="width:100%;height:260px;"></div>
+  <div class="di-note" id="trNote"></div>
+</div>
+
 <!-- ===== 板块 B：工单监控（钻取式） ===== -->
 <div class="sec"><div class="bar"></div><h2>工单监控</h2><span class="hint">升级工单 · 点击数字逐层下钻</span></div>
 
@@ -309,7 +328,7 @@ async function loadTicket() {
 }
 
 async function load() {
-  await Promise.all([loadCC(), loadTicket(), loadHalf()]);
+  await Promise.all([loadCC(), loadTicket(), loadHalf(), loadTrend()]);
 }
 
 /* ===== 时段量级（400 电话 / 在线会话 半小时） ===== */
@@ -408,6 +427,121 @@ function renderHalf() {
   }
 }
 
+/* ===== 进线量趋势（日 / 周 / 月 · 400呼入 + 在线接待） ===== */
+let trData = null;
+let trTab = 'day';
+async function loadTrend() {
+  try {
+    trData = await fetch('daily_trend.json').then(r => r.json());
+    renderTrend();
+  } catch (e) { $('trMeta').textContent = '趋势数据暂不可用（build_daily_trend.py 未生成）'; }
+}
+function switchTrend(tab) {
+  trTab = tab;
+  document.querySelectorAll('#trSeg .seg-btn').forEach(b => b.classList.toggle('on', b.dataset.tab === tab));
+  renderTrend();
+}
+// 双序列分组柱状图：items = [{label, v1, v2, tip}], v1/v2 可 null
+function drawTrendBars(el, items, colors) {
+  const W = el.clientWidth || 1100, H = 260, PL = 46, PR = 14, PT = 16, PB = 26;
+  const iw = W - PL - PR, ih = H - PT - PB;
+  const vals = [];
+  items.forEach(it => { if (it.v1 != null) vals.push(it.v1); if (it.v2 != null) vals.push(it.v2); });
+  const mx = Math.max(...vals, 1) * 1.1;
+  const n = items.length, slotW = iw / n;
+  const bw = Math.max(Math.min(slotW * 0.72, 26), 2);
+  const yAt = v => PT + ih - (v / mx) * ih;
+  let svg = `<svg class="di-chart-svg" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">`;
+  for (let f = 0; f <= 4; f++) {
+    const yv = Math.round(mx / 4 * f);
+    const y = yAt(yv);
+    svg += `<line class="di-grid" x1="${PL}" y1="${y}" x2="${W - PR}" y2="${y}"/>`;
+    svg += `<text class="di-axis" x="${PL - 6}" y="${y + 3}" text-anchor="end">${yv.toLocaleString()}</text>`;
+  }
+  const showAt = new Set();
+  for (let i = 0; i < n; i++) if (i % Math.ceil(n / (Math.min(n, 12)))) showAt.add(i);
+  showAt.add(0); showAt.add(n - 1);
+  items.forEach((it, i) => {
+    const cx = PL + slotW * i + slotW / 2;
+    const half = bw / 2;
+    const isLast = i === n - 1;
+    if (it.v1 != null) {
+      const x0 = cx - half - (it.v2 != null ? 0.8 : 0), yT = yAt(it.v1);
+      svg += `<title>${it.label} · 400呼入 ${it.v1.toLocaleString()}${it.tip1 ? ' · ' + it.tip1 : ''}</title>`;
+      svg += `<rect x="${x0}" y="${yT}" width="${half}" height="${PT + ih - yT}" rx="1.5" fill="#5da8ff" opacity="${isLast ? 1 : .82}"/>`;
+    }
+    if (it.v2 != null) {
+      const x0 = cx + (it.v1 != null ? 0.8 : 0), yT = yAt(it.v2);
+      svg += `<title>${it.label} · 在线接待 ${it.v2.toLocaleString()}${it.tip2 ? ' · ' + it.tip2 : ''}</title>`;
+      svg += `<rect x="${x0}" y="${yT}" width="${half}" height="${PT + ih - yT}" rx="1.5" fill="#3ddc84" opacity="${isLast ? 1 : .82}"/>`;
+    }
+    if (showAt.has(i) || slotW > 26) svg += `<text class="di-axis" x="${cx}" y="${H - 8}" text-anchor="middle" font-size="10">${it.label}</text>`;
+    if (isLast && items.length > 1) {
+      const yT2 = it.v1 != null ? yAt(it.v1) : (it.v2 != null ? yAt(it.v2) : PT);
+      svg += `<text class="di-last" fill="#ffd76a" x="${cx}" y="${Math.max(yT2 - 4, PT + 8)}" text-anchor="middle" font-size="10.5">${(it.v1 ?? it.v2).toLocaleString()}</text>`;
+    }
+  });
+  svg += '</svg>';
+  el.innerHTML = svg;
+}
+function trendChip(label, val, extra) {
+  return `<span><b>${label}</b> ${val == null ? '--' : val.toLocaleString()}${extra ? '<em style="opacity:.75;font-style:normal"> ' + extra + '</em>' : ''}</span>`;
+}
+function renderTrend() {
+  const el = $('trChart');
+  if (!trData) { el.innerHTML = '<div class="empty">暂无趋势数据</div>'; return; }
+  const days = trData.days || [], c400 = trData.call400 || {}, onl = trData.online || {};
+  const weeks = trData.weeks || [], months = trData.months || [];
+  const src = (trData.meta && trData.meta.src_count) || {};
+  let items = [], note = '';
+  const twoSeries = d => { const a = c400[d], b = onl[d]; return { v1: a != null ? a : null, v2: b != null ? b : null }; };
+  if (trTab === 'day') {
+    const win = days.slice(-31);
+    items = win.map(d => Object.assign({ label: d.slice(5).replace('-', '/'), tip1: '', tip2: '' }, twoSeries(d)));
+    const last = days[days.length - 1], prev = days[days.length - 2];
+    const l1 = c400[last], l2 = onl[last];
+    note =
+      trendChip('今日 400', l1) +
+      (l1 != null && c400[prev] ? `<span>较昨日 <b style="color:${l1 >= c400[prev] ? 'var(--red)' : 'var(--green)'}">${l1 - c400[prev] >= 0 ? '+' : ''}${(l1 - c400[prev]).toLocaleString()}</b></span>` : '') +
+      trendChip('今日在线', l2) +
+      (l2 != null && onl[prev] ? `<span>较昨日 <b style="color:${l2 >= onl[prev] ? 'var(--red)' : 'var(--green)'}">${l2 - onl[prev] >= 0 ? '+' : ''}${(l2 - onl[prev]).toLocaleString()}</b></span>` : '') +
+      `<span style="opacity:.6">近 31 天 · 今日为实时累计，21:50 后固化</span>`;
+    $('trSub').textContent = '日维度 · 近 31 天（历史 400 起 1/1，在线起 8/24）';
+  } else if (trTab === 'week') {
+    const win = weeks.slice(-14);
+    items = win.map(w => ({ label: w.label, v1: w.call400 != null ? w.call400 : null, v2: w.online != null ? w.online : null,
+      tip1: w.call400_wow != null ? '环比 ' + (w.call400_wow >= 0 ? '+' : '') + w.call400_wow + '%' : '',
+      tip2: w.online_wow != null ? '环比 ' + (w.online_wow >= 0 ? '+' : '') + w.online_wow + '%' : '' }));
+    const wl = weeks[weeks.length - 1], wl2 = weeks[weeks.length - 2];
+    note =
+      trendChip('本周 400', wl.call400, wl.call400_wow != null ? `周环比 ${wl.call400_wow >= 0 ? '+' : ''}${wl.call400_wow}%` : null) +
+      trendChip('本周在线', wl.online, wl.online_wow != null ? `周环比 ${wl.online_wow >= 0 ? '+' : ''}${wl.online_wow}%` : null) +
+      trendChip('本周已过', wl.days, '天') +
+      (wl2 && wl2.call400 != null ? trendChip('上周 400', wl2.call400) : '') +
+      `<span style="opacity:.6">周 = 周一~周日 · 近 14 周</span>`;
+    $('trSub').textContent = '周维度 · 周一~周日自然周（与周负荷口径一致）';
+  } else {
+    const win = months.slice(-9);
+    items = win.map(m => ({ label: m.m, v1: m.call400 != null ? m.call400 : null, v2: m.online != null ? m.online : null,
+      tip1: m.call400_mom != null ? '环比 ' + (m.call400_mom >= 0 ? '+' : '') + m.call400_mom + '%' : '',
+      tip2: m.online_mom != null ? '环比 ' + (m.online_mom >= 0 ? '+' : '') + m.online_mom + '%' : '' }));
+    const ml = months[months.length - 1];
+    note =
+      trendChip('本月 400', ml.call400, ml.call400_mom != null ? `月环比 ${ml.call400_mom >= 0 ? '+' : ''}${ml.call400_mom}%` : null) +
+      trendChip('本月在线', ml.online, ml.online_mom != null ? `月环比 ${ml.online_mom >= 0 ? '+' : ''}${ml.online_mom}%` : null) +
+      trendChip('本月天数', ml.days, '天') +
+      (ml.days < 31 ? `<span style="opacity:.6">当月进行中</span>` : '');
+    $('trSub').textContent = '月维度 · 自然月';
+  }
+  drawTrendBars(el, items);
+  $('trNote').innerHTML = note;
+  // 数据源提示
+  const cc = src.call400 || {}, oc = src.online || {};
+  $('trMeta').textContent =
+    `数据截至 ${trData.days && trData.days[trData.days.length - 1]} · 400 覆盖 ${Object.keys(c400).length} 天（报表 ${cc.xlsx || 0} / 实时 ${cc.half || 0} / 快照 ${cc.cap || 0}）` +
+    ` · 在线覆盖 ${Object.keys(onl).length} 天` +
+    (trData.meta && trData.meta.updated ? ` · 封存 ${trData.meta.updated.slice(5, 16)}` : '');
+}
 function renderCC() {
   if (!ccData) return;
   $('mCcTime').textContent = ccData.collectedAtCn || '--';
