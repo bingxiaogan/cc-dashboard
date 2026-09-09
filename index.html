@@ -246,33 +246,28 @@ details[open] summary { color:var(--accent); }
   <div class="di-note" id="hhNote"></div>
 </div>
 
-<!-- 进线量趋势板块（日/周/月 维度 · 400呼入 + 在线接待） -->
+<!-- 进线量趋势板块（切片器：400/在线 × 日/周/月 · 单图） -->
 <div class="sec"><div class="bar"></div>
-  <h2>📈 进线量趋势<span class="seg" id="trSeg">
-    <button class="seg-btn on" data-tab="day" onclick="switchTrend('day')">日</button>
-    <button class="seg-btn" data-tab="week" onclick="switchTrend('week')">周</button>
-    <button class="seg-btn" data-tab="month" onclick="switchTrend('month')">月</button>
+  <h2>📈 进线量趋势<span class="seg" id="trModeSeg">
+    <button class="seg-btn on" data-tab="call" onclick="switchTrendMode('call')">📞 400</button>
+    <button class="seg-btn" data-tab="chat" onclick="switchTrendMode('chat')">💬 在线</button>
   </span></h2>
   <span class="hint" id="trMeta">加载中</span>
 </div>
 <div class="card" style="margin-bottom:16px;">
   <h3>
-    <span class="dot" style="background:#5da8ff"></span>📞 400 呼入（人工量）
-    <span class="extra" style="margin-left:auto" id="trSubC">每日 21:50 自动封存</span>
+    <span class="dot" id="trDot" style="background:#5da8ff"></span><span id="trTitle">📞 400 呼入（人工量）</span>
+    <span class="extra" style="margin-left:auto"><span class="seg" id="trSeg">
+      <button class="seg-btn on" data-tab="day" onclick="switchTrend('day')">日</button>
+      <button class="seg-btn" data-tab="week" onclick="switchTrend('week')">周</button>
+      <button class="seg-btn" data-tab="month" onclick="switchTrend('month')">月</button>
+    </span></span>
   </h3>
-  <div id="trChartC" style="width:100%;height:210px;"></div>
-  <div class="di-note" id="trNoteC"></div>
-</div>
-<div class="card" style="margin-bottom:16px;">
-  <h3>
-    <span class="dot" style="background:#3ddc84"></span>💬 在线接待
-    <span class="extra" style="margin-left:auto" id="trSubO">每日 21:50 自动封存</span>
-  </h3>
-  <div id="trChartO" style="width:100%;height:210px;"></div>
-  <div class="di-note" id="trNoteO"></div>
+  <div id="trChart" style="width:100%;height:230px;"></div>
+  <div class="di-note" id="trNote"></div>
 </div>
 
-<!-- 工单量级日记录（升级/库存/处理 · 日报 8-9月） -->
+<!-- 工单量级日记录（切片器：类型 × 升级/库存/处理 · 单图） -->
 <div class="sec"><div class="bar"></div>
   <h2>🗂 工单量级<span class="seg" id="ttSeg">
     <button class="seg-btn on" data-tab="cs" onclick="switchTicketTrend('cs')">投诉</button>
@@ -283,10 +278,12 @@ details[open] summary { color:var(--accent); }
 </div>
 <div class="card" style="margin-bottom:16px;">
   <h3>
-    <span class="dot" style="background:#f59e0b"></span>升级量
-    <span class="dot" style="background:#f87171;margin-left:14px"></span>库存量
-    <span class="dot" style="background:#3ddc84;margin-left:14px"></span>处理量
-    <span class="extra" style="margin-left:auto" id="ttSub">升级=当日创建 · 库存=遗留 · 处理=当日结案</span>
+    <span class="dot" id="ttDot" style="background:#f59e0b"></span><span id="ttTitle">升级量</span>
+    <span class="extra" style="margin-left:auto"><span class="seg" id="tqSeg">
+      <button class="seg-btn on" data-tab="new" onclick="switchTicketQty('new')">升级量</button>
+      <button class="seg-btn" data-tab="stock" onclick="switchTicketQty('stock')">库存量</button>
+      <button class="seg-btn" data-tab="done" onclick="switchTicketQty('done')">处理量</button>
+    </span></span>
   </h3>
   <div id="ttChart" style="width:100%;height:230px;"></div>
   <div class="di-note" id="ttNote"></div>
@@ -454,14 +451,24 @@ function renderHalf() {
   }
 }
 
-/* ===== 进线量趋势（日 / 周 / 月 · 400 与 在线 分开展示） ===== */
+/* ===== 进线量趋势（切片器：📞400/💬在线 × 日/周/月 · 单图） ===== */
 let trData = null;
-let trTab = 'day';
+let trTab = 'day';      // 日/周/月
+let trMode = 'call';    // call=400 / chat=在线
+const TR_CFG = {
+  call: { name: '📞 400 呼入（人工量）', color: '#5da8ff', hist: '400 历史起 1/1' },
+  chat: { name: '💬 在线接待', color: '#3ddc84', hist: '在线历史起 8/24' }
+};
 async function loadTrend() {
   try {
     trData = await fetch('daily_trend.json').then(r => r.json());
     renderTrend();
   } catch (e) { $('trMeta').textContent = '趋势数据暂不可用（build_daily_trend.py 未生成）'; }
+}
+function switchTrendMode(mode) {
+  trMode = mode;
+  document.querySelectorAll('#trModeSeg .seg-btn').forEach(b => b.classList.toggle('on', b.dataset.tab === mode));
+  renderTrend();
 }
 function switchTrend(tab) {
   trTab = tab;
@@ -470,7 +477,7 @@ function switchTrend(tab) {
 }
 // 单序列柱状图：items = [{label, v, tip}], v 可 null
 function drawTrendBars(el, items, color) {
-  const W = el.clientWidth || 1100, H = 210, PL = 46, PR = 14, PT = 14, PB = 24;
+  const W = el.clientWidth || 1100, H = 230, PL = 46, PR = 14, PT = 14, PB = 24;
   const iw = W - PL - PR, ih = H - PT - PB;
   const vals = [];
   items.forEach(it => { if (it.v != null) vals.push(it.v); });
@@ -508,56 +515,48 @@ function trendChip(label, val, extra) {
   return `<span><b>${label}</b> ${val == null ? '--' : val.toLocaleString()}${extra ? '<em style="opacity:.75;font-style:normal"> ' + extra + '</em>' : ''}</span>`;
 }
 function renderTrend() {
-  const elC = $('trChartC'), elO = $('trChartO');
-  if (!trData) { elC.innerHTML = '<div class="empty">暂无趋势数据</div>'; elO.innerHTML = ''; return; }
+  const el = $('trChart');
+  if (!trData) { el.innerHTML = '<div class="empty">暂无趋势数据</div>'; return; }
+  const cfg = TR_CFG[trMode];
   const days = trData.days || [], c400 = trData.call400 || {}, onl = trData.online || {};
   const weeks = trData.weeks || [], months = trData.months || [];
   const src = (trData.meta && trData.meta.src_count) || {};
-  let itemsC = [], itemsO = [], noteC = '', noteO = '';
+  const series = trMode === 'call' ? c400 : onl;
+  const dk = trMode === 'call' ? 'call400' : 'online';   // weeks/months 内的键名
+  const dkw = dk + '_wow', dkm = dk + '_mom';
+  $('trDot').style.background = cfg.color;
+  $('trTitle').textContent = cfg.name;
   const build = (v1, v2) => ({ v: v1 != null ? v1 : null, tip: v2 != null ? v2 : '' });
+  let items = [], note = '';
+  const lab = d => d.slice(5).replace('-', '/');
   if (trTab === 'day') {
     const win = days.slice(-31);
-    itemsC = win.map(d => build(c400[d]));
-    itemsO = win.map(d => build(onl[d]));
+    items = win.map(d => build(series[d], ''));
     const last = days[days.length - 1], prev = days[days.length - 2];
-    const l1 = c400[last], l2 = onl[last];
-    noteC = trendChip('今日', l1) +
-      (l1 != null && c400[prev] ? `<span>较昨日 <b style="color:${l1 >= c400[prev] ? 'var(--red)' : 'var(--green)'}">${l1 - c400[prev] >= 0 ? '+' : ''}${(l1 - c400[prev]).toLocaleString()}</b></span>` : '') +
-      `<span style="opacity:.6">近 31 天 · 今日为实时累计</span>`;
-    noteO = trendChip('今日', l2) +
-      (l2 != null && onl[prev] ? `<span>较昨日 <b style="color:${l2 >= onl[prev] ? 'var(--red)' : 'var(--green)'}">${l2 - onl[prev] >= 0 ? '+' : ''}${(l2 - onl[prev]).toLocaleString()}</b></span>` : '') +
-      `<span style="opacity:.6">近 31 天 · 今日为实时累计</span>`;
-    $('trSubC').textContent = '日维度 · 近 31 天（历史起 1/1）';
-    $('trSubO').textContent = '日维度 · 近 31 天（历史起 8/24）';
+    const l1 = series[last];
+    note = trendChip('今日', l1) +
+      (l1 != null && series[prev] ? `<span>较昨日 <b style="color:${l1 >= series[prev] ? 'var(--red)' : 'var(--green)'}">${l1 - series[prev] >= 0 ? '+' : ''}${(l1 - series[prev]).toLocaleString()}</b></span>` : '') +
+      `<span style="opacity:.6">近 31 天 · 今日为实时累计，21:50 后固化</span>`;
   } else if (trTab === 'week') {
     const win = weeks.slice(-14);
-    itemsC = win.map(w => build(w.call400, w.call400_wow != null ? '环比 ' + (w.call400_wow >= 0 ? '+' : '') + w.call400_wow + '%' : ''));
-    itemsO = win.map(w => build(w.online, w.online_wow != null ? '环比 ' + (w.online_wow >= 0 ? '+' : '') + w.online_wow + '%' : ''));
+    items = win.map(w => ({ label: w.label, v: w[dk] != null ? w[dk] : null,
+      tip: w[dkw] != null ? '环比 ' + (w[dkw] >= 0 ? '+' : '') + w[dkw] + '%' : '' }));
     const wl = weeks[weeks.length - 1], wl2 = weeks[weeks.length - 2];
-    noteC = trendChip('本周', wl.call400, wl.call400_wow != null ? `周环比 ${wl.call400_wow >= 0 ? '+' : ''}${wl.call400_wow}%` : null) +
-      (wl2 && wl2.call400 != null ? trendChip('上周', wl2.call400) : '') +
-      `<span style="opacity:.6">周一~周日自然周 · 近 14 周</span>`;
-    noteO = trendChip('本周', wl.online, wl.online_wow != null ? `周环比 ${wl.online_wow >= 0 ? '+' : ''}${wl.online_wow}%` : null) +
-      (wl2 && wl2.online != null ? trendChip('上周', wl2.online) : '') +
-      `<span style="opacity:.6">周一~周日自然周 · 近 14 周</span>`;
-    $('trSubC').textContent = '周维度 · 近 14 周';
-    $('trSubO').textContent = '周维度 · 近 14 周';
+    note = trendChip('本周', wl[dk], wl[dkw] != null ? `周环比 ${wl[dkw] >= 0 ? '+' : ''}${wl[dkw]}%` : null) +
+      (wl2 && wl2[dk] != null ? trendChip('上周', wl2[dk]) : '') +
+      trendChip('本周已过', wl.days, '天') +
+      `<span style="opacity:.6">周 = 周一~周日 · 近 14 周</span>`;
   } else {
     const win = months.slice(-9);
-    itemsC = win.map(m => build(m.call400, m.call400_mom != null ? '环比 ' + (m.call400_mom >= 0 ? '+' : '') + m.call400_mom + '%' : ''));
-    itemsO = win.map(m => build(m.online, m.online_mom != null ? '环比 ' + (m.online_mom >= 0 ? '+' : '') + m.online_mom + '%' : ''));
+    items = win.map(m => ({ label: m.m, v: m[dk] != null ? m[dk] : null,
+      tip: m[dkm] != null ? '环比 ' + (m[dkm] >= 0 ? '+' : '') + m[dkm] + '%' : '' }));
     const ml = months[months.length - 1];
-    noteC = trendChip('本月', ml.call400, ml.call400_mom != null ? `月环比 ${ml.call400_mom >= 0 ? '+' : ''}${ml.call400_mom}%` : null) +
-      (ml.days < 31 ? `<span style="opacity:.6">当月进行中</span>` : '');
-    noteO = trendChip('本月', ml.online, ml.online_mom != null ? `月环比 ${ml.online_mom >= 0 ? '+' : ''}${ml.online_mom}%` : null) +
-      (ml.days < 31 ? `<span style="opacity:.6">当月进行中</span>` : '');
-    $('trSubC').textContent = '月维度 · 自然月';
-    $('trSubO').textContent = '月维度 · 自然月';
+    note = trendChip('本月', ml[dk], ml[dkm] != null ? `月环比 ${ml[dkm] >= 0 ? '+' : ''}${ml[dkm]}%` : null) +
+      (ml.days < 31 ? `<span style="opacity:.6">当月进行中</span>` : '') +
+      `<span style="opacity:.6">${cfg.hist}</span>`;
   }
-  drawTrendBars(elC, itemsC, '#5da8ff');
-  drawTrendBars(elO, itemsO, '#3ddc84');
-  $('trNoteC').innerHTML = noteC;
-  $('trNoteO').innerHTML = noteO;
+  drawTrendBars(el, items, cfg.color);
+  $('trNote').innerHTML = note;
   // 数据源提示
   const cc = src.call400 || {}, oc = src.online || {};
   $('trMeta').textContent =
@@ -566,11 +565,14 @@ function renderTrend() {
     (trData.meta && trData.meta.updated ? ` · 封存 ${trData.meta.updated.slice(5, 16)}` : '');
 }
 
-/* ===== 工单量级（升级 / 库存 / 处理 · 投诉 / 工单(纠纷+申诉) / 舆情） ===== */
+/* ===== 工单量级（切片器：类型 × 升级/库存/处理 · 单图） ===== */
 let ttData = null;
-let ttTab = 'cs';
+let ttTab = 'cs';     // cs=投诉 gd=工单(纠纷+申诉) yq=舆情
+let ttQty = 'new';    // new=升级量 stock=库存量 done=处理量
 const TT_NAME = { cs: '投诉', gd: '工单(纠纷+申诉)', yq: '舆情' };
-const TT_COL = ['#f59e0b', '#f87171', '#3ddc84']; // 升级 / 库存 / 处理
+const TT_QNAME = { new: '升级量', stock: '库存量', done: '处理量' };
+const TT_QCOL = { new: '#f59e0b', stock: '#f87171', done: '#3ddc84' };
+const TT_QNOTE = { new: '升级=当日创建', stock: '库存=遗留(前日+升级-处理)', done: '处理=当日结案' };
 async function loadTicketTrend() {
   try {
     ttData = await fetch('ticket_trend.json').then(r => r.json());
@@ -582,47 +584,10 @@ function switchTicketTrend(tab) {
   document.querySelectorAll('#ttSeg .seg-btn').forEach(b => b.classList.toggle('on', b.dataset.tab === tab));
   renderTicketTrend();
 }
-// 三序列分组柱：v1=升级 v2=库存 v3=处理（可 null）
-function drawTicketBars(el, items) {
-  const W = el.clientWidth || 1100, H = 230, PL = 46, PR = 14, PT = 14, PB = 24;
-  const iw = W - PL - PR, ih = H - PT - PB;
-  const vals = [];
-  items.forEach(it => { [it.v1, it.v2, it.v3].forEach(v => { if (v != null) vals.push(v); }); });
-  const mx = Math.max(...vals, 1) * 1.08;
-  const n = items.length, slotW = iw / n;
-  const grp = Math.min(slotW * 0.72, 40);
-  const bw = Math.max(grp / 3 - 2, 2);
-  const yAt = v => PT + ih - (v / mx) * ih;
-  let svg = `<svg class="di-chart-svg" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">`;
-  for (let f = 0; f <= 4; f++) {
-    const yv = Math.round(mx / 4 * f);
-    const y = yAt(yv);
-    svg += `<line class="di-grid" x1="${PL}" y1="${y}" x2="${W - PR}" y2="${y}"/>`;
-    svg += `<text class="di-axis" x="${PL - 6}" y="${y + 3}" text-anchor="end">${yv.toLocaleString()}</text>`;
-  }
-  const showAt = new Set();
-  for (let i = 0; i < n; i++) if (i % Math.ceil(n / (Math.min(n, 12)))) showAt.add(i);
-  showAt.add(0); showAt.add(n - 1);
-  const NAMES = ['升级', '库存', '处理'];
-  items.forEach((it, i) => {
-    const cx = PL + slotW * i + slotW / 2;
-    const g0 = cx - grp / 2;
-    const isLast = i === n - 1;
-    [['v1', 0], ['v2', 1], ['v3', 2]].forEach(([k, ki]) => {
-      const v = it[k];
-      if (v == null) return;
-      const x0 = g0 + ki * (grp / 3) + (grp / 3 - bw) / 2, yT = yAt(v);
-      svg += `<title>${it.label} · ${NAMES[ki]} ${v.toLocaleString()}</title>`;
-      svg += `<rect x="${x0}" y="${yT}" width="${bw}" height="${PT + ih - yT}" rx="1.5" fill="${TT_COL[ki]}" opacity="${isLast ? 1 : .85}"/>`;
-    });
-    if (showAt.has(i) || slotW > 26) svg += `<text class="di-axis" x="${cx}" y="${H - 8}" text-anchor="middle" font-size="10">${it.label}</text>`;
-    if (isLast && items.length > 1) {
-      const lastV = it.v2 ?? it.v1 ?? it.v3;
-      if (lastV != null) svg += `<text class="di-last" fill="#ffd76a" x="${cx}" y="${Math.max(yAt(lastV) - 4, PT + 8)}" text-anchor="middle" font-size="10.5">${lastV.toLocaleString()}</text>`;
-    }
-  });
-  svg += '</svg>';
-  el.innerHTML = svg;
+function switchTicketQty(q) {
+  ttQty = q;
+  document.querySelectorAll('#tqSeg .seg-btn').forEach(b => b.classList.toggle('on', b.dataset.tab === q));
+  renderTicketTrend();
 }
 function renderTicketTrend() {
   const el = $('ttChart');
@@ -630,38 +595,27 @@ function renderTicketTrend() {
   const t = (ttData.types || {})[ttTab];
   if (!t) { el.innerHTML = '<div class="empty">类型数据缺失</div>'; return; }
   const days = ttData.days || [];
-  const items = days.map(d => ({
-    label: d.slice(5).replace('-', '/'),
-    v1: (t.new || {})[d] != null ? t.new[d] : null,
-    v2: (t.stock || {})[d] != null ? t.stock[d] : null,
-    v3: (t.done || {})[d] != null ? t.done[d] : null
-  }));
-  drawTicketBars(el, items);
+  $('ttDot').style.background = TT_QCOL[ttQty];
+  $('ttTitle').textContent = TT_QNAME[ttQty];
+  const data = t[ttQty] || {};
+  const hasQty = days.some(d => data[d] != null);
+  if (!hasQty) { el.innerHTML = '<div class="empty">该类型无库存数据（日报无遗留量行）</div>'; $('ttNote').innerHTML = ''; return; }
+  const items = days.map(d => ({ label: d.slice(5).replace('-', '/'), v: data[d] != null ? data[d] : null, tip: '' }));
+  drawTrendBars(el, items, TT_QCOL[ttQty]);
   const last = days[days.length - 1], prev = days[days.length - 2];
-  const chip = (lab, v, pv) => {
-    if (v == null) return '';
-    let diff = '';
-    if (pv != null) {
-      const d = v - pv;
-      diff = `<span>较昨日 <b style="color:${d >= 0 ? 'var(--red)' : 'var(--green)'}">${d >= 0 ? '+' : ''}${d.toLocaleString()}</b></span>`;
-    }
-    return `<span><b>${lab}</b> ${v.toLocaleString()}</span>` + diff;
-  };
-  const cv = x => (t[x] || {})[last];
-  const pv = x => (t[x] || {})[prev];
-  $('ttNote').innerHTML =
-    (ttTab === 'cs' ? chip('升级量', cv('new'), pv('new')) : '') +
-    (ttTab === 'gd' ? chip('升级量', cv('new'), pv('new')) : '') +
-    (ttTab === 'yq' ? chip('升级量', cv('new'), pv('new')) : '') +
-    chip('库存量', cv('stock'), pv('stock')) +
-    chip('处理量', cv('done'), pv('done')) +
-    `<span style="opacity:.6">最新 ${last}</span>`;
+  const v = data[last], pv = data[prev];
+  let note = `<span><b>最新${TT_QNAME[ttQty]}</b> ${v == null ? '--' : v.toLocaleString()}</span>`;
+  if (v != null && pv != null) {
+    const dd = v - pv;
+    note += `<span>较昨日 <b style="color:${dd >= 0 ? 'var(--red)' : 'var(--green)'}">${dd >= 0 ? '+' : ''}${dd.toLocaleString()}</b></span>`;
+  }
+  note += `<span style="opacity:.6">${TT_NAME[ttTab]} · ${TT_QNOTE[ttQty]} · 最新 ${last}</span>`;
+  $('ttNote').innerHTML = note;
   const cov = (ttData.meta && ttData.meta.coverage) || {};
   $('ttMeta').textContent =
     `数据截至 ${last} · ${TT_NAME[ttTab]} 覆盖 ${(cov[ttTab] || 0)} 天` +
     ` · 源 ${(ttData.meta && ttData.meta.src) || ''}` +
     (ttData.meta && ttData.meta.updated ? ` · 构建 ${ttData.meta.updated.slice(5, 16)}` : '');
-  $('ttSub').textContent = ttTab === 'yq' ? '升级=当日创建 · 处理=当日结案（舆情日报无库存行）' : '升级=当日创建 · 库存=遗留(前日+升级-处理) · 处理=当日结案';
 }
 
 function renderCC() {
