@@ -182,6 +182,13 @@ details[open] summary { color:var(--accent); }
   <div class="fg" style="margin-left:auto;"><label>业务线</label><select id="fBiz"><option>全部</option><option>400</option><option>在线</option></select></div>
 </div>
 
+<!-- ===== 预警状态条 ===== -->
+<div class="sec"><div class="bar" style="background:#f59e0b"></div><h2>🚨 分级预警</h2><span class="hint" id="alMeta">—</span></div>
+<div class="card" style="margin-bottom:16px;">
+  <div class="al-wrap" id="alRow">加载中…</div>
+  <div class="al-legend">低负荷=产能富余 · 正常=健康 · 一级/二级/三级=需关注（命中一级以上将推送飞书，30 分钟冷却）</div>
+</div>
+
 <!-- ===== 板块 A：客服中心 ===== -->
 <div class="sec"><div class="bar"></div><h2>客服中心实时</h2><span class="hint">90 秒采集刷新</span></div>
 <div class="grid">
