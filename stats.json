@@ -1,13 +1,13 @@
 {
- "ts": 1789048377133,
- "collectedAtCn": "2026/9/10 21:52:57",
+ "ts": 1789048512696,
+ "collectedAtCn": "2026/9/10 21:55:12",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "2",
   "坐席忙碌数": "0 (0)",
-  "接通率": "24.87%",
+  "接通率": "24.86%",
   "满意率": "100.00%",
-  "呼入总数": "10469",
+  "呼入总数": "10471",
   "当前呼入数": "0",
   "外呼总数": "6946",
   "当前外呼数": "0",
@@ -330,8 +330,8 @@
   },
   {
    "service": "88236639(pjt-买家)",
-   "callIn": 16,
-   "ivr": 16,
+   "callIn": 17,
+   "ivr": 17,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -480,8 +480,8 @@
   },
   {
    "service": "81198(上门按键转接)",
-   "callIn": 473,
-   "ivr": 281,
+   "callIn": 475,
+   "ivr": 283,
    "ringMissed": 5,
    "queueAbandon": 33,
    "answered": 160,
@@ -934,11 +934,11 @@
     "name": "官网严选寄卖售后咨询",
     "sessions": 247,
     "assigned": 245,
-    "current": 20,
+    "current": 19,
     "max": 118,
     "queue": 0,
     "onlineSeats": "4(张慧敏,刘梓爱,朱海英,李宜慢)",
-    "done": 225,
+    "done": 226,
     "answerRate": 99.19,
     "abandon": 2,
     "voicemail": 0,
@@ -960,13 +960,13 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1024,
-    "assigned": 1015,
-    "current": 48,
+    "sessions": 1026,
+    "assigned": 1017,
+    "current": 47,
     "max": 118,
     "queue": 0,
     "onlineSeats": "4(张慧敏,刘梓爱,朱海英,李宜慢)",
-    "done": 924,
+    "done": 927,
     "answerRate": 99.12,
     "abandon": 9,
     "voicemail": 0,
@@ -1290,15 +1290,6 @@
   "rate400": 86.6
  },
  "history": [
-  {
-   "ts": 1788927091255,
-   "skillRate400": 85.01,
-   "skillQueue400": 0,
-   "callIn400": 367,
-   "signIn400": 14,
-   "onlineSessions": 243,
-   "onlineSeat": 1
-  },
   {
    "ts": 1788927202289,
    "skillRate400": 84.45,
@@ -5783,6 +5774,15 @@
   },
   {
    "ts": 1789048377133,
+   "skillRate400": 79.17,
+   "skillQueue400": 0,
+   "callIn400": 24,
+   "signIn400": 1,
+   "onlineSessions": 925,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1789048512696,
    "skillRate400": 79.17,
    "skillQueue400": 0,
    "callIn400": 24,
