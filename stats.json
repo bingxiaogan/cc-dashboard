@@ -1,16 +1,16 @@
 {
- "ts": 1789047168944,
- "collectedAtCn": "2026/9/10 21:32:48",
+ "ts": 1789047422917,
+ "collectedAtCn": "2026/9/10 21:37:02",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "2",
   "坐席忙碌数": "0 (0)",
-  "接通率": "25.01%",
+  "接通率": "24.97%",
   "满意率": "100.00%",
-  "呼入总数": "10409",
-  "当前呼入数": "0",
+  "呼入总数": "10425",
+  "当前呼入数": "2",
   "外呼总数": "6946",
-  "当前外呼数": "1",
+  "当前外呼数": "0",
   "呼入平均通话时长": "00:02:56",
   "AI通话数": "0 (3)"
  },
@@ -240,8 +240,8 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 1708,
-   "ivr": 797,
+   "callIn": 1715,
+   "ivr": 804,
    "ringMissed": 5,
    "queueAbandon": 45,
    "answered": 862,
@@ -480,8 +480,8 @@
   },
   {
    "service": "81198(上门按键转接)",
-   "callIn": 467,
-   "ivr": 275,
+   "callIn": 470,
+   "ivr": 278,
    "ringMissed": 5,
    "queueAbandon": 33,
    "answered": 160,
@@ -610,8 +610,8 @@
   },
   {
    "service": "80409(奢侈品商家-门店验货报价)",
-   "callIn": 1105,
-   "ivr": 1105,
+   "callIn": 1107,
+   "ivr": 1107,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -886,8 +886,8 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 1708,
-    "ivr": 797,
+    "callIn": 1715,
+    "ivr": 804,
     "ringMissed": 5,
     "queueAbandon": 45,
     "answered": 862,
@@ -895,10 +895,10 @@
     "transferred": 1
    }
   ],
-  "total": 1725,
+  "total": 1732,
   "answered": 872,
-  "ivr": 804,
-  "connectRate": 97.16
+  "ivr": 811,
+  "connectRate": 97.17
  },
  "online": {
   "groups": [
@@ -960,13 +960,13 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1014,
-    "assigned": 1005,
-    "current": 60,
+    "sessions": 1015,
+    "assigned": 1006,
+    "current": 58,
     "max": 118,
     "queue": 0,
     "onlineSeats": "4(张慧敏,刘梓爱,朱海英,李宜慢)",
-    "done": 903,
+    "done": 906,
     "answerRate": 99.11,
     "abandon": 9,
     "voicemail": 0,
@@ -1058,13 +1058,13 @@
    },
    {
     "name": "官网严选自营售前咨询",
-    "sessions": 355,
-    "assigned": 353,
-    "current": 22,
+    "sessions": 359,
+    "assigned": 357,
+    "current": 23,
     "max": 118,
     "queue": 0,
     "onlineSeats": "4(张慧敏,刘梓爱,朱海英,李宜慢)",
-    "done": 329,
+    "done": 332,
     "answerRate": 99.44,
     "abandon": 2,
     "voicemail": 0,
@@ -1290,24 +1290,6 @@
   "rate400": 86.6
  },
  "history": [
-  {
-   "ts": 1788925811060,
-   "skillRate400": 84.3,
-   "skillQueue400": 0,
-   "callIn400": 344,
-   "signIn400": 14,
-   "onlineSessions": 219,
-   "onlineSeat": 2
-  },
-  {
-   "ts": 1788925954556,
-   "skillRate400": 84.73,
-   "skillQueue400": 0,
-   "callIn400": 347,
-   "signIn400": 14,
-   "onlineSessions": 221,
-   "onlineSeat": 1
-  },
   {
    "ts": 1788926071878,
    "skillRate400": 84.81,
@@ -5783,6 +5765,24 @@
   },
   {
    "ts": 1789047168944,
+   "skillRate400": 79.17,
+   "skillQueue400": 0,
+   "callIn400": 24,
+   "signIn400": 1,
+   "onlineSessions": 925,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1789047282096,
+   "skillRate400": 79.17,
+   "skillQueue400": 0,
+   "callIn400": 24,
+   "signIn400": 1,
+   "onlineSessions": 925,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1789047422917,
    "skillRate400": 79.17,
    "skillQueue400": 0,
    "callIn400": 24,
