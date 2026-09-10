@@ -1,16 +1,16 @@
 {
- "ts": 1789048152617,
- "collectedAtCn": "2026/9/10 21:49:12",
+ "ts": 1789048264899,
+ "collectedAtCn": "2026/9/10 21:51:04",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "2",
   "坐席忙碌数": "0 (0)",
-  "接通率": "24.89%",
+  "接通率": "24.87%",
   "满意率": "100.00%",
-  "呼入总数": "10460",
-  "当前呼入数": "2",
+  "呼入总数": "10466",
+  "当前呼入数": "0",
   "外呼总数": "6946",
-  "当前外呼数": "0",
+  "当前外呼数": "2",
   "呼入平均通话时长": "00:02:56",
   "AI通话数": "0 (3)"
  },
@@ -240,8 +240,8 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 1723,
-   "ivr": 812,
+   "callIn": 1726,
+   "ivr": 815,
    "ringMissed": 5,
    "queueAbandon": 45,
    "answered": 862,
@@ -610,8 +610,8 @@
   },
   {
    "service": "80409(奢侈品商家-门店验货报价)",
-   "callIn": 1117,
-   "ivr": 1117,
+   "callIn": 1119,
+   "ivr": 1119,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -886,8 +886,8 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 1723,
-    "ivr": 812,
+    "callIn": 1726,
+    "ivr": 815,
     "ringMissed": 5,
     "queueAbandon": 45,
     "answered": 862,
@@ -895,10 +895,10 @@
     "transferred": 1
    }
   ],
-  "total": 1740,
+  "total": 1743,
   "answered": 872,
-  "ivr": 819,
-  "connectRate": 97.18
+  "ivr": 822,
+  "connectRate": 97.19
  },
  "online": {
   "groups": [
@@ -962,11 +962,11 @@
     "name": "官网严选自营售后咨询",
     "sessions": 1022,
     "assigned": 1013,
-    "current": 52,
+    "current": 51,
     "max": 118,
     "queue": 0,
     "onlineSeats": "4(张慧敏,刘梓爱,朱海英,李宜慢)",
-    "done": 919,
+    "done": 920,
     "answerRate": 99.12,
     "abandon": 9,
     "voicemail": 0,
@@ -1060,11 +1060,11 @@
     "name": "官网严选自营售前咨询",
     "sessions": 363,
     "assigned": 361,
-    "current": 23,
+    "current": 21,
     "max": 118,
     "queue": 0,
     "onlineSeats": "4(张慧敏,刘梓爱,朱海英,李宜慢)",
-    "done": 336,
+    "done": 338,
     "answerRate": 99.45,
     "abandon": 2,
     "voicemail": 0,
@@ -1290,15 +1290,6 @@
   "rate400": 86.6
  },
  "history": [
-  {
-   "ts": 1788926827211,
-   "skillRate400": 85.4,
-   "skillQueue400": 0,
-   "callIn400": 363,
-   "signIn400": 14,
-   "onlineSessions": 235,
-   "onlineSeat": 1
-  },
   {
    "ts": 1788926934106,
    "skillRate400": 85.44,
@@ -5783,6 +5774,15 @@
   },
   {
    "ts": 1789048152617,
+   "skillRate400": 79.17,
+   "skillQueue400": 0,
+   "callIn400": 24,
+   "signIn400": 1,
+   "onlineSessions": 925,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1789048264899,
    "skillRate400": 79.17,
    "skillQueue400": 0,
    "callIn400": 24,
