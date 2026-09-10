@@ -1,16 +1,16 @@
 {
- "ts": 1789048264899,
- "collectedAtCn": "2026/9/10 21:51:04",
+ "ts": 1789048377133,
+ "collectedAtCn": "2026/9/10 21:52:57",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "2",
   "坐席忙碌数": "0 (0)",
   "接通率": "24.87%",
   "满意率": "100.00%",
-  "呼入总数": "10466",
+  "呼入总数": "10469",
   "当前呼入数": "0",
   "外呼总数": "6946",
-  "当前外呼数": "2",
+  "当前外呼数": "0",
   "呼入平均通话时长": "00:02:56",
   "AI通话数": "0 (3)"
  },
@@ -610,8 +610,8 @@
   },
   {
    "service": "80409(奢侈品商家-门店验货报价)",
-   "callIn": 1119,
-   "ivr": 1119,
+   "callIn": 1120,
+   "ivr": 1120,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -932,14 +932,14 @@
    },
    {
     "name": "官网严选寄卖售后咨询",
-    "sessions": 244,
-    "assigned": 242,
-    "current": 18,
+    "sessions": 247,
+    "assigned": 245,
+    "current": 20,
     "max": 118,
     "queue": 0,
     "onlineSeats": "4(张慧敏,刘梓爱,朱海英,李宜慢)",
-    "done": 224,
-    "answerRate": 99.18,
+    "done": 225,
+    "answerRate": 99.19,
     "abandon": 2,
     "voicemail": 0,
     "satisfactionRate": 0
@@ -960,13 +960,13 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1022,
-    "assigned": 1013,
-    "current": 51,
+    "sessions": 1024,
+    "assigned": 1015,
+    "current": 48,
     "max": 118,
     "queue": 0,
     "onlineSeats": "4(张慧敏,刘梓爱,朱海英,李宜慢)",
-    "done": 920,
+    "done": 924,
     "answerRate": 99.12,
     "abandon": 9,
     "voicemail": 0,
@@ -1058,9 +1058,9 @@
    },
    {
     "name": "官网严选自营售前咨询",
-    "sessions": 363,
-    "assigned": 361,
-    "current": 21,
+    "sessions": 365,
+    "assigned": 363,
+    "current": 22,
     "max": 118,
     "queue": 0,
     "onlineSeats": "4(张慧敏,刘梓爱,朱海英,李宜慢)",
@@ -1290,15 +1290,6 @@
   "rate400": 86.6
  },
  "history": [
-  {
-   "ts": 1788926934106,
-   "skillRate400": 85.44,
-   "skillQueue400": 0,
-   "callIn400": 364,
-   "signIn400": 14,
-   "onlineSessions": 240,
-   "onlineSeat": 1
-  },
   {
    "ts": 1788927091255,
    "skillRate400": 85.01,
@@ -5783,6 +5774,15 @@
   },
   {
    "ts": 1789048264899,
+   "skillRate400": 79.17,
+   "skillQueue400": 0,
+   "callIn400": 24,
+   "signIn400": 1,
+   "onlineSessions": 925,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1789048377133,
    "skillRate400": 79.17,
    "skillQueue400": 0,
    "callIn400": 24,
