@@ -1,14 +1,14 @@
 {
- "ts": 1789047422917,
- "collectedAtCn": "2026/9/10 21:37:02",
+ "ts": 1789047535054,
+ "collectedAtCn": "2026/9/10 21:38:55",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "2",
   "坐席忙碌数": "0 (0)",
-  "接通率": "24.97%",
+  "接通率": "24.96%",
   "满意率": "100.00%",
-  "呼入总数": "10425",
-  "当前呼入数": "2",
+  "呼入总数": "10428",
+  "当前呼入数": "0",
   "外呼总数": "6946",
   "当前外呼数": "0",
   "呼入平均通话时长": "00:02:56",
@@ -440,8 +440,8 @@
   },
   {
    "service": "81199(门店按键转接)",
-   "callIn": 399,
-   "ivr": 274,
+   "callIn": 400,
+   "ivr": 275,
    "ringMissed": 0,
    "queueAbandon": 15,
    "answered": 111,
@@ -960,14 +960,14 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1015,
-    "assigned": 1006,
-    "current": 58,
+    "sessions": 1017,
+    "assigned": 1008,
+    "current": 60,
     "max": 118,
     "queue": 0,
     "onlineSeats": "4(张慧敏,刘梓爱,朱海英,李宜慢)",
     "done": 906,
-    "answerRate": 99.11,
+    "answerRate": 99.12,
     "abandon": 9,
     "voicemail": 0,
     "satisfactionRate": 3.33
@@ -1290,15 +1290,6 @@
   "rate400": 86.6
  },
  "history": [
-  {
-   "ts": 1788926071878,
-   "skillRate400": 84.81,
-   "skillQueue400": 0,
-   "callIn400": 349,
-   "signIn400": 14,
-   "onlineSessions": 223,
-   "onlineSeat": 1
-  },
   {
    "ts": 1788926190023,
    "skillRate400": 84.66,
@@ -5783,6 +5774,15 @@
   },
   {
    "ts": 1789047422917,
+   "skillRate400": 79.17,
+   "skillQueue400": 0,
+   "callIn400": 24,
+   "signIn400": 1,
+   "onlineSessions": 925,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1789047535054,
    "skillRate400": 79.17,
    "skillQueue400": 0,
    "callIn400": 24,
