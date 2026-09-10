@@ -1,14 +1,14 @@
 {
- "ts": 1789052946034,
- "collectedAtCn": "2026/9/10 23:09:06",
+ "ts": 1789053134551,
+ "collectedAtCn": "2026/9/10 23:12:14",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "2",
   "坐席忙碌数": "0 (0)",
   "接通率": "24.71%",
   "满意率": "100.00%",
-  "呼入总数": "10534",
-  "当前呼入数": "0",
+  "呼入总数": "10538",
+  "当前呼入数": "2",
   "外呼总数": "6946",
   "当前外呼数": "0",
   "呼入平均通话时长": "00:02:56",
@@ -207,8 +207,8 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 1744,
-   "ivr": 833,
+   "callIn": 1747,
+   "ivr": 836,
    "ringMissed": 5,
    "queueAbandon": 45,
    "answered": 862,
@@ -407,8 +407,8 @@
   },
   {
    "service": "81199(门店按键转接)",
-   "callIn": 411,
-   "ivr": 286,
+   "callIn": 412,
+   "ivr": 287,
    "ringMissed": 0,
    "queueAbandon": 15,
    "answered": 111,
@@ -851,8 +851,8 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 1744,
-    "ivr": 833,
+    "callIn": 1747,
+    "ivr": 836,
     "ringMissed": 5,
     "queueAbandon": 45,
     "answered": 862,
@@ -860,9 +860,9 @@
     "transferred": 1
    }
   ],
-  "total": 1761,
+  "total": 1764,
   "answered": 872,
-  "ivr": 840,
+  "ivr": 843,
   "connectRate": 97.22
  },
  "online": {
@@ -925,9 +925,9 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1075,
-    "assigned": 1066,
-    "current": 29,
+    "sessions": 1076,
+    "assigned": 1067,
+    "current": 30,
     "max": 28,
     "queue": 0,
     "onlineSeats": "1(朱海英)",
@@ -1255,15 +1255,6 @@
   "rate400": 85.1
  },
  "history": [
-  {
-   "ts": 1788931511257,
-   "skillRate400": 84.22,
-   "skillQueue400": 0,
-   "callIn400": 450,
-   "signIn400": 14,
-   "onlineSessions": 327,
-   "onlineSeat": 3
-  },
   {
    "ts": 1788931643753,
    "skillRate400": 84.29,
@@ -5748,6 +5739,15 @@
   },
   {
    "ts": 1789052946034,
+   "skillRate400": null,
+   "skillQueue400": 0,
+   "callIn400": 0,
+   "signIn400": 0,
+   "onlineSessions": 925,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1789053134551,
    "skillRate400": null,
    "skillQueue400": 0,
    "callIn400": 0,
