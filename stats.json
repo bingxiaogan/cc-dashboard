@@ -1,13 +1,13 @@
 {
- "ts": 1789049963255,
- "collectedAtCn": "2026/9/10 22:19:23",
+ "ts": 1789050075575,
+ "collectedAtCn": "2026/9/10 22:21:15",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "2",
   "坐席忙碌数": "0 (0)",
-  "接通率": "24.82%",
+  "接通率": "24.81%",
   "满意率": "100.00%",
-  "呼入总数": "10490",
+  "呼入总数": "10495",
   "当前呼入数": "1",
   "外呼总数": "6946",
   "当前外呼数": "0",
@@ -240,8 +240,8 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 1734,
-   "ivr": 823,
+   "callIn": 1736,
+   "ivr": 825,
    "ringMissed": 5,
    "queueAbandon": 45,
    "answered": 862,
@@ -886,8 +886,8 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 1734,
-    "ivr": 823,
+    "callIn": 1736,
+    "ivr": 825,
     "ringMissed": 5,
     "queueAbandon": 45,
     "answered": 862,
@@ -895,9 +895,9 @@
     "transferred": 1
    }
   ],
-  "total": 1751,
+  "total": 1753,
   "answered": 872,
-  "ivr": 830,
+  "ivr": 832,
   "connectRate": 97.2
  },
  "online": {
@@ -960,9 +960,9 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1048,
-    "assigned": 1039,
-    "current": 52,
+    "sessions": 1049,
+    "assigned": 1040,
+    "current": 53,
     "max": 118,
     "queue": 0,
     "onlineSeats": "4(张慧敏,朱海英,李宜慢,刘梓爱)",
@@ -1060,11 +1060,11 @@
     "name": "官网严选自营售前咨询",
     "sessions": 370,
     "assigned": 368,
-    "current": 21,
+    "current": 20,
     "max": 118,
     "queue": 0,
     "onlineSeats": "4(张慧敏,朱海英,李宜慢,刘梓爱)",
-    "done": 344,
+    "done": 345,
     "answerRate": 99.46,
     "abandon": 2,
     "voicemail": 0,
@@ -1290,15 +1290,6 @@
   "rate400": 85.1
  },
  "history": [
-  {
-   "ts": 1788928728355,
-   "skillRate400": 82.4,
-   "skillQueue400": 1,
-   "callIn400": 409,
-   "signIn400": 14,
-   "onlineSessions": 274,
-   "onlineSeat": 2
-  },
   {
    "ts": 1788928833464,
    "skillRate400": 82.4,
@@ -5783,6 +5774,15 @@
   },
   {
    "ts": 1789049963255,
+   "skillRate400": 79.17,
+   "skillQueue400": 0,
+   "callIn400": 24,
+   "signIn400": 1,
+   "onlineSessions": 925,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1789050075575,
    "skillRate400": 79.17,
    "skillQueue400": 0,
    "callIn400": 24,
