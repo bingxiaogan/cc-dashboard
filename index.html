@@ -618,9 +618,10 @@ function renderAlerts(d) {
     if (v.rate != null) bits.push('接通率 ' + v.rate + '%');
     if (v.un != null) bits.push('未分配 ' + v.un + ' 单');
     if (v.stock != null) bits.push('库存 ' + v.stock + ' 单');
+    const muted = !!o.muted;   // 该对象只算状态、不发飞书（如在线：config.alert.online_alert=false）
     const mark = lv >= 2 ? '⚠️' : (lv === 1 ? '✓' : '·');
     html += `<div class="al-pill lv${lv}"><div class="t">${AL_NAME[k] || k}<span class="dim">${mark}</span></div>` +
-      `<div class="lv">${AL_LVNAME[lv]}</div><div class="v">${bits.join(' · ') || '—'}</div></div>`;
+      `<div class="lv">${AL_LVNAME[lv]}${muted ? ' · 预警暂停' : ''}</div><div class="v">${bits.join(' · ') || '—'}</div></div>`;
   });
   row.innerHTML = html || '<div class="empty">暂无预警对象</div>';
   const m = $('alMeta');
