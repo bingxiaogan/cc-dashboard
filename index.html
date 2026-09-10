@@ -622,7 +622,7 @@ function renderAlerts(d) {
     const minLv = o.minLevel != null ? o.minLevel : 2;   // 推送门槛（2=一级起推，4=三级才推）
     let note = '';
     if (muted) note = ' · 预警暂停';
-    else if (minLv > 2) note = ' · ' + (AL_LVNAME[minLv] || '') + '才推';
+    else if (minLv > 2) note = '（' + (AL_LVNAME[minLv] || '') + '推送）';
     const mark = lv >= 2 ? '⚠️' : (lv === 1 ? '✓' : '·');
     html += `<div class="al-pill lv${lv}"><div class="t">${AL_NAME[k] || k}<span class="dim">${mark}</span></div>` +
       `<div class="lv">${AL_LVNAME[lv]}${note}</div><div class="v">${bits.join(' · ') || '—'}</div></div>`;
