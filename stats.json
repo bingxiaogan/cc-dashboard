@@ -1,14 +1,14 @@
 {
- "ts": 1789052439512,
- "collectedAtCn": "2026/9/10 23:00:39",
+ "ts": 1789052623877,
+ "collectedAtCn": "2026/9/10 23:03:43",
  "overview": {
   "总排队数": "0",
-  "坐席空闲数": "1",
+  "坐席空闲数": "2",
   "坐席忙碌数": "0 (0)",
-  "接通率": "24.72%",
+  "接通率": "24.71%",
   "满意率": "100.00%",
-  "呼入总数": "10532",
-  "当前呼入数": "2",
+  "呼入总数": "10534",
+  "当前呼入数": "0",
   "外呼总数": "6946",
   "当前外呼数": "0",
   "呼入平均通话时长": "00:02:56",
@@ -447,8 +447,8 @@
   },
   {
    "service": "81198(上门按键转接)",
-   "callIn": 480,
-   "ivr": 288,
+   "callIn": 481,
+   "ivr": 289,
    "ringMissed": 5,
    "queueAbandon": 33,
    "answered": 160,
@@ -899,11 +899,11 @@
     "name": "官网严选寄卖售后咨询",
     "sessions": 255,
     "assigned": 253,
-    "current": 5,
+    "current": 4,
     "max": 58,
     "queue": 0,
     "onlineSeats": "2(李宜慢,朱海英)",
-    "done": 248,
+    "done": 249,
     "answerRate": 99.22,
     "abandon": 2,
     "voicemail": 0,
@@ -925,9 +925,9 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1068,
-    "assigned": 1059,
-    "current": 25,
+    "sessions": 1071,
+    "assigned": 1062,
+    "current": 28,
     "max": 58,
     "queue": 0,
     "onlineSeats": "2(李宜慢,朱海英)",
@@ -1023,9 +1023,9 @@
    },
    {
     "name": "官网严选自营售前咨询",
-    "sessions": 386,
-    "assigned": 384,
-    "current": 11,
+    "sessions": 387,
+    "assigned": 385,
+    "current": 12,
     "max": 58,
     "queue": 0,
     "onlineSeats": "2(李宜慢,朱海英)",
@@ -1255,15 +1255,6 @@
   "rate400": 85.1
  },
  "history": [
-  {
-   "ts": 1788931173204,
-   "skillRate400": 84.3,
-   "skillQueue400": 0,
-   "callIn400": 446,
-   "signIn400": 14,
-   "onlineSessions": 320,
-   "onlineSeat": 3
-  },
   {
    "ts": 1788931301338,
    "skillRate400": 84.3,
@@ -5748,6 +5739,15 @@
   },
   {
    "ts": 1789052439512,
+   "skillRate400": null,
+   "skillQueue400": 0,
+   "callIn400": 0,
+   "signIn400": 0,
+   "onlineSessions": 925,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1789052623877,
    "skillRate400": null,
    "skillQueue400": 0,
    "callIn400": 0,
