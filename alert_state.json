@@ -1,24 +1,24 @@
 {
  "objects": {
   "c400d": {
-   "level": 3,
-   "levelName": "二级",
-   "color": "橙",
+   "level": 1,
+   "levelName": "正常",
+   "color": "蓝",
    "vals": {
     "load": 140.1,
     "rate": 93,
     "lv": 3,
     "rv": 0
    },
-   "ts": 1789006103099,
-   "tsCn": "2026/9/10 10:08:23",
-   "lastLevel": 3,
+   "ts": 1789008386219,
+   "tsCn": "2026/9/10 10:46:26",
+   "lastLevel": 0,
    "lastAlertTs": 1789005993302
   },
   "c400w": {
-   "level": 1,
-   "levelName": "正常",
-   "color": "蓝",
+   "level": 0,
+   "levelName": "低负荷",
+   "color": "绿",
    "vals": {
     "load": 85.4,
     "rate": 88,
@@ -34,9 +34,9 @@
      "denOn": 2195
     }
    },
-   "ts": 1789006103099,
-   "tsCn": "2026/9/10 10:08:23",
-   "lastLevel": 1,
+   "ts": 1789008386219,
+   "tsCn": "2026/9/10 10:46:26",
+   "lastLevel": 0,
    "lastAlertTs": 1788954487858
   },
   "onld": {
@@ -46,10 +46,10 @@
    "vals": {
     "load": 115.8
    },
-   "ts": 1789006103099,
-   "tsCn": "2026/9/10 10:08:23",
+   "ts": 1789008386219,
+   "tsCn": "2026/9/10 10:46:26",
    "lastLevel": 2,
-   "lastAlertTs": 1789005993302
+   "lastAlertTs": 1789008314228
   },
   "onlw": {
    "level": 2,
@@ -67,15 +67,15 @@
      "denOn": 2195
     }
    },
-   "ts": 1789006103099,
-   "tsCn": "2026/9/10 10:08:23",
+   "ts": 1789008386219,
+   "tsCn": "2026/9/10 10:46:26",
    "lastLevel": 2,
-   "lastAlertTs": 1789005993302
+   "lastAlertTs": 1789008314228
   },
   "ks": {
-   "level": 2,
-   "levelName": "一级",
-   "color": "黄",
+   "level": 1,
+   "levelName": "正常",
+   "color": "蓝",
    "vals": {
     "stock": 67,
     "un": 36,
@@ -85,12 +85,12 @@
     "rv": 1,
     "agents": 2
    },
-   "ts": 1789006103099,
-   "tsCn": "2026/9/10 10:08:23",
-   "lastLevel": 2,
+   "ts": 1789008386219,
+   "tsCn": "2026/9/10 10:46:26",
+   "lastLevel": 1,
    "lastAlertTs": 1789005993302
   }
  },
- "updated": "2026/9/10 10:08:23",
- "updatedTs": 1789006103099
+ "updated": "2026/9/10 10:46:26",
+ "updatedTs": 1789008386219
 }
