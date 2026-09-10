@@ -1,61 +1,28 @@
 {
- "ts": 1789050801838,
- "collectedAtCn": "2026/9/10 22:33:21",
+ "ts": 1789050913970,
+ "collectedAtCn": "2026/9/10 22:35:13",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "2",
   "坐席忙碌数": "0 (0)",
-  "接通率": "24.77%",
+  "接通率": "24.76%",
   "满意率": "100.00%",
-  "呼入总数": "10512",
-  "当前呼入数": "1",
+  "呼入总数": "10515",
+  "当前呼入数": "0",
   "外呼总数": "6946",
   "当前外呼数": "0",
   "呼入平均通话时长": "00:02:56",
   "AI通话数": "0 (3)"
  },
- "skillGroups": [
-  {
-   "name": "分类回收400-3收益到账咨询（爱分类）",
-   "idleSeats": 0,
-   "signIn": 1,
-   "members": "赵锦超",
-   "ring": 0,
-   "queue": 0,
-   "todayAnswered": 19,
-   "missed": 8,
-   "rate": 70.37,
-   "total": 24,
-   "current": 0,
-   "avgDuration": "00:03:54",
-   "transferIn": 1,
-   "transferOut": 0
-  },
-  {
-   "name": "95分分类回收400-3收益到账咨询",
-   "idleSeats": 0,
-   "signIn": 1,
-   "members": "赵锦超",
-   "ring": 0,
-   "queue": 0,
-   "todayAnswered": 0,
-   "missed": 0,
-   "rate": 0,
-   "total": 0,
-   "current": 0,
-   "avgDuration": "00:00:00",
-   "transferIn": 0,
-   "transferOut": 0
-  }
- ],
+ "skillGroups": [],
  "skillSummary": {
   "idleSeats": 0,
-  "answered": 19,
-  "missed": 8,
-  "rate": 79.17,
-  "total": 24,
+  "answered": 0,
+  "missed": 0,
+  "rate": null,
+  "total": 0,
   "queue": 0,
-  "signIn": 1
+  "signIn": 0
  },
  "services": [
   {
@@ -440,8 +407,8 @@
   },
   {
    "service": "81199(门店按键转接)",
-   "callIn": 407,
-   "ivr": 282,
+   "callIn": 408,
+   "ivr": 283,
    "ringMissed": 0,
    "queueAbandon": 15,
    "answered": 111,
@@ -470,8 +437,8 @@
   },
   {
    "service": "88236602(其他渠道4000166088)",
-   "callIn": 577,
-   "ivr": 278,
+   "callIn": 579,
+   "ivr": 280,
    "ringMissed": 5,
    "queueAbandon": 35,
    "answered": 265,
@@ -859,9 +826,7 @@
    "transferred": 0
   }
  ],
- "signInAgents400": [
-  "赵锦超"
- ],
+ "signInAgents400": [],
  "keyServices": {
   "list": [
    {
@@ -960,9 +925,9 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1055,
-    "assigned": 1046,
-    "current": 47,
+    "sessions": 1056,
+    "assigned": 1047,
+    "current": 48,
     "max": 90,
     "queue": 0,
     "onlineSeats": "3(张慧敏,李宜慢,刘梓爱)",
@@ -1290,15 +1255,6 @@
   "rate400": 85.1
  },
  "history": [
-  {
-   "ts": 1788929515853,
-   "skillRate400": 82.4,
-   "skillQueue400": 1,
-   "callIn400": 409,
-   "signIn400": 14,
-   "onlineSessions": 274,
-   "onlineSeat": 2
-  },
   {
    "ts": 1788929645057,
    "skillRate400": 82.4,
@@ -5787,6 +5743,15 @@
    "skillQueue400": 0,
    "callIn400": 24,
    "signIn400": 1,
+   "onlineSessions": 925,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1789050913970,
+   "skillRate400": null,
+   "skillQueue400": 0,
+   "callIn400": 0,
+   "signIn400": 0,
    "onlineSessions": 925,
    "onlineSeat": 0
   }
