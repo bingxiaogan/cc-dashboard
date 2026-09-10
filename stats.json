@@ -1,14 +1,14 @@
 {
- "ts": 1789050552420,
- "collectedAtCn": "2026/9/10 22:29:12",
+ "ts": 1789050801838,
+ "collectedAtCn": "2026/9/10 22:33:21",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "2",
   "坐席忙碌数": "0 (0)",
-  "接通率": "24.78%",
+  "接通率": "24.77%",
   "满意率": "100.00%",
-  "呼入总数": "10505",
-  "当前呼入数": "2",
+  "呼入总数": "10512",
+  "当前呼入数": "1",
   "外呼总数": "6946",
   "当前外呼数": "0",
   "呼入平均通话时长": "00:02:56",
@@ -240,8 +240,8 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 1738,
-   "ivr": 827,
+   "callIn": 1740,
+   "ivr": 829,
    "ringMissed": 5,
    "queueAbandon": 45,
    "answered": 862,
@@ -886,8 +886,8 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 1738,
-    "ivr": 827,
+    "callIn": 1740,
+    "ivr": 829,
     "ringMissed": 5,
     "queueAbandon": 45,
     "answered": 862,
@@ -895,9 +895,9 @@
     "transferred": 1
    }
   ],
-  "total": 1755,
+  "total": 1757,
   "answered": 872,
-  "ivr": 834,
+  "ivr": 836,
   "connectRate": 97.21
  },
  "online": {
@@ -935,9 +935,9 @@
     "sessions": 253,
     "assigned": 251,
     "current": 14,
-    "max": 118,
+    "max": 90,
     "queue": 0,
-    "onlineSeats": "4(张慧敏,朱海英,李宜慢,刘梓爱)",
+    "onlineSeats": "3(张慧敏,李宜慢,刘梓爱)",
     "done": 237,
     "answerRate": 99.21,
     "abandon": 2,
@@ -960,14 +960,14 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1050,
-    "assigned": 1041,
-    "current": 45,
-    "max": 118,
+    "sessions": 1055,
+    "assigned": 1046,
+    "current": 47,
+    "max": 90,
     "queue": 0,
-    "onlineSeats": "4(张慧敏,朱海英,李宜慢,刘梓爱)",
-    "done": 952,
-    "answerRate": 99.14,
+    "onlineSeats": "3(张慧敏,李宜慢,刘梓爱)",
+    "done": 955,
+    "answerRate": 99.15,
     "abandon": 9,
     "voicemail": 0,
     "satisfactionRate": 3.23
@@ -1058,14 +1058,14 @@
    },
    {
     "name": "官网严选自营售前咨询",
-    "sessions": 373,
-    "assigned": 371,
+    "sessions": 375,
+    "assigned": 373,
     "current": 17,
-    "max": 118,
+    "max": 90,
     "queue": 0,
-    "onlineSeats": "4(张慧敏,朱海英,李宜慢,刘梓爱)",
-    "done": 351,
-    "answerRate": 99.46,
+    "onlineSeats": "3(张慧敏,李宜慢,刘梓爱)",
+    "done": 353,
+    "answerRate": 99.47,
     "abandon": 2,
     "voicemail": 0,
     "satisfactionRate": 50
@@ -1290,24 +1290,6 @@
   "rate400": 85.1
  },
  "history": [
-  {
-   "ts": 1788929306805,
-   "skillRate400": 82.4,
-   "skillQueue400": 1,
-   "callIn400": 409,
-   "signIn400": 14,
-   "onlineSessions": 274,
-   "onlineSeat": 2
-  },
-  {
-   "ts": 1788929411252,
-   "skillRate400": 82.4,
-   "skillQueue400": 1,
-   "callIn400": 409,
-   "signIn400": 14,
-   "onlineSessions": 274,
-   "onlineSeat": 2
-  },
   {
    "ts": 1788929515853,
    "skillRate400": 82.4,
@@ -5783,6 +5765,24 @@
   },
   {
    "ts": 1789050552420,
+   "skillRate400": 79.17,
+   "skillQueue400": 0,
+   "callIn400": 24,
+   "signIn400": 1,
+   "onlineSessions": 925,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1789050688379,
+   "skillRate400": 79.17,
+   "skillQueue400": 0,
+   "callIn400": 24,
+   "signIn400": 1,
+   "onlineSessions": 925,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1789050801838,
    "skillRate400": 79.17,
    "skillQueue400": 0,
    "callIn400": 24,
