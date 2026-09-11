@@ -367,6 +367,122 @@ details[open] summary { color:var(--accent); }
 </div>
 
 <div class="footer">数据源：7x24cc（8601）实时采集 · 爱回收工单系统（8600）· 时段量级：400 呼入时间趋势 / 在线技能组时间趋势 ｜合并看板 v2.6</div>
+
+<!-- 取数口径与计算逻辑（可折叠） -->
+<details class="spec">
+  <summary>📖 取数口径与计算逻辑<span class="spec-hint">点击展开 · 数据定义 / 计算公式 / 刷新频率</span></summary>
+  <div class="spec-body">
+
+    <div class="spec-sec">
+      <h4>🔄 刷新频率</h4>
+      <table class="spec-tb">
+        <thead><tr><th>数据</th><th>频率</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td>400 / 在线实时</td><td>90 秒</td><td>7x24cc 采集器轮询，前端同步拉取</td></tr>
+          <tr><td>运能负荷</td><td>15 分钟</td><td>进线量与应接量按窗口推进更新</td></tr>
+          <tr><td>时段量级</td><td>约 15 分钟</td><td>报表页采集，得当日各半小时值</td></tr>
+          <tr><td>工单数据</td><td>2 小时</td><td>9:00 起按 9/11/13/15/17/19/21 整点</td></tr>
+          <tr><td>进线量趋势</td><td>每日 21:50</td><td>拉飞书日报精确值后固化封存</td></tr>
+          <tr><td>在线班表</td><td>每日 21:50</td><td>拉飞书「9月班表」解析工时</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="spec-sec">
+      <h4>⚡ 运能负荷</h4>
+      <p class="spec-formula">负荷% = 当日进线量 ÷ 到当前时刻应接量 × 100</p>
+      <p class="spec-sub">📞 400 应接量</p>
+      <ul>
+        <li>人效基准 <b>130 单/人/天（12 小时）</b>；在班人数取当日排班表中 <b>部门=400</b> 的人数</li>
+        <li>排班分两班：一班 8:00–20:00、一班 9:00–21:00，因此按「两端半量」折算</li>
+        <li class="spec-code">应接 = 人数 × (完整小时数 × 130/12 + 半量小时数 × 130/24)</li>
+      </ul>
+      <p class="spec-sub">💬 在线应接量</p>
+      <ul>
+        <li>人效基准 <b>35 单/人/小时</b>；在班窗口 <b>09:00–21:00</b></li>
+        <li>工时来源：飞书「9月班表」逐日解析，<b>单元格数字即出勤小时</b></li>
+        <li><b>带教 / 考核新人同样计入</b>（如「带-8」= 带教 8 小时），按 35 单/小时折算</li>
+        <li class="spec-code">应接 = Σ 每人 min(在岗小时, 已过窗口小时) × 35</li>
+        <li class="spec-note">例：3 人 9:00 到岗，10:00 时已过 3 人·小时 → 应接 105 单；至 21:00 收敛为全天 30 人·小时 → 1050 单</li>
+      </ul>
+      <p class="spec-sub">进线量口径</p>
+      <ul>
+        <li>400：技能组累计呼入量（当日 0 点归零累加）</li>
+        <li>在线：技能组累计接待量；若实时值异常偏小，用半小时报表「<b>已过时段累计</b>」兜底</li>
+      </ul>
+    </div>
+
+    <div class="spec-sec">
+      <h4>🚨 分级预警档位</h4>
+      <table class="spec-tb">
+        <thead><tr><th>档位</th><th>负荷区间</th><th>含义</th><th>推送</th></tr></thead>
+        <tbody>
+          <tr><td><span class="spec-dot" style="background:#3ddc84"></span>低负荷</td><td>&lt; 90%</td><td>产能富余</td><td>不推</td></tr>
+          <tr><td><span class="spec-dot" style="background:#5da8ff"></span>正常</td><td>90% – 110%</td><td>健康区间</td><td>不推</td></tr>
+          <tr><td><span class="spec-dot" style="background:#eab308"></span>一级</td><td>110% – 130%</td><td>需关注</td><td>400 推 / 在线不推</td></tr>
+          <tr><td><span class="spec-dot" style="background:#f59e0b"></span>二级</td><td>130% – 150%</td><td>需干预</td><td>400 推 / 在线不推</td></tr>
+          <tr><td><span class="spec-dot" style="background:#ef4444"></span>三级</td><td>≥ 150%</td><td>告急</td><td><b>均推送</b></td></tr>
+        </tbody>
+      </table>
+      <ul>
+        <li>400 呼入：<b>一级起推</b>；在线接待：<b>三级才推</b>（低负荷期避免打扰）</li>
+        <li>飞书推送带 <b>30 分钟冷却</b>，同对象同档位 30 分钟内不重复推送</li>
+      </ul>
+    </div>
+
+    <div class="spec-sec">
+      <h4>📊 时段量级</h4>
+      <ul>
+        <li>按半小时分桶（08:00–21:00 共 26+ 时段），取自报表页「呼入时间趋势」/「在线技能组时间趋势」</li>
+        <li>柱高为量级，最新时段高亮；末柱为当日已发生时段</li>
+        <li>400 号源固定三线：<b>88236628 / 88236629 / 4001581707</b></li>
+      </ul>
+    </div>
+
+    <div class="spec-sec">
+      <h4>📈 进线量趋势</h4>
+      <ul>
+        <li>切片：📞 400 / 💬 在线 × 日 / 周 / 月</li>
+        <li>数据来源优先级：<b>飞书日报（8-9月日报表，精确值）</b> &gt; 半小时报表实时 &gt; 历史离线报表 &gt; 采集器日快照（近似）</li>
+        <li>日视图近 31 天，今日为实时累计，<b>21:50 后固化</b>为精确值；周视图按「周一~周日」聚合，仅展示有数据的周</li>
+        <li>周/月柱的悬浮提示为环比（WoW / MoM）</li>
+      </ul>
+    </div>
+
+    <div class="spec-sec">
+      <h4>🗂 工单量级</h4>
+      <p class="spec-sub">量级分桶（按工单模板 + 当前执行部门）</p>
+      <ul>
+        <li><b>客诉处理</b>：投诉工单 + 用户申诉工单，且当前执行部门 = 客诉客服</li>
+        <li><b>工单处理</b>：投诉工单 + 用户申诉工单，执行部门为其余部门</li>
+        <li><b>舆情客诉单</b>：舆情模板全量</li>
+      </ul>
+      <p class="spec-sub">三类指标</p>
+      <ul>
+        <li><b>升级量</b>：当日新建工单数（按创建日期归属）</li>
+        <li><b>库存量</b>：当日仍在流转的工单数</li>
+        <li><b>处理量</b>：当日完成/结案的工单数</li>
+      </ul>
+      <p class="spec-sub">时长分桶（仅【客诉处理】量级，累计包含）</p>
+      <p class="spec-formula">升级时长(小时) = 24 − remainTime(小时)</p>
+      <ul>
+        <li>remainTime &gt; 0 为倒计时剩余（如剩 3h → 升级时长 21h）；remainTime ≤ 0 为<b>已超时</b>，时长继续累加</li>
+        <li>桶位：24h内 / 24h以上 / 48h以上 / 72h以上 / 96h以上，<b>更高级别被低级桶累计包含</b></li>
+      </ul>
+    </div>
+
+    <div class="spec-sec">
+      <h4>🔍 工单监控 · 下钻</h4>
+      <ul>
+        <li>工单状态全览：<b>待分配 / 待处理 / 处理中 / 已完成 / 已关闭</b></li>
+        <li>外层显示合计，点击数字逐层下钻 <b>部门 → 大类 → 子类</b>，明细按行展开不合并</li>
+        <li>在班人数：当日排班表「休」= 不排班，数字 = 排班；在班/未出勤按实时签入名单比对</li>
+      </ul>
+    </div>
+
+  </div>
+</details>
+
 </div>
 
 <script>
