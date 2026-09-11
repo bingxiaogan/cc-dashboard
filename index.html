@@ -229,7 +229,7 @@ details[open] summary { color:var(--accent); }
 <div class="sec"><div class="bar" style="background:#f59e0b"></div><h2>🚨 分级预警</h2><span class="hint" id="alMeta">—</span></div>
 <div class="card" style="margin-bottom:16px;">
   <div class="al-wrap" id="alRow">加载中…</div>
-  <div class="al-legend">低负荷=产能富余 · 正常=健康 · 一级/二级/三级=需关注（命中一级以上将推送飞书，30 分钟冷却）</div>
+  <div class="al-legend">低负荷=产能富余 · 正常=健康 · 一级/二级/三级=需关注（400 呼入 / 客诉工单命中一级以上推送飞书，30 分钟冷却）</div>
 </div>
 
 <!-- ===== 板块 A：客服中心 ===== -->
@@ -448,11 +448,11 @@ details[open] summary { color:var(--accent); }
           <tr><td><span class="spec-dot" style="background:#5da8ff"></span>正常</td><td>90% – 110%</td><td>健康区间</td><td>不推</td></tr>
           <tr><td><span class="spec-dot" style="background:#eab308"></span>一级</td><td>110% – 130%</td><td>需关注</td><td>400 推 / 在线不推</td></tr>
           <tr><td><span class="spec-dot" style="background:#f59e0b"></span>二级</td><td>130% – 150%</td><td>需干预</td><td>400 推 / 在线不推</td></tr>
-          <tr><td><span class="spec-dot" style="background:#ef4444"></span>三级</td><td>≥ 150%</td><td>告急</td><td><b>均推送</b></td></tr>
+          <tr><td><span class="spec-dot" style="background:#ef4444"></span>三级</td><td>≥ 150%</td><td>告急</td><td>400 推 / 在线不推</td></tr>
         </tbody>
       </table>
       <ul>
-        <li>400 呼入：<b>一级起推</b>；在线接待：<b>三级才推</b>（低负荷期避免打扰）</li>
+        <li>400 呼入、客诉工单：<b>一级起推</b>；在线接待：<b>暂不推送</b>（看板照常展示档位，仅不发飞书）</li>
         <li>飞书推送带 <b>30 分钟冷却</b>，同对象同档位 30 分钟内不重复推送</li>
       </ul>
     </div>
