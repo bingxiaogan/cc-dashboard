@@ -1099,6 +1099,10 @@ async function fillTopOptions() {
 load();
 setInterval(() => { if ($('ccRef').checked) { loadCC(); loadHalf(); loadAlerts(); } }, 90000);      // 实时数据 90s（含 400 半小时）
 setInterval(() => { if ($('tkRef').checked) loadTicket(); }, 7200000); // 工单数据 2h
+// 趋势图补刷（2026-09-11）：此前 loadTrend / loadTicketTrend 只在页面打开时执行一次，
+// 页面不关就一直显示打开那一刻的快照 → 用户看到的「趋势不刷新」。改为每 10 分钟重读。
+setInterval(() => { if ($('ccRef').checked) loadTrend(); }, 600000);        // 进线量趋势 10min
+setInterval(() => { if ($('tkRef').checked) loadTicketTrend(); }, 600000);  // 工单量级趋势 10min
 </script>
 </body>
 </html>
