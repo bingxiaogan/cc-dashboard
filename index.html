@@ -497,14 +497,17 @@ details[open] summary { color:var(--accent); }
 </div>
 
 <script>
+// 缓存击穿：GitHub Pages 的 CDN/浏览器会给 JSON 打 ~10 分钟缓存，
+// 不加时间戳会导致看板「数字一直不变」（2026-09-11 用户报障根因）
+const bust = u => u + (u.indexOf('?') >= 0 ? '&' : '?') + '_t=' + Date.now();
 let ccData = null, tkData = null;
 const $ = id => document.getElementById(id);
 
 async function loadCC() {
   // 客服实时：公网/本地 http 用同目录 stats.json；file:// 直接打开时 fallback 本机 8601
-  try { ccData = await fetch('stats.json').then(r => r.json()); }
+  try { ccData = await fetch(bust('stats.json'), { cache: 'no-store' }).then(r => r.json()); }
   catch (e) {
-    try { ccData = await fetch('http://127.0.0.1:8601/stats.json').then(r => r.json()); }
+    try { ccData = await fetch(bust('http://127.0.0.1:8601/stats.json'), { cache: 'no-store' }).then(r => r.json()); }
     catch (e2) { $('mCcTime').textContent = '获取失败'; }
   }
   renderCC();
@@ -512,9 +515,9 @@ async function loadCC() {
 
 async function loadTicket() {
   // 工单数据：本地走 /ticket-stats 代理，公网 fallback 到同目录 ticket_stats.json
-  try { tkData = await fetch('/ticket-stats').then(r => r.json()); }
+  try { tkData = await fetch(bust('/ticket-stats'), { cache: 'no-store' }).then(r => r.json()); }
   catch (e) {
-    try { tkData = await fetch('ticket_stats.json').then(r => r.json()); }
+    try { tkData = await fetch(bust('ticket_stats.json'), { cache: 'no-store' }).then(r => r.json()); }
     catch (e2) { $('mTkTime').textContent = '获取失败'; }
   }
   renderTicket();
@@ -537,7 +540,7 @@ function switchHalf(tab) {
 async function loadHalf() {
   const isChat = hhTab === 'chat';
   try {
-    hhData = await fetch(HH_FILES[hhTab]).then(r => r.json());
+    hhData = await fetch(bust(HH_FILES[hhTab]), { cache: 'no-store' }).then(r => r.json());
     const n = (hhData.slots || []).length;
     $('hhMeta').textContent = `${isChat ? '技能组时间趋势 · 分类在线技能组' : '呼入时间趋势 · 400 三线'} · ${hhData.date || ''} · 更新 ${hhData.collectedAtCn || ''}`;
     $('hhDot').style.background = isChat ? '#3ddc84' : '#5da8ff';
@@ -632,7 +635,7 @@ const TR_CFG = {
 };
 async function loadTrend() {
   try {
-    trData = await fetch('daily_trend.json').then(r => r.json());
+    trData = await fetch(bust('daily_trend.json'), { cache: 'no-store' }).then(r => r.json());
     renderTrend();
   } catch (e) { $('trMeta').textContent = '趋势数据暂不可用（build_daily_trend.py 未生成）'; }
 }
@@ -750,7 +753,7 @@ const AL_NAME = { c400d: '📞 400呼入·日', c400w: '📞 400呼入·周', on
 const AL_LVNAME = { '-1': '无数据', '0': '低负荷', '1': '正常', '2': '一级', '3': '二级', '4': '三级' };
 async function loadAlerts() {
   try {
-    const d = await fetch('alert_state.json').then(r => r.json());
+    const d = await fetch(bust('alert_state.json'), { cache: 'no-store' }).then(r => r.json());
     renderAlerts(d);
   } catch (e) {
     const el = $('alRow'); if (el) el.innerHTML = '<div class="empty">预警模块未运行（alert_eval.js）</div>';
@@ -792,7 +795,7 @@ const TT_QCOL = { new: '#f59e0b', stock: '#f87171', done: '#3ddc84' };
 const TT_QNOTE = { new: '升级=当日创建', stock: '库存=遗留(前日+升级-处理)', done: '处理=当日结案' };
 async function loadTicketTrend() {
   try {
-    ttData = await fetch('ticket_trend.json').then(r => r.json());
+    ttData = await fetch(bust('ticket_trend.json'), { cache: 'no-store' }).then(r => r.json());
     renderTicketTrend();
   } catch (e) { $('ttMeta').textContent = '工单量级数据暂不可用'; }
 }
@@ -1071,7 +1074,7 @@ $('fBiz').onchange = () => {
 
 async function fillTopOptions() {
   try {
-    const t = await fetch('/ticket-stats').then(r => r.json()).catch(() => fetch('ticket_stats.json').then(r => r.json()));
+    const t = await fetch(bust('/ticket-stats'), { cache: 'no-store' }).then(r => r.json()).catch(() => fetch(bust('ticket_stats.json'), { cache: 'no-store' }).then(r => r.json()));
     const tops = Object.keys(t.complaint_by_top || {});
     $('fTop').innerHTML = '<option>全部</option>' + tops.map(k => `<option>${esc(k)}</option>`).join('');
   } catch (e) {}
