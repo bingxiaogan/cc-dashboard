@@ -860,7 +860,7 @@ function renderAlerts(d) {
     if (v.un != null) bits.push('未分配 ' + v.un + ' 单');
     if (v.stock != null) bits.push('库存 ' + v.stock + ' 单');
     const muted = !!o.muted;   // 在线预警已停用：只算状态，不推飞书、也不显示推送门槛字样
-    const minLv = o.minLevel != null ? o.minLevel : 2;   // 推送门槛（2=一级起推，4=三级才推）
+    const minLv = o.minLevel != null ? o.minLevel : 2;   // 推送门槛参数（2=一级起推，4=三级起推；在线已停用 → 99）
     let note = '';
     // 仅当门槛有效且高于一级时才提示；停用/静默状态下完全不出现注记（2026-09-11 在线停用预警）
     const minName = AL_LVNAME[minLv];
