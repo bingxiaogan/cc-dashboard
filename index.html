@@ -1103,6 +1103,19 @@ setInterval(() => { if ($('tkRef').checked) loadTicket(); }, 7200000); // 工单
 // 页面不关就一直显示打开那一刻的快照 → 用户看到的「趋势不刷新」。改为每 10 分钟重读。
 setInterval(() => { if ($('ccRef').checked) loadTrend(); }, 600000);        // 进线量趋势 10min
 setInterval(() => { if ($('tkRef').checked) loadTicketTrend(); }, 600000);  // 工单量级趋势 10min
+// 页面版本自检（2026-09-11）：本地 HTML 被改动（如取数口径新增小节）时自动重载。
+// 此前标签页长期不关 → 静态内容（含取数口径）永远停在打开那一刻，用户以为「没更新」。
+let __pgTag = null;
+async function checkPageVersion() {
+  try {
+    const r = await fetch(location.pathname + '?_v=' + Date.now(), { method: 'HEAD', cache: 'no-store' });
+    const tag = r.headers.get('etag') || r.headers.get('last-modified');
+    if (!tag) return;
+    if (__pgTag === null) { __pgTag = tag; return; }   // 首次只记基线，不重载
+    if (tag !== __pgTag) location.reload();
+  } catch (e) {}
+}
+setInterval(checkPageVersion, 180000);   // 3 分钟查一次
 </script>
 </body>
 </html>
