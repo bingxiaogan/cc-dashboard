@@ -271,7 +271,7 @@ details[open] summary { color:var(--accent); }
 
 <!-- 运能负荷 -->
 <div class="card" style="margin-bottom:16px;">
-  <h3><span class="dot" style="background:var(--amber)"></span>⚡ 运能负荷 <span class="extra" id="capDate">进线量 ÷ 当前应接量（400 130单/人/天·两端半量；在线 班表工时×35单/人/时·09:00-21:00）</span></h3>
+  <h3><span class="dot" style="background:var(--amber)"></span>⚡ 运能负荷 <span class="extra" id="capDate">进线量 ÷ 当前应接量（400 130单/人/天·两端半量；在线 班表工时×30单/人/时·09:00-21:00）</span></h3>
   <div class="stats">
     <div class="stat-block"><div class="num blue" id="cp400">--</div><div class="lbl">📞 400 当日负荷</div><div class="pct" id="cp400d">进线 -- / 应接 --</div></div>
     <div class="stat-block"><div class="num green" id="cpOn">--</div><div class="lbl">💬 在线当日负荷</div><div class="pct" id="cpOnd">进线 -- / 应接 --</div></div>
@@ -413,7 +413,7 @@ details[open] summary { color:var(--accent); }
         <li>人效基准 <b>35 单/人/小时</b>；在班窗口 <b>09:00–21:00</b></li>
         <li>工时来源：飞书「9月班表」逐日解析，<b>单元格数字即出勤小时</b></li>
         <li><b>带教 / 考核新人同样计入</b>（如「带-8」= 带教 8 小时），按 35 单/小时折算</li>
-        <li class="spec-code">应接 = Σ 每人 min(在岗小时, 已过窗口小时) × 35</li>
+        <li class="spec-code">应接 = Σ 每人 min(在岗小时, 已过窗口小时) × 30</li>
         <li class="spec-note">例：3 人 9:00 到岗，10:00 时已过 3 人·小时 → 应接 105 单；至 21:00 收敛为全天 30 人·小时 → 1050 单</li>
       </ul>
       <p class="spec-sub">进线量口径</p>
@@ -869,7 +869,7 @@ function renderCC() {
   $('offOnlineList').innerHTML = offOnline.map(n => `<span class="name-chip off">${esc(n)}</span>`).join('') || '<span class="name-chip dim">全员出勤</span>';
   // 运能负荷
   const cp = ccData.capacity || {};
-  $('capDate').textContent = (cp.date || '') + ' · 进线量 ÷ 当前应接量（400 130单/人/天·两端半量；在线 班表工时×35单/人/时·09:00-21:00）';
+  $('capDate').textContent = (cp.date || '') + ' · 进线量 ÷ 当前应接量（400 130单/人/天·两端半量；在线 班表工时×30单/人/时·09:00-21:00）';
   $('cp400').textContent = cp.load400 != null ? cp.load400 + '%' : '--';
   $('cp400d').textContent = cp.in400 != null ? `进线 ${cp.in400} / 应接 ${cp.cap400}（${cp.p400}人）` : '--';
   $('cpOn').textContent = cp.loadOn != null ? cp.loadOn + '%' : '--';
