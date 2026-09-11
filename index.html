@@ -290,6 +290,22 @@ details[open] summary { color:var(--accent); }
   <div class="di-note" id="trNote"></div>
 </div>
 
+<!-- 在线运能趋势（日维度：负荷% + 进线/应接） -->
+<div class="sec"><div class="bar"></div>
+  <h2>⚡ 在线运能趋势<span class="seg" id="ctSeg">
+    <button class="seg-btn on" data-tab="on" onclick="switchCap('on')">💬 在线</button>
+    <button class="seg-btn" data-tab="t400" onclick="switchCap('400')">📞 400</button>
+  </span></h2>
+  <span class="hint" id="ctMeta">加载中</span>
+</div>
+<div class="card" style="margin-bottom:16px;">
+  <h3><span class="dot" style="background:#a78bfa"></span><span id="ctTitle">💬 在线日负荷</span>
+    <span class="extra" style="margin-left:auto">柱=负荷% · 虚线=100%</span>
+  </h3>
+  <div id="ctChart" style="width:100%;height:230px;"></div>
+  <div class="di-note" id="ctNote"></div>
+</div>
+
 <!-- 工单量级日记录（切片器：类型 × 升级/库存/处理 · 单图） -->
 <div class="sec"><div class="bar"></div>
   <h2>🗂 工单量级<span class="seg" id="ttSeg">
@@ -379,7 +395,7 @@ async function loadTicket() {
 }
 
 async function load() {
-  await Promise.all([loadCC(), loadTicket(), loadHalf(), loadTrend(), loadTicketTrend(), loadAlerts()]);
+  await Promise.all([loadCC(), loadTicket(), loadHalf(), loadTrend(), loadTicketTrend(), loadAlerts(), loadCapTrend()]);
 }
 
 /* ===== 时段量级（400 电话 / 在线会话 半小时） ===== */
@@ -520,7 +536,11 @@ function drawTrendBars(el, items, color) {
     svg += `<text class="di-axis" x="${PL - 6}" y="${y + 3}" text-anchor="end">${yv.toLocaleString()}</text>`;
   }
   const showAt = new Set();
-  for (let i = 0; i < n; i++) if (i % Math.ceil(n / (Math.min(n, 12)))) showAt.add(i);
+  // 标签自适应：先按容量算步长，确保相邻标签间距 >= 每字约 6.5px
+  const labW = Math.max(...items.map(it => String(it.label).length), 1) * 6.5 + 6;
+  const maxLab = Math.max(Math.floor(iw / labW), 1);
+  const step = Math.max(Math.ceil(n / Math.min(n, maxLab)), 1);
+  for (let i = 0; i < n; i++) if (i % step === 0) showAt.add(i);
   showAt.add(0); showAt.add(n - 1);
   items.forEach((it, i) => {
     const cx = PL + slotW * i + slotW / 2;
@@ -530,7 +550,7 @@ function drawTrendBars(el, items, color) {
       svg += `<title>${it.label} · ${it.v.toLocaleString()}${it.tip ? ' · ' + it.tip : ''}</title>`;
       svg += `<rect x="${cx - bw / 2}" y="${yT}" width="${bw}" height="${PT + ih - yT}" rx="1.5" fill="${color}" opacity="${isLast ? 1 : .82}"/>`;
     }
-    if (showAt.has(i) || slotW > 26) svg += `<text class="di-axis" x="${cx}" y="${H - 8}" text-anchor="middle" font-size="10">${it.label}</text>`;
+    if (showAt.has(i)) svg += `<text class="di-axis" x="${cx}" y="${H - 8}" text-anchor="middle" font-size="10">${it.label}</text>`;
     if (isLast && items.length > 1 && it.v != null) {
       svg += `<text class="di-last" fill="#ffd76a" x="${cx}" y="${Math.max(yAt(it.v) - 4, PT + 8)}" text-anchor="middle" font-size="10.5">${it.v.toLocaleString()}</text>`;
     }
@@ -565,14 +585,17 @@ function renderTrend() {
       (l1 != null && series[prev] ? `<span>较昨日 <b style="color:${l1 >= series[prev] ? 'var(--red)' : 'var(--green)'}">${l1 - series[prev] >= 0 ? '+' : ''}${(l1 - series[prev]).toLocaleString()}</b></span>` : '') +
       `<span style="opacity:.6">近 31 天 · 今日为实时累计，21:50 后固化</span>`;
   } else if (trTab === 'week') {
-    const win = weeks.slice(-14);
+    // 周视图只展示「有数据」的周（早期周 online 为 0/无来源，画出来是空柱反而干扰）
+    const hasData = weeks.filter(w => w[dk] != null && w[dk] > 0);
+    const win = hasData.slice(-26);
     items = win.map(w => ({ label: w.label, v: w[dk] != null ? w[dk] : null,
       tip: w[dkw] != null ? '环比 ' + (w[dkw] >= 0 ? '+' : '') + w[dkw] + '%' : '' }));
-    const wl = weeks[weeks.length - 1], wl2 = weeks[weeks.length - 2];
+    const wl = hasData[hasData.length - 1] || weeks[weeks.length - 1];
+    const wl2 = hasData[hasData.length - 2];
     note = trendChip('本周', wl[dk], wl[dkw] != null ? `周环比 ${wl[dkw] >= 0 ? '+' : ''}${wl[dkw]}%` : null) +
       (wl2 && wl2[dk] != null ? trendChip('上周', wl2[dk]) : '') +
       trendChip('本周已过', wl.days, '天') +
-      `<span style="opacity:.6">周 = 周一~周日 · 近 14 周</span>`;
+      `<span style="opacity:.6">周 = 周一~周日 · 共 ${hasData.length} 周</span>`;
   } else {
     const win = months.slice(-9);
     items = win.map(m => ({ label: m.m, v: m[dk] != null ? m[dk] : null,
@@ -590,6 +613,81 @@ function renderTrend() {
     `数据截至 ${trData.days && trData.days[trData.days.length - 1]} · 400 覆盖 ${Object.keys(c400).length} 天（8-9月报表 ${cc.feishu || 0} / 历史报表 ${cc.xlsx || 0} / 实时 ${cc.half || 0} / 快照 ${cc.cap || 0}）` +
     ` · 在线覆盖 ${Object.keys(onl).length} 天（8-9月报表 ${oc.feishu || 0} / 实时 ${oc.half || 0} / 快照 ${oc.cap || 0}）` +
     (trData.meta && trData.meta.updated ? ` · 封存 ${trData.meta.updated.slice(5, 16)}` : '');
+}
+
+/* ===== 运能趋势（日维度：负荷% + 进线/应接） ===== */
+let ctData = null;
+let ctMode = 'on';
+async function loadCapTrend() {
+  try {
+    ctData = await fetch('capacity_hist.json').then(r => r.json());
+    renderCapTrend();
+  } catch (e) { $('ctMeta').textContent = '运能趋势暂不可用（capacity_hist.json 缺失）'; }
+}
+function switchCap(mode) {
+  ctMode = String(mode);
+  document.querySelectorAll('#ctSeg .seg-btn').forEach(b => b.classList.toggle('on', b.dataset.tab === ctMode));
+  renderCapTrend();
+}
+function renderCapTrend() {
+  const el = $('ctChart');
+  if (!ctData) { el.innerHTML = '<div class="empty">暂无运能数据</div>'; return; }
+  const isOn = ctMode === 'on';
+  const keys = Object.keys(ctData).sort();
+  const win = keys.slice(-30);          // 近 30 天
+  const rows = win.map(k => {
+    const d = ctData[k] || {};
+    const inflow = isOn ? (d.inOn || 0) : (d.in400 || 0);
+    const exp = isOn ? (d.expOnDay || d.expOn || 0) : (d.exp400 || 0);
+    const load = (exp > 0 && inflow > 0) ? +(inflow / exp * 100).toFixed(1) : null;
+    return { k, inflow, exp, load };
+  });
+  $('ctTitle').textContent = isOn ? '💬 在线日负荷' : '📞 400 日负荷';
+  const el2 = $('ctChart');
+  const W = el2.clientWidth || 1100, H = 230, PL = 46, PR = 14, PT = 16, PB = 26;
+  const iw = W - PL - PR, ih = H - PT - PB;
+  const vals = rows.map(r => r.load).filter(v => v != null);
+  const mx = Math.max(...vals, 100) * 1.15;
+  const n = rows.length, slotW = iw / n;
+  const bw = Math.max(Math.min(slotW * 0.62, 30), 3);
+  const yAt = v => PT + ih - (v / mx) * ih;
+  // 负荷配色：<90 绿(富余) / 90-110 蓝(正常) / 110-130 黄(一级) / 130-150 橙(二级) / >=150 红(三级)
+  const colorOf = v => v == null ? '#4a5568' : (v >= 150 ? '#ef4444' : v >= 130 ? '#f59e0b' : v >= 110 ? '#eab308' : v >= 90 ? '#5da8ff' : '#3ddc84');
+  let svg = `<svg class="di-chart-svg" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">`;
+  for (let f = 0; f <= 4; f++) {
+    const yv = Math.round(mx / 4 * f);
+    const y = yAt(yv);
+    svg += `<line class="di-grid" x1="${PL}" y1="${y}" x2="${W - PR}" y2="${y}"/>`;
+    svg += `<text class="di-axis" x="${PL - 6}" y="${y + 3}" text-anchor="end">${yv}%</text>`;
+  }
+  // 100% 参考线
+  const y100 = yAt(100);
+  svg += `<line x1="${PL}" y1="${y100}" x2="${W - PR}" y2="${y100}" stroke="#ffd76a" stroke-width="1" stroke-dasharray="4 3" opacity=".75"/>`;
+  svg += `<text x="${W - PR}" y="${y100 - 4}" text-anchor="end" fill="#ffd76a" font-size="9.5" opacity=".8">100%</text>`;
+  const showAt = new Set();
+  const labW = 40, maxLab = Math.max(Math.floor(iw / labW), 1);
+  const step = Math.max(Math.ceil(n / Math.min(n, maxLab)), 1);
+  for (let i = 0; i < n; i++) if (i % step === 0) showAt.add(i);
+  showAt.add(0); showAt.add(n - 1);
+  rows.forEach((r, i) => {
+    const cx = PL + slotW * i + slotW / 2;
+    if (r.load != null) {
+      const yT = yAt(r.load);
+      svg += `<title>${r.k} · 负荷 ${r.load}% · 进线 ${r.inflow} / 应接 ${r.exp}</title>`;
+      svg += `<rect x="${cx - bw / 2}" y="${yT}" width="${bw}" height="${PT + ih - yT}" rx="1.5" fill="${colorOf(r.load)}" opacity=".88"/>`;
+      svg += `<text x="${cx}" y="${Math.max(yT - 3, PT + 8)}" text-anchor="middle" font-size="9" fill="#cbd5e1">${r.load}</text>`;
+    }
+    if (showAt.has(i)) svg += `<text class="di-axis" x="${cx}" y="${H - 8}" text-anchor="middle" font-size="10">${r.k.slice(5)}</text>`;
+  });
+  svg += '</svg>';
+  el.innerHTML = svg;
+  const last = rows.filter(r => r.load != null).slice(-1)[0];
+  const avg = vals.length ? +(vals.reduce((a, b) => a + b, 0) / vals.length).toFixed(1) : null;
+  $('ctNote').innerHTML =
+    (last ? trendChip('最新', last.load + '%', `${last.k.slice(5)} · 进线 ${last.inflow} / 应接 ${last.exp}`) : '') +
+    (avg != null ? trendChip('均值', avg + '%', `${vals.length} 天`) : '') +
+    `<span style="opacity:.6">口径：进线量 ÷ 已过人·小时×35（在线）/ 应接量（400） · 近 30 天</span>`;
+  $('ctMeta').textContent = `共 ${keys.length} 天快照（${keys[0]} ~ ${keys[keys.length - 1]}） · 每日随采集刷新`;
 }
 
 /* ===== 分级预警状态（alert_state.json · 90s 随实时刷新） ===== */
@@ -928,7 +1026,7 @@ async function fillTopOptions() {
 }
 
 load();
-setInterval(() => { if ($('ccRef').checked) { loadCC(); loadHalf(); loadAlerts(); } }, 90000);      // 实时数据 90s（含 400 半小时）
+setInterval(() => { if ($('ccRef').checked) { loadCC(); loadHalf(); loadAlerts(); loadCapTrend(); } }, 90000);      // 实时数据 90s（含 400 半小时）
 setInterval(() => { if ($('tkRef').checked) loadTicket(); }, 7200000); // 工单数据 2h
 </script>
 </body>
