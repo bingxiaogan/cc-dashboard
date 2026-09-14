@@ -110,6 +110,32 @@
   <span class="hint" id="hint"></span>
 </section>
 
+<h2>当日总览</h2>
+<div class="kpis" id="kpis"></div>
+
+<h2>每日时段预测</h2>
+<div class="panel">
+  <div class="legend">
+    <span><i style="background:#60a5fa"></i>需求人力</span>
+    <span><i style="background:#64748b"></i>当班人力</span>
+    <span><i style="background:#f87171"></i>缺口 ≥1 人</span>
+  </div>
+  <div id="chart"></div>
+</div>
+
+<h2>人力调控建议</h2>
+<div class="panel advice" id="advice"></div>
+
+<h2>时段明细</h2>
+<div class="panel">
+  <div class="gtsw">
+    <button data-g="hour" class="on" id="gHour">按小时</button>
+    <button data-g="half" id="gHalf">按半小时</button>
+    <span style="align-self:center;color:var(--dim);font-size:12px" id="grainNote"></span>
+  </div>
+  <div class="tblwrap"><table id="tbl"></table></div>
+</div>
+
 <h2>未来排班计划 · 每日进线量与所需人力</h2>
 <div class="panel">
   <div class="planhead">
@@ -126,32 +152,6 @@
       </select></label>
   </div>
   <div class="tblwrap" style="max-height:430px"><table id="planTbl"></table></div>
-</div>
-
-<h2>当日总览</h2>
-<div class="kpis" id="kpis"></div>
-
-<h2>半小时人力对比</h2>
-<div class="panel">
-  <div class="legend">
-    <span><i style="background:#60a5fa"></i>需求人力</span>
-    <span><i style="background:#64748b"></i>当班人力</span>
-    <span><i style="background:#f87171"></i>缺口 ≥2 人</span>
-  </div>
-  <div id="chart"></div>
-</div>
-
-<h2>人力调控建议</h2>
-<div class="panel advice" id="advice"></div>
-
-<h2>时段明细</h2>
-<div class="panel">
-  <div class="gtsw">
-    <button data-g="hour" class="on" id="gHour">按小时</button>
-    <button data-g="half" id="gHalf">按半小时</button>
-    <span style="align-self:center;color:var(--dim);font-size:12px" id="grainNote"></span>
-  </div>
-  <div class="tblwrap"><table id="tbl"></table></div>
 </div>
 
 <footer id="foot"></footer>
