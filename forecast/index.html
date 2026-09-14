@@ -50,6 +50,9 @@
   /* 「实际」卡：顶条用折线图的实际线同色（黄），数值不变色 */
   .kpi.act::before{background:var(--warn)}
   .kpi .kn{font-size:11px;color:var(--dim);margin-top:2px}
+  /* KPI 分组小标题（跨整行，右侧带分隔线） */
+  .kpi-sep{grid-column:1/-1;display:flex;align-items:center;gap:9px;font-size:11.5px;color:var(--dim);letter-spacing:.03em;margin:3px 0 -3px}
+  .kpi-sep::after{content:'';flex:1;height:1px;background:var(--line)}
 
   .panel{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
 
@@ -279,9 +282,10 @@ function actualTurnMap(dateStr) {
   return (d && typeof d === 'object') ? d : null;
 }
 
-// 某日「实际」汇总（供 KPI 卡）：{ inbound, turn, partial, last }
+// 某日「实际」汇总（供 KPI 卡）：{ inbound, turn, partial, first, last }
 //   当日 = 实时采集 call_halfhour.json（含进线量 total 与 IVR）→ inbound 可用，partial=true（当天未完）
 //   历史 = hh_actual.json（只有转人工量）→ inbound = null
+//   ⚠️ first/last = 实际数据覆盖的**首/末时段起始时刻**，预测截断要按这个窗口对齐（报表窗口常为 09:00 起）
 function actualLiveSum(dateStr) {
   if (HH_LIVE && HH_LIVE.date === dateStr && Array.isArray(HH_LIVE.slots) && HH_LIVE.slots.length) {
     let inbound = 0, turn = 0;
@@ -290,16 +294,34 @@ function actualLiveSum(dateStr) {
       inbound += t;
       turn += t - (Number(s.ivr) || 0);
     });
-    const last = HH_LIVE.slots[HH_LIVE.slots.length - 1];
-    return { inbound, turn, partial: true, last: (slotLabel(last.t) || '').slice(0, 5) };
+    const f = HH_LIVE.slots[0], l = HH_LIVE.slots[HH_LIVE.slots.length - 1];
+    return { inbound, turn, partial: true,
+             first: (slotLabel(f.t) || '').slice(0, 5),
+             last:  (slotLabel(l.t) || '').slice(0, 5) };
   }
   const d = HH_ACT && HH_ACT.days && HH_ACT.days[dateStr];
   if (d && typeof d === 'object') {
     let turn = 0;
     for (const v of Object.values(d)) turn += Number(v) || 0;
-    return { inbound: null, turn, partial: false, last: '' };
+    return { inbound: null, turn, partial: false, first: '', last: '' };
   }
   return null;
+}
+
+// 预测累计到「与实际**同一窗口**」：只累加起始时刻落在 [fromLabel, toLabel] 内的半小时段。
+//   ⚠️ 用户 2026-09-14 口径：当日总览的预测量必须与实际采集同窗口，否则看不出高/低估。
+//   ⚠️ 必须同时卡两端：报表窗口常见 09:00 起（08:00–09:00 无实际），只卡右端会多算早盘造成「假高估」。
+//      全天预测量另设一组卡单独展示（整体口径）。
+function predictTo(res, fromLabel, toLabel) {
+  if (!toLabel) return null;
+  let inbound = 0, turn = 0, n = 0;
+  res.slots.forEach(s => {
+    const k = String(s.t).slice(0, 5);          // 'HH:MM'（零填充，可直接字符串比较）
+    if (fromLabel && k < fromLabel) return;
+    if (k > toLabel) return;
+    inbound += s.inbound; turn += s.turn; n++;
+  });
+  return n ? { inbound, turn, n } : null;
 }
 
 // ── 预测：与 forecast/build_400_forecast.py 的 build() 完全同构 ──
@@ -438,7 +460,8 @@ function scObj(title, day, week) {
 }
 function scHtml() {
   const ob = (ALERT && ALERT.objects) || {};
-  return scObj('📞 400 电话', ob.c400d, ob.c400w) + scObj('💬 在线接待', ob.onld, ob.onlw);
+  // 本页只做 400（用户 2026-09-14：在线暂不做预测，在线预警仍看主看板）
+  return scObj('📞 400 电话', ob.c400d, ob.c400w);
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -509,27 +532,44 @@ function renderAdvice(res) {
 function render(res) {
   RES = res;
 
-  // ── KPI：只保留 进线量 / 人工进线量 的 预估 vs 实际（订单量、咨询比移至页脚说明）──
+  // ── KPI：① 全天预估（整体口径，单独放最前）② 与实际同窗口的 预估 vs 实际 ──
+  //   用户 2026-09-14 口径：实际采到几点，预测量就截到几点（左右两端都对齐），否则看不出高估/低估。
   const act = actualLiveSum(res.dateStr);
-  const partly = act && act.partial && act.last ? '（截至 ' + act.last + '）' : '';
-  const actNote = act && act.partial
-    ? '同源当日实时采集' + partly
-    : (act ? '历史归档' : '该日无实时数据');
+  const live = !!(act && act.partial && act.last);                  // 当日实时（当天未完）
+  const wFrom = live ? act.first : null, wTo = live ? act.last : null;
+  const pCut = live ? predictTo(res, wFrom, wTo) : null;             // 预测截到同一窗口
+  const pIn = pCut ? pCut.inbound : res.IN;
+  const pTr = pCut ? pCut.turn : res.TR;
+  const winTag = live ? (wFrom && wFrom !== wTo ? wFrom + '–' + wTo : '截至 ' + wTo) : '全天';
+  const actNote = live
+    ? '同源当日实时采集（' + wFrom + '–' + wTo + '，含 IVR）'
+    : (act ? '历史归档（全天）' : '该日无实时数据');
+  // 预测 vs 实际 偏差：正值 = 预测高于实际（高估），负值 = 预测低于实际（低估）
+  const dev = (p, a) => (a != null && a > 0) ? (p / a - 1) * 100 : null;
+  const devNote = v => v == null ? ''
+    : '　<b style="color:' + (Math.abs(v) < 3 ? 'var(--dim)' : (v > 0 ? 'var(--warn)' : 'var(--good)')) + '">' +
+      (v > 0 ? '高估' : '低估') + ' ' + Math.abs(v).toFixed(1) + '%</b>';
   $('kpis').innerHTML = [
-    card('预估进线量', fmt(res.IN), '通'),
+    '<div class="kpi-sep">全天预估 · 整体口径（看总量，不参与对比）</div>',
+    card('全天预估进线量', fmt(res.IN), '通', '', '模型全天口径'),
+    card('全天预估人工进线量', fmt(res.TR), '通', '', '模型全天口径'),
+    '<div class="kpi-sep">' + (live
+      ? '当日对比 · ' + winTag + '（预估与实际同一窗口，可直接比高低）'
+      : '当日对比 · 全天口径（该日无实时分时段数据）') + '</div>',
+    card('预估进线量', fmt(pIn), '通', '', winTag + ' 预测' + devNote(dev(pIn, act && act.inbound))),
     card('实际进线量', act && act.inbound != null ? fmt(act.inbound) : '—', '通', 'act', actNote),
-    card('预估人工进线量', fmt(res.TR), '通'),
+    card('预估人工进线量', fmt(pTr), '通', '', winTag + ' 预测' + devNote(dev(pTr, act && act.turn))),
     card('实际人工进线量', act ? fmt(act.turn) : '—', '通', 'act', actNote),
   ].join('');
 
   // ── 现场调控：预警 + 按时段建议 ──
   $('scWarn').innerHTML = scHtml();
   $('scNote').innerHTML = ALERT
-    ? '预警等级按《400/在线现场调控预案》判定：<b>运能负荷</b> 分档 ' +
+    ? '本页只做 <b>400 电话</b>（在线暂不做预测，在线预警仍看主看板）。预警等级按《400/在线现场调控预案》判定：<b>运能负荷</b> 分档 ' +
       '&lt;90% 低负荷 / 90~110% 正常 / 110~130% 一级 / 130~150% 二级 / ≥150% 三级；' +
       '<b>接通率</b> ≥90% 低负荷 / 85~90% 正常 / 80~85% 一级 / 75~80% 二级 / &lt;75% 三级。' +
-      '400 为<b>双指标联动</b>——两指标须<b>同时</b>落同一档才判该档（负荷 &lt;90% <b>且</b> 接通率 ≥90% 判「低负荷」；两者都没进预警档判「正常」），在线只看负荷。<br>' +
-      '运能负荷 = 进线量 ÷ (排班人力 × 标准人效)，标准人效 <b>400 ：130 通/人/天（周 910）</b>、<b>在线 ：350 单/人/天（周 2450）</b>；' +
+      '400 为<b>双指标联动</b>——两指标须<b>同时</b>落同一档才判该档（负荷 &lt;90% <b>且</b> 接通率 ≥90% 判「低负荷」；两者都没进预警档判「正常」）。<br>' +
+      '运能负荷 = 进线量 ÷ (排班人力 × 标准人效)，标准人效 <b>400 ：130 通/人/天（周 910）</b>；' +
       '逐级采取对应措施含前置策略。<br>预警判定时间 <b>' + (ALERT.updated || '-') + '</b>。'
     : '<span class="err">未取到预警数据（alert_state.json），请确认采集器在跑。</span>';
   renderAdvice(res);
