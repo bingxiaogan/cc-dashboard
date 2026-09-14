@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>400 进线量与人力预测</title>
+<style>
+  :root{
+    --bg:#0f172a; --card:#16213a; --card2:#1c2942; --line:#253352;
+    --txt:#e2e8f0; --dim:#94a3b8; --accent:#93c5fd;
+    --need:#60a5fa; --on:#64748b; --good:#4ade80; --warn:#fbbf24; --bad:#f87171;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--txt);
+       font:14px/1.5 -apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+       padding:20px 22px 40px}
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+  header{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:6px}
+  h1{font-size:19px;margin:0;font-weight:600}
+  .sub{color:var(--dim);font-size:12px;margin:2px 0 16px}
+  .sub b{color:var(--accent);font-weight:600}
+  .back{font-size:12px;color:var(--dim);margin-left:auto}
+
+  .ctrl{background:var(--card);border:1px solid var(--line);border-radius:10px;
+        padding:14px 16px;display:flex;gap:18px;align-items:flex-end;flex-wrap:wrap}
+  .ctrl label{display:flex;flex-direction:column;gap:5px;font-size:12px;color:var(--dim)}
+  .ctrl input{background:var(--card2);border:1px solid var(--line);border-radius:7px;
+              color:var(--txt);padding:8px 10px;font-size:14px;font-family:inherit;outline:none}
+  .ctrl input:focus{border-color:var(--accent)}
+  .ctrl input[type=number]{width:150px}
+  .ctrl button{background:var(--accent);color:#0b1220;border:0;border-radius:7px;
+               padding:9px 22px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit}
+  .ctrl button:hover{filter:brightness(1.08)}
+  .ctrl .hint{font-size:12px;color:var(--dim);align-self:center}
+  .ctrl .hint b{color:var(--accent)}
+
+  h2{font-size:13px;color:var(--dim);font-weight:600;margin:24px 0 10px;
+     letter-spacing:.04em;text-transform:uppercase}
+
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(132px,1fr));gap:10px}
+  .kpi{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:11px 13px;position:relative;overflow:hidden}
+  .kpi::before{content:'';position:absolute;inset:0 0 auto 0;height:3px;background:var(--accent);opacity:.85}
+  .kpi .k{font-size:11px;color:var(--dim);margin-bottom:3px}
+  .kpi .v{font-size:20px;font-weight:600;line-height:1.2}
+  .kpi .u{font-size:11px;color:var(--dim);margin-left:3px;font-weight:400}
+  .kpi.good::before{background:var(--good)} .kpi.good .v{color:var(--good)}
+  .kpi.bad::before{background:var(--bad)}   .kpi.bad .v{color:var(--bad)}
+  .kpi.warn::before{background:var(--warn)} .kpi.warn .v{color:var(--warn)}
+
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+  .advice{font-size:14px;line-height:1.75}
+  .advice .t{font-weight:600;margin-bottom:2px}
+  .advice .d{color:var(--dim)}
+  .advice .ln{margin-top:6px}
+
+  .legend{display:flex;gap:16px;font-size:12px;color:var(--dim);margin:2px 0 8px}
+  .legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:-1px}
+  .gtsw{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap}
+  .gtsw button{background:var(--card2);border:1px solid var(--line);color:var(--dim);
+               border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;font-family:inherit}
+  .gtsw button:hover{border-color:var(--accent)}
+  .gtsw button.on{background:var(--accent);color:#0b1220;border-color:var(--accent);font-weight:600}
+
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th,td{padding:7px 8px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
+  th{color:var(--dim);font-weight:500;font-size:11px;text-align:right;position:sticky;top:0;background:var(--card)}
+  th:first-child,td:first-child{text-align:left}
+  tbody tr:hover{background:var(--card2)}
+  td.gap-bad{color:var(--bad);font-weight:600}
+  td.gap-good{color:var(--good)}
+  td.load-hot{color:var(--warn);font-weight:600}
+  .tblwrap{max-height:340px;overflow:auto;border-radius:8px}
+  details summary{cursor:pointer;color:var(--dim);font-size:12px;padding:6px 0;outline:none}
+  details[open] summary{margin-bottom:6px}
+  footer{margin-top:26px;color:var(--dim);font-size:12px;line-height:1.8;border-top:1px solid var(--line);padding-top:14px}
+  footer b{color:var(--accent);font-weight:600}
+  .err{color:var(--bad);font-size:13px}
+  svg{display:block;width:100%;height:auto;overflow:visible}
+
+  /* 排班计划板块 */
+  .planhead{display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+            font-size:12px;color:var(--dim);line-height:1.75;margin-bottom:10px}
+  .planhead .txt{flex:1;min-width:280px}
+  .planhead b{color:var(--accent)}
+  .planhead select{background:var(--card2);border:1px solid var(--line);color:var(--txt);
+                   border-radius:6px;padding:5px 8px;font-size:12px;font-family:inherit;outline:none}
+  .planhead select:focus{border-color:var(--accent)}
+  #planTbl tbody tr{cursor:pointer}
+  #planTbl tbody tr.sel{background:rgba(147,197,253,.13);box-shadow:inset 3px 0 0 var(--accent)}
+  #planTbl tbody tr.sel td:first-child{color:var(--accent);font-weight:600}
+  td.wk{color:var(--warn)}
+  .tip{position:fixed;pointer-events:none;background:#0b1220;border:1px solid var(--line);
+       border-radius:6px;padding:7px 10px;font-size:12px;line-height:1.6;opacity:0;
+       transition:opacity .12s;z-index:99;white-space:nowrap}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📞 400 进线量与人力预测</h1>
+  <span class="back"><a href="../">← 返回实时看板</a></span>
+</header>
+<div class="sub" id="modelSub">加载模型系数…</div>
+
+<section class="ctrl">
+  <label>目标日期<input type="date" id="dDate"></label>
+  <label>预估订单量<input type="number" id="dOrders" min="0" step="1000" placeholder="填订单量"></label>
+  <button id="btnGo">计算</button>
+  <span class="hint" id="hint"></span>
+</section>
+
+<h2>未来排班计划 · 每日进线量与所需人力</h2>
+<div class="panel">
+  <div class="planhead">
+    <span class="txt" id="planSub">加载计划表…</span>
+    <label style="display:flex;align-items:center;gap:6px">产能
+      <select id="capSel">
+        <option value="13">13 通/人/时（表内同源）</option>
+        <option value="11.6">11.6 通/人/时（实际达成）</option>
+      </select></label>
+    <label style="display:flex;align-items:center;gap:6px">当班口径
+      <select id="stfSel">
+        <option value="schedule">HR 班表</option>
+        <option value="sheet">运营分时段表</option>
+      </select></label>
+  </div>
+  <div class="tblwrap" style="max-height:430px"><table id="planTbl"></table></div>
+</div>
+
+<h2>当日总览</h2>
+<div class="kpis" id="kpis"></div>
+
+<h2>半小时人力对比</h2>
+<div class="panel">
+  <div class="legend">
+    <span><i style="background:#60a5fa"></i>需求人力</span>
+    <span><i style="background:#64748b"></i>当班人力</span>
+    <span><i style="background:#f87171"></i>缺口 ≥2 人</span>
+  </div>
+  <div id="chart"></div>
+</div>
+
+<h2>人力调控建议</h2>
+<div class="panel advice" id="advice"></div>
+
+<h2>时段明细</h2>
+<div class="panel">
+  <div class="gtsw">
+    <button data-g="hour" class="on" id="gHour">按小时</button>
+    <button data-g="half" id="gHalf">按半小时</button>
+    <span style="align-self:center;color:var(--dim);font-size:12px" id="grainNote"></span>
+  </div>
+  <div class="tblwrap"><table id="tbl"></table></div>
+</div>
+
+<footer id="foot"></footer>
+<div class="tip" id="tip"></div>
+
+<script>
+const WD = ['周一','周二','周三','周四','周五','周六','周日'];
+const $ = id => document.getElementById(id);
+const fmt = (n, d=0) => (n===null||n===undefined||isNaN(n)) ? '-' : Number(n).toLocaleString('zh-CN',{minimumFractionDigits:d,maximumFractionDigits:d});
+const bust = u => u + (u.includes('?') ? '&' : '?') + '_t=' + Date.now();
+
+let C = null;
+let RES = null;
+let CARGO = null;   // 货量预测（《风控人效预测看板》），用于自动带出订单量
+let PLAN = null;    // 排班计划表（build_plan.py → plan.json），日/小时维度 + 两套当班口径
+let CAP = 13;       // 产能基准（通/人/时），可切换 13 / 11.6
+let PLAN_MODE = 'schedule';   // 当班人力口径：schedule=HR班表 / sheet=运营分时段表
+let GRAIN = 'hour';           // 时段明细粒度：hour / half
+
+// ── 预测：与 forecast/build_400_forecast.py 的 build() 完全同构 ──
+// 当班人力：优先取计划表里「该日 × 当前口径」的逐半小时人数；缺失则回退运营分时段表同周几均值
+function planStaff(dateStr, wd) {
+  const m = PLAN && PLAN.staff_slots && PLAN.staff_slots[PLAN_MODE];
+  if (m && m[dateStr]) return m[dateStr];
+  return (C && C.staff_by_wd[String(wd)]) || {};
+}
+
+function predict(orders, dateStr) {
+  const dt = new Date(dateStr + 'T00:00:00');
+  const wd = (dt.getDay() + 6) % 7;                 // JS 周日=0 → 归一成 周一=0
+  const wdName = WD[wd];
+  const capHalf = CAP / 2;                                  // 半小时产能（通/人）
+  const R  = C.R_base / 100 * (C.R_factor[wdName] ?? 1);   // 咨询比
+  const IN = orders * R;                                    // 进线量
+  const TR = IN * C.turn_rate / 100;                        // 转人工量
+  const U  = Math.max(0.20, Math.min(0.75, C.U_a / 100 + C.U_b / 100 * IN));  // 人工处理率
+  const H  = IN * U;                                        // 人工处理量
+
+  const staff = planStaff(dateStr, wd);
+  const slots = C.shape.slots.map(t => {
+    const shareT = C.shape.share_turn[t] || 0;
+    const turnH  = TR * shareT;
+    const need   = turnH / capHalf;
+    const on     = staff[t] || 0;
+    const needI  = Math.ceil(need);
+    const onI    = on ? Math.floor(on + 0.999) : 0;
+    return {
+      t, inbound: IN * (C.shape.share_in[t] || 0), turn: turnH,
+      need, needI, on, gap: need - on, gapI: needI - onI,
+      load: on ? turnH / (on * capHalf) * 100 : null,
+      shareT
+    };
+  });
+
+  const needPh = TR / CAP;
+  const onPh   = Object.values(staff).reduce((a,b)=>a+b, 0) * 0.5;
+  const ratio  = needPh ? onPh / needPh : null;
+  return {wd, wdName, orders, dateStr, R, IN, TR, U, H, needPh, onPh, ratio, slots,
+          staffRef: C.staff_ref[String(wd)], staffSrc: PLAN_MODE === 'schedule' ? 'HR 班表' : '运营分时段表'};
+}
+
+// 半小时明细 → 小时明细（1 小时内 人时 ≡ 平均在岗人数）
+function aggregate(slots, grain) {
+  if (grain === 'half') {
+    return slots.map(s => ({label: s.t, inbound: s.inbound, turn: s.turn,
+                            need: s.need, on: s.on, gap: s.gap, gapI: s.gapI, load: s.load, n: 1}));
+  }
+  const m = new Map();
+  slots.forEach(s => {
+    const h = s.t.slice(0, 2);
+    if (!m.has(h)) m.set(h, []);
+    m.get(h).push(s);
+  });
+  return [...m.entries()].map(([h, arr]) => {
+    const inbound = arr.reduce((a,s)=>a+s.inbound, 0);
+    const turn    = arr.reduce((a,s)=>a+s.turn, 0);
+    const need    = arr.reduce((a,s)=>a+s.need, 0) * 0.5;   // 人时
+    const on      = arr.reduce((a,s)=>a+s.on,   0) * 0.5;   // 人时（=该小时平均人数）
+    const gap     = need - on;
+    const gapI    = Math.ceil(need) - Math.round(on);
+    const load    = on ? turn / (on * CAP) * 100 : null;
+    return {label: h + ':00', inbound, turn, need, on, gap, gapI, load, n: arr.length};
+  });
+}
+
+function advice(needPh, onPh, ratio, slots) {
+  let total;
+  if (!needPh || !onPh) total = '缺少排班基准，暂无法给出人力建议。';
+  else if (ratio === null) total = '排班基准缺失';
+  else if (ratio < 0.90) total = '总量缺口明显，当班仅为需求的 ' + (ratio*100).toFixed(0) + '%';
+  else if (ratio < 0.98) total = '总量略有缺口，当班为需求的 ' + (ratio*100).toFixed(0) + '%';
+  else if (ratio <= 1.08) total = '总量基本匹配，当班为需求的 ' + (ratio*100).toFixed(0) + '%';
+  else total = '总量偏余，当班为需求的 ' + (ratio*100).toFixed(0) + '%';
+
+  const over  = slots.filter(s => s.gapI >= 1).sort((a,b) => b.gapI - a.gapI);
+  const under = slots.filter(s => s.gapI <= -2).sort((a,b) => a.gapI - b.gapI);
+  const parts = [];
+  if (over.length) parts.push('缺人口 ' + Math.round(over.reduce((a,s)=>a+s.gap,0)) +
+    ' 人时，集中在 ' + over.slice(0,3).map(s=>s.t).join('、') + ' 等 ' + over.length +
+    ' 个时段（最紧 ' + over[0].t + '，少 ' + over[0].gapI + ' 人）');
+  if (under.length) parts.push('冗余 ' + Math.round(-under.reduce((a,s)=>a+s.gap,0)) +
+    ' 人时，' + under.slice(0,2).map(s=>s.t).join('、') + ' 等 ' + under.length +
+    ' 个时段可抽调（最多 ' + under[0].t + '，多 ' + (-under[0].gapI) + ' 人）');
+  return {total, dist: parts.length ? parts.join('；') : '各时段均衡，无需调整。'};
+}
+
+// ── 渲染 ──
+function render(res) {
+  RES = res;
+  const a = advice(res.needPh, res.onPh, res.ratio, res.slots);
+
+  const ratioCls = res.ratio === null ? '' : (res.ratio < 0.98 ? 'bad' : res.ratio > 1.08 ? 'good' : '');
+  const gap = res.needPh - res.onPh;
+  $('kpis').innerHTML = [
+    card('预估订单量', fmt(res.orders), '单'),
+    card('预估咨询比 R', (res.R*100).toFixed(4), '%　' + res.wdName + '因子 ' + (C.R_factor[res.wdName]).toFixed(4)),
+    card('预估进线量', fmt(res.IN), '通'),
+    card('转人工量', fmt(res.TR), '通（' + C.turn_rate.toFixed(2) + '%）'),
+    card('人工处理率 U', (res.U*100).toFixed(1), '%'),
+    card('人工处理量', fmt(res.H), '通'),
+    card('需求人力', fmt(res.needPh,1), '人时'),
+    card('当班人力', fmt(res.onPh,1), '人时'),
+    card('缺口', (gap>0?'+':'') + fmt(gap,1), gap>0?'人时（缺）':'人时（余）', gap>0?'bad':'good'),
+    card('当班/需求', res.ratio===null?'-':(res.ratio*100).toFixed(0), '%', ratioCls),
+  ].join('');
+
+  $('advice').innerHTML =
+    '<div class="t">' + a.total + '</div><div class="ln d">' + a.dist + '</div>' +
+    '<div class="ln d" style="font-size:12px">口径：需求人力 = 转人工量 ÷ <b>' + CAP + ' 通/人/小时</b>；当班人力 = ' +
+    (res.staffSrc === 'HR 班表'
+      ? '<b>HR 班表</b>该日 400 部门总人时 ' + fmt(res.onPh, 1) + ' 人时，按历史同时段人数形状摊分到各半小时'
+      : '<b>运营分时段表</b>近 4 个同周几排班均值' + (res.staffRef ? '（基准 ' + res.staffRef + '）' : '')) + '。</div>';
+
+  drawChart(res.slots);
+  drawTable(res.slots, GRAIN);
+}
+
+// ── 未来排班计划（读 plan.json）──
+function renderPlan() {
+  const tb = $('planTbl');
+  if (!PLAN || !PLAN.days || !PLAN.days.length) {
+    $('planSub').innerHTML = '<span class="err">计划表未加载（plan.json 缺失）。请运行 <code>python forecast/build_plan.py</code></span>';
+    tb.innerHTML = '';
+    return;
+  }
+  const nFc = PLAN.days.filter(d => d.orders_src === '货量预测').length;
+  $('planSub').innerHTML = '订单量：<b>' + (PLAN.cargo_src || '风控人效预测看板') + '</b>' +
+    (PLAN.cargo_snapshot ? '（快照 ' + PLAN.cargo_snapshot + '）' : '') +
+    '　·　需求人力 = 转人工量 ÷ <b>' + CAP + ' 通/人/时</b>' +
+    '　·　当班人力 = <b>' + (PLAN_MODE === 'schedule' ? 'HR 班表' : '运营分时段表') + '</b>' +
+    '　·　' + PLAN.range.from + ' ~ ' + PLAN.range.to + ' 共 <b>' + PLAN.days.length + '</b> 天' +
+    (nFc ? '（其中 ' + nFc + ' 天为货量预测）' : '') +
+    '<br>点任意一行 → 下方「时段明细」切换到该日（可直接看到每小时进线量与所需人力）。';
+
+  let h = '<thead><tr><th>日期</th><th>周几</th><th>订单量</th><th>进线量</th><th>转人工</th>' +
+          '<th>需求人时</th><th>当班人时</th><th>缺口</th><th>当班/需求</th></tr></thead><tbody>';
+  PLAN.days.forEach(d => {
+    const need = d.turn / CAP;
+    // 当班人时按「当前口径」现算，口径切换即时生效（不用后端预计算值）
+    const sl = (PLAN.staff_slots[PLAN_MODE] || {})[d.date] || {};
+    const on = Object.values(sl).reduce((a, b) => a + b, 0) * 0.5;
+    const gap = need - on;
+    const ratio = need ? on / need * 100 : null;
+    const gc = gap >= 5 ? 'gap-bad' : (gap <= -5 ? 'gap-good' : '');
+    const rc = ratio === null ? '' : (ratio < 98 ? 'load-hot' : '');
+    const tip = (PLAN_MODE === 'schedule' && d.names && d.names.length)
+      ? ' title="当班 ' + d.names.length + ' 人：' + d.names.join('、') + '"' : '';
+    h += '<tr data-d="' + d.date + '"' + tip + '><td>' + d.date.slice(5) + '</td>' +
+         '<td class="' + (/六|日/.test(d.wd) ? 'wk' : '') + '">' + d.wd + '</td>' +
+         '<td>' + fmt(d.orders) + '</td><td>' + fmt(d.inbound) + '</td><td>' + fmt(d.turn) + '</td>' +
+         '<td>' + need.toFixed(1) + '</td><td>' + on.toFixed(1) + '</td>' +
+         '<td class="' + gc + '">' + (gap > 0 ? '+' : '') + gap.toFixed(1) + '</td>' +
+         '<td class="' + rc + '">' + (ratio === null ? '-' : ratio.toFixed(0) + '%') + '</td></tr>';
+  });
+  tb.innerHTML = h + '</tbody>';
+
+  tb.querySelectorAll('tbody tr').forEach(tr => {
+    tr.onclick = () => {
+      $('dDate').value = tr.dataset.d;
+      autoFillFromCargo();
+      run();
+    };
+  });
+  markPlanSel();
+}
+
+function markPlanSel() {
+  const cur = $('dDate').value;
+  document.querySelectorAll('#planTbl tbody tr').forEach(tr =>
+    tr.classList.toggle('sel', tr.dataset.d === cur));
+}
+
+function card(k, v, u, cls) {
+  return '<div class="kpi ' + (cls||'') + '"><div class="k">' + k + '</div>' +
+         '<div class="v">' + v + (u ? '<span class="u">' + u + '</span>' : '') + '</div></div>';
+}
+
+function drawChart(slots) {
+  const W = 1040, H = 260, PL = 46, PR = 12, PT = 14, PB = 46;
+  const iw = W - PL - PR, ih = H - PT - PB;
+  const n = slots.length, step = iw / n;
+  const maxV = Math.max(4, ...slots.map(s => Math.max(s.need, s.on))) * 1.12;
+  const y = v => PT + ih - (v / maxV) * ih;
+  const bw = Math.min(11, step * 0.30);
+  let g = '';
+
+  // 网格 + Y 轴
+  const ticks = 4;
+  for (let i = 0; i <= ticks; i++) {
+    const v = maxV * i / ticks, yy = y(v);
+    g += '<line x1="' + PL + '" y1="' + yy + '" x2="' + (W-PR) + '" y2="' + yy + '" stroke="#253352" stroke-width="1"/>';
+    g += '<text x="' + (PL-7) + '" y="' + (yy+4) + '" fill="#94a3b8" font-size="10" text-anchor="end">' + v.toFixed(0) + '</text>';
+  }
+
+  slots.forEach((s, i) => {
+    const cx = PL + step * i + step / 2;
+    const hn = Math.max(0, ih - (y(s.need) - PT)), ho = Math.max(0, ih - (y(s.on) - PT));
+    const hot = s.gapI >= 2;
+    // 需求人力柱（缺口≥2 时染红）
+    g += '<rect x="' + (cx-bw-1) + '" y="' + y(s.need) + '" width="' + bw + '" height="' + hh(hn) + '" fill="' + (hot?'#f87171':'#60a5fa') + '" rx="1.5">' +
+         '<title>' + s.t + '　需求 ' + s.need.toFixed(1) + ' 人　当班 ' + s.on.toFixed(1) + ' 人　缺口 ' + (s.gap>0?'+':'') + s.gap.toFixed(1) + ' 人　负荷 ' + (s.load===null?'-':s.load.toFixed(0)+'%') + '</title></rect>';
+    // 当班人力柱
+    g += '<rect x="' + (cx+1) + '" y="' + y(s.on) + '" width="' + bw + '" height="' + hh(ho) + '" fill="#64748b" rx="1.5" opacity="0.85">' +
+         '<title>' + s.t + '　当班 ' + s.on.toFixed(1) + ' 人</title></rect>';
+    // X 轴：每 2 个标一次（整点）
+    if (i % 2 === 0) {
+      g += '<text x="' + cx + '" y="' + (PT+ih+16) + '" fill="#94a3b8" font-size="10" text-anchor="middle">' + s.t.slice(0,5) + '</text>';
+    }
+  });
+  g += '<line x1="' + PL + '" y1="' + (PT+ih) + '" x2="' + (W-PR) + '" y2="' + (PT+ih) + '" stroke="#3b4a6b" stroke-width="1"/>';
+  $('chart').innerHTML = '<svg viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="xMidYMid meet">' + g + '</svg>';
+
+  function hh(v){ return v<=0 ? 0.6 : v; }
+}
+
+function drawTable(slots, grain) {
+  const rows = aggregate(slots, grain);
+  $('grainNote').innerHTML = grain === 'hour'
+    ? '人力以「人时」计，1 小时内即该小时的平均在岗人数'
+    : '人力为该半小时的并发人数';
+  let h = '<thead><tr><th>时段</th><th>进线量</th><th>转人工</th><th>需求人力</th><th>当班人力</th><th>缺口</th><th>负荷</th></tr></thead><tbody>';
+  rows.forEach(s => {
+    const gc = s.gapI >= 2 ? 'gap-bad' : (s.gapI <= -2 ? 'gap-good' : '');
+    const lc = (s.load !== null && s.load > 110) ? 'load-hot' : '';
+    h += '<tr><td>' + s.label + '</td><td>' + fmt(s.inbound) + '</td><td>' + fmt(s.turn) + '</td>' +
+         '<td>' + s.need.toFixed(1) + '</td><td>' + s.on.toFixed(1) + '</td>' +
+         '<td class="' + gc + '">' + (s.gap>0?'+':'') + s.gap.toFixed(1) + '</td>' +
+         '<td class="' + lc + '">' + (s.load===null?'-':s.load.toFixed(0)+'%') + '</td></tr>';
+  });
+  $('tbl').innerHTML = h + '</tbody>';
+}
+
+// ── 初始化 ──
+async function load() {
+  try {
+    const r = await fetch(bust('coeffs.json'), {cache:'no-store'});
+    C = await r.json();
+  } catch (e) {
+    $('modelSub').innerHTML = '<span class="err">系数加载失败：' + e.message + '　请先运行 <code>python forecast/export_coeffs.py</code></span>';
+    return;
+  }
+  // 货量预测（可选）：来自《风控人效预测看板》，按日期自动带出订单量
+  try {
+    const rc = await fetch(bust('cargo.json'), {cache:'no-store'});
+    CARGO = await rc.json();
+  } catch (e) { CARGO = null; }
+  // 排班计划表（build_plan.py → plan.json）：未来每日 + 逐半小时人力，含两套当班口径
+  try {
+    const rp = await fetch(bust('plan.json'), {cache:'no-store'});
+    PLAN = await rp.json();
+    if (PLAN.cap_per_hour) CAP = PLAN.cap_per_hour;
+    $('capSel').value = String(CAP);
+  } catch (e) { PLAN = null; }
+  const w = C.windows || {};
+  $('modelSub').innerHTML =
+    '模型：<b>R</b> = 近' + (w.R_base||14) + '天咨询比中位（<b>' + C.R_base + '%</b>）× 周内因子（近' + (w.factor||42) + '天）' +
+    '　·　<b>IN</b> = 订单量 × R　·　<b>转人工率</b> ' + C.turn_rate + '%（近' + (w.turn||90) + '天中位）' +
+    '　·　<b>U</b> = ' + C.U_a + '% ' + (C.U_b<0?'−':'+') + ' ' + Math.abs(C.U_b) + '% × IN（近' + (w.reg||90) + '天回归）' +
+    '　·　<b>人力</b> = 转人工量 ÷ ' + C.cap_per_hour + ' 通/人/时';
+
+  // 默认日期：计划表首日（通常为明天）；订单量以货量预测为准（可手改覆盖）
+  const d0 = (PLAN && PLAN.range && PLAN.range.from)
+    ? PLAN.range.from
+    : (() => { const t = new Date(Date.now() + 86400000);
+               return t.getFullYear() + '-' + String(t.getMonth()+1).padStart(2,'0') + '-' + String(t.getDate()).padStart(2,'0'); })();
+  $('dDate').value = d0;
+  const rec = (C.recent || []).slice(-1)[0];
+  if (rec && rec.orders) $('dOrders').value = rec.orders;
+  autoFillFromCargo();
+
+  $('foot').innerHTML =
+    '系数导出时间 <b>' + C.generated_at + '</b>　·　基准日 <b>' + C.asof + '</b>　·　时段形状基于 <b>' + (C.shape.source_days || '-') + ' 天</b>实测<br>' +
+    (PLAN ? ('计划表：<b>' + PLAN.range.from + ' ~ ' + PLAN.range.to + '</b>（' + PLAN.days.length + ' 天，生成于 ' + PLAN.generated_at + '）　·　当班人力取自 <b>HR 班表</b>（每日 400 部门总人时，按历史同时段人数形状摊分到半小时）<br>' +
+      '<span style="color:var(--warn)">⚠️ 班表只到 ' + PLAN.range.to.slice(0,7) + '，之后的日期会回退到「运营分时段表同周几均值」口径。</span><br>') : '') +
+    '口径提示：本页「转人工量」= 进线量 × 转人工率，与实时看板「接通率」口径不同；当前产能基准 <b>' + CAP + ' 通/人/时</b>（= 半小时 ' + (CAP/2) + ' 通/人），可在上方切换。<br>' +
+    '数据更新：<code>python forecast/export_coeffs.py</code>（系数）　<code>node forecast/fetch_cargo.js</code>（货量）　<code>python forecast/build_plan.py</code>（计划表）—— 已挂进每日 21:50 封存链自动跑。<br>' +
+    (CARGO ? ('货量来源：<b>' + CARGO.source + '</b>　快照日 <b>' + CARGO.snapshot_day + '</b>　换算 <b>' +
+      CARGO.avg_item_weight_kg + ' kg/单</b>（' + Object.keys(CARGO.by_date || {}).length + ' 天）')
+      : '<span class="err">未取到货量预测（cargo.json），订单量需手填。</span>');
+
+  renderPlan();
+  run();
+}
+
+// 时段明细粒度切换
+function setGrain(g) {
+  GRAIN = g;
+  $('gHour').classList.toggle('on', g === 'hour');
+  $('gHalf').classList.toggle('on', g === 'half');
+  if (RES) drawTable(RES.slots, GRAIN);
+}
+$('gHour').onclick = () => setGrain('hour');
+$('gHalf').onclick = () => setGrain('half');
+
+// 产能基准 / 当班口径切换 → 计划表与单日详情同步重算
+$('capSel').onchange = () => {
+  CAP = parseFloat($('capSel').value);
+  renderPlan();
+  if (RES) render(predict(RES.orders, RES.dateStr));
+};
+$('stfSel').onchange = () => {
+  PLAN_MODE = $('stfSel').value;
+  renderPlan();
+  if (RES) render(predict(RES.orders, RES.dateStr));
+};
+
+// 从《风控人效预测看板》的货量预测自动带出订单量（用户仍可手改覆盖）
+function autoFillFromCargo() {
+  if (!CARGO || !CARGO.by_date) { $('hint').innerHTML = '未取到货量预测，请手填订单量'; return; }
+  const d = $('dDate').value;
+  const v = CARGO.by_date[d];
+  if (!v || v.orders_forecast == null) {
+    $('hint').innerHTML = '货量看板无 <b>' + d + '</b> 的预测，请手填订单量';
+    return;
+  }
+  $('dOrders').value = v.orders_forecast;
+  const kind = v.is_forecast ? '货量预测' : '实际货量';
+  const cv = v.is_forecast ? v.cargo_forecast : (v.cargo_actual != null ? v.cargo_actual : v.cargo_forecast);
+  $('hint').innerHTML = '📦 ' + kind + ' <b>' + fmt(cv) + '</b> kg ÷ ' + CARGO.avg_item_weight_kg +
+    ' kg/单 = <b>' + fmt(v.orders_forecast) + '</b> 单' +
+    '<span style="opacity:.65">（风控人效预测看板 · 快照 ' + CARGO.snapshot_day + '）</span>';
+}
+
+function run() {
+  if (!C) return;
+  const d = $('dDate').value, o = parseFloat($('dOrders').value);
+  if (!d || !(o > 0)) { $('hint').innerHTML = '<span class="err">请填目标日期与预估订单量</span>'; return; }
+  render(predict(o, d));
+  markPlanSel();
+}
+
+$('btnGo').onclick = run;
+$('dOrders').addEventListener('keydown', e => { if (e.key === 'Enter') run(); });
+$('dDate').addEventListener('change', () => { autoFillFromCargo(); run(); });
+
+load();
+</script>
+</body>
+</html>
