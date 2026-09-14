@@ -387,12 +387,16 @@ function mealAllocate(names, slotLabels) {
   });
   return map;
 }
-// 某日某条线的当班名单：400 取 plan.json 的 names（= HR 班表出勤人头，与计划表一致）；
-// 在线取 schedule.json 的 daily[date].onDuty ∩ agents(dept=在线)
+// 某日某条线的当班名单：
+//   400  ← plan.json 的 names（HR 班表出勤人头，与计划表一致）
+//   在线 ← plan.json 的 names_online（2026-09-14 新增：整月班表 schedule.json 未上公网，
+//          公网页面取不到，故让 plan.json 顺带带出，保证公网在线一格不空）
+//   兜底 ← ../schedule.json 的 daily[date].onDuty ∩ agents(dept)（仅本地有效）
 function mealRoster(dateStr, dept) {
-  if (dept === '400') {
-    const d = planDay(dateStr);
-    if (d && d.names && d.names.length) return d.names.slice();
+  const d = planDay(dateStr);
+  if (d) {
+    const arr = dept === '400' ? d.names : d.names_online;
+    if (arr && arr.length) return arr.slice();
   }
   const sc = SCHED || {};
   const day = (sc.daily || {})[dateStr];
@@ -668,7 +672,9 @@ function mealWinHtml(g, w) {
 }
 function renderMeal(dateStr) {
   const mp = mealPlanFor(dateStr);
-  const sch = SCHED ? '' : '<span style="color:var(--warn)">（未取到 ../schedule.json，在线名单缺失）</span>';
+  const d = planDay(dateStr);
+  const hasOnl = !!((d && d.names_online && d.names_online.length) || SCHED);
+  const sch = hasOnl ? '' : '<span style="color:var(--warn)">（未取到在线名单）</span>';
   $('mealNote').innerHTML =
     '口径：<b>在线 / 400 每位员工每天用餐 2 次、每次 30 分钟</b>；第一餐窗口 <b>11:00–15:00</b>、第二餐窗口 <b>17:00–20:00</b>。' +
     '按名单顺序<b>比例均摊</b>到半小时（每段人数最多差 1，避免同段扎堆离岗），且<b>第一餐早的第二餐也早</b>（保证两餐间隔，照顾正常生理需求）。' +
@@ -982,8 +988,8 @@ async function load() {
   // 现场调控预警（alert_eval.js 每 90s 判定 → ../alert_state.json，与主看板 / 飞书告警同源）
   try { const r = await fetch(bust('../alert_state.json'), {cache:'no-store'}); ALERT = await r.json(); }
   catch (e) { ALERT = null; }
-  // 飞书 HR 班表（../schedule.json）：用餐安排要按「当天真实当班名单」排（在线名单只有这里能拿到；
-  //   400 也可以从 plan.json 的 names 拿 —— 两者同源，都来自这张飞书班表）
+  // 飞书 HR 班表（../schedule.json）：**仅本地兜底**。在线用餐名单主来源已改为 plan.json 的
+  //   names_online（整月班次矩阵未上公网 → 公网取这里 404），此文件缺失不影响公网渲染。
   try { const r = await fetch(bust('../schedule.json'), {cache:'no-store'}); SCHED = await r.json(); }
   catch (e) { SCHED = null; }
   const w = C.windows || {};
