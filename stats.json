@@ -1,6 +1,6 @@
 {
- "ts": 1789400201399,
- "collectedAtCn": "2026/9/14 23:36:41",
+ "ts": 1789400314238,
+ "collectedAtCn": "2026/9/14 23:38:34",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "2",
@@ -8,7 +8,7 @@
   "接通率": "26.17%",
   "满意率": "100.00%",
   "呼入总数": "11508",
-  "当前呼入数": "1",
+  "当前呼入数": "0",
   "外呼总数": "6190",
   "当前外呼数": "0",
   "呼入平均通话时长": "00:02:41",
@@ -930,11 +930,11 @@
     "name": "官网严选寄卖售后咨询",
     "sessions": 296,
     "assigned": 295,
-    "current": 8,
+    "current": 7,
     "max": 30,
     "queue": 0,
     "onlineSeats": "1(李宜慢)",
-    "done": 286,
+    "done": 287,
     "answerRate": 99.66,
     "abandon": 1,
     "voicemail": 0,
@@ -956,13 +956,13 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1079,
-    "assigned": 1073,
-    "current": 29,
+    "sessions": 1080,
+    "assigned": 1074,
+    "current": 27,
     "max": 30,
-    "queue": 1,
+    "queue": 0,
     "onlineSeats": "1(李宜慢)",
-    "done": 1001,
+    "done": 1004,
     "answerRate": 99.44,
     "abandon": 6,
     "voicemail": 0,
@@ -1320,15 +1320,6 @@
   "rate400": 74.1
  },
  "history": [
-  {
-   "ts": 1789110333824,
-   "skillRate400": 87.73,
-   "skillQueue400": 0,
-   "callIn400": 595,
-   "signIn400": 14,
-   "onlineSessions": 420,
-   "onlineSeat": 2
-  },
   {
    "ts": 1789110439703,
    "skillRate400": 87.75,
@@ -5813,6 +5804,15 @@
   },
   {
    "ts": 1789400201399,
+   "skillRate400": 74.07,
+   "skillQueue400": 0,
+   "callIn400": 27,
+   "signIn400": 1,
+   "onlineSessions": 1084,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1789400314238,
    "skillRate400": 74.07,
    "skillQueue400": 0,
    "callIn400": 27,
