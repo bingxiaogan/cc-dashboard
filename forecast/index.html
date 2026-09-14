@@ -140,11 +140,9 @@
 <div class="panel">
   <div class="planhead">
     <span class="txt" id="planSub">加载计划表…</span>
-    <label style="display:flex;align-items:center;gap:6px">产能
-      <select id="capSel">
-        <option value="13">13 通/人/时（表内同源）</option>
-        <option value="11.6">11.6 通/人/时（实际达成）</option>
-      </select></label>
+    <span class="txt" style="display:flex;align-items:center;gap:6px;color:var(--dim);flex:0 0 auto;white-space:nowrap">产能基准
+      <b style="color:var(--accent)">13 通/人/时</b>
+      <span style="opacity:.65">（表内同源 · 固定口径）</span></span>
     <label style="display:flex;align-items:center;gap:6px">当班口径
       <select id="stfSel">
         <option value="schedule">HR 班表</option>
@@ -167,7 +165,8 @@ let C = null;
 let RES = null;
 let CARGO = null;   // 货量预测（《风控人效预测看板》），用于自动带出订单量
 let PLAN = null;    // 排班计划表（build_plan.py → plan.json），日/小时维度 + 两套当班口径
-let CAP = 13;       // 产能基准（通/人/时），可切换 13 / 11.6
+const CAP_FIXED = 13;         // 🔒 产能基准固定 13 通/人/时（表内「排班运能负荷」同源口径）—— 用户 2026-09-14 拍板，不再提供切换
+let CAP = CAP_FIXED;          // 现用产能基准（恒 = CAP_FIXED）
 let PLAN_MODE = 'schedule';   // 当班人力口径：schedule=HR班表 / sheet=运营分时段表
 let GRAIN = 'hour';           // 时段明细粒度：hour / half
 
@@ -453,8 +452,10 @@ async function load() {
   try {
     const rp = await fetch(bust('plan.json'), {cache:'no-store'});
     PLAN = await rp.json();
-    if (PLAN.cap_per_hour) CAP = PLAN.cap_per_hour;
-    $('capSel').value = String(CAP);
+    // 🔒 产能基准固定 13 通/人/时（用户 2026-09-14 拍板）：不再随 plan.json 变，也不提供切换
+    if (PLAN.cap_per_hour && PLAN.cap_per_hour !== CAP_FIXED)
+      console.warn('[cap] plan.json =', PLAN.cap_per_hour, '但本页口径固定为', CAP_FIXED);
+    CAP = CAP_FIXED;
   } catch (e) { PLAN = null; }
   const w = C.windows || {};
   $('modelSub').innerHTML =
@@ -477,7 +478,8 @@ async function load() {
     '系数导出时间 <b>' + C.generated_at + '</b>　·　基准日 <b>' + C.asof + '</b>　·　时段形状基于 <b>' + (C.shape.source_days || '-') + ' 天</b>实测<br>' +
     (PLAN ? ('计划表：<b>' + PLAN.range.from + ' ~ ' + PLAN.range.to + '</b>（' + PLAN.days.length + ' 天，生成于 ' + PLAN.generated_at + '）　·　当班人力取自 <b>HR 班表</b>（每日 400 部门总人时，按历史同时段人数形状摊分到半小时）<br>' +
       '<span style="color:var(--warn)">⚠️ 班表只到 ' + PLAN.range.to.slice(0,7) + '，之后的日期会回退到「运营分时段表同周几均值」口径。</span><br>') : '') +
-    '口径提示：本页「转人工量」= 进线量 × 转人工率，与实时看板「接通率」口径不同；当前产能基准 <b>' + CAP + ' 通/人/时</b>（= 半小时 ' + (CAP/2) + ' 通/人），可在上方切换。<br>' +
+    '口径提示：本页「转人工量」= 进线量 × 转人工率，与实时看板「接通率」口径不同。<br>' +
+    '🔒 <b>产能基准固定 ' + CAP + ' 通/人/时</b>（= 半小时 ' + (CAP/2) + ' 通/人，与表内「排班运能负荷」同源）—— 用户 2026-09-14 拍板，不再提供 11.6 切换。<br>' +
     '<b>人力一律按「人」计</b>（不按人时）：日维度「需求人力」= 转人工量 ÷ 产能 ÷ 班表人均出勤时长，向上取整；「当班人力」= HR 班表实际出勤人数；时段维度 = 该时段平均在岗人数。<br>' +
     '<b>缺口/冗余 = 当班 − 需求</b>：<span style="color:var(--bad)">负数 = 缺口（标红）</span>、<span style="color:var(--good)">正数 = 冗余（标绿）</span>，全页（计划表 / KPI / 时段明细 / 图表）同向。<br>' +
     '数据更新：<code>python forecast/export_coeffs.py</code>（系数）　<code>node forecast/fetch_cargo.js</code>（货量）　<code>python forecast/build_plan.py</code>（计划表）—— 已挂进每日 21:50 封存链自动跑。<br>' +
@@ -499,12 +501,7 @@ function setGrain(g) {
 $('gHour').onclick = () => setGrain('hour');
 $('gHalf').onclick = () => setGrain('half');
 
-// 产能基准 / 当班口径切换 → 计划表与单日详情同步重算
-$('capSel').onchange = () => {
-  CAP = parseFloat($('capSel').value);
-  renderPlan();
-  if (RES) render(predict(RES.orders, RES.dateStr));
-};
+// 当班口径切换 → 计划表与单日详情同步重算（产能基准已固定 13，不再有切换器）
 $('stfSel').onchange = () => {
   PLAN_MODE = $('stfSel').value;
   renderPlan();
