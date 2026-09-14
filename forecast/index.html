@@ -730,11 +730,24 @@ function drawChart(slots, dateStr) {
   // 图下口径说明
   const sum = a => a.reduce((x, y2) => x + (y2 || 0), 0);
   const predSum = sum(predV), actSum = sum(actV);
-  const diff = actSum ? ((predSum - actSum) / actSum * 100) : null;
-  let note = '<b>' + dateStr + '</b>　预测转人工量合计 <b>' + fmt(predSum) + '</b> 通';
+  // ⚠️ 用户 2026-09-14 口径：预测量与实际量必须**同窗口**才可比。
+  //    之前拿全天预测比部分实际 → 显示「预测高于实际 61%」的假偏差；
+  //    现在只统计「实际有数据」的那些时段。
+  let nPair = 0, pAl = 0, aAl = 0;
+  actV.forEach((v, i) => { if (v !== null) { nPair++; pAl += predV[i] || 0; aAl += v; } });
+  const diff = (nPair && aAl) ? ((pAl - aAl) / aAl * 100) : null;
+  let note = '<b>' + dateStr + '</b>　预测转人工量合计 <b>' + fmt(predSum) + '</b> 通（全天 ' + n + ' 段）';
   if (nAct) {
-    note += '　·　实际合计 <b>' + fmt(actSum) + '</b> 通（' + nAct + '/' + n + ' 个时段有数据）' +
-      (diff === null ? '' : '　·　预测' + (diff >= 0 ? '高于' : '低于') + '实际 <b>' + Math.abs(diff).toFixed(1) + '%</b>');
+    note += '　·　实际合计 <b>' + fmt(actSum) + '</b> 通（' + nAct + '/' + n + ' 个时段有数据）';
+    if (nAct < n) {
+      note += '<br>同窗口对比（<b>' + nPair + '</b> 段，仅实际有数据的时段）：预测 <b>' + fmt(pAl) + '</b>' +
+        ' vs 实际 <b>' + fmt(aAl) + '</b> 通' +
+        (diff === null ? '' : '　·　预测' + (diff >= 0 ? '高估' : '低估') +
+          ' <b style="color:' + (Math.abs(diff) < 3 ? 'var(--dim)' : (diff > 0 ? 'var(--warn)' : 'var(--good)')) + '">' +
+          Math.abs(diff).toFixed(1) + '%</b>');
+    } else {
+      note += '　·　预测' + (diff >= 0 ? '高于' : '低于') + '实际 <b>' + Math.abs(diff).toFixed(1) + '%</b>';
+    }
   } else {
     note += '　·　<span style="color:var(--warn)">该日无实际半小时数据</span>（实际数据覆盖「当日实时」与「历史归档」两类日期）';
   }
