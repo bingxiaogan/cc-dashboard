@@ -1,13 +1,13 @@
 {
- "ts": 1789397622902,
- "collectedAtCn": "2026/9/14 22:53:42",
+ "ts": 1789397847352,
+ "collectedAtCn": "2026/9/14 22:57:27",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "2",
   "坐席忙碌数": "0 (0)",
-  "接通率": "26.20%",
+  "接通率": "26.19%",
   "满意率": "100.00%",
-  "呼入总数": "11495",
+  "呼入总数": "11496",
   "当前呼入数": "0",
   "外呼总数": "6190",
   "当前外呼数": "0",
@@ -440,8 +440,8 @@
   },
   {
    "service": "81199(门店按键转接)",
-   "callIn": 585,
-   "ivr": 414,
+   "callIn": 586,
+   "ivr": 415,
    "ringMissed": 3,
    "queueAbandon": 26,
    "answered": 148,
@@ -928,9 +928,9 @@
    },
    {
     "name": "官网严选寄卖售后咨询",
-    "sessions": 290,
-    "assigned": 289,
-    "current": 2,
+    "sessions": 291,
+    "assigned": 290,
+    "current": 3,
     "max": 60,
     "queue": 0,
     "onlineSeats": "2(刘亚森,李宜慢)",
@@ -956,13 +956,13 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1054,
-    "assigned": 1048,
+    "sessions": 1055,
+    "assigned": 1049,
     "current": 24,
     "max": 60,
     "queue": 0,
     "onlineSeats": "2(刘亚森,李宜慢)",
-    "done": 981,
+    "done": 982,
     "answerRate": 99.43,
     "abandon": 6,
     "voicemail": 0,
@@ -1320,24 +1320,6 @@
   "rate400": 74.1
  },
  "history": [
-  {
-   "ts": 1789107735416,
-   "skillRate400": 87.52,
-   "skillQueue400": 0,
-   "callIn400": 545,
-   "signIn400": 15,
-   "onlineSessions": 374,
-   "onlineSeat": 2
-  },
-  {
-   "ts": 1789107844790,
-   "skillRate400": 87.52,
-   "skillQueue400": 0,
-   "callIn400": 545,
-   "signIn400": 15,
-   "onlineSessions": 376,
-   "onlineSeat": 2
-  },
   {
    "ts": 1789107951695,
    "skillRate400": 87.41,
@@ -5813,6 +5795,24 @@
   },
   {
    "ts": 1789397622902,
+   "skillRate400": 74.07,
+   "skillQueue400": 0,
+   "callIn400": 27,
+   "signIn400": 1,
+   "onlineSessions": 1084,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1789397735064,
+   "skillRate400": 74.07,
+   "skillQueue400": 0,
+   "callIn400": 27,
+   "signIn400": 1,
+   "onlineSessions": 1084,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1789397847352,
    "skillRate400": 74.07,
    "skillQueue400": 0,
    "callIn400": 27,
