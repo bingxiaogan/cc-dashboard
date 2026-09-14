@@ -289,7 +289,7 @@ details[open] summary { color:var(--accent); }
   <span class="hint" id="hhMeta">加载中</span>
 </div>
 <div class="card" style="margin-bottom:16px;">
-  <h3><span class="dot" id="hhDot" style="background:#5da8ff"></span><span id="hhSub">当日每半小时呼入 · 400 三线（88236628 / 88236629 / 4001581707）</span>
+  <h3><span class="dot" id="hhDot" style="background:#5da8ff"></span><span id="hhSub">当日每半小时呼入 · 400 四线（88236628 / 88236629 / 4001581707 / 9523622）</span>
     <span class="extra" style="margin-left:auto">柱=量级 · 最新时段高亮</span>
   </h3>
   <div id="hhChart" style="width:100%;height:240px;"></div>
@@ -433,7 +433,7 @@ details[open] summary { color:var(--accent); }
       </ul>
       <p class="spec-sub">📞 人工接通率（进线量趋势 / 时段量级）</p>
       <ul>
-        <li>范围：按 400 三线号码统计（88236628 / 88236629 / 4001581707）</li>
+        <li>范围：按 400 四线号码统计（88236628 / 88236629 / 4001581707 / 9523622）</li>
         <li class="spec-code">人工接通率 = 人工接听 ÷（呼入总数 − IVR 自助接起）</li>
         <li class="spec-note">分母<b>剔除 IVR 自动分流</b>；与技能组口径统计范围不同，两者数值不可直接比较</li>
       </ul>
@@ -462,7 +462,7 @@ details[open] summary { color:var(--accent); }
       <ul>
         <li>按半小时分桶（08:00–21:00 共 26+ 时段），取自报表页「呼入时间趋势」/「在线技能组时间趋势」</li>
         <li>柱高为量级，最新时段高亮；末柱为当日已发生时段</li>
-        <li>400 号源固定三线：<b>88236628 / 88236629 / 4001581707</b></li>
+        <li>400 号源固定四线：<b>88236628 / 88236629 / 4001581707 / 9523622</b></li>
       </ul>
     </div>
 
@@ -558,9 +558,9 @@ async function loadHalf() {
   try {
     hhData = await fetch(bust(HH_FILES[hhTab]), { cache: 'no-store' }).then(r => r.json());
     const n = (hhData.slots || []).length;
-    $('hhMeta').textContent = `${isChat ? '技能组时间趋势 · 分类在线技能组' : '呼入时间趋势 · 400 三线'} · ${hhData.date || ''} · 更新 ${hhData.collectedAtCn || ''}`;
+    $('hhMeta').textContent = `${isChat ? '技能组时间趋势 · 分类在线技能组' : '呼入时间趋势 · 400 四线'} · ${hhData.date || ''} · 更新 ${hhData.collectedAtCn || ''}`;
     $('hhDot').style.background = isChat ? '#3ddc84' : '#5da8ff';
-    $('hhSub').textContent = isChat ? '当日每半小时会话量 · 分类在线技能组' : '当日每半小时呼入 · 400 三线（88236628 / 88236629 / 4001581707）';
+    $('hhSub').textContent = isChat ? '当日每半小时会话量 · 分类在线技能组' : '当日每半小时呼入 · 400 四线（88236628 / 88236629 / 4001581707 / 9523622）';
     renderHalf();
   } catch (e) { $('hhMeta').textContent = isChat ? '在线数据暂不可用（collector 首轮在线采集后出现）' : '400 数据暂不可用'; }
 }
