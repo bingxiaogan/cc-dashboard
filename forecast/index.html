@@ -71,6 +71,7 @@
   .sc-row .u2{font-size:11px;opacity:.7}
   .sc-acts{margin-top:9px;padding-top:8px;border-top:1px solid var(--line);font-size:12.5px;line-height:1.72}
   .sc-acts .ah{font-size:11px;color:var(--dim);letter-spacing:.04em;margin-bottom:3px}
+  .sc-acts .ah .own{margin-left:8px;padding-left:8px;border-left:1px solid var(--line);letter-spacing:0}
   .sc-acts ol{margin:0;padding-left:18px;color:var(--txt)}
   .sc-acts li{margin:1px 0}
   .sc-acts .none{color:var(--dim);font-size:12px}
@@ -412,19 +413,23 @@ function scObj(title, day, week) {
     if (!parts.length) return '';
     let sub = '';
     if (v.lv != null && v.rv != null) {
-      sub = ' <span class="u2">（负荷档 ' + (LV_NAME[v.lv] || '?') + ' · 接通档 ' + (LV_NAME[v.rv] || '?') + '，取较严档）</span>';
+      // 命中预警档（≥一级）才是「取较严档」；否则两指标都没到预警线 → 正常
+      sub = ' <span class="u2">（负荷档 ' + (LV_NAME[v.lv] || '?') + ' · 接通档 ' + (LV_NAME[v.rv] || '?') +
+            (rec.level >= 2 ? '，取较严档' : '，均未达预警线') + '）</span>';
     }
     return '<div class="sc-row"><span class="k">' + tag + '</span><span>' + parts.join(' · ') + sub + '</span></div>';
   };
   h += row('日', day) + row('周', week);
-  // 预案动作（按当前等级）
+  // 预案动作（按当前等级）+ 责任人（图里「责任人」列：一~二级客服组长，三级业务负责人）
+  const owner = lv => (PLAN_OWNER[lv] ? '<span class="own">责任人：' + PLAN_OWNER[lv] + '</span>' : '');
   h += '<div class="sc-acts">';
   if (day) {
-    h += '<div class="ah">日维度预案 · ' + (LV_NAME[day.level] || '-') + '</div>' + actsHtml(day.level, 'd');
+    h += '<div class="ah">日维度预案 · ' + (LV_NAME[day.level] || '-') + owner(day.level) + '</div>' +
+         actsHtml(day.level, 'd');
   }
   if (week) {
     h += '<div class="ah"' + (day ? ' style="margin-top:7px"' : '') + '>周维度预案（T-1）· ' +
-         (LV_NAME[week.level] || '-') + '</div>' + actsHtml(week.level, 'w');
+         (LV_NAME[week.level] || '-') + owner(week.level) + '</div>' + actsHtml(week.level, 'w');
   }
   return h + '</div></div>';
 }
