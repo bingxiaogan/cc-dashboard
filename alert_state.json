@@ -1,58 +1,58 @@
 {
  "objects": {
   "c400d": {
-   "level": 1,
-   "levelName": "正常",
-   "color": "蓝",
+   "level": 3,
+   "levelName": "二级",
+   "color": "橙",
    "vals": {
-    "load": 100.2,
-    "rate": 89.4,
-    "lv": 1,
-    "rv": 1
+    "load": 154.6,
+    "rate": 79.6,
+    "lv": 4,
+    "rv": 3
    },
-   "ts": 1789349271135,
-   "tsCn": "2026/9/14 09:27:51",
-   "lastLevel": 1,
+   "ts": 1789349524090,
+   "tsCn": "2026/9/14 09:32:04",
+   "lastLevel": 3,
    "muted": false,
    "minLevel": 2,
-   "lastAlertTs": 1789100101442
+   "lastAlertTs": 1789349418093
   },
   "c400w": {
-   "level": 1,
-   "levelName": "正常",
-   "color": "蓝",
+   "level": 3,
+   "levelName": "二级",
+   "color": "橙",
    "vals": {
-    "load": 96.5,
-    "rate": 89.4,
-    "lv": 1,
-    "rv": 1,
+    "load": 148.9,
+    "rate": 79.6,
+    "lv": 3,
+    "rv": 3,
     "src": "周报口径(今实时)",
     "wDays": 1,
     "sum": {
-     "call": 870,
-     "ans": 778,
-     "den400": 901,
-     "on": 631,
+     "call": 167,
+     "ans": 133,
+     "den400": 112,
+     "on": 52,
      "denOn": 770
     }
    },
-   "ts": 1789349271135,
-   "tsCn": "2026/9/14 09:27:51",
-   "lastLevel": 1,
+   "ts": 1789349524090,
+   "tsCn": "2026/9/14 09:32:04",
+   "lastLevel": 3,
    "muted": false,
    "minLevel": 2,
-   "lastAlertTs": 1788954487858
+   "lastAlertTs": 1789349418093
   },
   "onld": {
-   "level": 0,
-   "levelName": "低负荷",
-   "color": "绿",
+   "level": 4,
+   "levelName": "三级",
+   "color": "红",
    "vals": {
-    "load": 77.8
+    "load": 173.3
    },
-   "ts": 1789349271135,
-   "tsCn": "2026/9/14 09:27:51",
-   "lastLevel": 0,
+   "ts": 1789349524090,
+   "tsCn": "2026/9/14 09:32:04",
+   "lastLevel": 4,
    "muted": true,
    "minLevel": 99,
    "lastAlertTs": 1789094040506
@@ -62,19 +62,19 @@
    "levelName": "低负荷",
    "color": "绿",
    "vals": {
-    "load": 81.9,
+    "load": 6.8,
     "src": "周报口径(今实时)",
     "wDays": 1,
     "sum": {
-     "call": 870,
-     "ans": 778,
-     "den400": 901,
-     "on": 631,
+     "call": 167,
+     "ans": 133,
+     "den400": 112,
+     "on": 52,
      "denOn": 770
     }
    },
-   "ts": 1789349271135,
-   "tsCn": "2026/9/14 09:27:51",
+   "ts": 1789349524090,
+   "tsCn": "2026/9/14 09:32:04",
    "lastLevel": 0,
    "muted": true,
    "minLevel": 99,
@@ -85,22 +85,22 @@
    "levelName": "正常",
    "color": "蓝",
    "vals": {
-    "stock": 79,
-    "un": 29,
+    "stock": 34,
+    "un": 13,
     "cap": 57.1,
-    "load": 138.2,
-    "lv": 3,
+    "load": 59.5,
+    "lv": 0,
     "rv": 1,
     "agents": 2
    },
-   "ts": 1789349271135,
-   "tsCn": "2026/9/14 09:27:51",
+   "ts": 1789349524090,
+   "tsCn": "2026/9/14 09:32:04",
    "lastLevel": 1,
    "muted": false,
    "minLevel": 2,
    "lastAlertTs": 1789089575337
   }
  },
- "updated": "2026/9/14 09:27:51",
- "updatedTs": 1789349271135
+ "updated": "2026/9/14 09:32:04",
+ "updatedTs": 1789349524090
 }
