@@ -218,7 +218,7 @@ function predict(orders, dateStr) {
   const onHc = (PLAN_MODE === 'schedule' && names.length)
     ? names.length                                        // HR 班表：实际出勤人头
     : Math.round(onPh / avgH);                            // 无名单口径：按人均时长反推
-  const gapHc = onHc - needHc;
+  const gapHc = needHc - onHc;   // 缺口：>0 = 缺人，<0 = 富余（与计划表、时段明细同向）
 
   return {wd, wdName, orders, dateStr, R, IN, TR, U, H, needPh, onPh, ratio, slots,
           avgH, names, needHc, onHc, gapHc,
@@ -254,14 +254,18 @@ function aggregate(slots, grain) {
   });
 }
 
-function advice(needPh, onPh, ratio, slots) {
+function advice(res) {
+  const ratio = res.ratio, slots = res.slots;
   let total;
-  if (!needPh || !onPh) total = '缺少排班基准，暂无法给出人力建议。';
+  if (!res.needPh || !res.onPh) total = '缺少排班基准，暂无法给出人力建议。';
   else if (ratio === null) total = '排班基准缺失';
-  else if (ratio < 0.90) total = '总量缺口明显，当班仅为需求的 ' + (ratio*100).toFixed(0) + '%';
-  else if (ratio < 0.98) total = '总量略有缺口，当班为需求的 ' + (ratio*100).toFixed(0) + '%';
-  else if (ratio <= 1.08) total = '总量基本匹配，当班为需求的 ' + (ratio*100).toFixed(0) + '%';
-  else total = '总量偏余，当班为需求的 ' + (ratio*100).toFixed(0) + '%';
+  else {
+    const hc = '需要 <b>' + res.needHc + ' 人</b>，班表 <b>' + res.onHc + ' 人</b>（当班为需求的 ' + (ratio*100).toFixed(0) + '%）';
+    if (ratio < 0.90) total = '缺口明显：' + hc;
+    else if (ratio < 0.98) total = '略有缺口：' + hc;
+    else if (ratio <= 1.08) total = '基本匹配：' + hc;
+    else total = '人力偏富余：' + hc;
+  }
 
   const over  = slots.filter(s => s.gapI >= 1).sort((a,b) => b.gapI - a.gapI);
   const under = slots.filter(s => s.gapI <= -2).sort((a,b) => a.gapI - b.gapI);
@@ -276,7 +280,7 @@ function advice(needPh, onPh, ratio, slots) {
 // ── 渲染 ──
 function render(res) {
   RES = res;
-  const a = advice(res.needPh, res.onPh, res.ratio, res.slots);
+  const a = advice(res);
 
   const ratioCls = res.ratio === null ? '' : (res.ratio < 0.98 ? 'bad' : res.ratio > 1.08 ? 'good' : '');
   $('kpis').innerHTML = [
@@ -288,7 +292,9 @@ function render(res) {
     card('人工处理量', fmt(res.H), '通'),
     card('需求人力', res.needHc, '人'),
     card('当班人力', res.onHc, '人'),
-    card('缺口', (res.gapHc>0?'+':'') + res.gapHc, res.gapHc>0?'人（缺）':(res.gapHc<0?'人（余）':'人'), res.gapHc>0?'bad':(res.gapHc<0?'good':'')),
+    card('人力缺口', res.gapHc === 0 ? '0' : Math.abs(res.gapHc),
+         res.gapHc > 0 ? '人（缺）' : (res.gapHc < 0 ? '人（余）' : '人'),
+         res.gapHc > 0 ? 'bad' : (res.gapHc < 0 ? 'good' : '')),
     card('当班/需求', res.ratio===null?'-':(res.ratio*100).toFixed(0), '%', ratioCls),
   ].join('');
 
@@ -335,7 +341,7 @@ function renderPlan() {
     const onHc = (PLAN_MODE === 'schedule' && names.length) ? names.length : Math.round(onPh / avgH);
     const gap = needHc - onHc;                            // >0 = 缺人
     const ratio = needPh ? onPh / needPh * 100 : null;
-    const gc = gap >= 2 ? 'gap-bad' : (gap <= -2 ? 'gap-good' : '');
+    const gc = gap >= 1 ? 'gap-bad' : (gap <= -1 ? 'gap-good' : '');
     const rc = ratio === null ? '' : (ratio < 98 ? 'load-hot' : '');
     const tip = (PLAN_MODE === 'schedule' && names.length)
       ? ' title="班表 ' + names.length + ' 人（人均 ' + avgH + ' h）：' + names.join('、') + '"' : '';
