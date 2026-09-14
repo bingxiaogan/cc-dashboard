@@ -47,12 +47,52 @@
   .kpi.good::before{background:var(--good)} .kpi.good .v{color:var(--good)}
   .kpi.bad::before{background:var(--bad)}   .kpi.bad .v{color:var(--bad)}
   .kpi.warn::before{background:var(--warn)} .kpi.warn .v{color:var(--warn)}
+  /* 「实际」卡：顶条用折线图的实际线同色（黄），数值不变色 */
+  .kpi.act::before{background:var(--warn)}
+  .kpi .kn{font-size:11px;color:var(--dim);margin-top:2px}
 
   .panel{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+
+  /* ── 现场调控：预警卡 ── */
+  .sc{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .sc-obj{background:var(--card2);border:1px solid var(--line);border-radius:9px;padding:11px 13px}
+  .sc-obj .hd{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+  .sc-obj .nm{font-weight:600;font-size:14px}
+  .lv{font-size:11px;font-weight:600;border-radius:20px;padding:2px 9px;border:1px solid;white-space:nowrap}
+  .lv-0{color:var(--good);border-color:rgba(74,222,128,.35);background:rgba(74,222,128,.10)}
+  .lv-1{color:var(--accent);border-color:rgba(147,197,253,.35);background:rgba(147,197,253,.10)}
+  .lv-2{color:var(--warn);border-color:rgba(251,191,36,.35);background:rgba(251,191,36,.10)}
+  .lv-3{color:#fb923c;border-color:rgba(251,146,60,.35);background:rgba(251,146,60,.10)}
+  .lv-4{color:var(--bad);border-color:rgba(248,113,113,.35);background:rgba(248,113,113,.10)}
+  .sc-row{display:flex;align-items:baseline;gap:8px;font-size:12.5px;color:var(--dim);
+          padding:4px 0;border-top:1px dashed var(--line)}
+  .sc-row .k{flex:0 0 30px;color:var(--dim)}
+  .sc-row b{color:var(--txt);font-weight:600;font-variant-numeric:tabular-nums}
+  .sc-row .u2{font-size:11px;opacity:.7}
+  .sc-acts{margin-top:9px;padding-top:8px;border-top:1px solid var(--line);font-size:12.5px;line-height:1.72}
+  .sc-acts .ah{font-size:11px;color:var(--dim);letter-spacing:.04em;margin-bottom:3px}
+  .sc-acts ol{margin:0;padding-left:18px;color:var(--txt)}
+  .sc-acts li{margin:1px 0}
+  .sc-acts .none{color:var(--dim);font-size:12px}
+
+  /* ── 现场调控：按时段建议 ── */
+  .tl{font-size:13.5px}
+  .tl-row{display:grid;grid-template-columns:104px 132px 1fr;gap:10px;align-items:baseline;
+          padding:6px 0;border-top:1px solid var(--line)}
+  .tl-row:first-child{border-top:0}
+  .tl-t{color:var(--txt);font-variant-numeric:tabular-nums;font-weight:600;font-size:12.5px}
+  .tl-n{color:var(--dim);font-variant-numeric:tabular-nums;font-size:12.5px}
+  .tl-a{color:var(--txt)}
+  .tl-a.bad{color:var(--bad);font-weight:600}
+  .tl-a.good{color:var(--good)}
+  .tl-note{font-size:11.5px;color:var(--dim);margin-left:6px}
+  .tl-head{font-size:11px;color:var(--dim);letter-spacing:.04em;margin:10px 0 2px}
+
   .advice{font-size:14px;line-height:1.75}
   .advice .t{font-weight:600;margin-bottom:2px}
   .advice .d{color:var(--dim)}
   .advice .ln{margin-top:6px}
+  @media(max-width:820px){.sc{grid-template-columns:1fr}.tl-row{grid-template-columns:96px 1fr;gap:4px 10px}.tl-a{grid-column:1/3}}
 
   .legend{display:flex;gap:16px;font-size:12px;color:var(--dim);margin:2px 0 8px}
   .legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:-1px}
@@ -125,8 +165,14 @@
   <div class="di-note" id="chartNote"></div>
 </div>
 
-<h2>人力调控建议</h2>
-<div class="panel advice" id="advice"></div>
+<h2>现场调控 · 预警与建议</h2>
+<div class="panel">
+  <div class="sc" id="scWarn"></div>
+  <div class="di-note" id="scNote" style="margin-top:10px"></div>
+  <div class="tl-head">按时段人力调控建议（从早到晚）</div>
+  <div class="tl" id="advice"></div>
+  <div class="di-note" id="adviceNote"></div>
+</div>
 
 <h2>时段明细</h2>
 <div class="panel">
@@ -173,6 +219,29 @@ let PLAN_MODE = 'schedule';   // 当班人力口径：schedule=HR班表 / sheet=
 let GRAIN = 'hour';           // 时段明细粒度：hour / half
 let HH_LIVE = null;   // 当日实时半小时（../call_halfhour.json）：{ date, slots[] } —— 时段量级 📞400 同源
 let HH_ACT  = null;   // 半小时实际转人工归档（hh_actual.json）：days[date]['09:00-09:30'] = 转人工量
+let HH_RATE = null;   // 近 7 日同时段平均接通率（hh_rate.json）：slots['09:00-09:30'] = 0.8798（表内口径 = 接通量÷转人工量）
+let ALERT   = null;   // 现场调控预警（../alert_state.json，alert_eval.js 每轮判定）：objects.{c400d,c400w,onld,onlw}
+
+// ── 预警档位与预案（等级名、阈值与 alert_eval.js 完全一致；动作取自《400/在线现场调控预案》）──
+const LV_NAME = ['低负荷', '正常', '一级', '二级', '三级'];
+const PLAN_ACT = {
+  d: {   // 日维度（实时动作）
+    0: ['支撑上班 / 客诉', '举证', '双休'],
+    1: ['正常带班'],
+    2: ['组长介入督促，纠正低效方法', '在线：400 业务五安排', '举证 / 安推 / 上线',
+        '当班超时或接通，组长安排人；有结果即时反馈，提高用户在线诉求'],
+    3: ['400 安推接通 1h：20、21', '安排客服例班 1h 支撑一线', '安排连体人员低峰时补排',
+        '组织招聘监盘，支撑业务团队'],
+    4: ['全员上班，组长长监盘', '对接运营，排查高负载问题自动应急等'],
+  },
+  w: {   // 周维度（T-1 动作）
+    0: ['支撑上班 / 客诉', '举证'],
+    1: ['正常带班'],
+    2: ['对接运营，排查高负载波动应急等', '支撑例班、安推排上班抵客户诉时段'],
+    3: ['一体二调变为要三体一', '换岗团队较低监盘，支撑业务团队'],
+    4: ['全员上班，组长监盘业务主管'],
+  },
+};
 
 // '2026-09-14 09:00:00' / '09:00:00' / '09:00' → '09:00-09:30'
 // ⚠️ 三种时间写法都要兼容：实时采集是完整时间戳，飞书归档与 coeffs.shape.slots 是「时段」标签
@@ -202,6 +271,29 @@ function actualTurnMap(dateStr) {
   }
   const d = HH_ACT && HH_ACT.days && HH_ACT.days[dateStr];
   return (d && typeof d === 'object') ? d : null;
+}
+
+// 某日「实际」汇总（供 KPI 卡）：{ inbound, turn, partial, last }
+//   当日 = 实时采集 call_halfhour.json（含进线量 total 与 IVR）→ inbound 可用，partial=true（当天未完）
+//   历史 = hh_actual.json（只有转人工量）→ inbound = null
+function actualLiveSum(dateStr) {
+  if (HH_LIVE && HH_LIVE.date === dateStr && Array.isArray(HH_LIVE.slots) && HH_LIVE.slots.length) {
+    let inbound = 0, turn = 0;
+    HH_LIVE.slots.forEach(s => {
+      const t = Number(s.total) || 0;
+      inbound += t;
+      turn += t - (Number(s.ivr) || 0);
+    });
+    const last = HH_LIVE.slots[HH_LIVE.slots.length - 1];
+    return { inbound, turn, partial: true, last: (slotLabel(last.t) || '').slice(0, 5) };
+  }
+  const d = HH_ACT && HH_ACT.days && HH_ACT.days[dateStr];
+  if (d && typeof d === 'object') {
+    let turn = 0;
+    for (const v of Object.values(d)) turn += Number(v) || 0;
+    return { inbound: null, turn, partial: false, last: '' };
+  }
+  return null;
 }
 
 // ── 预测：与 forecast/build_400_forecast.py 的 build() 完全同构 ──
@@ -289,59 +381,166 @@ function aggregate(slots, grain) {
   });
 }
 
-function advice(res) {
-  const ratio = res.ratio, slots = res.slots;
-  let total;
-  if (!res.needPh || !res.onPh) total = '缺少排班基准，暂无法给出人力建议。';
-  else if (ratio === null) total = '排班基准缺失';
+// ─────────────────────────────────────────────────────────────
+// 现场调控 · ① 预警卡（读 ../alert_state.json，等级名与主看板/飞书告警同源）
+// ─────────────────────────────────────────────────────────────
+function lvPill(level, tag) {
+  const n = (typeof level === 'number' && level >= 0 && level <= 4) ? level : null;
+  if (n === null) return '<span class="lv lv-1">' + tag + ' 无数据</span>';
+  return '<span class="lv lv-' + n + '">' + tag + ' ' + (LV_NAME[n] || '?') + '</span>';
+}
+function actsHtml(level, dim) {
+  const a = (PLAN_ACT[dim] || {})[level];
+  if (!a) return '<div class="sc-acts"><span class="none">-</span></div>';
+  return '<ol>' + a.map(x => '<li>' + x + '</li>').join('') + '</ol>';
+}
+// 单个对象卡（400 / 在线）：日 + 周两级
+function scObj(title, day, week) {
+  let h = '<div class="sc-obj"><div class="hd"><span class="nm">' + title + '</span>' +
+          (day ? lvPill(day.level, '日') : '') + (week ? lvPill(week.level, '周') : '') + '</div>';
+  if (!day && !week) {
+    return h + '<div class="sc-acts"><span class="none">暂未取到预警数据（alert_state.json）</span></div></div>';
+  }
+  // 指标行
+  const row = (tag, rec) => {
+    if (!rec) return '';
+    const v = rec.vals || {}, parts = [];
+    if (v.load != null) parts.push('运能负荷 <b>' + v.load + '%</b>');
+    if (v.rate != null) parts.push('接通率 <b>' + v.rate + '%</b>');
+    if (!parts.length) return '';
+    let sub = '';
+    if (v.lv != null && v.rv != null) {
+      sub = ' <span class="u2">（负荷档 ' + (LV_NAME[v.lv] || '?') + ' · 接通档 ' + (LV_NAME[v.rv] || '?') + '，取较严档）</span>';
+    }
+    return '<div class="sc-row"><span class="k">' + tag + '</span><span>' + parts.join(' · ') + sub + '</span></div>';
+  };
+  h += row('日', day) + row('周', week);
+  // 预案动作（按当前等级）
+  h += '<div class="sc-acts">';
+  if (day) {
+    h += '<div class="ah">日维度预案 · ' + (LV_NAME[day.level] || '-') + '</div>' + actsHtml(day.level, 'd');
+  }
+  if (week) {
+    h += '<div class="ah"' + (day ? ' style="margin-top:7px"' : '') + '>周维度预案（T-1）· ' +
+         (LV_NAME[week.level] || '-') + '</div>' + actsHtml(week.level, 'w');
+  }
+  return h + '</div></div>';
+}
+function scHtml() {
+  const ob = (ALERT && ALERT.objects) || {};
+  return scObj('📞 400 电话', ob.c400d, ob.c400w) + scObj('💬 在线接待', ob.onld, ob.onlw);
+}
+
+// ─────────────────────────────────────────────────────────────
+// 现场调控 · ② 按时段人力调控建议（从早到晚，逐段明确「需几人 / 排几人 / 补几人」）
+// ─────────────────────────────────────────────────────────────
+function timelineRows(res) {
+  const rows = aggregate(res.slots, GRAIN);
+  return rows.map(r => {
+    const needI = Math.ceil(r.need - 1e-9);      // 需求人数（向上取整）
+    const onI   = Math.round(r.on);              // 当班人数
+    const d     = onI - needI;                   // >0 冗余、<0 缺口
+    // 时段标签：小时粒度 '08:00' → '08:00–09:00'
+    let t = r.label;
+    if (t.indexOf('-') > 0) t = t.replace('-', '–');
+    else t = t + '–' + String(+t.slice(0, 2) + 1).padStart(2, '0') + ':00';
+    // 近 7 日同段接通率（小时粒度取两个半小时的均值）
+    const h2 = t.slice(0, 2);
+    const keys = GRAIN === 'half' ? [r.label]
+      : [h2 + ':00-' + h2 + ':30', h2 + ':30-' + String(+h2 + 1).padStart(2, '0') + ':00'];
+    let rate = null;
+    if (HH_RATE && HH_RATE.slots) {
+      const vs = keys.map(k => HH_RATE.slots[k]).filter(v => typeof v === 'number');
+      if (vs.length) rate = vs.reduce((a, b) => a + b, 0) / vs.length;
+    }
+    return { t, needI, onI, d, rate };
+  });
+}
+function renderAdvice(res) {
+  const rows = timelineRows(res);
+  const over  = rows.filter(r => r.d < 0);
+  const under = rows.filter(r => r.d > 0);
+
+  let head;
+  if (res.ratio === null) head = '排班基准缺失，暂无法给出人力建议。';
   else {
-    const hc = '需要 <b>' + res.needHc + ' 人</b>，班表 <b>' + res.onHc + ' 人</b>（当班为需求的 ' + (ratio*100).toFixed(0) + '%）';
-    if (ratio < 0.90) total = '缺口明显：' + hc;
-    else if (ratio < 0.98) total = '略有缺口：' + hc;
-    else if (ratio <= 1.08) total = '基本匹配：' + hc;
-    else total = '人力偏富余：' + hc;
+    head = '需要 <b>' + res.needHc + ' 人</b>，班表 <b>' + res.onHc + ' 人</b>' +
+           '（当班为需求的 <b>' + (res.ratio * 100).toFixed(0) + '%</b>，差额 <b style="color:' +
+           (res.gapHc < 0 ? 'var(--bad)' : (res.gapHc > 0 ? 'var(--good)' : 'inherit')) + '">' +
+           (res.gapHc > 0 ? '+' : '') + res.gapHc + ' 人</b>）。';
+    head += '　全时段 ' + rows.length + ' 段：缺口 <b style="color:var(--bad)">' + over.length +
+            '</b> 段 · 冗余 <b style="color:var(--good)">' + under.length + '</b> 段。';
   }
 
-  // gapI = 当班 − 需求：<0 缺口、>0 冗余
-  const over  = slots.filter(s => s.gapI <= -1).sort((a,b) => a.gapI - b.gapI);   // 缺口（最紧在前）
-  const under = slots.filter(s => s.gapI >= 1).sort((a,b) => b.gapI - a.gapI);    // 冗余（最多在前）
-  const parts = [];
-  if (over.length) parts.push('缺口 ' + over.length + ' 个时段，集中在 ' + over.slice(0,3).map(s=>s.t).join('、') +
-    ' 等（最紧 ' + over[0].t + '，少 ' + (-over[0].gapI) + ' 人）');
-  if (under.length) parts.push('冗余 ' + under.length + ' 个时段，' + under.slice(0,2).map(s=>s.t).join('、') +
-    ' 等可抽调（最多 ' + under[0].t + '，多 ' + under[0].gapI + ' 人）');
-  return {total, dist: parts.length ? parts.join('；') : '各时段均衡，无需调整。'};
+  let h = '<div style="font-weight:600;margin-bottom:7px;font-size:13.5px">' + head + '</div>';
+  rows.forEach(r => {
+    let act;
+    if (r.d <= -1) {
+      const n = -r.d;
+      act = '<span class="tl-a bad">缺 ' + n + ' 人 → 建议安排 ' + n + ' 人补充' +
+            (n >= 3 ? '（严重缺口，同步启动对应等级预案）' : '（可从冗余时段抽调 / 延长当班）') + '</span>';
+    } else if (r.d >= 1) {
+      act = '<span class="tl-a good">冗余 ' + r.d + ' 人 → 可抽调支援缺口时段，或安排例会 / 培训 / 放休</span>';
+    } else {
+      act = '<span class="tl-a">匹配 → 维持当班</span>';
+    }
+    const note = r.rate != null
+      ? '<span class="tl-note">近 7 日同段接通率 <b style="color:' +
+        (r.rate < 0.80 ? 'var(--bad)' : (r.rate < 0.85 ? 'var(--warn)' : 'var(--dim)')) + '">' +
+        (r.rate * 100).toFixed(1) + '%</b></span>' : '';
+    h += '<div class="tl-row"><span class="tl-t">' + r.t + '</span>' +
+         '<span class="tl-n">需 <b style="color:var(--txt)">' + r.needI + '</b> 人 · 当班 <b style="color:var(--txt)">' +
+         r.onI + '</b> 人</span><span>' + act + note + '</span></div>';
+  });
+  $('advice').innerHTML = h;
 }
 
 // ── 渲染 ──
 function render(res) {
   RES = res;
-  const a = advice(res);
 
-  const ratioCls = res.ratio === null ? '' : (res.ratio < 0.98 ? 'bad' : res.ratio > 1.08 ? 'good' : '');
+  // ── KPI：只保留 进线量 / 人工进线量 的 预估 vs 实际（订单量、咨询比移至页脚说明）──
+  const act = actualLiveSum(res.dateStr);
+  const partly = act && act.partial && act.last ? '（截至 ' + act.last + '）' : '';
+  const actNote = act && act.partial
+    ? '同源当日实时采集' + partly
+    : (act ? '历史归档' : '该日无实时数据');
   $('kpis').innerHTML = [
-    card('预估订单量', fmt(res.orders), '单'),
-    card('预估咨询比 R', (res.R*100).toFixed(4), '%　' + res.wdName + '因子 ' + (C.R_factor[res.wdName]).toFixed(4)),
     card('预估进线量', fmt(res.IN), '通'),
-    card('转人工量', fmt(res.TR), '通（' + C.turn_rate.toFixed(2) + '%）'),
-    card('人工处理率 U', (res.U*100).toFixed(1), '%'),
-    card('人工处理量', fmt(res.H), '通'),
-    card('需求人力', res.needHc, '人'),
-    card('当班人力', res.onHc, '人'),
-    card('缺口/冗余', (res.gapHc > 0 ? '+' : '') + res.gapHc,
-         res.gapHc < 0 ? '人（缺口）' : (res.gapHc > 0 ? '人（冗余）' : '人'),
-         res.gapHc < 0 ? 'bad' : (res.gapHc > 0 ? 'good' : '')),
-    card('当班/需求', res.ratio===null?'-':(res.ratio*100).toFixed(0), '%', ratioCls),
+    card('实际进线量', act && act.inbound != null ? fmt(act.inbound) : '—', '通', 'act', actNote),
+    card('预估人工进线量', fmt(res.TR), '通'),
+    card('实际人工进线量', act ? fmt(act.turn) : '—', '通', 'act', actNote),
   ].join('');
 
-  $('advice').innerHTML =
-    '<div class="t">' + a.total + '</div><div class="ln d">' + a.dist + '</div>' +
-    '<div class="ln d" style="font-size:12px">口径：<b>需求人力</b> = 转人工量 ÷ <b>' + CAP + ' 通/人/小时</b> ÷ 人均出勤 <b>' + res.avgH + ' h</b>（向上取整，折合 ' + fmt(res.needPh,1) + ' 人时）；' +
-    '<b>当班人力</b> = ' +
-    (res.staffSrc === 'HR 班表'
-      ? '<b>HR 班表</b>该日出勤 <b>' + res.onHc + ' 人</b>' + (res.names.length ? '（' + res.names.join('、') + '）' : '') + '，总 ' + fmt(res.onPh, 1) + ' 人时，按历史同时段人数形状摊分到各半小时'
-      : '<b>运营分时段表</b>近 4 个同周几排班均值（' + fmt(res.onPh, 1) + ' 人时 ≈ ' + res.onHc + ' 人）' + (res.staffRef ? '，基准 ' + res.staffRef : '')) +
-    '<br><b>缺口/冗余</b> = 当班 − 需求（<span style="color:var(--bad)">负数 = 缺口</span>、<span style="color:var(--good)">正数 = 冗余</span>）。</div>';
+  // ── 现场调控：预警 + 按时段建议 ──
+  $('scWarn').innerHTML = scHtml();
+  $('scNote').innerHTML = ALERT
+    ? '预警等级按《400/在线现场调控预案》判定（双指标须同时达到同档，取较严档）：<b>运能负荷</b> 分档 ' +
+      '&lt;90% 低负荷 / 90~110% 正常 / 110~130% 一级 / 130~150% 二级 / ≥150% 三级；' +
+      '<b>接通率</b> ≥90% 低负荷 / 85~90% 正常 / 80~85% 一级 / 75~80% 二级 / &lt;75% 三级。' +
+      '400 取「负荷 + 接通率」双指标，在线取「负荷」单指标。预警判定时间 <b>' + (ALERT.updated || '-') + '</b>。'
+    : '<span class="err">未取到预警数据（alert_state.json），请确认采集器在跑。</span>';
+  renderAdvice(res);
+  $('adviceNote').innerHTML =
+    '口径：<b>需求 / 当班均为该时段平均在岗人数（人）</b>，需求 = 该时段转人工量 ÷ ' + CAP + ' 通/人/时 ÷ 0.5h；' +
+    '<b>缺口 / 冗余 = 当班 − 需求</b>（<span style="color:var(--bad)">负数 = 缺口</span>、<span style="color:var(--good)">正数 = 冗余</span>）。' +
+    '当班人力 = ' + (res.staffSrc === 'HR 班表'
+      ? 'HR 班表该日出勤 <b>' + res.onHc + ' 人</b>' + (res.names.length ? '（' + res.names.join('、') + '）' : '') +
+        '，共 ' + fmt(res.onPh, 1) + ' 人时，按历史同时段人数形状摊分到各半小时'
+      : '运营分时段表近 4 个同周几排班均值（' + fmt(res.onPh, 1) + ' 人时 ≈ ' + res.onHc + ' 人）') + '。' +
+    (HH_RATE ? '<br>「近 7 日同段接通率」= 400 半小时表内口径（<b>接通量 ÷ 转人工量</b>，人工接通率），窗口 ' +
+      (HH_RATE.window.from || '-') + ' ~ ' + (HH_RATE.window.to || '-') +
+      '（' + HH_RATE.window.days + ' 天均值）—— 与上方大盘「接通率」（接听 ÷ 呼入总数，含 IVR 自助接起）口径不同，仅用于定位吃力时段。' : '');
+
+  // 页脚「模型输入」：预估订单量 / 预估咨询比（原 KPI 卡，2026-09-14 移至此处）
+  const fm = $('footModel');
+  if (fm) {
+    const fromCargo = CARGO && CARGO.by_date && CARGO.by_date[res.dateStr] != null;
+    fm.innerHTML = '预估订单量 <b>' + fmt(res.orders) + ' 单</b>（' +
+      (fromCargo ? '风控货量预测自动带出，快照 ' + CARGO.snapshot_day : '手填；该日无货量预测') +
+      '，页顶可手填覆盖）　·　预估咨询比 R = <b>' + (res.R * 100).toFixed(4) + '%</b>' +
+      '（近 14 天中位数 × ' + res.wdName + '因子 ' + (C.R_factor[res.wdName]).toFixed(4) + '，因子取自近 42 天）';
+  }
 
   drawChart(res.slots, res.dateStr);
   drawTable(res.slots, GRAIN);
@@ -407,9 +606,10 @@ function markPlanSel() {
     tr.classList.toggle('sel', tr.dataset.d === cur));
 }
 
-function card(k, v, u, cls) {
+function card(k, v, u, cls, note) {
   return '<div class="kpi ' + (cls||'') + '"><div class="k">' + k + '</div>' +
-         '<div class="v">' + v + (u ? '<span class="u">' + u + '</span>' : '') + '</div></div>';
+         '<div class="v">' + v + (u ? '<span class="u">' + u + '</span>' : '') + '</div>' +
+         (note ? '<div class="kn">' + note + '</div>' : '') + '</div>';
 }
 
 // ── 每日时段预测：折线图（预测转人工量 vs 实际转人工量）──
@@ -544,6 +744,12 @@ async function load() {
   catch (e) { HH_LIVE = null; }
   try { const r = await fetch(bust('hh_actual.json'), {cache:'no-store'}); HH_ACT = await r.json(); }
   catch (e) { HH_ACT = null; }
+  // 近 7 日同时段接通率（build_hh_actual.js 顺带产出）
+  try { const r = await fetch(bust('hh_rate.json'), {cache:'no-store'}); HH_RATE = await r.json(); }
+  catch (e) { HH_RATE = null; }
+  // 现场调控预警（alert_eval.js 每 90s 判定 → ../alert_state.json，与主看板 / 飞书告警同源）
+  try { const r = await fetch(bust('../alert_state.json'), {cache:'no-store'}); ALERT = await r.json(); }
+  catch (e) { ALERT = null; }
   const w = C.windows || {};
   $('modelSub').innerHTML =
     '模型：<b>R</b> = 近' + (w.R_base||14) + '天咨询比中位（<b>' + C.R_base + '%</b>）× 周内因子（近' + (w.factor||42) + '天）' +
@@ -572,7 +778,8 @@ async function load() {
     '数据更新：<code>python forecast/export_coeffs.py</code>（系数）　<code>node forecast/fetch_cargo.js</code>（货量）　<code>python forecast/build_plan.py</code>（计划表）—— 已挂进每日 21:50 封存链自动跑。<br>' +
     (CARGO ? ('货量来源：<b>' + CARGO.source + '</b>　快照日 <b>' + CARGO.snapshot_day + '</b>　换算 <b>' +
       CARGO.avg_item_weight_kg + ' kg/单</b>（' + Object.keys(CARGO.by_date || {}).length + ' 天）')
-      : '<span class="err">未取到货量预测（cargo.json），订单量需手填。</span>');
+      : '<span class="err">未取到货量预测（cargo.json），订单量需手填。</span>') +
+    '<br><b>模型输入（预估订单量 / 预估咨询比）</b>：<span id="footModel">-</span>';
 
   renderPlan();
   run();
