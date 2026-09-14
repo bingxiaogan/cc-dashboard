@@ -218,8 +218,8 @@
   <div class="planhead">
     <span class="txt" id="planSub">加载计划表…</span>
     <span class="txt" style="display:flex;align-items:center;gap:6px;color:var(--dim);flex:0 0 auto;white-space:nowrap">产能基准
-      <b style="color:var(--accent)">13 通/人/时</b>
-      <span style="opacity:.65">（表内同源 · 固定口径）</span></span>
+      <b style="color:var(--accent)" id="capVal">—</b>
+      <span style="opacity:.65" id="capNote">（按接通率目标标定）</span></span>
     <label style="display:flex;align-items:center;gap:6px">当班口径
       <select id="stfSel">
         <option value="schedule">HR 班表</option>
@@ -242,8 +242,15 @@ let C = null;
 let RES = null;
 let CARGO = null;   // 货量预测（《风控人效预测看板》），用于自动带出订单量
 let PLAN = null;    // 排班计划表（build_plan.py → plan.json），日/小时维度 + 两套当班口径
-const CAP_FIXED = 13;         // 🔒 产能基准固定 13 通/人/时（表内「排班运能负荷」同源口径）—— 用户 2026-09-14 拍板，不再提供切换
-let CAP = CAP_FIXED;          // 现用产能基准（恒 = CAP_FIXED）
+const SHEET_CAP = 13;         // 表内常数（飞书分时段表「排班运能负荷」分母同源）—— 仅作参照，**不作为需求人力口径**
+// 🎯 产能基准 = 为达成「目标人工接通率」标定出的通/人/时（用户 2026-09-14 给目标 85%）：
+//    人工接通率 = 接通量 ÷ 转人工量（剔除 IVR 自助分流）；历史实测 85% ↔ 运能负荷 ≈ 0.92 ↔ 人效 ≈ 12.0 通/人/时。
+//    标定链：forecast/calibrate_rate.py → rate_target.json → export_coeffs.py → coeffs.json（本页读它）。
+//    ⚠️ 表内常数 13 对应负荷 1.00，实测接通率只有 ~82%，偏乐观，故不用。
+const CAP_FALLBACK = 12.0;
+let RATE_TGT = 0.85;          // 目标人工接通率（coeffs.json 的 rate_target 覆盖）
+let CAP = CAP_FALLBACK;       // 现用产能基准（coeffs.json 的 cap_per_hour 覆盖）
+let CAP_FIXED = CAP_FALLBACK; // 兼容旧引用：= 生效的产能基准
 let PLAN_MODE = 'schedule';   // 当班人力口径：schedule=HR班表 / sheet=运营分时段表
 let GRAIN = 'hour';           // 时段明细粒度：hour / half
 let HH_LIVE = null;   // 当日实时半小时（../call_halfhour.json）：{ date, slots[] } —— 时段量级 📞400 同源
@@ -354,21 +361,21 @@ function predictTo(res, fromLabel, toLabel) {
 // ─────────────────────────────────────────────────────────────
 // 用餐安排（用户 2026-09-14 规定）
 //   · 在线 / 400 每位员工每天用餐 2 次，每次 30 分钟
-//   · 第一餐窗口 11:00–15:00，第二餐窗口 17:00–20:00
+//   · 第一餐窗口 10:30–14:00，第二餐窗口 17:00–20:00（用户 2026-09-14 二次调整：第一餐由 11:00–15:00 提前到 10:30–14:00）
 //   · 注意正常生理需求：第一餐吃得早的，第二餐也应该早（两餐间隔要拉开，
 //     不能让 11:00 吃第一餐的人等到 19:30 才吃第二餐）
 //   实现：把名单按顺序「比例均摊」到窗口内的半小时槽 —— 第 i 人 → 第 floor((i+0.5)·L/N) 槽。
 //         两餐用同一个 i → 天然满足「早→早」且各槽人数最多只差 1（不出现某半小时扎堆离岗）。
 // ─────────────────────────────────────────────────────────────
 const MEAL_WINS = [
-  { key: 'A', name: '第一餐', from: 11 * 60, to: 15 * 60 },
+  { key: 'A', name: '第一餐', from: 10 * 60 + 30, to: 14 * 60 },
   { key: 'B', name: '第二餐', from: 17 * 60, to: 20 * 60 },
 ];
 const MEAL_MIN = 30;                                       // 每餐时长（分钟）
 const MEAL_DEPTS = ['400', '在线'];
 
 function hm(min) { return String(Math.floor(min / 60)).padStart(2, '0') + ':' + String(min % 60).padStart(2, '0'); }
-// 窗口内的半小时槽（起始升序）：11:00–15:00 → 8 段；17:00–20:00 → 6 段
+// 窗口内的半小时槽（起始升序）：10:30–14:00 → 7 段；17:00–20:00 → 6 段
 function mealSlots(win) {
   const out = [];
   for (let m = win.from; m + MEAL_MIN <= win.to; m += MEAL_MIN) out.push(hm(m) + '-' + hm(m + MEAL_MIN));
@@ -616,7 +623,7 @@ function renderAdvice(res) {
   let head;
   if (res.ratio === null) head = '排班基准缺失，暂无法给出人力建议。';
   else {
-    head = '需要 <b>' + res.needHc + ' 人</b>，班表 <b>' + res.onHc + ' 人</b>' +
+    head = '按 <b style="color:var(--accent)">' + (RATE_TGT * 100).toFixed(0) + '% 人工接通率</b>目标配人：需要 <b>' + res.needHc + ' 人</b>，班表 <b>' + res.onHc + ' 人</b>' +
            '（当班为需求的 <b>' + (res.ratio * 100).toFixed(0) + '%</b>，差额 <b style="color:' +
            (res.gapHc < 0 ? 'var(--bad)' : (res.gapHc > 0 ? 'var(--good)' : 'inherit')) + '">' +
            (res.gapHc > 0 ? '+' : '') + res.gapHc + ' 人</b>）。';
@@ -638,10 +645,12 @@ function renderAdvice(res) {
       act = '<span class="tl-a">匹配 → 维持当班</span>';
     }
     if (r.d < 0 && r.dNoMeal >= 0) act += '<span class="tl-note" style="color:var(--warn)">（用餐所致）</span>';
+    // 近 7 日同段接通率：与「目标 85%」对照（低于目标标黄，并给出差多少 pt）
     const note = r.rate != null
       ? '<span class="tl-note">近 7 日同段接通率 <b style="color:' +
-        (r.rate < 0.80 ? 'var(--bad)' : (r.rate < 0.85 ? 'var(--warn)' : 'var(--dim)')) + '">' +
-        (r.rate * 100).toFixed(1) + '%</b></span>' : '';
+        (r.rate < 0.80 ? 'var(--bad)' : (r.rate < RATE_TGT ? 'var(--warn)' : 'var(--dim)')) + '">' +
+        (r.rate * 100).toFixed(1) + '%</b>' +
+        (r.rate < RATE_TGT ? '（低于目标 ' + ((RATE_TGT - r.rate) * 100).toFixed(1) + 'pt）' : ' ✓') + '</span>' : '';
     const mealTag = r.mealI > 0
       ? ' · <span style="color:var(--warn)">用餐 <b>' + r.mealI + '</b> 人</span> <em style="color:var(--dim);font-style:normal">实到 ' + r.availI + '</em>'
       : '';
@@ -653,7 +662,7 @@ function renderAdvice(res) {
 }
 
 // ─────────────────────────────────────────────────────────────
-// 用餐安排渲染（窗口 11:00–15:00 / 17:00–20:00，每人每餐 30 分钟）
+// 用餐安排渲染（窗口 10:30–14:00 / 17:00–20:00，每人每餐 30 分钟）
 // ─────────────────────────────────────────────────────────────
 function mealWinHtml(g, w) {
   const rows = w.slots.map(sl => {
@@ -676,7 +685,7 @@ function renderMeal(dateStr) {
   const hasOnl = !!((d && d.names_online && d.names_online.length) || SCHED);
   const sch = hasOnl ? '' : '<span style="color:var(--warn)">（未取到在线名单）</span>';
   $('mealNote').innerHTML =
-    '口径：<b>在线 / 400 每位员工每天用餐 2 次、每次 30 分钟</b>；第一餐窗口 <b>11:00–15:00</b>、第二餐窗口 <b>17:00–20:00</b>。' +
+    '口径：<b>在线 / 400 每位员工每天用餐 2 次、每次 30 分钟</b>；第一餐窗口 <b>10:30–14:00</b>、第二餐窗口 <b>17:00–20:00</b>。' +
     '按名单顺序<b>比例均摊</b>到半小时（每段人数最多差 1，避免同段扎堆离岗），且<b>第一餐早的第二餐也早</b>（保证两餐间隔，照顾正常生理需求）。' +
     '用餐期间按 <b>实到 = 当班 − 用餐</b> 计入人力，下方「时段建议 / 时段明细」的缺口均已扣除用餐。';
 
@@ -948,7 +957,7 @@ function drawTable(slots, grain) {
          '<td class="' + lc + '">' + (s.load===null?'-':s.load.toFixed(0)+'%') + '</td></tr>';
   });
   $('tbl').innerHTML = h + '</tbody>';
-  $('tblNote').innerHTML = '缺口/冗余 = <b>实到 − 需求</b>，实到 = 当班 − 用餐（用餐窗口 11:00–15:00 / 17:00–20:00，每人每餐 30 分钟）。' +
+  $('tblNote').innerHTML = '缺口/冗余 = <b>实到 − 需求</b>，实到 = 当班 − 用餐（用餐窗口 10:30–14:00 / 17:00–20:00，每人每餐 30 分钟）。' +
     '未在用餐窗口的时段「用餐」列为空，此时实到 = 当班。';
 }
 
@@ -970,10 +979,13 @@ async function load() {
   try {
     const rp = await fetch(bust('plan.json'), {cache:'no-store'});
     PLAN = await rp.json();
-    // 🔒 产能基准固定 13 通/人/时（用户 2026-09-14 拍板）：不再随 plan.json 变，也不提供切换
-    if (PLAN.cap_per_hour && PLAN.cap_per_hour !== CAP_FIXED)
-      console.warn('[cap] plan.json =', PLAN.cap_per_hour, '但本页口径固定为', CAP_FIXED);
-    CAP = CAP_FIXED;
+    if (C && C.cap_per_hour) CAP = Math.round(C.cap_per_hour * 10) / 10;   // 取 1 位，避免 5.995 这类显示
+    if (C && C.rate_target) RATE_TGT = C.rate_target;
+    CAP_FIXED = CAP;
+    if (PLAN && PLAN.cap_per_hour && Math.abs(PLAN.cap_per_hour - CAP) > 0.05)
+      console.warn('[cap] plan.json =', PLAN.cap_per_hour, 'coeffs.json =', CAP);
+    $('capVal').textContent = CAP.toFixed(1) + ' 通/人/时';
+    $('capNote').innerHTML = '（按人工接通率目标 <b>' + (RATE_TGT * 100).toFixed(0) + '%</b> 标定 · 表内常数 ' + SHEET_CAP + ' 仅作参照）';
   } catch (e) { PLAN = null; }
   // 实际半小时数据（「预测 vs 实际」折线图用）—— 两个都可选，缺了只画预测线
   //   ① ../call_halfhour.json —— 当日实时采集（「时段量级 📞400」同源，四线合计）
@@ -1014,7 +1026,11 @@ async function load() {
     (PLAN ? ('计划表：<b>' + PLAN.range.from + ' ~ ' + PLAN.range.to + '</b>（' + PLAN.days.length + ' 天，生成于 ' + PLAN.generated_at + '）　·　当班人力取自 <b>HR 班表</b>（每日 400 部门总人时，按历史同时段人数形状摊分到半小时）<br>' +
       '<span style="color:var(--warn)">⚠️ 班表只到 ' + PLAN.range.to.slice(0,7) + '，之后的日期会回退到「运营分时段表同周几均值」口径。</span><br>') : '') +
     '口径提示：本页「转人工量」= 进线量 × 转人工率，与实时看板「接通率」口径不同。<br>' +
-    '🔒 <b>产能基准固定 ' + CAP + ' 通/人/时</b>（= 半小时 ' + (CAP/2) + ' 通/人，与表内「排班运能负荷」同源）—— 用户 2026-09-14 拍板，不再提供 11.6 切换。<br>' +
+    '🎯 <b>人力按「' + (RATE_TGT * 100).toFixed(0) + '% 人工接通率」目标配人</b>：产能基准 <b>' + CAP + ' 通/人/时</b>（= 半小时 ' + (CAP/2) + ' 通/人）。' +
+      '标定法：把历史「运能负荷（= 转人工量 ÷ (在岗人数 × 6.5)）→ 人工接通率」的实测曲线解出目标值对应的负荷，产能 = 13 × 该负荷 —— ' +
+      '85% ↔ 负荷 ≈ 0.92 ↔ <b>' + CAP + ' 通/人/时</b>（脚本 <code>forecast/calibrate_rate.py</code> → <code>rate_target.json</code>）。' +
+      '⚠️ 表内「排班运能负荷」同源常数 <b>13</b> 对应负荷 1.00、实测接通率仅 ~82%，偏乐观，故不作为需求口径。<br>' +
+      '⚠️ 本页「接通率」= <b>人工接通率 = 接通量 ÷ 转人工量</b>（剔除 IVR 自助分流），与主看板 KPI 的「实时接通率」（接听 ÷ 呼入总数，含 IVR）<b>口径不同，勿混比</b>。<br>' +
     '<b>人力一律按「人」计</b>（不按人时）：日维度「需求人力」= 转人工量 ÷ 产能 ÷ 班表人均出勤时长，向上取整；「当班人力」= HR 班表实际出勤人数；时段维度 = 该时段平均在岗人数。<br>' +
     '<b>缺口/冗余 = 当班 − 需求</b>：<span style="color:var(--bad)">负数 = 缺口（标红）</span>、<span style="color:var(--good)">正数 = 冗余（标绿）</span>，全页（计划表 / KPI / 时段明细 / 图表）同向。<br>' +
     '数据更新：<code>python forecast/export_coeffs.py</code>（系数）　<code>node forecast/fetch_cargo.js</code>（货量）　<code>python forecast/build_plan.py</code>（计划表）—— 已挂进每日 21:50 封存链自动跑。<br>' +
