@@ -1,0 +1,3668 @@
+{
+ "fetched_at": "2026-09-14T03:39:11",
+ "source": "风控人效预测看板 · 关联上报版（V11）",
+ "source_url": "https://codebuddy.work/agents/share/sCmP4dWJ8g2qPnHNvKF_ogQe-o5hAtTnFyjxoIqvS6a-YHviAVHnH9gmELgze-3f?platform=workbuddy",
+ "snapshot_day": "2026-09-10",
+ "hist_range": {
+  "date_min": "2026-01-01",
+  "date_max": "2026-09-09",
+  "days": 252
+ },
+ "q4_range": {
+  "date_min": "2026-09-10",
+  "date_max": "2026-12-31",
+  "days": 113
+ },
+ "avg_item_weight_kg": 2.6,
+ "config": {
+  "capacity_per_person": 870,
+  "work_hours": 11,
+  "total_on_duty": 16,
+  "total_headcount": 32,
+  "avg_item_weight_kg": 2.6,
+  "rel_rate_hist": 1.6632669322709164,
+  "rel_rate_q4": 1.5045398230088496
+ },
+ "by_date": {
+  "2026-01-01": {
+   "wd_name": "四",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 1897827,
+   "orders_actual": 729933,
+   "hc_forecast": null,
+   "hc_actual": 12.59
+  },
+  "2026-01-02": {
+   "wd_name": "五",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2111281,
+   "orders_actual": 812031,
+   "hc_forecast": null,
+   "hc_actual": 11.95
+  },
+  "2026-01-03": {
+   "wd_name": "六",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2313451,
+   "orders_actual": 889789,
+   "hc_forecast": null,
+   "hc_actual": 14.52
+  },
+  "2026-01-04": {
+   "wd_name": "日",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 1969697,
+   "orders_actual": 757576,
+   "hc_forecast": null,
+   "hc_actual": 14.37
+  },
+  "2026-01-05": {
+   "wd_name": "一",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 1935519,
+   "orders_actual": 744430,
+   "hc_forecast": null,
+   "hc_actual": 13.52
+  },
+  "2026-01-06": {
+   "wd_name": "二",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 1866905,
+   "orders_actual": 718041,
+   "hc_forecast": null,
+   "hc_actual": 12.21
+  },
+  "2026-01-07": {
+   "wd_name": "三",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 1954568,
+   "orders_actual": 751757,
+   "hc_forecast": null,
+   "hc_actual": 12.79
+  },
+  "2026-01-08": {
+   "wd_name": "四",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 1956543,
+   "orders_actual": 752517,
+   "hc_forecast": null,
+   "hc_actual": 13.06
+  },
+  "2026-01-09": {
+   "wd_name": "五",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 1961410,
+   "orders_actual": 754388,
+   "hc_forecast": null,
+   "hc_actual": 12.05
+  },
+  "2026-01-10": {
+   "wd_name": "六",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2222418,
+   "orders_actual": 854776,
+   "hc_forecast": null,
+   "hc_actual": 13.17
+  },
+  "2026-01-11": {
+   "wd_name": "日",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2450800,
+   "orders_actual": 942615,
+   "hc_forecast": null,
+   "hc_actual": 14.09
+  },
+  "2026-01-12": {
+   "wd_name": "一",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2138458,
+   "orders_actual": 822484,
+   "hc_forecast": null,
+   "hc_actual": 14.46
+  },
+  "2026-01-13": {
+   "wd_name": "二",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2013186,
+   "orders_actual": 774302,
+   "hc_forecast": null,
+   "hc_actual": 15.31
+  },
+  "2026-01-14": {
+   "wd_name": "三",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2033816,
+   "orders_actual": 782237,
+   "hc_forecast": null,
+   "hc_actual": 13.67
+  },
+  "2026-01-15": {
+   "wd_name": "四",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2023317,
+   "orders_actual": 778199,
+   "hc_forecast": null,
+   "hc_actual": 14.4
+  },
+  "2026-01-16": {
+   "wd_name": "五",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 1997745,
+   "orders_actual": 768364,
+   "hc_forecast": null,
+   "hc_actual": 14.57
+  },
+  "2026-01-17": {
+   "wd_name": "六",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2266422,
+   "orders_actual": 871701,
+   "hc_forecast": null,
+   "hc_actual": 14.73
+  },
+  "2026-01-18": {
+   "wd_name": "日",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2308591,
+   "orders_actual": 887919,
+   "hc_forecast": null,
+   "hc_actual": 15.21
+  },
+  "2026-01-19": {
+   "wd_name": "一",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 1546264,
+   "orders_actual": 594717,
+   "hc_forecast": null,
+   "hc_actual": 14.49
+  },
+  "2026-01-20": {
+   "wd_name": "二",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 1588889,
+   "orders_actual": 611111,
+   "hc_forecast": null,
+   "hc_actual": 10.75
+  },
+  "2026-01-21": {
+   "wd_name": "三",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 1842384,
+   "orders_actual": 708609,
+   "hc_forecast": null,
+   "hc_actual": 12.3
+  },
+  "2026-01-22": {
+   "wd_name": "四",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2001288,
+   "orders_actual": 769726,
+   "hc_forecast": null,
+   "hc_actual": 12.92
+  },
+  "2026-01-23": {
+   "wd_name": "五",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2097987,
+   "orders_actual": 806918,
+   "hc_forecast": null,
+   "hc_actual": 14.75
+  },
+  "2026-01-24": {
+   "wd_name": "六",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2471006,
+   "orders_actual": 950387,
+   "hc_forecast": null,
+   "hc_actual": 16.93
+  },
+  "2026-01-25": {
+   "wd_name": "日",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2464767,
+   "orders_actual": 947987,
+   "hc_forecast": null,
+   "hc_actual": 17.33
+  },
+  "2026-01-26": {
+   "wd_name": "一",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2000685,
+   "orders_actual": 769494,
+   "hc_forecast": null,
+   "hc_actual": 15.74
+  },
+  "2026-01-27": {
+   "wd_name": "二",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2213883,
+   "orders_actual": 851494,
+   "hc_forecast": null,
+   "hc_actual": 15.07
+  },
+  "2026-01-28": {
+   "wd_name": "三",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2251012,
+   "orders_actual": 865774,
+   "hc_forecast": null,
+   "hc_actual": 16.72
+  },
+  "2026-01-29": {
+   "wd_name": "四",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2166052,
+   "orders_actual": 833097,
+   "hc_forecast": null,
+   "hc_actual": 14.84
+  },
+  "2026-01-30": {
+   "wd_name": "五",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 1943013,
+   "orders_actual": 747313,
+   "hc_forecast": null,
+   "hc_actual": 13.74
+  },
+  "2026-01-31": {
+   "wd_name": "六",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2688484,
+   "orders_actual": 1034032,
+   "hc_forecast": null,
+   "hc_actual": 14.74
+  },
+  "2026-02-01": {
+   "wd_name": "日",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2684324,
+   "orders_actual": 1032432,
+   "hc_forecast": null,
+   "hc_actual": 13.17
+  },
+  "2026-02-02": {
+   "wd_name": "一",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2301528,
+   "orders_actual": 885203,
+   "hc_forecast": null,
+   "hc_actual": 12.51
+  },
+  "2026-02-03": {
+   "wd_name": "二",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2270394,
+   "orders_actual": 873228,
+   "hc_forecast": null,
+   "hc_actual": 12.75
+  },
+  "2026-02-04": {
+   "wd_name": "三",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2292000,
+   "orders_actual": 881538,
+   "hc_forecast": null,
+   "hc_actual": 11.86
+  },
+  "2026-02-05": {
+   "wd_name": "四",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2240919,
+   "orders_actual": 861892,
+   "hc_forecast": null,
+   "hc_actual": 11
+  },
+  "2026-02-06": {
+   "wd_name": "五",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 1910889,
+   "orders_actual": 734957,
+   "hc_forecast": null,
+   "hc_actual": 9.88
+  },
+  "2026-02-07": {
+   "wd_name": "六",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2306792,
+   "orders_actual": 887228,
+   "hc_forecast": null,
+   "hc_actual": 10.3
+  },
+  "2026-02-08": {
+   "wd_name": "日",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2215702,
+   "orders_actual": 852193,
+   "hc_forecast": null,
+   "hc_actual": 11.17
+  },
+  "2026-02-09": {
+   "wd_name": "一",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 1859307,
+   "orders_actual": 715118,
+   "hc_forecast": null,
+   "hc_actual": 10.44
+  },
+  "2026-02-10": {
+   "wd_name": "二",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 1515109,
+   "orders_actual": 582734,
+   "hc_forecast": null,
+   "hc_actual": 8.57
+  },
+  "2026-02-11": {
+   "wd_name": "三",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 1040202,
+   "orders_actual": 400078,
+   "hc_forecast": null,
+   "hc_actual": 5.93
+  },
+  "2026-02-12": {
+   "wd_name": "四",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 369724,
+   "orders_actual": 142201,
+   "hc_forecast": null,
+   "hc_actual": 4.38
+  },
+  "2026-02-13": {
+   "wd_name": "五",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 234000,
+   "orders_actual": 90000,
+   "hc_forecast": null,
+   "hc_actual": 1.94
+  },
+  "2026-02-14": {
+   "wd_name": "六",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 160547,
+   "orders_actual": 61749,
+   "hc_forecast": null,
+   "hc_actual": 1.58
+  },
+  "2026-02-15": {
+   "wd_name": "日",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 156843,
+   "orders_actual": 60324,
+   "hc_forecast": null,
+   "hc_actual": 1.28
+  },
+  "2026-02-16": {
+   "wd_name": "一",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 113187,
+   "orders_actual": 43533,
+   "hc_forecast": null,
+   "hc_actual": 0.75
+  },
+  "2026-02-17": {
+   "wd_name": "二",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 108333,
+   "orders_actual": 41667,
+   "hc_forecast": null,
+   "hc_actual": 0.57
+  },
+  "2026-02-18": {
+   "wd_name": "三",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 157677,
+   "orders_actual": 60645,
+   "hc_forecast": null,
+   "hc_actual": 1.3
+  },
+  "2026-02-19": {
+   "wd_name": "四",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 162345,
+   "orders_actual": 62440,
+   "hc_forecast": null,
+   "hc_actual": 1.21
+  },
+  "2026-02-20": {
+   "wd_name": "五",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 174597,
+   "orders_actual": 67153,
+   "hc_forecast": null,
+   "hc_actual": 1.11
+  },
+  "2026-02-21": {
+   "wd_name": "六",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 178685,
+   "orders_actual": 68725,
+   "hc_forecast": null,
+   "hc_actual": 1.18
+  },
+  "2026-02-22": {
+   "wd_name": "日",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 274717,
+   "orders_actual": 105660,
+   "hc_forecast": null,
+   "hc_actual": 1.29
+  },
+  "2026-02-23": {
+   "wd_name": "一",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 1127500,
+   "orders_actual": 433654,
+   "hc_forecast": null,
+   "hc_actual": 2.59
+  },
+  "2026-02-24": {
+   "wd_name": "二",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 1366140,
+   "orders_actual": 525439,
+   "hc_forecast": null,
+   "hc_actual": 6.89
+  },
+  "2026-02-25": {
+   "wd_name": "三",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 1576189,
+   "orders_actual": 606226,
+   "hc_forecast": null,
+   "hc_actual": 11.08
+  },
+  "2026-02-26": {
+   "wd_name": "四",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 1499452,
+   "orders_actual": 576712,
+   "hc_forecast": null,
+   "hc_actual": 9.68
+  },
+  "2026-02-27": {
+   "wd_name": "五",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 1880387,
+   "orders_actual": 723226,
+   "hc_forecast": null,
+   "hc_actual": 10.31
+  },
+  "2026-02-28": {
+   "wd_name": "六",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 1717182,
+   "orders_actual": 660455,
+   "hc_forecast": null,
+   "hc_actual": 11.69
+  },
+  "2026-03-01": {
+   "wd_name": "日",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 1568667,
+   "orders_actual": 603333,
+   "hc_forecast": null,
+   "hc_actual": 12.07
+  },
+  "2026-03-02": {
+   "wd_name": "一",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 1921383,
+   "orders_actual": 738993,
+   "hc_forecast": null,
+   "hc_actual": 12.66
+  },
+  "2026-03-03": {
+   "wd_name": "二",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 1800865,
+   "orders_actual": 692640,
+   "hc_forecast": null,
+   "hc_actual": 14.17
+  },
+  "2026-03-04": {
+   "wd_name": "三",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2132634,
+   "orders_actual": 820244,
+   "hc_forecast": null,
+   "hc_actual": 15.46
+  },
+  "2026-03-05": {
+   "wd_name": "四",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2059692,
+   "orders_actual": 792189,
+   "hc_forecast": null,
+   "hc_actual": 15.39
+  },
+  "2026-03-06": {
+   "wd_name": "五",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2120812,
+   "orders_actual": 815697,
+   "hc_forecast": null,
+   "hc_actual": 15.47
+  },
+  "2026-03-07": {
+   "wd_name": "六",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2335442,
+   "orders_actual": 898247,
+   "hc_forecast": null,
+   "hc_actual": 15.9
+  },
+  "2026-03-08": {
+   "wd_name": "日",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2414893,
+   "orders_actual": 928805,
+   "hc_forecast": null,
+   "hc_actual": 16.97
+  },
+  "2026-03-09": {
+   "wd_name": "一",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2229425,
+   "orders_actual": 857471,
+   "hc_forecast": null,
+   "hc_actual": 17.15
+  },
+  "2026-03-10": {
+   "wd_name": "二",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2140613,
+   "orders_actual": 823313,
+   "hc_forecast": null,
+   "hc_actual": 15.43
+  },
+  "2026-03-11": {
+   "wd_name": "三",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2163846,
+   "orders_actual": 832249,
+   "hc_forecast": null,
+   "hc_actual": 16.17
+  },
+  "2026-03-12": {
+   "wd_name": "四",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2142947,
+   "orders_actual": 824211,
+   "hc_forecast": null,
+   "hc_actual": 18
+  },
+  "2026-03-13": {
+   "wd_name": "五",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2030690,
+   "orders_actual": 781034,
+   "hc_forecast": null,
+   "hc_actual": 18.22
+  },
+  "2026-03-14": {
+   "wd_name": "六",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2238311,
+   "orders_actual": 860889,
+   "hc_forecast": null,
+   "hc_actual": 17.81
+  },
+  "2026-03-15": {
+   "wd_name": "日",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2525405,
+   "orders_actual": 971310,
+   "hc_forecast": null,
+   "hc_actual": 18.76
+  },
+  "2026-03-16": {
+   "wd_name": "一",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2010584,
+   "orders_actual": 773301,
+   "hc_forecast": null,
+   "hc_actual": 18.58
+  },
+  "2026-03-17": {
+   "wd_name": "二",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 1741488,
+   "orders_actual": 669803,
+   "hc_forecast": null,
+   "hc_actual": 15.63
+  },
+  "2026-03-18": {
+   "wd_name": "三",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 1883164,
+   "orders_actual": 724294,
+   "hc_forecast": null,
+   "hc_actual": 14.74
+  },
+  "2026-03-19": {
+   "wd_name": "四",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2206000,
+   "orders_actual": 848462,
+   "hc_forecast": null,
+   "hc_actual": 16.48
+  },
+  "2026-03-20": {
+   "wd_name": "五",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2036527,
+   "orders_actual": 783280,
+   "hc_forecast": null,
+   "hc_actual": 16.75
+  },
+  "2026-03-21": {
+   "wd_name": "六",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2540216,
+   "orders_actual": 977006,
+   "hc_forecast": null,
+   "hc_actual": 18.75
+  },
+  "2026-03-22": {
+   "wd_name": "日",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2708815,
+   "orders_actual": 1041852,
+   "hc_forecast": null,
+   "hc_actual": 19.4
+  },
+  "2026-03-23": {
+   "wd_name": "一",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2173403,
+   "orders_actual": 835924,
+   "hc_forecast": null,
+   "hc_actual": 20.27
+  },
+  "2026-03-24": {
+   "wd_name": "二",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 1978272,
+   "orders_actual": 760874,
+   "hc_forecast": null,
+   "hc_actual": 18.02
+  },
+  "2026-03-25": {
+   "wd_name": "三",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2208625,
+   "orders_actual": 849471,
+   "hc_forecast": null,
+   "hc_actual": 20.31
+  },
+  "2026-03-26": {
+   "wd_name": "四",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2157644,
+   "orders_actual": 829863,
+   "hc_forecast": null,
+   "hc_actual": 20.89
+  },
+  "2026-03-27": {
+   "wd_name": "五",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2224947,
+   "orders_actual": 855749,
+   "hc_forecast": null,
+   "hc_actual": 20.36
+  },
+  "2026-03-28": {
+   "wd_name": "六",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2577552,
+   "orders_actual": 991366,
+   "hc_forecast": null,
+   "hc_actual": 20.85
+  },
+  "2026-03-29": {
+   "wd_name": "日",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2793898,
+   "orders_actual": 1074576,
+   "hc_forecast": null,
+   "hc_actual": 21.86
+  },
+  "2026-03-30": {
+   "wd_name": "一",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2012584,
+   "orders_actual": 774071,
+   "hc_forecast": null,
+   "hc_actual": 20.11
+  },
+  "2026-03-31": {
+   "wd_name": "二",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2069053,
+   "orders_actual": 795789,
+   "hc_forecast": null,
+   "hc_actual": 19.12
+  },
+  "2026-04-01": {
+   "wd_name": "三",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2219925,
+   "orders_actual": 853817,
+   "hc_forecast": null,
+   "hc_actual": 18.25
+  },
+  "2026-04-02": {
+   "wd_name": "四",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2194270,
+   "orders_actual": 843950,
+   "hc_forecast": null,
+   "hc_actual": 19.4
+  },
+  "2026-04-03": {
+   "wd_name": "五",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 1885272,
+   "orders_actual": 725105,
+   "hc_forecast": null,
+   "hc_actual": 19.92
+  },
+  "2026-04-04": {
+   "wd_name": "六",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2540215,
+   "orders_actual": 977006,
+   "hc_forecast": null,
+   "hc_actual": 19.88
+  },
+  "2026-04-05": {
+   "wd_name": "日",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2396557,
+   "orders_actual": 921753,
+   "hc_forecast": null,
+   "hc_actual": 20.55
+  },
+  "2026-04-06": {
+   "wd_name": "一",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2756154,
+   "orders_actual": 1060059,
+   "hc_forecast": null,
+   "hc_actual": 20.59
+  },
+  "2026-04-07": {
+   "wd_name": "二",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2355683,
+   "orders_actual": 906032,
+   "hc_forecast": null,
+   "hc_actual": 19.68
+  },
+  "2026-04-08": {
+   "wd_name": "三",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2056658,
+   "orders_actual": 791022,
+   "hc_forecast": null,
+   "hc_actual": 20.46
+  },
+  "2026-04-09": {
+   "wd_name": "四",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 1892800,
+   "orders_actual": 728000,
+   "hc_forecast": null,
+   "hc_actual": 15.9
+  },
+  "2026-04-10": {
+   "wd_name": "五",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2298859,
+   "orders_actual": 884176,
+   "hc_forecast": null,
+   "hc_actual": 17.28
+  },
+  "2026-04-11": {
+   "wd_name": "六",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2443868,
+   "orders_actual": 939949,
+   "hc_forecast": null,
+   "hc_actual": 21.28
+  },
+  "2026-04-12": {
+   "wd_name": "日",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2782310,
+   "orders_actual": 1070119,
+   "hc_forecast": null,
+   "hc_actual": 20.66
+  },
+  "2026-04-13": {
+   "wd_name": "一",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2279380,
+   "orders_actual": 876685,
+   "hc_forecast": null,
+   "hc_actual": 18.54
+  },
+  "2026-04-14": {
+   "wd_name": "二",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2147574,
+   "orders_actual": 825990,
+   "hc_forecast": null,
+   "hc_actual": 18.7
+  },
+  "2026-04-15": {
+   "wd_name": "三",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2257420,
+   "orders_actual": 868238,
+   "hc_forecast": null,
+   "hc_actual": 19.26
+  },
+  "2026-04-16": {
+   "wd_name": "四",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 1967493,
+   "orders_actual": 756728,
+   "hc_forecast": null,
+   "hc_actual": 18.87
+  },
+  "2026-04-17": {
+   "wd_name": "五",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2308084,
+   "orders_actual": 887725,
+   "hc_forecast": null,
+   "hc_actual": 17.04
+  },
+  "2026-04-18": {
+   "wd_name": "六",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2735895,
+   "orders_actual": 1052267,
+   "hc_forecast": null,
+   "hc_actual": 20.8
+  },
+  "2026-04-19": {
+   "wd_name": "日",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2807567,
+   "orders_actual": 1079833,
+   "hc_forecast": null,
+   "hc_actual": 22.34
+  },
+  "2026-04-20": {
+   "wd_name": "一",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2283014,
+   "orders_actual": 878082,
+   "hc_forecast": null,
+   "hc_actual": 22.1
+  },
+  "2026-04-21": {
+   "wd_name": "二",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 1916988,
+   "orders_actual": 737303,
+   "hc_forecast": null,
+   "hc_actual": 20.42
+  },
+  "2026-04-22": {
+   "wd_name": "三",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 1910375,
+   "orders_actual": 734760,
+   "hc_forecast": null,
+   "hc_actual": 17.57
+  },
+  "2026-04-23": {
+   "wd_name": "四",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2208318,
+   "orders_actual": 849353,
+   "hc_forecast": null,
+   "hc_actual": 19.62
+  },
+  "2026-04-24": {
+   "wd_name": "五",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2215823,
+   "orders_actual": 852240,
+   "hc_forecast": null,
+   "hc_actual": 18.81
+  },
+  "2026-04-25": {
+   "wd_name": "六",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2694301,
+   "orders_actual": 1036269,
+   "hc_forecast": null,
+   "hc_actual": 22.99
+  },
+  "2026-04-26": {
+   "wd_name": "日",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2922969,
+   "orders_actual": 1124219,
+   "hc_forecast": null,
+   "hc_actual": 24.81
+  },
+  "2026-04-27": {
+   "wd_name": "一",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2322846,
+   "orders_actual": 893402,
+   "hc_forecast": null,
+   "hc_actual": 24.75
+  },
+  "2026-04-28": {
+   "wd_name": "二",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 1875642,
+   "orders_actual": 721401,
+   "hc_forecast": null,
+   "hc_actual": 21.31
+  },
+  "2026-04-29": {
+   "wd_name": "三",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2098847,
+   "orders_actual": 807249,
+   "hc_forecast": null,
+   "hc_actual": 17.54
+  },
+  "2026-04-30": {
+   "wd_name": "四",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2598038,
+   "orders_actual": 999245,
+   "hc_forecast": null,
+   "hc_actual": 18.26
+  },
+  "2026-05-01": {
+   "wd_name": "五",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2502040,
+   "orders_actual": 962323,
+   "hc_forecast": null,
+   "hc_actual": 21.9
+  },
+  "2026-05-02": {
+   "wd_name": "六",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 1990577,
+   "orders_actual": 765607,
+   "hc_forecast": null,
+   "hc_actual": 21.03
+  },
+  "2026-05-03": {
+   "wd_name": "日",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2195707,
+   "orders_actual": 844503,
+   "hc_forecast": null,
+   "hc_actual": 18.54
+  },
+  "2026-05-04": {
+   "wd_name": "一",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2416632,
+   "orders_actual": 929474,
+   "hc_forecast": null,
+   "hc_actual": 22.33
+  },
+  "2026-05-05": {
+   "wd_name": "二",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2770838,
+   "orders_actual": 1065707,
+   "hc_forecast": null,
+   "hc_actual": 23.4
+  },
+  "2026-05-06": {
+   "wd_name": "三",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2401677,
+   "orders_actual": 923722,
+   "hc_forecast": null,
+   "hc_actual": 23.68
+  },
+  "2026-05-07": {
+   "wd_name": "四",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2194214,
+   "orders_actual": 843929,
+   "hc_forecast": null,
+   "hc_actual": 21.73
+  },
+  "2026-05-08": {
+   "wd_name": "五",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2219841,
+   "orders_actual": 853785,
+   "hc_forecast": null,
+   "hc_actual": 21
+  },
+  "2026-05-09": {
+   "wd_name": "六",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2272870,
+   "orders_actual": 874181,
+   "hc_forecast": null,
+   "hc_actual": 17.79
+  },
+  "2026-05-10": {
+   "wd_name": "日",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2853349,
+   "orders_actual": 1097442,
+   "hc_forecast": null,
+   "hc_actual": 21.7
+  },
+  "2026-05-11": {
+   "wd_name": "一",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2417876,
+   "orders_actual": 929952,
+   "hc_forecast": null,
+   "hc_actual": 22.34
+  },
+  "2026-05-12": {
+   "wd_name": "二",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2287246,
+   "orders_actual": 879710,
+   "hc_forecast": null,
+   "hc_actual": 20.93
+  },
+  "2026-05-13": {
+   "wd_name": "三",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2227246,
+   "orders_actual": 856633,
+   "hc_forecast": null,
+   "hc_actual": 19.59
+  },
+  "2026-05-14": {
+   "wd_name": "四",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2286416,
+   "orders_actual": 879391,
+   "hc_forecast": null,
+   "hc_actual": 19.91
+  },
+  "2026-05-15": {
+   "wd_name": "五",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2317304,
+   "orders_actual": 891271,
+   "hc_forecast": null,
+   "hc_actual": 18.54
+  },
+  "2026-05-16": {
+   "wd_name": "六",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2604386,
+   "orders_actual": 1001687,
+   "hc_forecast": null,
+   "hc_actual": 19.11
+  },
+  "2026-05-17": {
+   "wd_name": "日",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2480465,
+   "orders_actual": 954025,
+   "hc_forecast": null,
+   "hc_actual": 17.44
+  },
+  "2026-05-18": {
+   "wd_name": "一",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2194313,
+   "orders_actual": 843966,
+   "hc_forecast": null,
+   "hc_actual": 17.36
+  },
+  "2026-05-19": {
+   "wd_name": "二",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2127816,
+   "orders_actual": 818391,
+   "hc_forecast": null,
+   "hc_actual": 16.37
+  },
+  "2026-05-20": {
+   "wd_name": "三",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2133345,
+   "orders_actual": 820517,
+   "hc_forecast": null,
+   "hc_actual": 16.41
+  },
+  "2026-05-21": {
+   "wd_name": "四",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2394684,
+   "orders_actual": 921032,
+   "hc_forecast": null,
+   "hc_actual": 16.41
+  },
+  "2026-05-22": {
+   "wd_name": "五",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2073648,
+   "orders_actual": 797557,
+   "hc_forecast": null,
+   "hc_actual": 16.13
+  },
+  "2026-05-23": {
+   "wd_name": "六",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2803048,
+   "orders_actual": 1078095,
+   "hc_forecast": null,
+   "hc_actual": 18.22
+  },
+  "2026-05-24": {
+   "wd_name": "日",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2729167,
+   "orders_actual": 1049679,
+   "hc_forecast": null,
+   "hc_actual": 18.82
+  },
+  "2026-05-25": {
+   "wd_name": "一",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2068508,
+   "orders_actual": 795580,
+   "hc_forecast": null,
+   "hc_actual": 16.55
+  },
+  "2026-05-26": {
+   "wd_name": "二",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2176571,
+   "orders_actual": 837143,
+   "hc_forecast": null,
+   "hc_actual": 14.14
+  },
+  "2026-05-27": {
+   "wd_name": "三",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2395960,
+   "orders_actual": 921523,
+   "hc_forecast": null,
+   "hc_actual": 15.99
+  },
+  "2026-05-28": {
+   "wd_name": "四",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2427538,
+   "orders_actual": 933669,
+   "hc_forecast": null,
+   "hc_actual": 18.14
+  },
+  "2026-05-29": {
+   "wd_name": "五",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2450462,
+   "orders_actual": 942485,
+   "hc_forecast": null,
+   "hc_actual": 18.31
+  },
+  "2026-05-30": {
+   "wd_name": "六",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2845536,
+   "orders_actual": 1094437,
+   "hc_forecast": null,
+   "hc_actual": 19
+  },
+  "2026-05-31": {
+   "wd_name": "日",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 3033270,
+   "orders_actual": 1166642,
+   "hc_forecast": null,
+   "hc_actual": 18.37
+  },
+  "2026-06-01": {
+   "wd_name": "一",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2538167,
+   "orders_actual": 976218,
+   "hc_forecast": null,
+   "hc_actual": 17.5
+  },
+  "2026-06-02": {
+   "wd_name": "二",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2433663,
+   "orders_actual": 936024,
+   "hc_forecast": null,
+   "hc_actual": 17.86
+  },
+  "2026-06-03": {
+   "wd_name": "三",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2243849,
+   "orders_actual": 863019,
+   "hc_forecast": null,
+   "hc_actual": 15.77
+  },
+  "2026-06-04": {
+   "wd_name": "四",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2358642,
+   "orders_actual": 907170,
+   "hc_forecast": null,
+   "hc_actual": 16.58
+  },
+  "2026-06-05": {
+   "wd_name": "五",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2383772,
+   "orders_actual": 916835,
+   "hc_forecast": null,
+   "hc_actual": 16.65
+  },
+  "2026-06-06": {
+   "wd_name": "六",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2491748,
+   "orders_actual": 958365,
+   "hc_forecast": null,
+   "hc_actual": 17.51
+  },
+  "2026-06-07": {
+   "wd_name": "日",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2959206,
+   "orders_actual": 1138156,
+   "hc_forecast": null,
+   "hc_actual": 18.45
+  },
+  "2026-06-08": {
+   "wd_name": "一",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2397549,
+   "orders_actual": 922134,
+   "hc_forecast": null,
+   "hc_actual": 17.38
+  },
+  "2026-06-09": {
+   "wd_name": "二",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2315625,
+   "orders_actual": 890625,
+   "hc_forecast": null,
+   "hc_actual": 18.02
+  },
+  "2026-06-10": {
+   "wd_name": "三",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2371506,
+   "orders_actual": 912118,
+   "hc_forecast": null,
+   "hc_actual": 17.82
+  },
+  "2026-06-11": {
+   "wd_name": "四",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2341835,
+   "orders_actual": 900706,
+   "hc_forecast": null,
+   "hc_actual": 17.6
+  },
+  "2026-06-12": {
+   "wd_name": "五",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2317759,
+   "orders_actual": 891446,
+   "hc_forecast": null,
+   "hc_actual": 17.01
+  },
+  "2026-06-13": {
+   "wd_name": "六",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2599497,
+   "orders_actual": 999806,
+   "hc_forecast": null,
+   "hc_actual": 17.81
+  },
+  "2026-06-14": {
+   "wd_name": "日",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2922142,
+   "orders_actual": 1123901,
+   "hc_forecast": null,
+   "hc_actual": 18.21
+  },
+  "2026-06-15": {
+   "wd_name": "一",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2363062,
+   "orders_actual": 908870,
+   "hc_forecast": null,
+   "hc_actual": 18.49
+  },
+  "2026-06-16": {
+   "wd_name": "二",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2273481,
+   "orders_actual": 874416,
+   "hc_forecast": null,
+   "hc_actual": 15.48
+  },
+  "2026-06-17": {
+   "wd_name": "三",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2443078,
+   "orders_actual": 939645,
+   "hc_forecast": null,
+   "hc_actual": 15.23
+  },
+  "2026-06-18": {
+   "wd_name": "四",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2449500,
+   "orders_actual": 942115,
+   "hc_forecast": null,
+   "hc_actual": 16.89
+  },
+  "2026-06-19": {
+   "wd_name": "五",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2499761,
+   "orders_actual": 961447,
+   "hc_forecast": null,
+   "hc_actual": 17.57
+  },
+  "2026-06-20": {
+   "wd_name": "六",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2794494,
+   "orders_actual": 1074805,
+   "hc_forecast": null,
+   "hc_actual": 19.03
+  },
+  "2026-06-21": {
+   "wd_name": "日",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2705595,
+   "orders_actual": 1040613,
+   "hc_forecast": null,
+   "hc_actual": 19.5
+  },
+  "2026-06-22": {
+   "wd_name": "一",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2255464,
+   "orders_actual": 867486,
+   "hc_forecast": null,
+   "hc_actual": 18.25
+  },
+  "2026-06-23": {
+   "wd_name": "二",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2231667,
+   "orders_actual": 858333,
+   "hc_forecast": null,
+   "hc_actual": 16.57
+  },
+  "2026-06-24": {
+   "wd_name": "三",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2387032,
+   "orders_actual": 918089,
+   "hc_forecast": null,
+   "hc_actual": 16.57
+  },
+  "2026-06-25": {
+   "wd_name": "四",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2384778,
+   "orders_actual": 917222,
+   "hc_forecast": null,
+   "hc_actual": 17.08
+  },
+  "2026-06-26": {
+   "wd_name": "五",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2305333,
+   "orders_actual": 886667,
+   "hc_forecast": null,
+   "hc_actual": 18.96
+  },
+  "2026-06-27": {
+   "wd_name": "六",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2743000,
+   "orders_actual": 1055000,
+   "hc_forecast": null,
+   "hc_actual": 19.89
+  },
+  "2026-06-28": {
+   "wd_name": "日",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2857494,
+   "orders_actual": 1099036,
+   "hc_forecast": null,
+   "hc_actual": 20.97
+  },
+  "2026-06-29": {
+   "wd_name": "一",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2435767,
+   "orders_actual": 936833,
+   "hc_forecast": null,
+   "hc_actual": 19.38
+  },
+  "2026-06-30": {
+   "wd_name": "二",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 1997490,
+   "orders_actual": 768265,
+   "hc_forecast": null,
+   "hc_actual": 17.31
+  },
+  "2026-07-01": {
+   "wd_name": "三",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2443828,
+   "orders_actual": 939934,
+   "hc_forecast": null,
+   "hc_actual": 16.31
+  },
+  "2026-07-02": {
+   "wd_name": "四",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2291231,
+   "orders_actual": 881243,
+   "hc_forecast": null,
+   "hc_actual": 17.12
+  },
+  "2026-07-03": {
+   "wd_name": "五",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2226615,
+   "orders_actual": 856391,
+   "hc_forecast": null,
+   "hc_actual": 16.64
+  },
+  "2026-07-04": {
+   "wd_name": "六",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2648601,
+   "orders_actual": 1018693,
+   "hc_forecast": null,
+   "hc_actual": 17.91
+  },
+  "2026-07-05": {
+   "wd_name": "日",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2838362,
+   "orders_actual": 1091678,
+   "hc_forecast": null,
+   "hc_actual": 18.7
+  },
+  "2026-07-06": {
+   "wd_name": "一",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2300103,
+   "orders_actual": 884655,
+   "hc_forecast": null,
+   "hc_actual": 17.69
+  },
+  "2026-07-07": {
+   "wd_name": "二",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2136507,
+   "orders_actual": 821733,
+   "hc_forecast": null,
+   "hc_actual": 14.17
+  },
+  "2026-07-08": {
+   "wd_name": "三",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2404123,
+   "orders_actual": 924663,
+   "hc_forecast": null,
+   "hc_actual": 17.32
+  },
+  "2026-07-09": {
+   "wd_name": "四",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2323307,
+   "orders_actual": 893580,
+   "hc_forecast": null,
+   "hc_actual": 18.08
+  },
+  "2026-07-10": {
+   "wd_name": "五",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2273832,
+   "orders_actual": 874551,
+   "hc_forecast": null,
+   "hc_actual": 16.79
+  },
+  "2026-07-11": {
+   "wd_name": "六",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2670065,
+   "orders_actual": 1026948,
+   "hc_forecast": null,
+   "hc_actual": 18.18
+  },
+  "2026-07-12": {
+   "wd_name": "日",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2618087,
+   "orders_actual": 1006957,
+   "hc_forecast": null,
+   "hc_actual": 18.63
+  },
+  "2026-07-13": {
+   "wd_name": "一",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2124778,
+   "orders_actual": 817222,
+   "hc_forecast": null,
+   "hc_actual": 16.91
+  },
+  "2026-07-14": {
+   "wd_name": "二",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2212763,
+   "orders_actual": 851063,
+   "hc_forecast": null,
+   "hc_actual": 15.65
+  },
+  "2026-07-15": {
+   "wd_name": "三",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2236000,
+   "orders_actual": 860000,
+   "hc_forecast": null,
+   "hc_actual": 16.31
+  },
+  "2026-07-16": {
+   "wd_name": "四",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2250211,
+   "orders_actual": 865466,
+   "hc_forecast": null,
+   "hc_actual": 16.02
+  },
+  "2026-07-17": {
+   "wd_name": "五",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2134532,
+   "orders_actual": 820974,
+   "hc_forecast": null,
+   "hc_actual": 14.53
+  },
+  "2026-07-18": {
+   "wd_name": "六",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2672260,
+   "orders_actual": 1027792,
+   "hc_forecast": null,
+   "hc_actual": 18.19
+  },
+  "2026-07-19": {
+   "wd_name": "日",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2610308,
+   "orders_actual": 1003964,
+   "hc_forecast": null,
+   "hc_actual": 19.5
+  },
+  "2026-07-20": {
+   "wd_name": "一",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2299978,
+   "orders_actual": 884607,
+   "hc_forecast": null,
+   "hc_actual": 18.1
+  },
+  "2026-07-21": {
+   "wd_name": "二",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2238923,
+   "orders_actual": 861124,
+   "hc_forecast": null,
+   "hc_actual": 16.73
+  },
+  "2026-07-22": {
+   "wd_name": "三",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2153860,
+   "orders_actual": 828408,
+   "hc_forecast": null,
+   "hc_actual": 14.95
+  },
+  "2026-07-23": {
+   "wd_name": "四",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2268247,
+   "orders_actual": 872403,
+   "hc_forecast": null,
+   "hc_actual": 15.44
+  },
+  "2026-07-24": {
+   "wd_name": "五",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2230551,
+   "orders_actual": 857904,
+   "hc_forecast": null,
+   "hc_actual": 16.47
+  },
+  "2026-07-25": {
+   "wd_name": "六",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2530890,
+   "orders_actual": 973419,
+   "hc_forecast": null,
+   "hc_actual": 17.34
+  },
+  "2026-07-26": {
+   "wd_name": "日",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2601962,
+   "orders_actual": 1000755,
+   "hc_forecast": null,
+   "hc_actual": 18.29
+  },
+  "2026-07-27": {
+   "wd_name": "一",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2328728,
+   "orders_actual": 895665,
+   "hc_forecast": null,
+   "hc_actual": 17.81
+  },
+  "2026-07-28": {
+   "wd_name": "二",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2190802,
+   "orders_actual": 842616,
+   "hc_forecast": null,
+   "hc_actual": 16.66
+  },
+  "2026-07-29": {
+   "wd_name": "三",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2212872,
+   "orders_actual": 851105,
+   "hc_forecast": null,
+   "hc_actual": 16.83
+  },
+  "2026-07-30": {
+   "wd_name": "四",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2194069,
+   "orders_actual": 843873,
+   "hc_forecast": null,
+   "hc_actual": 16.78
+  },
+  "2026-07-31": {
+   "wd_name": "五",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2252813,
+   "orders_actual": 866467,
+   "hc_forecast": null,
+   "hc_actual": 14.94
+  },
+  "2026-08-01": {
+   "wd_name": "六",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2502374,
+   "orders_actual": 962452,
+   "hc_forecast": null,
+   "hc_actual": 17.15
+  },
+  "2026-08-02": {
+   "wd_name": "日",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2603069,
+   "orders_actual": 1001181,
+   "hc_forecast": null,
+   "hc_actual": 16.57
+  },
+  "2026-08-03": {
+   "wd_name": "一",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2217006,
+   "orders_actual": 852695,
+   "hc_forecast": null,
+   "hc_actual": 16.37
+  },
+  "2026-08-04": {
+   "wd_name": "二",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2134854,
+   "orders_actual": 821098,
+   "hc_forecast": null,
+   "hc_actual": 15.48
+  },
+  "2026-08-05": {
+   "wd_name": "三",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2177659,
+   "orders_actual": 837561,
+   "hc_forecast": null,
+   "hc_actual": 15.79
+  },
+  "2026-08-06": {
+   "wd_name": "四",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2205886,
+   "orders_actual": 848418,
+   "hc_forecast": null,
+   "hc_actual": 15.41
+  },
+  "2026-08-07": {
+   "wd_name": "五",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2180354,
+   "orders_actual": 838598,
+   "hc_forecast": null,
+   "hc_actual": 15.81
+  },
+  "2026-08-08": {
+   "wd_name": "六",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2665269,
+   "orders_actual": 1025103,
+   "hc_forecast": null,
+   "hc_actual": 17.09
+  },
+  "2026-08-09": {
+   "wd_name": "日",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2506532,
+   "orders_actual": 964051,
+   "hc_forecast": null,
+   "hc_actual": 17.51
+  },
+  "2026-08-10": {
+   "wd_name": "一",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2023767,
+   "orders_actual": 778372,
+   "hc_forecast": null,
+   "hc_actual": 15.39
+  },
+  "2026-08-11": {
+   "wd_name": "二",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2161350,
+   "orders_actual": 831288,
+   "hc_forecast": null,
+   "hc_actual": 15.57
+  },
+  "2026-08-12": {
+   "wd_name": "三",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2104086,
+   "orders_actual": 809264,
+   "hc_forecast": null,
+   "hc_actual": 15.16
+  },
+  "2026-08-13": {
+   "wd_name": "四",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2409153,
+   "orders_actual": 926597,
+   "hc_forecast": null,
+   "hc_actual": 15.34
+  },
+  "2026-08-14": {
+   "wd_name": "五",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2187114,
+   "orders_actual": 841198,
+   "hc_forecast": null,
+   "hc_actual": 16.15
+  },
+  "2026-08-15": {
+   "wd_name": "六",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2718567,
+   "orders_actual": 1045603,
+   "hc_forecast": null,
+   "hc_actual": 16.95
+  },
+  "2026-08-16": {
+   "wd_name": "日",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2836889,
+   "orders_actual": 1091111,
+   "hc_forecast": null,
+   "hc_actual": 19.19
+  },
+  "2026-08-17": {
+   "wd_name": "一",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2435588,
+   "orders_actual": 936765,
+   "hc_forecast": null,
+   "hc_actual": 18.3
+  },
+  "2026-08-18": {
+   "wd_name": "二",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2278531,
+   "orders_actual": 876358,
+   "hc_forecast": null,
+   "hc_actual": 16.32
+  },
+  "2026-08-19": {
+   "wd_name": "三",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2353911,
+   "orders_actual": 905350,
+   "hc_forecast": null,
+   "hc_actual": 16.34
+  },
+  "2026-08-20": {
+   "wd_name": "四",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2330874,
+   "orders_actual": 896490,
+   "hc_forecast": null,
+   "hc_actual": 15.56
+  },
+  "2026-08-21": {
+   "wd_name": "五",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2343228,
+   "orders_actual": 901241,
+   "hc_forecast": null,
+   "hc_actual": 15.02
+  },
+  "2026-08-22": {
+   "wd_name": "六",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2652179,
+   "orders_actual": 1020069,
+   "hc_forecast": null,
+   "hc_actual": 17
+  },
+  "2026-08-23": {
+   "wd_name": "日",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2888868,
+   "orders_actual": 1111103,
+   "hc_forecast": null,
+   "hc_actual": 17.37
+  },
+  "2026-08-24": {
+   "wd_name": "一",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2429910,
+   "orders_actual": 934581,
+   "hc_forecast": null,
+   "hc_actual": 16.65
+  },
+  "2026-08-25": {
+   "wd_name": "二",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2256465,
+   "orders_actual": 867871,
+   "hc_forecast": null,
+   "hc_actual": 15.46
+  },
+  "2026-08-26": {
+   "wd_name": "三",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2344710,
+   "orders_actual": 901812,
+   "hc_forecast": null,
+   "hc_actual": 14.3
+  },
+  "2026-08-27": {
+   "wd_name": "四",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2318489,
+   "orders_actual": 891727,
+   "hc_forecast": null,
+   "hc_actual": 14.25
+  },
+  "2026-08-28": {
+   "wd_name": "五",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2342315,
+   "orders_actual": 900890,
+   "hc_forecast": null,
+   "hc_actual": 15.12
+  },
+  "2026-08-29": {
+   "wd_name": "六",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 3105742,
+   "orders_actual": 1194516,
+   "hc_forecast": null,
+   "hc_actual": 17.03
+  },
+  "2026-08-30": {
+   "wd_name": "日",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 3145140,
+   "orders_actual": 1209669,
+   "hc_forecast": null,
+   "hc_actual": 16.82
+  },
+  "2026-08-31": {
+   "wd_name": "一",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2771955,
+   "orders_actual": 1066136,
+   "hc_forecast": null,
+   "hc_actual": 16.18
+  },
+  "2026-09-01": {
+   "wd_name": "二",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2678738,
+   "orders_actual": 1030284,
+   "hc_forecast": null,
+   "hc_actual": 16.7
+  },
+  "2026-09-02": {
+   "wd_name": "三",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2536733,
+   "orders_actual": 975667,
+   "hc_forecast": null,
+   "hc_actual": 16.82
+  },
+  "2026-09-03": {
+   "wd_name": "四",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2556387,
+   "orders_actual": 983226,
+   "hc_forecast": null,
+   "hc_actual": 17.52
+  },
+  "2026-09-04": {
+   "wd_name": "五",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2572932,
+   "orders_actual": 989589,
+   "hc_forecast": null,
+   "hc_actual": 16.61
+  },
+  "2026-09-05": {
+   "wd_name": "六",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2998230,
+   "orders_actual": 1153165,
+   "hc_forecast": null,
+   "hc_actual": 18.42
+  },
+  "2026-09-06": {
+   "wd_name": "日",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 3220726,
+   "orders_actual": 1238741,
+   "hc_forecast": null,
+   "hc_actual": 19.22
+  },
+  "2026-09-07": {
+   "wd_name": "一",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2555429,
+   "orders_actual": 982857,
+   "hc_forecast": null,
+   "hc_actual": 18.19
+  },
+  "2026-09-08": {
+   "wd_name": "二",
+   "is_forecast": false,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "cargo_actual": 2387904,
+   "orders_actual": 918425,
+   "hc_forecast": null,
+   "hc_actual": 15.41
+  },
+  "2026-09-10": {
+   "wd_name": "四",
+   "is_forecast": true,
+   "cargo_forecast": 2520250,
+   "orders_forecast": 969327,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 14.52,
+   "hc_actual": null
+  },
+  "2026-09-11": {
+   "wd_name": "五",
+   "is_forecast": true,
+   "cargo_forecast": 2444621,
+   "orders_forecast": 940239,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 14.09,
+   "hc_actual": null
+  },
+  "2026-09-12": {
+   "wd_name": "六",
+   "is_forecast": true,
+   "cargo_forecast": 3126274,
+   "orders_forecast": 1202413,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 18.01,
+   "hc_actual": null
+  },
+  "2026-09-13": {
+   "wd_name": "日",
+   "is_forecast": true,
+   "cargo_forecast": 3334118,
+   "orders_forecast": 1282353,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 19.21,
+   "hc_actual": null
+  },
+  "2026-09-14": {
+   "wd_name": "一",
+   "is_forecast": true,
+   "cargo_forecast": 2689094,
+   "orders_forecast": 1034267,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 15.49,
+   "hc_actual": null
+  },
+  "2026-09-15": {
+   "wd_name": "二",
+   "is_forecast": true,
+   "cargo_forecast": 2481131,
+   "orders_forecast": 954281,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 14.3,
+   "hc_actual": null
+  },
+  "2026-09-16": {
+   "wd_name": "三",
+   "is_forecast": true,
+   "cargo_forecast": 2561309,
+   "orders_forecast": 985119,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 14.76,
+   "hc_actual": null
+  },
+  "2026-09-17": {
+   "wd_name": "四",
+   "is_forecast": true,
+   "cargo_forecast": 2528557,
+   "orders_forecast": 972522,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 14.57,
+   "hc_actual": null
+  },
+  "2026-09-18": {
+   "wd_name": "五",
+   "is_forecast": true,
+   "cargo_forecast": 2433860,
+   "orders_forecast": 936100,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 14.02,
+   "hc_actual": null
+  },
+  "2026-09-19": {
+   "wd_name": "六",
+   "is_forecast": true,
+   "cargo_forecast": 3161493,
+   "orders_forecast": 1215959,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 18.22,
+   "hc_actual": null
+  },
+  "2026-09-20": {
+   "wd_name": "日",
+   "is_forecast": true,
+   "cargo_forecast": 3336424,
+   "orders_forecast": 1283240,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 19.22,
+   "hc_actual": null
+  },
+  "2026-09-21": {
+   "wd_name": "一",
+   "is_forecast": true,
+   "cargo_forecast": 2676950,
+   "orders_forecast": 1029596,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 15.42,
+   "hc_actual": null
+  },
+  "2026-09-22": {
+   "wd_name": "二",
+   "is_forecast": true,
+   "cargo_forecast": 2483582,
+   "orders_forecast": 955224,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 14.31,
+   "hc_actual": null
+  },
+  "2026-09-23": {
+   "wd_name": "三",
+   "is_forecast": true,
+   "cargo_forecast": 2535081,
+   "orders_forecast": 975031,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 14.61,
+   "hc_actual": null
+  },
+  "2026-09-24": {
+   "wd_name": "四",
+   "is_forecast": true,
+   "cargo_forecast": 2603804,
+   "orders_forecast": 1001463,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 15,
+   "hc_actual": null
+  },
+  "2026-09-25": {
+   "wd_name": "五",
+   "is_forecast": true,
+   "cargo_forecast": 2451056,
+   "orders_forecast": 942714,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 14.12,
+   "hc_actual": null
+  },
+  "2026-09-26": {
+   "wd_name": "六",
+   "is_forecast": true,
+   "cargo_forecast": 3073179,
+   "orders_forecast": 1181992,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 17.71,
+   "hc_actual": null
+  },
+  "2026-09-27": {
+   "wd_name": "日",
+   "is_forecast": true,
+   "cargo_forecast": 3327730,
+   "orders_forecast": 1279896,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 19.17,
+   "hc_actual": null
+  },
+  "2026-09-28": {
+   "wd_name": "一",
+   "is_forecast": true,
+   "cargo_forecast": 2657057,
+   "orders_forecast": 1021945,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 15.31,
+   "hc_actual": null
+  },
+  "2026-09-29": {
+   "wd_name": "二",
+   "is_forecast": true,
+   "cargo_forecast": 2480546,
+   "orders_forecast": 954056,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 14.29,
+   "hc_actual": null
+  },
+  "2026-09-30": {
+   "wd_name": "三",
+   "is_forecast": true,
+   "cargo_forecast": 2508168,
+   "orders_forecast": 964680,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 14.45,
+   "hc_actual": null
+  },
+  "2026-10-01": {
+   "wd_name": "四",
+   "is_forecast": true,
+   "cargo_forecast": 2462663,
+   "orders_forecast": 947178,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 15.24,
+   "hc_actual": null
+  },
+  "2026-10-02": {
+   "wd_name": "五",
+   "is_forecast": true,
+   "cargo_forecast": 2489700,
+   "orders_forecast": 957577,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 15.41,
+   "hc_actual": null
+  },
+  "2026-10-03": {
+   "wd_name": "六",
+   "is_forecast": true,
+   "cargo_forecast": 3085202,
+   "orders_forecast": 1186616,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 19.09,
+   "hc_actual": null
+  },
+  "2026-10-04": {
+   "wd_name": "日",
+   "is_forecast": true,
+   "cargo_forecast": 3314563,
+   "orders_forecast": 1274832,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 20.51,
+   "hc_actual": null
+  },
+  "2026-10-05": {
+   "wd_name": "一",
+   "is_forecast": true,
+   "cargo_forecast": 2685886,
+   "orders_forecast": 1033033,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 16.62,
+   "hc_actual": null
+  },
+  "2026-10-06": {
+   "wd_name": "二",
+   "is_forecast": true,
+   "cargo_forecast": 2515037,
+   "orders_forecast": 967322,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 15.57,
+   "hc_actual": null
+  },
+  "2026-10-07": {
+   "wd_name": "三",
+   "is_forecast": true,
+   "cargo_forecast": 2470133,
+   "orders_forecast": 950051,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 15.29,
+   "hc_actual": null
+  },
+  "2026-10-08": {
+   "wd_name": "四",
+   "is_forecast": true,
+   "cargo_forecast": 2483042,
+   "orders_forecast": 955016,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 15.37,
+   "hc_actual": null
+  },
+  "2026-10-09": {
+   "wd_name": "五",
+   "is_forecast": true,
+   "cargo_forecast": 2471409,
+   "orders_forecast": 950542,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 15.3,
+   "hc_actual": null
+  },
+  "2026-10-10": {
+   "wd_name": "六",
+   "is_forecast": true,
+   "cargo_forecast": 3115466,
+   "orders_forecast": 1198256,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 19.28,
+   "hc_actual": null
+  },
+  "2026-10-11": {
+   "wd_name": "日",
+   "is_forecast": true,
+   "cargo_forecast": 3313034,
+   "orders_forecast": 1274244,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 20.51,
+   "hc_actual": null
+  },
+  "2026-10-12": {
+   "wd_name": "一",
+   "is_forecast": true,
+   "cargo_forecast": 2680665,
+   "orders_forecast": 1031025,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 16.59,
+   "hc_actual": null
+  },
+  "2026-10-13": {
+   "wd_name": "二",
+   "is_forecast": true,
+   "cargo_forecast": 2486546,
+   "orders_forecast": 956364,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 15.39,
+   "hc_actual": null
+  },
+  "2026-10-14": {
+   "wd_name": "三",
+   "is_forecast": true,
+   "cargo_forecast": 2486260,
+   "orders_forecast": 956254,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 15.39,
+   "hc_actual": null
+  },
+  "2026-10-15": {
+   "wd_name": "四",
+   "is_forecast": true,
+   "cargo_forecast": 2488749,
+   "orders_forecast": 957211,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 15.4,
+   "hc_actual": null
+  },
+  "2026-10-16": {
+   "wd_name": "五",
+   "is_forecast": true,
+   "cargo_forecast": 2433811,
+   "orders_forecast": 936081,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 15.06,
+   "hc_actual": null
+  },
+  "2026-10-17": {
+   "wd_name": "六",
+   "is_forecast": true,
+   "cargo_forecast": 3126638,
+   "orders_forecast": 1202553,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 19.35,
+   "hc_actual": null
+  },
+  "2026-10-18": {
+   "wd_name": "日",
+   "is_forecast": true,
+   "cargo_forecast": 3350656,
+   "orders_forecast": 1288714,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 20.74,
+   "hc_actual": null
+  },
+  "2026-10-19": {
+   "wd_name": "一",
+   "is_forecast": true,
+   "cargo_forecast": 2665897,
+   "orders_forecast": 1025345,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 16.5,
+   "hc_actual": null
+  },
+  "2026-10-20": {
+   "wd_name": "二",
+   "is_forecast": true,
+   "cargo_forecast": 2481276,
+   "orders_forecast": 954337,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 15.36,
+   "hc_actual": null
+  },
+  "2026-10-21": {
+   "wd_name": "三",
+   "is_forecast": true,
+   "cargo_forecast": 2479118,
+   "orders_forecast": 953507,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 15.34,
+   "hc_actual": null
+  },
+  "2026-10-22": {
+   "wd_name": "四",
+   "is_forecast": true,
+   "cargo_forecast": 2453677,
+   "orders_forecast": 943722,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 15.19,
+   "hc_actual": null
+  },
+  "2026-10-23": {
+   "wd_name": "五",
+   "is_forecast": true,
+   "cargo_forecast": 2406924,
+   "orders_forecast": 925740,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 14.9,
+   "hc_actual": null
+  },
+  "2026-10-24": {
+   "wd_name": "六",
+   "is_forecast": true,
+   "cargo_forecast": 3061547,
+   "orders_forecast": 1177518,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 18.95,
+   "hc_actual": null
+  },
+  "2026-10-25": {
+   "wd_name": "日",
+   "is_forecast": true,
+   "cargo_forecast": 3301912,
+   "orders_forecast": 1269966,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 20.44,
+   "hc_actual": null
+  },
+  "2026-10-26": {
+   "wd_name": "一",
+   "is_forecast": true,
+   "cargo_forecast": 2639933,
+   "orders_forecast": 1015359,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 16.34,
+   "hc_actual": null
+  },
+  "2026-10-27": {
+   "wd_name": "二",
+   "is_forecast": true,
+   "cargo_forecast": 2469181,
+   "orders_forecast": 949685,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 15.28,
+   "hc_actual": null
+  },
+  "2026-10-28": {
+   "wd_name": "三",
+   "is_forecast": true,
+   "cargo_forecast": 2471396,
+   "orders_forecast": 950537,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 15.3,
+   "hc_actual": null
+  },
+  "2026-10-29": {
+   "wd_name": "四",
+   "is_forecast": true,
+   "cargo_forecast": 2450276,
+   "orders_forecast": 942414,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 15.17,
+   "hc_actual": null
+  },
+  "2026-10-30": {
+   "wd_name": "五",
+   "is_forecast": true,
+   "cargo_forecast": 2449502,
+   "orders_forecast": 942116,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 15.16,
+   "hc_actual": null
+  },
+  "2026-10-31": {
+   "wd_name": "六",
+   "is_forecast": true,
+   "cargo_forecast": 3079398,
+   "orders_forecast": 1184384,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 19.06,
+   "hc_actual": null
+  },
+  "2026-11-01": {
+   "wd_name": "日",
+   "is_forecast": true,
+   "cargo_forecast": 3297297,
+   "orders_forecast": 1268191,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 21.87,
+   "hc_actual": null
+  },
+  "2026-11-02": {
+   "wd_name": "一",
+   "is_forecast": true,
+   "cargo_forecast": 2636774,
+   "orders_forecast": 1014144,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 17.49,
+   "hc_actual": null
+  },
+  "2026-11-03": {
+   "wd_name": "二",
+   "is_forecast": true,
+   "cargo_forecast": 2470029,
+   "orders_forecast": 950011,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 16.38,
+   "hc_actual": null
+  },
+  "2026-11-04": {
+   "wd_name": "三",
+   "is_forecast": true,
+   "cargo_forecast": 2474529,
+   "orders_forecast": 951742,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 16.41,
+   "hc_actual": null
+  },
+  "2026-11-05": {
+   "wd_name": "四",
+   "is_forecast": true,
+   "cargo_forecast": 2449912,
+   "orders_forecast": 942274,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 16.25,
+   "hc_actual": null
+  },
+  "2026-11-06": {
+   "wd_name": "五",
+   "is_forecast": true,
+   "cargo_forecast": 2436169,
+   "orders_forecast": 936988,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 16.15,
+   "hc_actual": null
+  },
+  "2026-11-07": {
+   "wd_name": "六",
+   "is_forecast": true,
+   "cargo_forecast": 3111532,
+   "orders_forecast": 1196743,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 20.63,
+   "hc_actual": null
+  },
+  "2026-11-08": {
+   "wd_name": "日",
+   "is_forecast": true,
+   "cargo_forecast": 3318695,
+   "orders_forecast": 1276421,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 22.01,
+   "hc_actual": null
+  },
+  "2026-11-09": {
+   "wd_name": "一",
+   "is_forecast": true,
+   "cargo_forecast": 2651665,
+   "orders_forecast": 1019871,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 17.58,
+   "hc_actual": null
+  },
+  "2026-11-10": {
+   "wd_name": "二",
+   "is_forecast": true,
+   "cargo_forecast": 2468814,
+   "orders_forecast": 949544,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 16.37,
+   "hc_actual": null
+  },
+  "2026-11-11": {
+   "wd_name": "三",
+   "is_forecast": true,
+   "cargo_forecast": 2469379,
+   "orders_forecast": 949761,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 16.38,
+   "hc_actual": null
+  },
+  "2026-11-12": {
+   "wd_name": "四",
+   "is_forecast": true,
+   "cargo_forecast": 2463076,
+   "orders_forecast": 947337,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 16.33,
+   "hc_actual": null
+  },
+  "2026-11-13": {
+   "wd_name": "五",
+   "is_forecast": true,
+   "cargo_forecast": 2401485,
+   "orders_forecast": 923648,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 15.92,
+   "hc_actual": null
+  },
+  "2026-11-14": {
+   "wd_name": "六",
+   "is_forecast": true,
+   "cargo_forecast": 3058702,
+   "orders_forecast": 1176424,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 20.28,
+   "hc_actual": null
+  },
+  "2026-11-15": {
+   "wd_name": "日",
+   "is_forecast": true,
+   "cargo_forecast": 3295765,
+   "orders_forecast": 1267602,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 21.86,
+   "hc_actual": null
+  },
+  "2026-11-16": {
+   "wd_name": "一",
+   "is_forecast": true,
+   "cargo_forecast": 2636923,
+   "orders_forecast": 1014201,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 17.49,
+   "hc_actual": null
+  },
+  "2026-11-17": {
+   "wd_name": "二",
+   "is_forecast": true,
+   "cargo_forecast": 2473721,
+   "orders_forecast": 951431,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 16.4,
+   "hc_actual": null
+  },
+  "2026-11-18": {
+   "wd_name": "三",
+   "is_forecast": true,
+   "cargo_forecast": 2468505,
+   "orders_forecast": 949425,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 16.37,
+   "hc_actual": null
+  },
+  "2026-11-19": {
+   "wd_name": "四",
+   "is_forecast": true,
+   "cargo_forecast": 2448553,
+   "orders_forecast": 941751,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 16.24,
+   "hc_actual": null
+  },
+  "2026-11-20": {
+   "wd_name": "五",
+   "is_forecast": true,
+   "cargo_forecast": 2400367,
+   "orders_forecast": 923218,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 15.92,
+   "hc_actual": null
+  },
+  "2026-11-21": {
+   "wd_name": "六",
+   "is_forecast": true,
+   "cargo_forecast": 3057902,
+   "orders_forecast": 1176116,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 20.28,
+   "hc_actual": null
+  },
+  "2026-11-22": {
+   "wd_name": "日",
+   "is_forecast": true,
+   "cargo_forecast": 3295765,
+   "orders_forecast": 1267602,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 21.86,
+   "hc_actual": null
+  },
+  "2026-11-23": {
+   "wd_name": "一",
+   "is_forecast": true,
+   "cargo_forecast": 2636070,
+   "orders_forecast": 1013873,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 17.48,
+   "hc_actual": null
+  },
+  "2026-11-24": {
+   "wd_name": "二",
+   "is_forecast": true,
+   "cargo_forecast": 2467795,
+   "orders_forecast": 949152,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 16.36,
+   "hc_actual": null
+  },
+  "2026-11-25": {
+   "wd_name": "三",
+   "is_forecast": true,
+   "cargo_forecast": 2466149,
+   "orders_forecast": 948519,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 16.35,
+   "hc_actual": null
+  },
+  "2026-11-26": {
+   "wd_name": "四",
+   "is_forecast": true,
+   "cargo_forecast": 2449135,
+   "orders_forecast": 941975,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 16.24,
+   "hc_actual": null
+  },
+  "2026-11-27": {
+   "wd_name": "五",
+   "is_forecast": true,
+   "cargo_forecast": 2400512,
+   "orders_forecast": 923274,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 15.92,
+   "hc_actual": null
+  },
+  "2026-11-28": {
+   "wd_name": "六",
+   "is_forecast": true,
+   "cargo_forecast": 3057928,
+   "orders_forecast": 1176126,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 20.28,
+   "hc_actual": null
+  },
+  "2026-11-29": {
+   "wd_name": "日",
+   "is_forecast": true,
+   "cargo_forecast": 3295765,
+   "orders_forecast": 1267602,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 21.86,
+   "hc_actual": null
+  },
+  "2026-11-30": {
+   "wd_name": "一",
+   "is_forecast": true,
+   "cargo_forecast": 2636897,
+   "orders_forecast": 1014191,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 17.49,
+   "hc_actual": null
+  },
+  "2026-12-01": {
+   "wd_name": "二",
+   "is_forecast": true,
+   "cargo_forecast": 2470322,
+   "orders_forecast": 950124,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 19.11,
+   "hc_actual": null
+  },
+  "2026-12-02": {
+   "wd_name": "三",
+   "is_forecast": true,
+   "cargo_forecast": 2470010,
+   "orders_forecast": 950004,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 19.11,
+   "hc_actual": null
+  },
+  "2026-12-03": {
+   "wd_name": "四",
+   "is_forecast": true,
+   "cargo_forecast": 2448989,
+   "orders_forecast": 941919,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 18.95,
+   "hc_actual": null
+  },
+  "2026-12-04": {
+   "wd_name": "五",
+   "is_forecast": true,
+   "cargo_forecast": 2400367,
+   "orders_forecast": 923218,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 18.57,
+   "hc_actual": null
+  },
+  "2026-12-05": {
+   "wd_name": "六",
+   "is_forecast": true,
+   "cargo_forecast": 3058341,
+   "orders_forecast": 1176285,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 23.66,
+   "hc_actual": null
+  },
+  "2026-12-06": {
+   "wd_name": "日",
+   "is_forecast": true,
+   "cargo_forecast": 3295765,
+   "orders_forecast": 1267602,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 25.5,
+   "hc_actual": null
+  },
+  "2026-12-07": {
+   "wd_name": "一",
+   "is_forecast": true,
+   "cargo_forecast": 2635927,
+   "orders_forecast": 1013818,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 20.39,
+   "hc_actual": null
+  },
+  "2026-12-08": {
+   "wd_name": "二",
+   "is_forecast": true,
+   "cargo_forecast": 2467772,
+   "orders_forecast": 949143,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 19.09,
+   "hc_actual": null
+  },
+  "2026-12-09": {
+   "wd_name": "三",
+   "is_forecast": true,
+   "cargo_forecast": 2466123,
+   "orders_forecast": 948509,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 19.08,
+   "hc_actual": null
+  },
+  "2026-12-10": {
+   "wd_name": "四",
+   "is_forecast": true,
+   "cargo_forecast": 2449184,
+   "orders_forecast": 941994,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 18.95,
+   "hc_actual": null
+  },
+  "2026-12-11": {
+   "wd_name": "五",
+   "is_forecast": true,
+   "cargo_forecast": 2400440,
+   "orders_forecast": 923246,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 18.57,
+   "hc_actual": null
+  },
+  "2026-12-12": {
+   "wd_name": "六",
+   "is_forecast": true,
+   "cargo_forecast": 3074201,
+   "orders_forecast": 1182385,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 23.78,
+   "hc_actual": null
+  },
+  "2026-12-13": {
+   "wd_name": "日",
+   "is_forecast": true,
+   "cargo_forecast": 3313643,
+   "orders_forecast": 1274478,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 25.64,
+   "hc_actual": null
+  },
+  "2026-12-14": {
+   "wd_name": "一",
+   "is_forecast": true,
+   "cargo_forecast": 2635950,
+   "orders_forecast": 1013827,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 20.39,
+   "hc_actual": null
+  },
+  "2026-12-15": {
+   "wd_name": "二",
+   "is_forecast": true,
+   "cargo_forecast": 2467772,
+   "orders_forecast": 949143,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 19.09,
+   "hc_actual": null
+  },
+  "2026-12-16": {
+   "wd_name": "三",
+   "is_forecast": true,
+   "cargo_forecast": 2466123,
+   "orders_forecast": 948509,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 19.08,
+   "hc_actual": null
+  },
+  "2026-12-17": {
+   "wd_name": "四",
+   "is_forecast": true,
+   "cargo_forecast": 2447970,
+   "orders_forecast": 941527,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 18.94,
+   "hc_actual": null
+  },
+  "2026-12-18": {
+   "wd_name": "五",
+   "is_forecast": true,
+   "cargo_forecast": 2400367,
+   "orders_forecast": 923218,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 18.57,
+   "hc_actual": null
+  },
+  "2026-12-19": {
+   "wd_name": "六",
+   "is_forecast": true,
+   "cargo_forecast": 3068369,
+   "orders_forecast": 1180142,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 23.74,
+   "hc_actual": null
+  },
+  "2026-12-20": {
+   "wd_name": "日",
+   "is_forecast": true,
+   "cargo_forecast": 3303004,
+   "orders_forecast": 1270386,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 25.55,
+   "hc_actual": null
+  },
+  "2026-12-21": {
+   "wd_name": "一",
+   "is_forecast": true,
+   "cargo_forecast": 2642240,
+   "orders_forecast": 1016246,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 20.44,
+   "hc_actual": null
+  },
+  "2026-12-22": {
+   "wd_name": "二",
+   "is_forecast": true,
+   "cargo_forecast": 2470273,
+   "orders_forecast": 950105,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 19.11,
+   "hc_actual": null
+  },
+  "2026-12-23": {
+   "wd_name": "三",
+   "is_forecast": true,
+   "cargo_forecast": 2493618,
+   "orders_forecast": 959084,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 19.29,
+   "hc_actual": null
+  },
+  "2026-12-24": {
+   "wd_name": "四",
+   "is_forecast": true,
+   "cargo_forecast": 2462421,
+   "orders_forecast": 947085,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 19.05,
+   "hc_actual": null
+  },
+  "2026-12-25": {
+   "wd_name": "五",
+   "is_forecast": true,
+   "cargo_forecast": 2404935,
+   "orders_forecast": 924975,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 18.61,
+   "hc_actual": null
+  },
+  "2026-12-26": {
+   "wd_name": "六",
+   "is_forecast": true,
+   "cargo_forecast": 3057902,
+   "orders_forecast": 1176116,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 23.66,
+   "hc_actual": null
+  },
+  "2026-12-27": {
+   "wd_name": "日",
+   "is_forecast": true,
+   "cargo_forecast": 3295765,
+   "orders_forecast": 1267602,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 25.5,
+   "hc_actual": null
+  },
+  "2026-12-28": {
+   "wd_name": "一",
+   "is_forecast": true,
+   "cargo_forecast": 2636143,
+   "orders_forecast": 1013901,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 20.39,
+   "hc_actual": null
+  },
+  "2026-12-29": {
+   "wd_name": "二",
+   "is_forecast": true,
+   "cargo_forecast": 2467941,
+   "orders_forecast": 949208,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 19.09,
+   "hc_actual": null
+  },
+  "2026-12-30": {
+   "wd_name": "三",
+   "is_forecast": true,
+   "cargo_forecast": 2466636,
+   "orders_forecast": 948706,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 19.08,
+   "hc_actual": null
+  },
+  "2026-12-31": {
+   "wd_name": "四",
+   "is_forecast": true,
+   "cargo_forecast": 2461935,
+   "orders_forecast": 946898,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "hc_forecast": 19.05,
+   "hc_actual": null
+  }
+ }
+}
