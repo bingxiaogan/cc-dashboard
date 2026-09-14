@@ -56,6 +56,8 @@
 
   .legend{display:flex;gap:16px;font-size:12px;color:var(--dim);margin:2px 0 8px}
   .legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:-1px}
+  .di-note{font-size:12px;color:var(--dim);margin-top:8px;line-height:1.65}
+  .di-note b{color:var(--accent);font-weight:600}
   .gtsw{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap}
   .gtsw button{background:var(--card2);border:1px solid var(--line);color:var(--dim);
                border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;font-family:inherit}
@@ -116,11 +118,11 @@
 <h2>每日时段预测</h2>
 <div class="panel">
   <div class="legend">
-    <span><i style="background:#60a5fa"></i>需求人力</span>
-    <span><i style="background:#64748b"></i>当班人力</span>
-    <span><i style="background:#f87171"></i>缺口（当班少于需求）</span>
+    <span><i style="background:#60a5fa;width:14px;height:3px;border-radius:2px"></i>预测转人工量</span>
+    <span><i style="background:#fbbf24;width:14px;height:3px;border-radius:2px"></i>实际转人工量</span>
   </div>
   <div id="chart"></div>
+  <div class="di-note" id="chartNote"></div>
 </div>
 
 <h2>人力调控建议</h2>
@@ -169,6 +171,38 @@ const CAP_FIXED = 13;         // 🔒 产能基准固定 13 通/人/时（表内
 let CAP = CAP_FIXED;          // 现用产能基准（恒 = CAP_FIXED）
 let PLAN_MODE = 'schedule';   // 当班人力口径：schedule=HR班表 / sheet=运营分时段表
 let GRAIN = 'hour';           // 时段明细粒度：hour / half
+let HH_LIVE = null;   // 当日实时半小时（../call_halfhour.json）：{ date, slots[] } —— 时段量级 📞400 同源
+let HH_ACT  = null;   // 半小时实际转人工归档（hh_actual.json）：days[date]['09:00-09:30'] = 转人工量
+
+// '2026-09-14 09:00:00' / '09:00:00' / '09:00' → '09:00-09:30'
+// ⚠️ 三种时间写法都要兼容：实时采集是完整时间戳，飞书归档与 coeffs.shape.slots 是「时段」标签
+function slotLabel(t) {
+  let s = String(t || '').trim();
+  const sp = s.indexOf(' ');
+  if (sp >= 0) s = s.slice(sp + 1);                 // 去掉 'YYYY-MM-DD ' 前缀
+  const m = s.match(/^(\d{1,2}):(\d{2})/);
+  if (!m) return null;
+  const h = +m[1], mi = +m[2];
+  const a = String(h).padStart(2, '0') + ':' + String(mi).padStart(2, '0');
+  const b = (mi === 0 ? String(h).padStart(2, '0') + ':30'
+                      : String(h + 1).padStart(2, '0') + ':00');
+  return a + '-' + b;
+}
+
+// 某日「实际转人工量」映射：{ '09:00-09:30': 72, ... }；无数据返回 null
+//   当日优先取实时采集（比归档新，且当天值随时间递增）；其余日期取归档
+function actualTurnMap(dateStr) {
+  if (HH_LIVE && HH_LIVE.date === dateStr && Array.isArray(HH_LIVE.slots)) {
+    const m = {};
+    HH_LIVE.slots.forEach(s => {
+      const k = slotLabel(s.t);
+      if (k) m[k] = (Number(s.total) || 0) - (Number(s.ivr) || 0);   // 转人工量 = 呼入总数 − IVR 自助接起
+    });
+    if (Object.keys(m).length) return m;
+  }
+  const d = HH_ACT && HH_ACT.days && HH_ACT.days[dateStr];
+  return (d && typeof d === 'object') ? d : null;
+}
 
 // ── 预测：与 forecast/build_400_forecast.py 的 build() 完全同构 ──
 // 当班人力：优先取计划表里「该日 × 当前口径」的逐半小时人数；缺失则回退运营分时段表同周几均值
@@ -309,7 +343,7 @@ function render(res) {
       : '<b>运营分时段表</b>近 4 个同周几排班均值（' + fmt(res.onPh, 1) + ' 人时 ≈ ' + res.onHc + ' 人）' + (res.staffRef ? '，基准 ' + res.staffRef : '')) +
     '<br><b>缺口/冗余</b> = 当班 − 需求（<span style="color:var(--bad)">负数 = 缺口</span>、<span style="color:var(--good)">正数 = 冗余</span>）。</div>';
 
-  drawChart(res.slots);
+  drawChart(res.slots, res.dateStr);
   drawTable(res.slots, GRAIN);
 }
 
@@ -378,13 +412,24 @@ function card(k, v, u, cls) {
          '<div class="v">' + v + (u ? '<span class="u">' + u + '</span>' : '') + '</div></div>';
 }
 
-function drawChart(slots) {
-  const W = 1040, H = 260, PL = 46, PR = 12, PT = 14, PB = 46;
+// ── 每日时段预测：折线图（预测转人工量 vs 实际转人工量）──
+//   预测 = 模型链路算出的该半小时转人工量（slots[].turn）
+//   实际 = 当日实时采集（呼入总数 − IVR 自助接起）或历史归档（hh_actual.json）
+// ⚠️ 实际线可能只有部分时段（当日采集从早班开始、历史缺段）→ 按「连续段」断开画，不硬连线
+function drawChart(slots, dateStr) {
+  const W = 1040, H = 260, PL = 46, PR = 14, PT = 14, PB = 46;
   const iw = W - PL - PR, ih = H - PT - PB;
   const n = slots.length, step = iw / n;
-  const maxV = Math.max(4, ...slots.map(s => Math.max(s.need, s.on))) * 1.12;
+  const px = i => PL + step * i + step / 2;
+
+  const actMap = actualTurnMap(dateStr) || {};
+  const predV = slots.map(s => s.turn);
+  const actV  = slots.map(s => (typeof actMap[s.t] === 'number' ? actMap[s.t] : null));
+  const nAct  = actV.filter(v => v !== null).length;
+
+  const allV = predV.concat(actV.filter(v => v !== null));
+  const maxV = Math.max(4, ...allV) * 1.12;
   const y = v => PT + ih - (v / maxV) * ih;
-  const bw = Math.min(11, step * 0.30);
   let g = '';
 
   // 网格 + Y 轴
@@ -394,27 +439,62 @@ function drawChart(slots) {
     g += '<line x1="' + PL + '" y1="' + yy + '" x2="' + (W-PR) + '" y2="' + yy + '" stroke="#253352" stroke-width="1"/>';
     g += '<text x="' + (PL-7) + '" y="' + (yy+4) + '" fill="#94a3b8" font-size="10" text-anchor="end">' + v.toFixed(0) + '</text>';
   }
-
+  // X 轴：每 2 个标一次（整点）
   slots.forEach((s, i) => {
-    const cx = PL + step * i + step / 2;
-    const hn = Math.max(0, ih - (y(s.need) - PT)), ho = Math.max(0, ih - (y(s.on) - PT));
-    const hot = s.gapI <= -1;   // 只要有缺口就染红
-    // 需求人力柱（缺口时染红）
-    g += '<rect x="' + (cx-bw-1) + '" y="' + y(s.need) + '" width="' + bw + '" height="' + hh(hn) + '" fill="' + (hot?'#f87171':'#60a5fa') + '" rx="1.5">' +
-         '<title>' + s.t + '　需求 ' + s.need.toFixed(1) + ' 人　当班 ' + s.on.toFixed(1) + ' 人　' +
-           (s.gap < 0 ? '缺口 ' + s.gap.toFixed(1) : '冗余 +' + s.gap.toFixed(1)) + ' 人　负荷 ' + (s.load===null?'-':s.load.toFixed(0)+'%') + '</title></rect>';
-    // 当班人力柱
-    g += '<rect x="' + (cx+1) + '" y="' + y(s.on) + '" width="' + bw + '" height="' + hh(ho) + '" fill="#64748b" rx="1.5" opacity="0.85">' +
-         '<title>' + s.t + '　当班 ' + s.on.toFixed(1) + ' 人</title></rect>';
-    // X 轴：每 2 个标一次（整点）
-    if (i % 2 === 0) {
-      g += '<text x="' + cx + '" y="' + (PT+ih+16) + '" fill="#94a3b8" font-size="10" text-anchor="middle">' + s.t.slice(0,5) + '</text>';
-    }
+    if (i % 2 === 0)
+      g += '<text x="' + px(i) + '" y="' + (PT+ih+16) + '" fill="#94a3b8" font-size="10" text-anchor="middle">' + s.t.slice(0,5) + '</text>';
   });
   g += '<line x1="' + PL + '" y1="' + (PT+ih) + '" x2="' + (W-PR) + '" y2="' + (PT+ih) + '" stroke="#3b4a6b" stroke-width="1"/>';
+
+  // 折线：vals 里 null 处断开 → 每个连续段一条 path
+  function linePath(vals, color, name) {
+    let out = '', run = [];
+    const flush = () => {
+      if (run.length >= 2) {
+        out += '<path d="' + run.map((p, k) => (k ? 'L' : 'M') + p.x.toFixed(1) + ' ' + p.y.toFixed(1)).join(' ') +
+               '" fill="none" stroke="' + color + '" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>';
+      }
+      run = [];
+    };
+    vals.forEach((v, i) => {
+      if (v === null) { flush(); return; }
+      run.push({x: px(i), y: y(v), i, v});
+    });
+    flush();
+    // 数据点 + 悬浮提示（⚠️ <title> 必须内嵌在圆点元素内部，写成兄弟节点会被当成整张 svg 的 title）
+    vals.forEach((v, i) => {
+      if (v === null) return;
+      out += '<circle cx="' + px(i).toFixed(1) + '" cy="' + y(v).toFixed(1) + '" r="2.6" fill="' + color + '">' +
+             '<title>' + slots[i].t + '　' + name + ' ' + v.toFixed(0) + ' 通</title></circle>';
+    });
+    return out;
+  }
+
+  g += linePath(predV, '#60a5fa', '预测转人工量');
+  if (nAct) g += linePath(actV, '#fbbf24', '实际转人工量');
+
   $('chart').innerHTML = '<svg viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="xMidYMid meet">' + g + '</svg>';
 
-  function hh(v){ return v<=0 ? 0.6 : v; }
+  // 图下口径说明
+  const sum = a => a.reduce((x, y2) => x + (y2 || 0), 0);
+  const predSum = sum(predV), actSum = sum(actV);
+  const diff = actSum ? ((predSum - actSum) / actSum * 100) : null;
+  let note = '<b>' + dateStr + '</b>　预测转人工量合计 <b>' + fmt(predSum) + '</b> 通';
+  if (nAct) {
+    note += '　·　实际合计 <b>' + fmt(actSum) + '</b> 通（' + nAct + '/' + n + ' 个时段有数据）' +
+      (diff === null ? '' : '　·　预测' + (diff >= 0 ? '高于' : '低于') + '实际 <b>' + Math.abs(diff).toFixed(1) + '%</b>');
+  } else {
+    note += '　·　<span style="color:var(--warn)">该日无实际半小时数据</span>（实际数据覆盖「当日实时」与「历史归档」两类日期）';
+  }
+  note += '<br>口径：<b>转人工量 = 呼入总量 − IVR 自助接起</b>（两条线同源）。预测 = 进线量 × 转人工率（' + (C ? C.turn_rate : '-') + '%）；';
+  if (nAct) {
+    note += '实际 = ' + (HH_LIVE && HH_LIVE.date === dateStr
+      ? '当日「时段量级 📞400」实时采集（四线合计，报表采集滞后约 15 分钟）'
+      : '历史归档（飞书《分时段数据监控》）') + '。';
+  } else {
+    note += '实际线需该日半小时数据（来自「时段量级 📞400」实时采集或历史归档），当前无。';
+  }
+  $('chartNote').innerHTML = note;
 }
 
 function drawTable(slots, grain) {
@@ -457,6 +537,13 @@ async function load() {
       console.warn('[cap] plan.json =', PLAN.cap_per_hour, '但本页口径固定为', CAP_FIXED);
     CAP = CAP_FIXED;
   } catch (e) { PLAN = null; }
+  // 实际半小时数据（「预测 vs 实际」折线图用）—— 两个都可选，缺了只画预测线
+  //   ① ../call_halfhour.json —— 当日实时采集（「时段量级 📞400」同源，四线合计）
+  //   ② hh_actual.json        —— 半小时实际转人工归档（forecast/build_hh_actual.js 生成，含飞书历史）
+  try { const r = await fetch(bust('../call_halfhour.json'), {cache:'no-store'}); HH_LIVE = await r.json(); }
+  catch (e) { HH_LIVE = null; }
+  try { const r = await fetch(bust('hh_actual.json'), {cache:'no-store'}); HH_ACT = await r.json(); }
+  catch (e) { HH_ACT = null; }
   const w = C.windows || {};
   $('modelSub').innerHTML =
     '模型：<b>R</b> = 近' + (w.R_base||14) + '天咨询比中位（<b>' + C.R_base + '%</b>）× 周内因子（近' + (w.factor||42) + '天）' +
