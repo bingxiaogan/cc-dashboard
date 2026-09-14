@@ -209,8 +209,25 @@ function predict(orders, dateStr) {
   const needPh = TR / CAP;
   const onPh   = Object.values(staff).reduce((a,b)=>a+b, 0) * 0.5;
   const ratio  = needPh ? onPh / needPh : null;
+
+  // ── 人数口径（主显示）：需要几个人 / 班表安排了几个人 ──
+  const pday  = planDay(dateStr);
+  const avgH  = (pday && pday.avg_hours) || 11.0;         // 该日班表人均出勤时长（h/人）
+  const names = (pday && pday.names) || [];
+  const needHc = avgH ? Math.ceil(TR / CAP / avgH) : 0;   // 需求人数（向上取整）
+  const onHc = (PLAN_MODE === 'schedule' && names.length)
+    ? names.length                                        // HR 班表：实际出勤人头
+    : Math.round(onPh / avgH);                            // 无名单口径：按人均时长反推
+  const gapHc = onHc - needHc;
+
   return {wd, wdName, orders, dateStr, R, IN, TR, U, H, needPh, onPh, ratio, slots,
+          avgH, names, needHc, onHc, gapHc,
           staffRef: C.staff_ref[String(wd)], staffSrc: PLAN_MODE === 'schedule' ? 'HR 班表' : '运营分时段表'};
+}
+
+// 从 plan.json 取某天的记录（可能为 null，如超出计划表范围）
+function planDay(dateStr) {
+  return ((PLAN && PLAN.days) || []).find(d => d.date === dateStr) || null;
 }
 
 // 半小时明细 → 小时明细（1 小时内 人时 ≡ 平均在岗人数）
@@ -249,12 +266,10 @@ function advice(needPh, onPh, ratio, slots) {
   const over  = slots.filter(s => s.gapI >= 1).sort((a,b) => b.gapI - a.gapI);
   const under = slots.filter(s => s.gapI <= -2).sort((a,b) => a.gapI - b.gapI);
   const parts = [];
-  if (over.length) parts.push('缺人口 ' + Math.round(over.reduce((a,s)=>a+s.gap,0)) +
-    ' 人时，集中在 ' + over.slice(0,3).map(s=>s.t).join('、') + ' 等 ' + over.length +
-    ' 个时段（最紧 ' + over[0].t + '，少 ' + over[0].gapI + ' 人）');
-  if (under.length) parts.push('冗余 ' + Math.round(-under.reduce((a,s)=>a+s.gap,0)) +
-    ' 人时，' + under.slice(0,2).map(s=>s.t).join('、') + ' 等 ' + under.length +
-    ' 个时段可抽调（最多 ' + under[0].t + '，多 ' + (-under[0].gapI) + ' 人）');
+  if (over.length) parts.push('缺人 ' + over.length + ' 个时段，集中在 ' + over.slice(0,3).map(s=>s.t).join('、') +
+    ' 等（最紧 ' + over[0].t + '，少 ' + over[0].gapI + ' 人）');
+  if (under.length) parts.push('冗余 ' + under.length + ' 个时段，' + under.slice(0,2).map(s=>s.t).join('、') +
+    ' 等可抽调（最多 ' + under[0].t + '，多 ' + (-under[0].gapI) + ' 人）');
   return {total, dist: parts.length ? parts.join('；') : '各时段均衡，无需调整。'};
 }
 
@@ -264,7 +279,6 @@ function render(res) {
   const a = advice(res.needPh, res.onPh, res.ratio, res.slots);
 
   const ratioCls = res.ratio === null ? '' : (res.ratio < 0.98 ? 'bad' : res.ratio > 1.08 ? 'good' : '');
-  const gap = res.needPh - res.onPh;
   $('kpis').innerHTML = [
     card('预估订单量', fmt(res.orders), '单'),
     card('预估咨询比 R', (res.R*100).toFixed(4), '%　' + res.wdName + '因子 ' + (C.R_factor[res.wdName]).toFixed(4)),
@@ -272,18 +286,19 @@ function render(res) {
     card('转人工量', fmt(res.TR), '通（' + C.turn_rate.toFixed(2) + '%）'),
     card('人工处理率 U', (res.U*100).toFixed(1), '%'),
     card('人工处理量', fmt(res.H), '通'),
-    card('需求人力', fmt(res.needPh,1), '人时'),
-    card('当班人力', fmt(res.onPh,1), '人时'),
-    card('缺口', (gap>0?'+':'') + fmt(gap,1), gap>0?'人时（缺）':'人时（余）', gap>0?'bad':'good'),
+    card('需求人力', res.needHc, '人'),
+    card('当班人力', res.onHc, '人'),
+    card('缺口', (res.gapHc>0?'+':'') + res.gapHc, res.gapHc>0?'人（缺）':(res.gapHc<0?'人（余）':'人'), res.gapHc>0?'bad':(res.gapHc<0?'good':'')),
     card('当班/需求', res.ratio===null?'-':(res.ratio*100).toFixed(0), '%', ratioCls),
   ].join('');
 
   $('advice').innerHTML =
     '<div class="t">' + a.total + '</div><div class="ln d">' + a.dist + '</div>' +
-    '<div class="ln d" style="font-size:12px">口径：需求人力 = 转人工量 ÷ <b>' + CAP + ' 通/人/小时</b>；当班人力 = ' +
+    '<div class="ln d" style="font-size:12px">口径：<b>需求人力</b> = 转人工量 ÷ <b>' + CAP + ' 通/人/小时</b> ÷ 人均出勤 <b>' + res.avgH + ' h</b>（向上取整，折合 ' + fmt(res.needPh,1) + ' 人时）；' +
+    '<b>当班人力</b> = ' +
     (res.staffSrc === 'HR 班表'
-      ? '<b>HR 班表</b>该日 400 部门总人时 ' + fmt(res.onPh, 1) + ' 人时，按历史同时段人数形状摊分到各半小时'
-      : '<b>运营分时段表</b>近 4 个同周几排班均值' + (res.staffRef ? '（基准 ' + res.staffRef + '）' : '')) + '。</div>';
+      ? '<b>HR 班表</b>该日出勤 <b>' + res.onHc + ' 人</b>' + (res.names.length ? '（' + res.names.join('、') + '）' : '') + '，总 ' + fmt(res.onPh, 1) + ' 人时，按历史同时段人数形状摊分到各半小时'
+      : '<b>运营分时段表</b>近 4 个同周几排班均值（' + fmt(res.onPh, 1) + ' 人时 ≈ ' + res.onHc + ' 人）' + (res.staffRef ? '，基准 ' + res.staffRef : '')) + '。</div>';
 
   drawChart(res.slots);
   drawTable(res.slots, GRAIN);
@@ -298,32 +313,37 @@ function renderPlan() {
     return;
   }
   const nFc = PLAN.days.filter(d => d.orders_src === '货量预测').length;
+  const avgAll = (PLAN.days.reduce((a, d) => a + (d.avg_hours || 11), 0) / PLAN.days.length).toFixed(1);
   $('planSub').innerHTML = '订单量：<b>' + (PLAN.cargo_src || '风控人效预测看板') + '</b>' +
     (PLAN.cargo_snapshot ? '（快照 ' + PLAN.cargo_snapshot + '）' : '') +
-    '　·　需求人力 = 转人工量 ÷ <b>' + CAP + ' 通/人/时</b>' +
-    '　·　当班人力 = <b>' + (PLAN_MODE === 'schedule' ? 'HR 班表' : '运营分时段表') + '</b>' +
+    '　·　<b>需求人力</b> = 转人工量 ÷ <b>' + CAP + ' 通/人/时</b> ÷ 人均出勤 <b>' + avgAll + ' h</b>（向上取整）' +
+    '　·　<b>当班人力</b> = <b>' + (PLAN_MODE === 'schedule' ? 'HR 班表出勤人数' : '运营分时段表（折人数）') + '</b>' +
     '　·　' + PLAN.range.from + ' ~ ' + PLAN.range.to + ' 共 <b>' + PLAN.days.length + '</b> 天' +
     (nFc ? '（其中 ' + nFc + ' 天为货量预测）' : '') +
     '<br>点任意一行 → 下方「时段明细」切换到该日（可直接看到每小时进线量与所需人力）。';
 
   let h = '<thead><tr><th>日期</th><th>周几</th><th>订单量</th><th>进线量</th><th>转人工</th>' +
-          '<th>需求人时</th><th>当班人时</th><th>缺口</th><th>当班/需求</th></tr></thead><tbody>';
+          '<th>需求人力</th><th>当班人力</th><th>缺口</th><th>当班/需求</th></tr></thead><tbody>';
   PLAN.days.forEach(d => {
-    const need = d.turn / CAP;
+    const avgH = d.avg_hours || 11;                       // 该日班表人均出勤时长（h/人）
+    const needPh = d.turn / CAP;                          // 需求人时（随产能基准现算）
     // 当班人时按「当前口径」现算，口径切换即时生效（不用后端预计算值）
     const sl = (PLAN.staff_slots[PLAN_MODE] || {})[d.date] || {};
-    const on = Object.values(sl).reduce((a, b) => a + b, 0) * 0.5;
-    const gap = need - on;
-    const ratio = need ? on / need * 100 : null;
-    const gc = gap >= 5 ? 'gap-bad' : (gap <= -5 ? 'gap-good' : '');
+    const onPh = Object.values(sl).reduce((a, b) => a + b, 0) * 0.5;
+    const names = d.names || [];
+    const needHc = Math.ceil(needPh / avgH);              // 需要几个人（向上取整）
+    const onHc = (PLAN_MODE === 'schedule' && names.length) ? names.length : Math.round(onPh / avgH);
+    const gap = needHc - onHc;                            // >0 = 缺人
+    const ratio = needPh ? onPh / needPh * 100 : null;
+    const gc = gap >= 2 ? 'gap-bad' : (gap <= -2 ? 'gap-good' : '');
     const rc = ratio === null ? '' : (ratio < 98 ? 'load-hot' : '');
-    const tip = (PLAN_MODE === 'schedule' && d.names && d.names.length)
-      ? ' title="当班 ' + d.names.length + ' 人：' + d.names.join('、') + '"' : '';
+    const tip = (PLAN_MODE === 'schedule' && names.length)
+      ? ' title="班表 ' + names.length + ' 人（人均 ' + avgH + ' h）：' + names.join('、') + '"' : '';
     h += '<tr data-d="' + d.date + '"' + tip + '><td>' + d.date.slice(5) + '</td>' +
          '<td class="' + (/六|日/.test(d.wd) ? 'wk' : '') + '">' + d.wd + '</td>' +
          '<td>' + fmt(d.orders) + '</td><td>' + fmt(d.inbound) + '</td><td>' + fmt(d.turn) + '</td>' +
-         '<td>' + need.toFixed(1) + '</td><td>' + on.toFixed(1) + '</td>' +
-         '<td class="' + gc + '">' + (gap > 0 ? '+' : '') + gap.toFixed(1) + '</td>' +
+         '<td>' + needHc + '</td><td>' + onHc + '</td>' +
+         '<td class="' + gc + '">' + (gap > 0 ? '+' : '') + gap + '</td>' +
          '<td class="' + rc + '">' + (ratio === null ? '-' : ratio.toFixed(0) + '%') + '</td></tr>';
   });
   tb.innerHTML = h + '</tbody>';
@@ -390,9 +410,9 @@ function drawChart(slots) {
 function drawTable(slots, grain) {
   const rows = aggregate(slots, grain);
   $('grainNote').innerHTML = grain === 'hour'
-    ? '人力以「人时」计，1 小时内即该小时的平均在岗人数'
-    : '人力为该半小时的并发人数';
-  let h = '<thead><tr><th>时段</th><th>进线量</th><th>转人工</th><th>需求人力</th><th>当班人力</th><th>缺口</th><th>负荷</th></tr></thead><tbody>';
+    ? '人力 = 该小时平均在岗人数（人）'
+    : '人力 = 该半小时并发在岗人数（人）';
+  let h = '<thead><tr><th>时段</th><th>进线量</th><th>转人工</th><th>需求(人)</th><th>当班(人)</th><th>缺口(人)</th><th>负荷</th></tr></thead><tbody>';
   rows.forEach(s => {
     const gc = s.gapI >= 2 ? 'gap-bad' : (s.gapI <= -2 ? 'gap-good' : '');
     const lc = (s.load !== null && s.load > 110) ? 'load-hot' : '';
@@ -430,7 +450,7 @@ async function load() {
     '模型：<b>R</b> = 近' + (w.R_base||14) + '天咨询比中位（<b>' + C.R_base + '%</b>）× 周内因子（近' + (w.factor||42) + '天）' +
     '　·　<b>IN</b> = 订单量 × R　·　<b>转人工率</b> ' + C.turn_rate + '%（近' + (w.turn||90) + '天中位）' +
     '　·　<b>U</b> = ' + C.U_a + '% ' + (C.U_b<0?'−':'+') + ' ' + Math.abs(C.U_b) + '% × IN（近' + (w.reg||90) + '天回归）' +
-    '　·　<b>人力</b> = 转人工量 ÷ ' + C.cap_per_hour + ' 通/人/时';
+    '　·　<b>人力</b> = 转人工量 ÷ ' + C.cap_per_hour + ' 通/人/时 ÷ 人均出勤时长 = <b>人数</b>';
 
   // 默认日期：计划表首日（含今天）；订单量以货量预测为准（可手改覆盖）
   const d0 = (PLAN && PLAN.range && PLAN.range.from)
@@ -447,6 +467,7 @@ async function load() {
     (PLAN ? ('计划表：<b>' + PLAN.range.from + ' ~ ' + PLAN.range.to + '</b>（' + PLAN.days.length + ' 天，生成于 ' + PLAN.generated_at + '）　·　当班人力取自 <b>HR 班表</b>（每日 400 部门总人时，按历史同时段人数形状摊分到半小时）<br>' +
       '<span style="color:var(--warn)">⚠️ 班表只到 ' + PLAN.range.to.slice(0,7) + '，之后的日期会回退到「运营分时段表同周几均值」口径。</span><br>') : '') +
     '口径提示：本页「转人工量」= 进线量 × 转人工率，与实时看板「接通率」口径不同；当前产能基准 <b>' + CAP + ' 通/人/时</b>（= 半小时 ' + (CAP/2) + ' 通/人），可在上方切换。<br>' +
+    '<b>人力一律按「人」计</b>（不按人时）：日维度「需求人力」= 转人工量 ÷ 产能 ÷ 班表人均出勤时长，向上取整；「当班人力」= HR 班表实际出勤人数；时段维度 = 该时段平均在岗人数。<br>' +
     '数据更新：<code>python forecast/export_coeffs.py</code>（系数）　<code>node forecast/fetch_cargo.js</code>（货量）　<code>python forecast/build_plan.py</code>（计划表）—— 已挂进每日 21:50 封存链自动跑。<br>' +
     (CARGO ? ('货量来源：<b>' + CARGO.source + '</b>　快照日 <b>' + CARGO.snapshot_day + '</b>　换算 <b>' +
       CARGO.avg_item_weight_kg + ' kg/单</b>（' + Object.keys(CARGO.by_date || {}).length + ' 天）')
