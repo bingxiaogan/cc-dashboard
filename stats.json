@@ -1,14 +1,14 @@
 {
- "ts": 1789394526115,
- "collectedAtCn": "2026/9/14 22:02:06",
+ "ts": 1789394779199,
+ "collectedAtCn": "2026/9/14 22:06:19",
  "overview": {
   "总排队数": "0",
-  "坐席空闲数": "1",
+  "坐席空闲数": "2",
   "坐席忙碌数": "0 (0)",
-  "接通率": "26.30%",
+  "接通率": "26.29%",
   "满意率": "100.00%",
-  "呼入总数": "11448",
-  "当前呼入数": "1",
+  "呼入总数": "11456",
+  "当前呼入数": "0",
   "外呼总数": "6190",
   "当前外呼数": "0",
   "呼入平均通话时长": "00:02:41",
@@ -240,8 +240,8 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 1920,
-   "ivr": 856,
+   "callIn": 1925,
+   "ivr": 861,
    "ringMissed": 5,
    "queueAbandon": 139,
    "answered": 920,
@@ -520,8 +520,8 @@
   },
   {
    "service": "88236603(京东渠道4000990166)",
-   "callIn": 375,
-   "ivr": 114,
+   "callIn": 376,
+   "ivr": 115,
    "ringMissed": 0,
    "queueAbandon": 36,
    "answered": 230,
@@ -886,8 +886,8 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 1920,
-    "ivr": 856,
+    "callIn": 1925,
+    "ivr": 861,
     "ringMissed": 5,
     "queueAbandon": 139,
     "answered": 920,
@@ -905,10 +905,10 @@
     "transferred": 0
    }
   ],
-  "total": 1952,
+  "total": 1957,
   "answered": 937,
-  "ivr": 868,
-  "connectRate": 92.47
+  "ivr": 873,
+  "connectRate": 92.49
  },
  "online": {
   "groups": [
@@ -923,7 +923,7 @@
     "done": 34,
     "answerRate": 100,
     "abandon": 0,
-    "voicemail": 3,
+    "voicemail": 4,
     "satisfactionRate": 100
    },
    {
@@ -931,9 +931,9 @@
     "sessions": 286,
     "assigned": 285,
     "current": 16,
-    "max": 120,
+    "max": 90,
     "queue": 0,
-    "onlineSeats": "4(朱博宇,李宜慢,沈东升,刘亚森)",
+    "onlineSeats": "3(朱博宇,李宜慢,刘亚森)",
     "done": 268,
     "answerRate": 99.65,
     "abandon": 1,
@@ -956,13 +956,13 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1027,
-    "assigned": 1022,
-    "current": 56,
-    "max": 120,
+    "sessions": 1030,
+    "assigned": 1025,
+    "current": 55,
+    "max": 90,
     "queue": 0,
-    "onlineSeats": "4(朱博宇,李宜慢,沈东升,刘亚森)",
-    "done": 924,
+    "onlineSeats": "3(朱博宇,李宜慢,刘亚森)",
+    "done": 928,
     "answerRate": 99.51,
     "abandon": 5,
     "voicemail": 0,
@@ -1320,24 +1320,6 @@
   "rate400": 74.1
  },
  "history": [
-  {
-   "ts": 1789104640120,
-   "skillRate400": 86.72,
-   "skillQueue400": 0,
-   "callIn400": 482,
-   "signIn400": 15,
-   "onlineSessions": 325,
-   "onlineSeat": 2
-  },
-  {
-   "ts": 1789104769314,
-   "skillRate400": 86.78,
-   "skillQueue400": 0,
-   "callIn400": 484,
-   "signIn400": 15,
-   "onlineSessions": 325,
-   "onlineSeat": 2
-  },
   {
    "ts": 1789104874767,
    "skillRate400": 86.83,
@@ -5813,6 +5795,24 @@
   },
   {
    "ts": 1789394526115,
+   "skillRate400": 74.07,
+   "skillQueue400": 0,
+   "callIn400": 27,
+   "signIn400": 1,
+   "onlineSessions": 1084,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1789394666997,
+   "skillRate400": 74.07,
+   "skillQueue400": 0,
+   "callIn400": 27,
+   "signIn400": 1,
+   "onlineSessions": 1084,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1789394779199,
    "skillRate400": 74.07,
    "skillQueue400": 0,
    "callIn400": 27,
