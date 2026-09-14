@@ -26,7 +26,7 @@ body { background: var(--bg); color: var(--text); font-family: "Microsoft YaHei"
 .meta { display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
 .meta .t { background:var(--card); border:1px solid var(--border); padding:6px 12px; border-radius:8px; font-size:12px; color:var(--dim); }
 .meta .t b { color:var(--text); font-weight:600; }
-/* 400 进线量预测入口（仅本地 8601 有该页；公网页由脚本自动隐藏，避免死链） */
+/* 400 进线量预测入口（相对路径，本地 8601 与公网 GitHub Pages 通用） */
 .meta .goFc { text-decoration:none; background:linear-gradient(135deg,#5da8ff,#7c5dff); color:#fff; border:none; box-shadow:0 3px 10px rgba(93,168,255,.28); font-weight:600; }
 .meta .goFc:hover { filter:brightness(1.08); }
 .btn { background:var(--card2); color:var(--text); border:1px solid var(--border); padding:7px 16px; border-radius:8px; cursor:pointer; font-size:13px; transition:.15s; }
@@ -216,8 +216,7 @@ details[open] summary { color:var(--accent); }
     <span class="t">🗂 工单 <b id="mTkTime">--</b></span>
     <label class="switch"><input type="checkbox" id="ccRef" checked> 实时刷新 90s</label>
     <label class="switch"><input type="checkbox" id="tkRef" checked> 工单刷新 2h</label>
-    <a class="t goFc" id="goFc" href="/forecast" target="_blank" rel="noopener" style="display:none">📞 400 进线量预测</a>
-    <script>/* /forecast 仅存在于本地 8601；公网 GitHub Pages 无此页 → 自动隐藏，避免死链 */if(!/\.github\.io$/i.test(location.hostname)){var _g=document.getElementById('goFc');if(_g)_g.style.display='';}</script>
+    <a class="t goFc" id="goFc" href="forecast/" target="_blank" rel="noopener">📞 400 进线量预测</a>
     <!-- 手动刷新按钮已隐藏：数据由后台采集自动刷新（实时 90s / 工单 2h），点它不会触发重新采集，无实际作用（2026-09-10 用户要求） -->
     <button class="btn pri" onclick="load()" style="display:none">🔄 刷新</button>
   </div>
