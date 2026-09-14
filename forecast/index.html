@@ -81,7 +81,7 @@
 
   /* ── 现场调控：按时段建议 ── */
   .tl{font-size:13.5px}
-  .tl-row{display:grid;grid-template-columns:104px 132px 1fr;gap:10px;align-items:baseline;
+  .tl-row{display:grid;grid-template-columns:104px 218px 1fr;gap:10px;align-items:baseline;
           padding:6px 0;border-top:1px solid var(--line)}
   .tl-row:first-child{border-top:0}
   .tl-t{color:var(--txt);font-variant-numeric:tabular-nums;font-weight:600;font-size:12.5px}
@@ -196,7 +196,7 @@
   <div class="di-note" id="adviceNote"></div>
 </div>
 
-<h2>🍚 用餐安排 · 在线 / 400</h2>
+<h2 id="mealSec">🍚 用餐安排 · 在线 / 400</h2>
 <div class="panel">
   <div class="di-note" style="margin-bottom:8px" id="mealNote"></div>
   <div id="meal"></div>
@@ -250,6 +250,8 @@ let HH_LIVE = null;   // 当日实时半小时（../call_halfhour.json）：{ da
 let HH_ACT  = null;   // 半小时实际转人工归档（hh_actual.json）：days[date]['09:00-09:30'] = 转人工量
 let HH_RATE = null;   // 近 7 日同时段平均接通率（hh_rate.json）：slots['09:00-09:30'] = 0.8798（表内口径 = 接通量÷转人工量）
 let ALERT   = null;   // 现场调控预警（../alert_state.json，alert_eval.js 每轮判定）：objects.{c400d,c400w,onld,onlw}
+let SCHED   = null;   // 飞书 HR 班表（../schedule.json）：daily[date].onDuty 当班名单 + agents[].dept —— 用餐名单来源（在线）
+let MEAL    = null;   // 当前选中日期的用餐分配（mealPlanFor()）
 
 // ── 预警档位与预案 ──
 // 档位阈值与 alert_eval.js 完全一致（用户 2026-09-09 定义 / 09-10 修正）；
@@ -349,6 +351,78 @@ function predictTo(res, fromLabel, toLabel) {
   return n ? { inbound, turn, n } : null;
 }
 
+// ─────────────────────────────────────────────────────────────
+// 用餐安排（用户 2026-09-14 规定）
+//   · 在线 / 400 每位员工每天用餐 2 次，每次 30 分钟
+//   · 第一餐窗口 11:00–15:00，第二餐窗口 17:00–20:00
+//   · 注意正常生理需求：第一餐吃得早的，第二餐也应该早（两餐间隔要拉开，
+//     不能让 11:00 吃第一餐的人等到 19:30 才吃第二餐）
+//   实现：把名单按顺序「比例均摊」到窗口内的半小时槽 —— 第 i 人 → 第 floor((i+0.5)·L/N) 槽。
+//         两餐用同一个 i → 天然满足「早→早」且各槽人数最多只差 1（不出现某半小时扎堆离岗）。
+// ─────────────────────────────────────────────────────────────
+const MEAL_WINS = [
+  { key: 'A', name: '第一餐', from: 11 * 60, to: 15 * 60 },
+  { key: 'B', name: '第二餐', from: 17 * 60, to: 20 * 60 },
+];
+const MEAL_MIN = 30;                                       // 每餐时长（分钟）
+const MEAL_DEPTS = ['400', '在线'];
+
+function hm(min) { return String(Math.floor(min / 60)).padStart(2, '0') + ':' + String(min % 60).padStart(2, '0'); }
+// 窗口内的半小时槽（起始升序）：11:00–15:00 → 8 段；17:00–20:00 → 6 段
+function mealSlots(win) {
+  const out = [];
+  for (let m = win.from; m + MEAL_MIN <= win.to; m += MEAL_MIN) out.push(hm(m) + '-' + hm(m + MEAL_MIN));
+  return out;
+}
+function mealAllocate(names, slotLabels) {
+  const map = {};
+  slotLabels.forEach(s => { map[s] = []; });
+  const L = slotLabels.length, N = names.length;
+  if (!L || !N) return map;
+  names.forEach((nm, i) => {
+    let k = Math.floor((i + 0.5) * L / N);
+    if (k < 0) k = 0;
+    if (k > L - 1) k = L - 1;
+    map[slotLabels[k]].push(nm);
+  });
+  return map;
+}
+// 某日某条线的当班名单：400 取 plan.json 的 names（= HR 班表出勤人头，与计划表一致）；
+// 在线取 schedule.json 的 daily[date].onDuty ∩ agents(dept=在线)
+function mealRoster(dateStr, dept) {
+  if (dept === '400') {
+    const d = planDay(dateStr);
+    if (d && d.names && d.names.length) return d.names.slice();
+  }
+  const sc = SCHED || {};
+  const day = (sc.daily || {})[dateStr];
+  if (!day || !Array.isArray(day.onDuty)) return [];
+  const set = new Set((sc.agents || []).filter(a => a.dept === dept).map(a => a.name));
+  return day.onDuty.filter(n => set.has(n));
+}
+// 返回 { '400': {names, wins:{A:{...},B:{...}}}, '在线': {...} }
+function mealPlanFor(dateStr) {
+  const out = {};
+  MEAL_DEPTS.forEach(dept => {
+    const names = mealRoster(dateStr, dept);
+    const wins = {};
+    MEAL_WINS.forEach(w => {
+      const slots = mealSlots(w);
+      wins[w.key] = { name: w.name, from: hm(w.from), to: hm(w.to), slots, map: mealAllocate(names, slots) };
+    });
+    out[dept] = { names, wins };
+  });
+  return out;
+}
+// 某半小时的用餐人数（两餐窗口不重叠，直接相加）
+function mealCountAt(mp, dept, label) {
+  const g = mp && mp[dept];
+  if (!g) return 0;
+  let n = 0;
+  MEAL_WINS.forEach(w => { const m = g.wins[w.key].map[label]; if (m) n += m.length; });
+  return n;
+}
+
 // ── 预测：与 forecast/build_400_forecast.py 的 build() 完全同构 ──
 // 当班人力：优先取计划表里「该日 × 当前口径」的逐半小时人数；缺失则回退运营分时段表同周几均值
 function planStaff(dateStr, wd) {
@@ -369,6 +443,7 @@ function predict(orders, dateStr) {
   const H  = IN * U;                                        // 人工处理量
 
   const staff = planStaff(dateStr, wd);
+  const mp = MEAL;
   const slots = C.shape.slots.map(t => {
     const shareT = C.shape.share_turn[t] || 0;
     const turnH  = TR * shareT;
@@ -376,10 +451,14 @@ function predict(orders, dateStr) {
     const on     = staff[t] || 0;
     const needI  = Math.ceil(need);
     const onI    = on ? Math.floor(on + 0.999) : 0;
+    // 用餐扣减：该半小时离岗吃饭的人数（400；窗口 11–15 / 17–20，每人每餐 30 分钟）
+    const meal   = mp ? mealCountAt(mp, '400', t) : 0;
+    const availI = Math.max(0, onI - meal);        // 实到 = 当班 − 用餐
     return {
-      // ⚠️ gap / gapI 一律 = 当班 − 需求：<0 缺口（标红）、>0 冗余（标绿）（用户 2026-09-14 口径）
+      // ⚠️ gap / gapI 一律 = 实到 − 需求：<0 缺口（标红）、>0 冗余（标绿）
+      //    （用户 2026-09-14：缺口要扣除用餐；不扣餐会低估午晚高峰的缺口）
       t, inbound: IN * (C.shape.share_in[t] || 0), turn: turnH,
-      need, needI, on, gap: on - need, gapI: onI - needI,
+      need, needI, on, onI, meal, availI, gap: availI - need, gapI: availI - needI,
       load: on ? turnH / (on * capHalf) * 100 : null,
       shareT
     };
@@ -411,10 +490,14 @@ function planDay(dateStr) {
 }
 
 // 半小时明细 → 小时明细（1 小时内 人时 ≡ 平均在岗人数）
+// ⚠️ 用餐口径同步聚合：半小时粒度下 meal = 离岗人数；小时粒度下 meal = Σ(半小时离岗) × 0.5（人时 ≡ 该小时平均离岗人数），
+//    与 on 同单位，才能做 avail = on − meal。
 function aggregate(slots, grain) {
   if (grain === 'half') {
     return slots.map(s => ({label: s.t, inbound: s.inbound, turn: s.turn,
-                            need: s.need, on: s.on, gap: s.gap, gapI: s.gapI, load: s.load, n: 1}));
+                            need: s.need, on: s.on, meal: s.meal || 0,
+                            onI: s.onI, availI: s.availI != null ? s.availI : s.onI,
+                            gap: s.gap, gapI: s.gapI, load: s.load, n: 1}));
   }
   const m = new Map();
   slots.forEach(s => {
@@ -427,10 +510,12 @@ function aggregate(slots, grain) {
     const turn    = arr.reduce((a,s)=>a+s.turn, 0);
     const need    = arr.reduce((a,s)=>a+s.need, 0) * 0.5;   // 人时
     const on      = arr.reduce((a,s)=>a+s.on,   0) * 0.5;   // 人时（=该小时平均人数）
-    const gap     = on - need;                            // 当班 − 需求：<0 缺口、>0 冗余
-    const gapI    = Math.round(on) - Math.ceil(need);
+    const meal    = arr.reduce((a,s)=>a+(s.meal||0), 0) * 0.5;  // 人时（=该小时平均离岗人数）
+    const avail   = Math.max(0, on - meal);                 // 实到人数
+    const gap     = avail - need;                           // 实到 − 需求：<0 缺口、>0 冗余
+    const gapI    = Math.round(avail) - Math.ceil(need);
     const load    = on ? turn / (on * CAP) * 100 : null;
-    return {label: h + ':00', inbound, turn, need, on, gap, gapI, load, n: arr.length};
+    return {label: h + ':00', inbound, turn, need, on, meal, avail, gap, gapI, load, n: arr.length};
   });
 }
 
@@ -495,9 +580,12 @@ function scHtml() {
 function timelineRows(res) {
   const rows = aggregate(res.slots, GRAIN);
   return rows.map(r => {
-    const needI = Math.ceil(r.need - 1e-9);      // 需求人数（向上取整）
-    const onI   = Math.round(r.on);              // 当班人数
-    const d     = onI - needI;                   // >0 冗余、<0 缺口
+    const needI = Math.ceil(r.need - 1e-9);       // 需求人数（向上取整）
+    const onI   = Math.round(r.on);               // 当班人数
+    const mealI = Math.round(r.meal || 0);        // 该时段离岗用餐人数
+    const availI = Math.max(0, onI - mealI);      // 实到人数
+    const d     = availI - needI;                 // >0 冗余、<0 缺口（已扣用餐）
+    const dNoMeal = onI - needI;                  // 不扣餐时的差额 → 用来标出「缺口是吃出来的」
     // 时段标签：小时粒度 '08:00' → '08:00–09:00'
     let t = r.label;
     if (t.indexOf('-') > 0) t = t.replace('-', '–');
@@ -511,13 +599,15 @@ function timelineRows(res) {
       const vs = keys.map(k => HH_RATE.slots[k]).filter(v => typeof v === 'number');
       if (vs.length) rate = vs.reduce((a, b) => a + b, 0) / vs.length;
     }
-    return { t, needI, onI, d, rate };
+    return { t, needI, onI, mealI, availI, d, dNoMeal, rate };
   });
 }
 function renderAdvice(res) {
   const rows = timelineRows(res);
   const over  = rows.filter(r => r.d < 0);
   const under = rows.filter(r => r.d > 0);
+  // 缺口由「用餐」造成的段（不扣餐不缺、扣了才缺）—— 这类缺口优先用错峰/抽调解决，不必增编
+  const byMeal = rows.filter(r => r.d < 0 && r.dNoMeal >= 0);
 
   let head;
   if (res.ratio === null) head = '排班基准缺失，暂无法给出人力建议。';
@@ -528,6 +618,7 @@ function renderAdvice(res) {
            (res.gapHc > 0 ? '+' : '') + res.gapHc + ' 人</b>）。';
     head += '　全时段 ' + rows.length + ' 段：缺口 <b style="color:var(--bad)">' + over.length +
             '</b> 段 · 冗余 <b style="color:var(--good)">' + under.length + '</b> 段。';
+    if (byMeal.length) head += '　⚠️ 其中 <b>' + byMeal.length + '</b> 段缺口是「用餐离岗」吃出来的 → 错峰/抽调即可，不必增编。';
   }
 
   let h = '<div style="font-weight:600;margin-bottom:7px;font-size:13.5px">' + head + '</div>';
@@ -542,15 +633,57 @@ function renderAdvice(res) {
     } else {
       act = '<span class="tl-a">匹配 → 维持当班</span>';
     }
+    if (r.d < 0 && r.dNoMeal >= 0) act += '<span class="tl-note" style="color:var(--warn)">（用餐所致）</span>';
     const note = r.rate != null
       ? '<span class="tl-note">近 7 日同段接通率 <b style="color:' +
         (r.rate < 0.80 ? 'var(--bad)' : (r.rate < 0.85 ? 'var(--warn)' : 'var(--dim)')) + '">' +
         (r.rate * 100).toFixed(1) + '%</b></span>' : '';
+    const mealTag = r.mealI > 0
+      ? ' · <span style="color:var(--warn)">用餐 <b>' + r.mealI + '</b> 人</span> <em style="color:var(--dim);font-style:normal">实到 ' + r.availI + '</em>'
+      : '';
     h += '<div class="tl-row"><span class="tl-t">' + r.t + '</span>' +
          '<span class="tl-n">需 <b style="color:var(--txt)">' + r.needI + '</b> 人 · 当班 <b style="color:var(--txt)">' +
-         r.onI + '</b> 人</span><span>' + act + note + '</span></div>';
+         r.onI + '</b> 人' + mealTag + '</span><span>' + act + note + '</span></div>';
   });
   $('advice').innerHTML = h;
+}
+
+// ─────────────────────────────────────────────────────────────
+// 用餐安排渲染（窗口 11:00–15:00 / 17:00–20:00，每人每餐 30 分钟）
+// ─────────────────────────────────────────────────────────────
+function mealWinHtml(g, w) {
+  const rows = w.slots.map(sl => {
+    const ppl = w.map[sl] || [];
+    if (!ppl.length) return '';
+    return '<div class="meal-row"><span class="t">' + sl + '</span>' +
+           '<span class="n">' + ppl.length + '</span>' +
+           '<span class="p">' + ppl.join('、') + '</span></div>';
+  }).join('');
+  const tot = w.slots.reduce((a, sl) => a + (w.map[sl] || []).length, 0);
+  const busy = w.slots.filter(sl => (w.map[sl] || []).length).length;
+  return '<div class="meal-win"><div class="wt"><span>' + w.name + '</span>' +
+    '<span class="r">' + w.from + '–' + w.to + ' · ' + tot + ' 人次 / ' + busy + ' 段</span></div>' +
+    (rows || '<div class="meal-row"><span class="p" style="color:var(--dim)">该日无名单</span></div>') +
+    '</div>';
+}
+function renderMeal(dateStr) {
+  const mp = mealPlanFor(dateStr);
+  const sch = SCHED ? '' : '<span style="color:var(--warn)">（未取到 ../schedule.json，在线名单缺失）</span>';
+  $('mealNote').innerHTML =
+    '口径：<b>在线 / 400 每位员工每天用餐 2 次、每次 30 分钟</b>；第一餐窗口 <b>11:00–15:00</b>、第二餐窗口 <b>17:00–20:00</b>。' +
+    '按名单顺序<b>比例均摊</b>到半小时（每段人数最多差 1，避免同段扎堆离岗），且<b>第一餐早的第二餐也早</b>（保证两餐间隔，照顾正常生理需求）。' +
+    '用餐期间按 <b>实到 = 当班 − 用餐</b> 计入人力，下方「时段建议 / 时段明细」的缺口均已扣除用餐。';
+
+  let h = '';
+  MEAL_DEPTS.forEach(dept => {
+    const g = mp[dept];
+    const n = g.names.length;
+    h += '<div class="meal-grp"><div class="meal-hd">' + (dept === '400' ? '📞 400 电话' : '💬 在线接待') +
+      ' <span class="sub">当班 ' + n + ' 人' + (n ? '（' + g.names.join('、') + '）' : '') +
+      (dept === '在线' ? ' ' + sch : '') + '</span></div>' +
+      '<div class="meal-wrap">' + MEAL_WINS.map(w => mealWinHtml(g, g.wins[w.key])).join('') + '</div></div>';
+  });
+  $('meal').innerHTML = h;
 }
 
 // ── 渲染 ──
@@ -621,6 +754,7 @@ function render(res) {
 
   drawChart(res.slots, res.dateStr);
   drawTable(res.slots, GRAIN);
+  renderMeal(res.dateStr);
 }
 
 // ── 未来排班计划（读 plan.json）──
@@ -792,16 +926,24 @@ function drawTable(slots, grain) {
   $('grainNote').innerHTML = grain === 'hour'
     ? '人力 = 该小时平均在岗人数（人）'
     : '人力 = 该半小时并发在岗人数（人）';
-  let h = '<thead><tr><th>时段</th><th>进线量</th><th>转人工</th><th>需求(人)</th><th>当班(人)</th><th>缺口/冗余(人)</th><th>负荷</th></tr></thead><tbody>';
+  let h = '<thead><tr><th>时段</th><th>进线量</th><th>转人工</th><th>需求(人)</th><th>当班(人)</th>' +
+          '<th>用餐(人)</th><th>缺口/冗余(人)</th><th>负荷</th></tr></thead><tbody>';
   rows.forEach(s => {
+    const onI   = s.onI != null ? s.onI : Math.round(s.on);
+    const mealI = Math.round(s.meal || 0);
+    const availI = s.availI != null ? s.availI : Math.max(0, onI - mealI);
     const gc = s.gapI <= -1 ? 'gap-bad' : (s.gapI >= 1 ? 'gap-good' : '');
     const lc = (s.load !== null && s.load > 110) ? 'load-hot' : '';
     h += '<tr><td>' + s.label + '</td><td>' + fmt(s.inbound) + '</td><td>' + fmt(s.turn) + '</td>' +
-         '<td>' + s.need.toFixed(1) + '</td><td>' + s.on.toFixed(1) + '</td>' +
+         '<td>' + s.need.toFixed(1) + '</td><td>' + onI + '</td>' +
+         '<td style="color:' + (mealI ? 'var(--warn)' : 'var(--dim)') + '">' + (mealI || '-') +
+           (mealI ? '<span style="color:var(--dim);font-size:11px"> →实到' + availI + '</span>' : '') + '</td>' +
          '<td class="' + gc + '">' + (s.gap>0?'+':'') + s.gap.toFixed(1) + '</td>' +
          '<td class="' + lc + '">' + (s.load===null?'-':s.load.toFixed(0)+'%') + '</td></tr>';
   });
   $('tbl').innerHTML = h + '</tbody>';
+  $('tblNote').innerHTML = '缺口/冗余 = <b>实到 − 需求</b>，实到 = 当班 − 用餐（用餐窗口 11:00–15:00 / 17:00–20:00，每人每餐 30 分钟）。' +
+    '未在用餐窗口的时段「用餐」列为空，此时实到 = 当班。';
 }
 
 // ── 初始化 ──
@@ -840,6 +982,10 @@ async function load() {
   // 现场调控预警（alert_eval.js 每 90s 判定 → ../alert_state.json，与主看板 / 飞书告警同源）
   try { const r = await fetch(bust('../alert_state.json'), {cache:'no-store'}); ALERT = await r.json(); }
   catch (e) { ALERT = null; }
+  // 飞书 HR 班表（../schedule.json）：用餐安排要按「当天真实当班名单」排（在线名单只有这里能拿到；
+  //   400 也可以从 plan.json 的 names 拿 —— 两者同源，都来自这张飞书班表）
+  try { const r = await fetch(bust('../schedule.json'), {cache:'no-store'}); SCHED = await r.json(); }
+  catch (e) { SCHED = null; }
   const w = C.windows || {};
   $('modelSub').innerHTML =
     '模型：<b>R</b> = 近' + (w.R_base||14) + '天咨询比中位（<b>' + C.R_base + '%</b>）× 周内因子（近' + (w.factor||42) + '天）' +
@@ -913,6 +1059,7 @@ function run() {
   if (!C) return;
   const d = $('dDate').value, o = parseFloat($('dOrders').value);
   if (!d || !(o > 0)) { $('hint').innerHTML = '<span class="err">请填目标日期与预估订单量</span>'; return; }
+  MEAL = mealPlanFor(d);          // 先算用餐分配 → predict() 里扣减实到人力
   render(predict(o, d));
   markPlanSel();
 }
