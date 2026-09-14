@@ -1,16 +1,16 @@
 {
- "ts": 1789392560352,
- "collectedAtCn": "2026/9/14 21:29:20",
+ "ts": 1789392674047,
+ "collectedAtCn": "2026/9/14 21:31:14",
  "overview": {
   "总排队数": "0",
-  "坐席空闲数": "3",
+  "坐席空闲数": "2",
   "坐席忙碌数": "0 (0)",
-  "接通率": "26.49%",
+  "接通率": "26.47%",
   "满意率": "100.00%",
-  "呼入总数": "11367",
-  "当前呼入数": "5",
+  "呼入总数": "11373",
+  "当前呼入数": "0",
   "外呼总数": "6190",
-  "当前外呼数": "0",
+  "当前外呼数": "2",
   "呼入平均通话时长": "00:02:41",
   "AI通话数": "0 (3)"
  },
@@ -240,8 +240,8 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 1896,
-   "ivr": 832,
+   "callIn": 1897,
+   "ivr": 833,
    "ringMissed": 5,
    "queueAbandon": 139,
    "answered": 920,
@@ -470,8 +470,8 @@
   },
   {
    "service": "88236602(其他渠道4000166088)",
-   "callIn": 523,
-   "ivr": 256,
+   "callIn": 524,
+   "ivr": 257,
    "ringMissed": 5,
    "queueAbandon": 26,
    "answered": 244,
@@ -480,8 +480,8 @@
   },
   {
    "service": "81198(上门按键转接)",
-   "callIn": 518,
-   "ivr": 319,
+   "callIn": 522,
+   "ivr": 323,
    "ringMissed": 3,
    "queueAbandon": 39,
    "answered": 166,
@@ -886,8 +886,8 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 1896,
-    "ivr": 832,
+    "callIn": 1897,
+    "ivr": 833,
     "ringMissed": 5,
     "queueAbandon": 139,
     "answered": 920,
@@ -905,9 +905,9 @@
     "transferred": 0
    }
   ],
-  "total": 1928,
+  "total": 1929,
   "answered": 937,
-  "ivr": 844,
+  "ivr": 845,
   "connectRate": 92.38
  },
  "online": {
@@ -956,9 +956,9 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1007,
-    "assigned": 1002,
-    "current": 70,
+    "sessions": 1008,
+    "assigned": 1003,
+    "current": 71,
     "max": 90,
     "queue": 0,
     "onlineSeats": "3(刘亚森,朱博宇,沈东升)",
@@ -1302,33 +1302,24 @@
   "capOn": 990,
   "capOnDay": 990,
   "onHoursDay": 33,
-  "in400": 1183,
+  "in400": 27,
   "inOn": 1084,
-  "load400": 91,
+  "load400": 2.1,
   "loadOn": 109.5,
-  "rate400": 84
+  "rate400": 74.1
  },
  "capacity_week": {
   "wDays": 1,
-  "wIn400": 1183,
-  "wAns400": 994,
+  "wIn400": 27,
+  "wAns400": 20,
   "wInOn": 1084,
   "wExp400": 1300,
   "wExpOn": 990,
-  "load400": 91,
+  "load400": 2.1,
   "loadOn": 109.5,
-  "rate400": 84
+  "rate400": 74.1
  },
  "history": [
-  {
-   "ts": 1789102679966,
-   "skillRate400": 85.81,
-   "skillQueue400": 0,
-   "callIn400": 444,
-   "signIn400": 14,
-   "onlineSessions": 283,
-   "onlineSeat": 2
-  },
   {
    "ts": 1789102785340,
    "skillRate400": 85.87,
@@ -5813,6 +5804,15 @@
   },
   {
    "ts": 1789392560352,
+   "skillRate400": 74.07,
+   "skillQueue400": 0,
+   "callIn400": 27,
+   "signIn400": 1,
+   "onlineSessions": 1084,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1789392674047,
    "skillRate400": 74.07,
    "skillQueue400": 0,
    "callIn400": 27,
