@@ -763,8 +763,8 @@ function renderTrend() {
   // 数据源提示
   const cc = src.call400 || {}, oc = src.online || {};
   $('trMeta').textContent =
-    `数据截至 ${trData.days && trData.days[trData.days.length - 1]} · 400 覆盖 ${Object.keys(c400).length} 天（8-9月报表 ${cc.feishu || 0} / 历史报表 ${cc.xlsx || 0} / 实时 ${cc.half || 0} / 快照 ${cc.cap || 0}）` +
-    ` · 在线覆盖 ${Object.keys(onl).length} 天（8-9月报表 ${oc.feishu || 0} / 实时 ${oc.half || 0} / 快照 ${oc.cap || 0}）` +
+    `数据截至 ${trData.days && trData.days[trData.days.length - 1]} · 400 人工量 ${Object.keys(c400).length} 天（8-9月日报 ${cc.feishu || 0} / 分时段表 ${cc.half400 || 0} / 实时 ${cc.half || 0} / 历史报表·呼入量 ${cc.xlsx || 0} / 快照 ${cc.cap || 0}）` +
+    ` · 在线接待 ${Object.keys(onl).length} 天（8-9月日报 ${oc.feishu || 0} / 实时 ${oc.half || 0} / 快照 ${oc.cap || 0}）` +
     (trData.meta && trData.meta.updated ? ` · 封存 ${trData.meta.updated.slice(5, 16)}` : '');
 }
 
