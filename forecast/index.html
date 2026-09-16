@@ -1120,11 +1120,16 @@ async function load() {
     '咨询比 <b>' + C.R_base + '%</b>　·　转人工率 <b>' + C.turn_rate + '%</b>　·　产能 <b>' + CAP +
     ' 通/人/时</b>（人工接通率目标 <b>' + (RATE_TGT * 100).toFixed(0) + '%</b>）';
 
-  // 默认日期：计划表首日（含今天）；订单量以货量预测为准（可手改覆盖）
-  const d0 = (PLAN && PLAN.range && PLAN.range.from)
-    ? PLAN.range.from
-    : (() => { const t = new Date();
-               return t.getFullYear() + '-' + String(t.getMonth()+1).padStart(2,'0') + '-' + String(t.getDate()).padStart(2,'0'); })();
+  // 默认日期：**优先「今天」**；今天不在计划表范围内时取范围内最接近今天的一天。
+  //   ⚠️ 原实现直接取 PLAN.range.from（计划表首日）—— 计划表若未及时刷新，页面就停在过去的
+  //      日期（2026-09-16 用户反馈「每次刷新完自动停在 9/14」即此因）。改为按今天 clamp。
+  const _t0 = new Date();
+  const todayStr = _t0.getFullYear() + '-' + String(_t0.getMonth()+1).padStart(2,'0') + '-' + String(_t0.getDate()).padStart(2,'0');
+  let d0 = todayStr;
+  if (PLAN && PLAN.range && PLAN.range.from && PLAN.range.to) {
+    const _f = PLAN.range.from, _to = PLAN.range.to;
+    d0 = todayStr < _f ? _f : (todayStr > _to ? _to : todayStr);
+  }
   $('dDate').value = d0;
   const rec = (C.recent || []).slice(-1)[0];
   if (rec && rec.orders) $('dOrders').value = rec.orders;
