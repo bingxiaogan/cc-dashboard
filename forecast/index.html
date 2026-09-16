@@ -511,16 +511,18 @@ function predict(orders, dateStr) {
     const turnH  = TR * shareT;
     const need   = turnH / capHalf;
     const on     = staff[t] || 0;
+    // needI / onI 仅保留给「用餐错峰权重」用（那处要整数档位）；展示与判定一律走小数口径
     const needI  = Math.ceil(need);
     const onI    = on ? Math.floor(on + 0.999) : 0;
     // 用餐扣减：该半小时离岗吃饭的人数（400；窗口 10:30–14:00 / 17:00–20:00，每人每餐 30 分钟）
     const meal   = mp ? mealCountAt(mp, '400', t) : 0;
-    const availI = Math.max(0, onI - meal);        // 实到 = 当班 − 用餐
+    const avail  = Math.max(0, on - meal);         // 实到 = 在岗 − 用餐（小数口径）
     return {
-      // ⚠️ gap / gapI 一律 = 实到 − 需求：<0 缺口（标红）、>0 冗余（标绿）
+      // ⚠️ gap 一律 = 实到 − 需求：<0 缺口（标红）、>0 冗余（标绿）
       //    （用户 2026-09-14：缺口要扣除用餐；不扣餐会低估午晚高峰的缺口）
+      //    （用户 2026-09-16：改为全小数口径，不再一端 ceil、一端 round）
       t, inbound: IN * (C.shape.share_in[t] || 0), turn: turnH,
-      need, needI, on, onI, meal, availI, gap: availI - need, gapI: availI - needI,
+      need, needI, on, onI, meal, avail, gap: avail - need,
       load: on ? turnH / (on * capHalf) * 100 : null,
       shareT
     };
@@ -689,7 +691,7 @@ function renderAdvice(res) {
     // 出勤人头 / 人时 / 时段在岗均值 三个数一次讲清（用户 2026-09-16：班表 8 人 vs 时段 7 人要对得上）
     head = '按 <b style="color:var(--accent)">' + (RATE_TGT * 100).toFixed(0) + '% 人工接通率</b>目标配人：需要 <b>' + res.needHc + ' 人</b>，班表出勤 <b>' + res.onHc + ' 人</b>' +
            '<span style="font-weight:400;color:var(--dim)">（' + fmt1(res.onPh) + ' 人时 ÷ 人均 ' + fmt1(res.avgH) + ' h；摊到各时段平均在岗 <b>' + fmt1(rows.reduce((a,r)=>a+r.on,0)/rows.length) + ' 人</b> —— 人头 ≠ 同时在岗，早/晚班错开）</span>' +
-           '（当班为需求的 <b>' + (res.ratio * 100).toFixed(0) + '%</b>，差额 <b style="color:' +
+           '（出勤为需求的 <b>' + (res.ratio * 100).toFixed(0) + '%</b>，差额 <b style="color:' +
            (res.gapHc < 0 ? 'var(--bad)' : (res.gapHc > 0 ? 'var(--good)' : 'inherit')) + '">' +
            (res.gapHc > 0 ? '+' : '') + res.gapHc + ' 人</b>）。';
     head += '　全时段 ' + rows.length + ' 段：缺口 <b style="color:var(--bad)">' + over.length +
@@ -714,7 +716,7 @@ function renderAdvice(res) {
     } else if (r.d >= GAP_TOL) {
       act = '<span class="tl-a good">冗余 ' + fmt1(r.d) + ' 人 → <b>可即时执行</b>：抽调支援缺口时段 / 例会 / 培训 / 放休</span>';
     } else {
-      act = '<span class="tl-a">匹配 → 维持当班</span>' +
+      act = '<span class="tl-a">匹配 → 维持现有人力</span>' +
             (r.d < 0 ? '<span class="tl-note">（临界偏紧 ' + fmt1(-r.d) + ' 人，不必动作）</span>' : '');
     }
     if (r.d <= -GAP_TOL && r.dNoMeal > -GAP_TOL) act += '<span class="tl-note" style="color:var(--warn)">（用餐所致）</span>';
@@ -767,7 +769,7 @@ function renderMeal(dateStr) {
     const g = mp[dept];
     const n = g.names.length;
     h += '<div class="meal-grp"><div class="meal-hd">' + (dept === '400' ? '📞 400 电话' : '💬 在线接待') +
-      ' <span class="sub">当班 ' + n + ' 人' + (n ? '（' + g.names.join('、') + '）' : '') +
+      ' <span class="sub">出勤 ' + n + ' 人' + (n ? '（' + g.names.join('、') + '）' : '') +
       (dept === '在线' ? ' ' + sch : '') + '</span></div>' +
       '<div class="meal-wrap">' + MEAL_WINS.map(w => mealWinHtml(g, g.wins[w.key])).join('') + '</div></div>';
   });
@@ -788,7 +790,7 @@ function renderDoc() {
     '进线量 / 转人工量：合力亿捷云客服「呼入时间趋势」四线合计（88236628 / 88236629 / 4001581707 / 9523622）；服务端统计滞后 30–60 分钟，最新 1–2 个时段缺失属正常。',
     '逐半小时明细（呼入量 / IVR 接通量 / 转人工量 / 排班人数 / 排班运能负荷）：飞书《【爱分类】现场调控》→ 表「2026年客服分时段数据监控」。',
     '订单量：《风控人效预测看板》预估货量 ÷ ' + kg + ' kg/单，按日期自动带出，页顶可手工覆盖。',
-    '当班人力：飞书「9月班表」（每日更新）→ HR 班表口径。班表只有每日总人时，逐时段人数按历史同时段人数形状摊分到半小时。',
+    '当班人力：飞书「9月班表」（每日更新）→ HR 班表口径。班表只有<b>每日总人时</b>（如 8 人 × 11 h = 88 人时），<b>不含上下班时间</b>，逐时段在岗人数按历史同时段人数形状摊分到半小时 → 因此在岗恒 ≤ 出勤人头。',
     '⚠️ 班表只覆盖当月，之后日期会回退到「运营分时段表同周几均值」口径。'
   ]);
   h += sec('② 预测模型（四步）', [
@@ -801,8 +803,10 @@ function renderDoc() {
   ]);
   h += sec('③ 人力口径', [
     '<b>需求人时</b> = 转人工量 ÷ 产能；<b>需求人数</b> = 需求人时 ÷ 班表人均出勤时长，向上取整（宁可多不可少）。',
-    '<b>当班人数</b> = HR 班表当日出勤人头；时段维度 = 该时段平均在岗人数。',
-    '<b>缺口 / 冗余 = 实到 − 需求</b>，实到 = 当班 − 用餐：<span style="color:var(--bad)">负 = 缺口（红）</span>、<span style="color:var(--good)">正 = 冗余（绿）</span>，全页同向。',
+    '<b>出勤人头</b> = HR 班表当日出勤人数（8 人 = 今天有 8 个人上班）；<b>时段在岗人数</b> = 该时段平均同时在岗人数。',
+    '⚠️ <b>两者必然不等</b>：班表只登记「每人当天出勤几小时」，<b>不登记上下班时间</b>，因此各时段在岗 = 当日总人时按历史同时段人数形状摊分。8 人 × 11 h = 88 人时，摊到 08:00–21:00 共 26 个半小时槽，核心时段平均只有 7 点几人 —— 早/晚班错开，没人能 12 小时不间断在岗。',
+    '<b>缺口 / 冗余 = 实到 − 需求</b>，实到 = 在岗 − 用餐：<span style="color:var(--bad)">负 = 缺口（红）</span>、<span style="color:var(--good)">正 = 冗余（绿）</span>，全页同向。',
+    '🔴 <b>全小数口径 + 1 人阈值</b>（2026-09-16 修正）：需求 / 在岗 / 缺口均保留 1 位小数，<b>不再一端 ceil、一端 round</b>；<b>|差| ≥ 1.0 人</b>才计缺口/冗余。原因：旧口径把在岗 7.25 压成 7、需求 7.01 抬成 8，边界时段凭空冒出「缺 1 人需协调支援」，误导现场抽调。',
     '⚠️ <b>两侧动作的可行性差别很大</b>：<b>冗余可即时消化</b>（抽调支援 / 例会 / 培训 / 放休，无需审批）；<b>缺口需协调支援</b> —— 出勤人多但没有实时储备人力，当日难以临时增编，须走对应等级预案调配（组长介入 / 在线与 400 互援 / 顺延）。'
   ]);
   h += sec('④ 产能基准 · 接通率目标', [
@@ -813,9 +817,9 @@ function renderDoc() {
   ]);
   h += sec('⑤ 用餐安排', [
     '口径：在线 / 400 每位员工每天用餐 <b>2 次 × 30 分钟</b>；第一餐窗口 <b>10:30–14:00</b>、第二餐 <b>17:00–20:00</b>。',
-    '🔴 <b>按各时段空闲度错峰</b>（要求：对接通率影响最小）：以该时段「当班 − 需求」为权重 —— 冗余大的时段多排、紧张的时段少排；单槽离岗人数封顶 = 均匀份额 × 1.6，避免把人堆到同一时段反而制造新缺口。',
+    '🔴 <b>按各时段空闲度错峰</b>（要求：对接通率影响最小）：以该时段「在岗 − 需求」为权重 —— 冗余大的时段多排、紧张的时段少排；单槽离岗人数封顶 = 均匀份额 × 1.6，避免把人堆到同一时段反而制造新缺口。',
     '「第一餐早的第二餐也早」：各槽人数定好后，按名单顺序沿时间落位 → 人名序号越大，两餐所在时段都越晚。',
-    '用餐计入人力：<b>实到 = 当班 − 用餐</b>，「时段建议 / 时段明细 / 折线图」的缺口均按实到计算；若某段不扣餐不缺、扣了才缺，会标「用餐所致」—— 优先错峰 / 时段内抽调，不必增编。'
+    '用餐计入人力：<b>实到 = 在岗 − 用餐</b>，「时段建议 / 时段明细 / 折线图」的缺口均按实到计算；若某段不扣餐不缺、扣了才缺，会标「用餐所致」—— 优先错峰 / 时段内抽调，不必增编。'
   ]);
   h += sec('⑥ 预警档位（《400/在线现场调控预案》原文）', [
     '<b>运能负荷</b>：&lt;90% 低负荷 / 90–110% 正常 / 110–130% 一级 / 130–150% 二级 / ≥150% 三级。',
@@ -872,11 +876,13 @@ function render(res) {
     : '<span class="err">未取到预警数据（alert_state.json），请确认采集器在跑。</span>';
   renderAdvice(res);
   $('adviceNote').innerHTML =
-    '口径：<b>需求 / 当班均为该时段平均在岗人数（人）</b>，需求 = 该时段转人工量 ÷ ' + CAP + ' 通/人/时 ÷ 0.5h；' +
-    '<b>缺口 / 冗余 = 当班 − 需求</b>（<span style="color:var(--bad)">负数 = 缺口</span>、<span style="color:var(--good)">正数 = 冗余</span>）。' +
-    '当班人力 = ' + (res.staffSrc === 'HR 班表'
-      ? 'HR 班表该日出勤 <b>' + res.onHc + ' 人</b>' + (res.names.length ? '（' + res.names.join('、') + '）' : '') +
-        '，共 ' + fmt(res.onPh, 1) + ' 人时，按历史同时段人数形状摊分到各半小时'
+    '口径：<b>需求 / 在岗均为该时段平均人数（人，保留 1 位小数）</b>，需求 = 该时段转人工量 ÷ ' + CAP + ' 通/人/时 ÷ 0.5h。' +
+    '<b>缺口 / 冗余 = 实到 − 需求</b>（实到 = 在岗 − 用餐；<span style="color:var(--bad)">负 = 缺口</span>、<span style="color:var(--good)">正 = 冗余</span>），' +
+    '<b>|差| ≥ ' + GAP_TOL.toFixed(1) + ' 人</b> 才计缺口/冗余，不足 1 人的差落在摊分形状误差内、无操作意义。' +
+    '<br>⚠️ <b>在岗 ≠ 出勤人头</b>：' + (res.staffSrc === 'HR 班表'
+      ? '班表该日出勤 <b>' + res.onHc + ' 人</b>' + (res.names.length ? '（' + res.names.join('、') + '）' : '') +
+        '、合计 <b>' + fmt(res.onPh, 1) + ' 人时</b>（人均 ' + fmt(res.avgH, 1) + ' h）。班表只登记「每人几小时」，不登记上下班时间，' +
+        '故各时段在岗人数 = <b>当日总人时按历史同时段人数形状摊分</b> —— 早/晚班错开、有人不在核心时段，因此在岗人数 <b>必然小于</b>出勤人头。'
       : '运营分时段表近 4 个同周几排班均值（' + fmt(res.onPh, 1) + ' 人时 ≈ ' + res.onHc + ' 人）') + '。' +
     (HH_RATE ? '<br>「近 7 日同段接通率」= 400 半小时表内口径（<b>接通量 ÷ 转人工量</b>，人工接通率），窗口 ' +
       (HH_RATE.window.from || '-') + ' ~ ' + (HH_RATE.window.to || '-') +
@@ -1082,7 +1088,7 @@ function drawTable(slots, grain) {
          '<td class="' + lc + '">' + (s.load===null?'-':s.load.toFixed(0)+'%') + '</td></tr>';
   });
   $('tbl').innerHTML = h + '</tbody>';
-  $('tblNote').innerHTML = '<b>全额小数口径</b>：需求 / 在岗 / 缺口均保留 1 位小数，<b>不再一端向上取整、一端四舍五入</b>（旧口径会把在岗 7.25 压成 7、需求 7.01 抬成 8，凭空多出 1 人缺口）。' +
+  $('tblNote').innerHTML = '<b>全小数口径</b>：需求 / 在岗 / 缺口均保留 1 位小数，<b>不再一端向上取整、一端四舍五入</b>（旧口径会把在岗 7.25 压成 7、需求 7.01 抬成 8，凭空多出 1 人缺口）。' +
     '缺口/冗余 = <b>实到 − 需求</b>（实到 = 在岗 − 用餐；<span style="color:var(--bad)">负 = 缺口</span> / <span style="color:var(--good)">正 = 冗余</span>），<b>|差| ≥ ' + GAP_TOL.toFixed(1) + ' 人</b>才标色。' +
     '未在用餐窗口的时段「用餐」列为空，此时实到 = 在岗。';
 }
