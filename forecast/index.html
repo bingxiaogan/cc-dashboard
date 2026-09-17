@@ -228,7 +228,7 @@
     <span class="txt" style="display:flex;align-items:center;gap:6px;color:var(--dim);flex:0 0 auto;white-space:nowrap">产能基准
       <b style="color:var(--accent)" id="capVal">—</b>
       <span style="opacity:.65" id="capNote">（按接通率目标标定）</span></span>
-    <label style="display:flex;align-items:center;gap:6px">当班口径
+    <label style="display:flex;align-items:center;gap:6px">人力口径
       <select id="stfSel">
         <option value="schedule">HR 班表</option>
         <option value="sheet">运营分时段表</option>
@@ -540,11 +540,11 @@ function predict(orders, dateStr) {
   const pday  = planDay(dateStr);
   const avgH  = (pday && pday.avg_hours) || 11.0;         // 该日班表人均出勤时长（h/人）
   const names = (pday && pday.names) || [];
-  const needHc = avgH ? Math.ceil(TR / CAP / avgH) : 0;   // 需求人数（向上取整）
+  const needHc = avgH ? Math.ceil(TR / CAP / avgH) : 0;   // 需求人数（向上进一位）
   const onHc = (PLAN_MODE === 'schedule' && names.length)
     ? names.length                                        // HR 班表：实际出勤人头
-    : Math.round(onPh / avgH);                            // 无名单口径：按人均时长反推
-  // ⚠️ 差额 = 当班 − 需求：<0 = 缺口（标红）、>0 = 冗余（标绿）。与计划表、时段明细、图表全页同向（用户 2026-09-14 口径）
+    : Math.ceil(onPh / avgH - 1e-9);                      // 无名单口径：按人均时长反推（同样向上进一位）
+  // ⚠️ 差额 = 出勤 − 需求：<0 = 缺口（标红）、>0 = 冗余（标绿）。与计划表、时段明细、图表全页同向
   const gapHc = onHc - needHc;
   STAFF_SHAPE_SRC = (pday && pday.staff_shape) || '历史同周几';   // 供 drawTable / 说明文案同步
 
@@ -795,7 +795,7 @@ function renderDoc() {
     '进线量 / 转人工量：合力亿捷云客服「呼入时间趋势」四线合计（88236628 / 88236629 / 4001581707 / 9523622）；服务端统计滞后 30–60 分钟，最新 1–2 个时段缺失属正常。',
     '逐半小时明细（呼入量 / IVR 接通量 / 转人工量 / 排班人数 / 排班运能负荷）：飞书《【爱分类】现场调控》→ 表「2026年客服分时段数据监控」。',
     '订单量：《风控人效预测看板》预估货量 ÷ ' + kg + ' kg/单，按日期自动带出，页顶可手工覆盖。',
-    '当班人力：飞书「9月班表」（每日更新）→ HR 班表口径，只给<b>每日总人时</b>（如 8 人 × 11 h = 88 人时）、<b>不含上下班时间</b>；'
+    '出勤人力：飞书「9月班表」（每日更新）→ HR 班表口径，只给<b>每日总人时</b>（如 8 人 × 11 h = 88 人时）、<b>不含上下班时间</b>；'
     + '各时段怎么分布，取<b>当天分时段表（飞书《现场调控》）现场填的排班人数</b>（谁上早班谁上晚班由现场定），'
     + '再按班表总人时等比缩放 → Σ在岗人时 ≡ 出勤人时，因此在岗恒 ≤ 出勤人头。该日还没有当日分时段表时（未来日期），回退近 4 个同周几均值。',
     '⚠️ 班表只覆盖当月，之后日期会回退到「运营分时段表同周几均值」口径。'
@@ -920,13 +920,13 @@ function renderPlan() {
   $('planSub').innerHTML = '订单量：<b>' + (PLAN.cargo_src || '风控人效预测看板') + '</b>' +
     (PLAN.cargo_snapshot ? '（快照 ' + PLAN.cargo_snapshot + '）' : '') +
     '　·　<b>需求人力</b> = 转人工量 ÷ <b>' + CAP + ' 通/人/时</b> ÷ 人均出勤 <b>' + avgAll + ' h</b>（向上取整）' +
-    '　·　<b>当班人力</b> = <b>' + (PLAN_MODE === 'schedule' ? 'HR 班表出勤人数' : '运营分时段表（折人数）') + '</b>' +
+    '　·　<b>出勤人力</b> = <b>' + (PLAN_MODE === 'schedule' ? 'HR 班表出勤人数' : '运营分时段表（折人数）') + '</b>' +
     '　·　' + PLAN.range.from + ' ~ ' + PLAN.range.to + ' 共 <b>' + PLAN.days.length + '</b> 天' +
     (nFc ? '（其中 ' + nFc + ' 天为货量预测）' : '') +
     '<br>点任意一行 → 下方「时段明细」切换到该日（可直接看到每小时进线量与所需人力）。';
 
   let h = '<thead><tr><th>日期</th><th>周几</th><th>订单量</th><th>进线量</th><th>转人工</th>' +
-          '<th>需求人力</th><th>当班人力</th><th>缺口/冗余</th><th>当班/需求</th></tr></thead><tbody>';
+          '<th>需求人力</th><th>出勤人力</th><th>缺口/冗余</th><th>出勤/需求</th></tr></thead><tbody>';
   PLAN.days.forEach(d => {
     const avgH = d.avg_hours || 11;                       // 该日班表人均出勤时长（h/人）
     const needPh = d.turn / CAP;                          // 需求人时（随产能基准现算）
@@ -934,8 +934,8 @@ function renderPlan() {
     const sl = (PLAN.staff_slots[PLAN_MODE] || {})[d.date] || {};
     const onPh = Object.values(sl).reduce((a, b) => a + b, 0) * 0.5;
     const names = d.names || [];
-    const needHc = Math.ceil(needPh / avgH);              // 需要几个人（向上取整）
-    const onHc = (PLAN_MODE === 'schedule' && names.length) ? names.length : Math.round(onPh / avgH);
+    const needHc = Math.ceil(needPh / avgH);              // 需要几个人（向上进一位）
+    const onHc = (PLAN_MODE === 'schedule' && names.length) ? names.length : Math.ceil(onPh / avgH - 1e-9);
     const gap = onHc - needHc;                            // <0 = 缺口（红）、>0 = 冗余（绿）
     const ratio = needPh ? onPh / needPh * 100 : null;
     const gc = gap < 0 ? 'gap-bad' : (gap > 0 ? 'gap-good' : '');
