@@ -1,14 +1,14 @@
 {
- "ts": 1789653158382,
- "collectedAtCn": "2026/9/17 21:52:38",
+ "ts": 1789653270636,
+ "collectedAtCn": "2026/9/17 21:54:30",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "1",
   "坐席忙碌数": "0 (0)",
-  "接通率": "20.74%",
+  "接通率": "20.73%",
   "满意率": "100.00%",
-  "呼入总数": "11779",
-  "当前呼入数": "0",
+  "呼入总数": "11784",
+  "当前呼入数": "1",
   "外呼总数": "5981",
   "当前外呼数": "0",
   "呼入平均通话时长": "00:02:52",
@@ -240,8 +240,8 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 1538,
-   "ivr": 697,
+   "callIn": 1540,
+   "ivr": 699,
    "ringMissed": 4,
    "queueAbandon": 120,
    "answered": 719,
@@ -330,8 +330,8 @@
   },
   {
    "service": "88236639(pjt-买家)",
-   "callIn": 37,
-   "ivr": 37,
+   "callIn": 38,
+   "ivr": 38,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -440,8 +440,8 @@
   },
   {
    "service": "81199(门店按键转接)",
-   "callIn": 420,
-   "ivr": 274,
+   "callIn": 421,
+   "ivr": 275,
    "ringMissed": 1,
    "queueAbandon": 33,
    "answered": 116,
@@ -886,8 +886,8 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 1538,
-    "ivr": 697,
+    "callIn": 1540,
+    "ivr": 699,
     "ringMissed": 4,
     "queueAbandon": 120,
     "answered": 719,
@@ -905,10 +905,10 @@
     "transferred": 0
    }
   ],
-  "total": 1569,
+  "total": 1571,
   "answered": 736,
-  "ivr": 709,
-  "connectRate": 92.1
+  "ivr": 711,
+  "connectRate": 92.11
  },
  "online": {
   "groups": [
@@ -970,13 +970,13 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1111,
-    "assigned": 1104,
+    "sessions": 1112,
+    "assigned": 1105,
     "current": 86,
     "max": 120,
     "queue": 1,
     "onlineSeats": "4(刘亚森,张慧敏,黄益群,李宜慢)",
-    "done": 980,
+    "done": 981,
     "answerRate": 99.37,
     "abandon": 7,
     "voicemail": 0,
@@ -1068,11 +1068,11 @@
    },
    {
     "name": "官网严选自营售前咨询",
-    "sessions": 382,
-    "assigned": 382,
-    "current": 29,
+    "sessions": 384,
+    "assigned": 384,
+    "current": 31,
     "max": 120,
-    "queue": 2,
+    "queue": 0,
     "onlineSeats": "4(刘亚森,张慧敏,黄益群,李宜慢)",
     "done": 350,
     "answerRate": 100,
@@ -1302,15 +1302,6 @@
   "rate400": 81.8
  },
  "history": [
-  {
-   "ts": 1789540019914,
-   "skillRate400": 79.62,
-   "skillQueue400": 1,
-   "callIn400": 574,
-   "signIn400": 11,
-   "onlineSessions": 410,
-   "onlineSeat": 2
-  },
   {
    "ts": 1789540124784,
    "skillRate400": 79.65,
@@ -5795,6 +5786,15 @@
   },
   {
    "ts": 1789653158382,
+   "skillRate400": 52.38,
+   "skillQueue400": 0,
+   "callIn400": 21,
+   "signIn400": 1,
+   "onlineSessions": 823,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1789653270636,
    "skillRate400": 52.38,
    "skillQueue400": 0,
    "callIn400": 21,
