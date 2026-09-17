@@ -794,6 +794,7 @@ function renderDoc() {
   h += sec('① 数据来源', [
     '进线量 / 转人工量：合力亿捷云客服「呼入时间趋势」四线合计（88236628 / 88236629 / 4001581707 / 9523622）；服务端统计滞后 30–60 分钟，最新 1–2 个时段缺失属正常。',
     '逐半小时明细（呼入量 / IVR 接通量 / 转人工量 / 排班人数 / 排班运能负荷）：飞书《【爱分类】现场调控》→ 表「2026年客服分时段数据监控」。',
+    '折线图「实际」线 = 400 时段量级：当日为实时采集（四线合计，报表滞后约 15 分钟）、历史日期为飞书分时段表归档；<b>转人工量 = 呼入总量 − IVR 自助接起</b>（两条线同源）。',
     '订单量：《风控人效预测看板》预估货量 ÷ ' + kg + ' kg/单，按日期自动带出，页顶可手工覆盖。',
     '出勤人力：飞书「9月班表」（每日更新）→ HR 班表口径，只给<b>每日总人时</b>（如 8 人 × 11 h = 88 人时）、<b>不含上下班时间</b>；'
     + '各时段怎么分布，取<b>当天分时段表（飞书《现场调控》）现场填的排班人数</b>（谁上早班谁上晚班由现场定），'
@@ -807,7 +808,7 @@ function renderDoc() {
     '<b>U（人工处理率）</b> = ' + rp(C && C.U_a) + '% ' + (C && C.U_b < 0 ? '−' : '+') + ' ' + rp(C && Math.abs(C.U_b)) + '% × IN（近 ' + (w.reg || 90) + ' 天滚动回归；与进线量负相关 —— 量越大，走 IVR 自助分流的比例越高）。',
     '时段分摊：按历史半小时形状，把日量拆到 26 个半小时（进线量与转人工量各一套份额）。',
     '⚠️ 春节 2/9–2/23 样本剔除；咨询比与订单量<b>零相关</b>，不能用订单量直接推咨询比。',
-    '偏差口径（2026-09-17）：一律以<b>实际</b>为主语 —— 「实际比预测低/高 X%」，X =（预测 − 实际）÷ 实际。预测与实际必须<b>同窗口</b>才可比（当日实时采到几点，预测就截到几点）。'
+    '偏差口径（2026-09-17）：预测与实际的偏差挂在<b>实际值</b>上，直接写「<b>低于 / 高于预测 X%</b>」（X =（预测 − 实际）÷ 实际）。预测与实际必须<b>同窗口</b>才可比（当日实时采到几点，预测就截到几点）。'
   ]);
   h += sec('③ 人力口径', [
     '<b>需求人数</b> = 该时段转人工量 ÷ 产能（' + CAP + ' 通/人/时）÷ 0.5 h；<b>需求人时</b> = 转人工量 ÷ 产能；<b>日需求人头</b> = 需求人时 ÷ 班表人均出勤时长，向上取整。',
@@ -862,11 +863,15 @@ function render(res) {
   const actNote = live
     ? '同源当日实时采集（' + wFrom + '–' + wTo + '，含 IVR）'
     : (act ? '历史归档（全天）' : '该日无实时数据');
-  // 预测 vs 实际 偏差：v > 0 = 预测高于实际 → 以「实际」为主语读作「实际比预测低 v%」（用户 2026-09-17）
+  // 预测 vs 实际 偏差：v > 0 = 预测高于实际 → 挂在实际卡上读作「低于预测 v%」（用户 2026-09-17）
+  //   实际 = 708、预测 = 724 → 低于预测 2.2%：主语是实际值，直接说低/高多少
   const dev = (p, a) => (a != null && a > 0) ? (p / a - 1) * 100 : null;
   const devNote = v => v == null ? ''
-    : '　<b style="color:' + (Math.abs(v) < 3 ? 'var(--dim)' : (v > 0 ? 'var(--warn)' : 'var(--good)')) + '">' +
-      '实际比预测' + (v > 0 ? '低' : '高') + ' ' + Math.abs(v).toFixed(1) + '%</b>';
+    : '<b style="color:' + (Math.abs(v) < 3 ? 'var(--dim)' : 'var(--warn)') + '">' +
+      (v > 0 ? '低于' : '高于') + '预测 ' + Math.abs(v).toFixed(1) + '%</b>';
+  const devTag = (v, note) => v == null ? note : (note ? devNote(v) + '　·　' + note : devNote(v));
+  const dIn = dev(pIn, act && act.inbound);
+  const dTr = dev(pTr, act && act.turn);
   $('kpis').innerHTML = [
     '<div class="kpi-sep">全天预估 · 整体口径（看总量，不参与对比）</div>',
     card('全天预估进线量', fmt(res.IN), '通', '', '模型全天口径'),
@@ -874,10 +879,10 @@ function render(res) {
     '<div class="kpi-sep">' + (live
       ? '当日对比 · ' + winTag + '（预估与实际同一窗口，可直接比高低）'
       : '当日对比 · 全天口径（该日无实时分时段数据）') + '</div>',
-    card('预估进线量', fmt(pIn), '通', '', winTag + ' 预测' + devNote(dev(pIn, act && act.inbound))),
-    card('实际进线量', act && act.inbound != null ? fmt(act.inbound) : '—', '通', 'act', actNote),
-    card('预估人工进线量', fmt(pTr), '通', '', winTag + ' 预测' + devNote(dev(pTr, act && act.turn))),
-    card('实际人工进线量', act ? fmt(act.turn) : '—', '通', 'act', actNote),
+    card('预估进线量', fmt(pIn), '通', '', winTag + ' 预测'),
+    card('实际进线量', act && act.inbound != null ? fmt(act.inbound) : '—', '通', 'act', devTag(dIn, actNote)),
+    card('预估人工进线量', fmt(pTr), '通', '', winTag + ' 预测'),
+    card('实际人工进线量', act ? fmt(act.turn) : '—', '通', 'act', devTag(dTr, actNote)),
   ].join('');
 
   // ── 现场调控：预警 + 按时段建议 ──
@@ -1051,11 +1056,11 @@ function drawChart(slots, dateStr) {
     if (nAct < n) {
       note += '<br>同窗口对比（<b>' + nPair + '</b> 段，仅实际有数据的时段）：预测 <b>' + fmt(pAl) + '</b>' +
         ' vs 实际 <b>' + fmt(aAl) + '</b> 通' +
-        (diff === null ? '' : '　·　实际比预测' + (diff >= 0 ? '低' : '高') +
-          ' <b style="color:' + (Math.abs(diff) < 3 ? 'var(--dim)' : (diff > 0 ? 'var(--warn)' : 'var(--good)')) + '">' +
+        (diff === null ? '' : '　·　' + (diff >= 0 ? '低于' : '高于') + '预测' +
+          ' <b style="color:' + (Math.abs(diff) < 3 ? 'var(--dim)' : 'var(--warn)') + '">' +
           Math.abs(diff).toFixed(1) + '%</b>');
     } else {
-      note += '　·　实际比预测' + (diff >= 0 ? '低' : '高') + ' <b>' + Math.abs(diff).toFixed(1) + '%</b>';
+      note += '　·　' + (diff >= 0 ? '低于' : '高于') + '预测 <b>' + Math.abs(diff).toFixed(1) + '%</b>';
     }
   } else {
     note += '　·　<span style="color:var(--warn)">该日无实际半小时数据</span>（实际数据覆盖「当日实时」与「历史归档」两类日期）';
