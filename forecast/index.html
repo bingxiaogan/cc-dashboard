@@ -1060,14 +1060,7 @@ function drawChart(slots, dateStr) {
   } else {
     note += '　·　<span style="color:var(--warn)">该日无实际半小时数据</span>（实际数据覆盖「当日实时」与「历史归档」两类日期）';
   }
-  note += '<br>口径：<b>转人工量 = 呼入总量 − IVR 自助接起</b>（两条线同源）。预测 = 进线量 × 转人工率（' + (C ? C.turn_rate : '-') + '%）；';
-  if (nAct) {
-    note += '实际 = ' + (HH_LIVE && HH_LIVE.date === dateStr
-      ? '当日「时段量级 📞400」实时采集（四线合计，报表采集滞后约 15 分钟）'
-      : '历史归档（飞书《分时段数据监控》）') + '。';
-  } else {
-    note += '实际线需该日半小时数据（来自「时段量级 📞400」实时采集或历史归档），当前无。';
-  }
+  note += '<br>口径见页底「报表说明」① 数据来源（实际线 = 400 时段量级实时采集或历史归档）。';
   $('chartNote').innerHTML = note;
 }
 
