@@ -1,6 +1,6 @@
 {
- "ts": 1789657836850,
- "collectedAtCn": "2026/9/17 23:10:36",
+ "ts": 1789657949137,
+ "collectedAtCn": "2026/9/17 23:12:29",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "1",
@@ -937,7 +937,7 @@
     "done": 27,
     "answerRate": 100,
     "abandon": 0,
-    "voicemail": 5,
+    "voicemail": 6,
     "satisfactionRate": 100
    },
    {
@@ -1068,9 +1068,9 @@
    },
    {
     "name": "官网严选自营售前咨询",
-    "sessions": 402,
-    "assigned": 402,
-    "current": 9,
+    "sessions": 403,
+    "assigned": 403,
+    "current": 10,
     "max": 60,
     "queue": 0,
     "onlineSeats": "2(李宜慢,黄益群)",
@@ -1285,32 +1285,23 @@
   "capOnDay": 990,
   "onHoursDay": 33,
   "in400": 21,
-  "inOn": 846,
+  "inOn": 854,
   "load400": 2,
-  "loadOn": 85.5,
+  "loadOn": 86.3,
   "rate400": 52.4
  },
  "capacity_week": {
   "wDays": 4,
   "wIn400": 1924,
   "wAns400": 1573,
-  "wInOn": 3328,
+  "wInOn": 3336,
   "wExp400": 4145,
   "wExpOn": 3960,
   "load400": 46.4,
-  "loadOn": 84,
+  "loadOn": 84.2,
   "rate400": 81.8
  },
  "history": [
-  {
-   "ts": 1789544553681,
-   "skillRate400": 80.39,
-   "skillQueue400": 1,
-   "callIn400": 673,
-   "signIn400": 12,
-   "onlineSessions": 477,
-   "onlineSeat": 2
-  },
   {
    "ts": 1789544706692,
    "skillRate400": 80.42,
@@ -5795,6 +5786,15 @@
   },
   {
    "ts": 1789657836850,
+   "skillRate400": 52.38,
+   "skillQueue400": 0,
+   "callIn400": 21,
+   "signIn400": 1,
+   "onlineSessions": 823,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1789657949137,
    "skillRate400": 52.38,
    "skillQueue400": 0,
    "callIn400": 21,
