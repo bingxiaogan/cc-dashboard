@@ -1,6 +1,6 @@
 {
- "ts": 1789656844970,
- "collectedAtCn": "2026/9/17 22:54:04",
+ "ts": 1789657097586,
+ "collectedAtCn": "2026/9/17 22:58:17",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "1",
@@ -923,7 +923,7 @@
     "done": 3,
     "answerRate": 100,
     "abandon": 0,
-    "voicemail": 1,
+    "voicemail": 2,
     "satisfactionRate": 100
    },
    {
@@ -972,11 +972,11 @@
     "name": "官网严选自营售后咨询",
     "sessions": 1147,
     "assigned": 1140,
-    "current": 42,
+    "current": 40,
     "max": 60,
     "queue": 0,
     "onlineSeats": "2(李宜慢,黄益群)",
-    "done": 1059,
+    "done": 1061,
     "answerRate": 99.39,
     "abandon": 7,
     "voicemail": 0,
@@ -1068,13 +1068,13 @@
    },
    {
     "name": "官网严选自营售前咨询",
-    "sessions": 399,
-    "assigned": 399,
+    "sessions": 400,
+    "assigned": 400,
     "current": 11,
     "max": 60,
     "queue": 0,
     "onlineSeats": "2(李宜慢,黄益群)",
-    "done": 385,
+    "done": 386,
     "answerRate": 100,
     "abandon": 0,
     "voicemail": 0,
@@ -1302,24 +1302,6 @@
   "rate400": 81.8
  },
  "history": [
-  {
-   "ts": 1789543598889,
-   "skillRate400": 80.37,
-   "skillQueue400": 0,
-   "callIn400": 642,
-   "signIn400": 12,
-   "onlineSessions": 461,
-   "onlineSeat": 3
-  },
-  {
-   "ts": 1789543705075,
-   "skillRate400": 80.62,
-   "skillQueue400": 0,
-   "callIn400": 645,
-   "signIn400": 11,
-   "onlineSessions": 461,
-   "onlineSeat": 3
-  },
   {
    "ts": 1789543842472,
    "skillRate400": 80.4,
@@ -5795,6 +5777,24 @@
   },
   {
    "ts": 1789656844970,
+   "skillRate400": 52.38,
+   "skillQueue400": 0,
+   "callIn400": 21,
+   "signIn400": 1,
+   "onlineSessions": 823,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1789656957209,
+   "skillRate400": 52.38,
+   "skillQueue400": 0,
+   "callIn400": 21,
+   "signIn400": 1,
+   "onlineSessions": 823,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1789657097586,
    "skillRate400": 52.38,
    "skillQueue400": 0,
    "callIn400": 21,
