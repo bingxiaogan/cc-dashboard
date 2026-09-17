@@ -1,17 +1,17 @@
 {
  "objects": {
   "c400d": {
-   "level": 3,
-   "levelName": "二级",
-   "color": "橙",
+   "level": 2,
+   "levelName": "一级",
+   "color": "黄",
    "vals": {
-    "load": 132,
-    "rate": 78.8,
-    "lv": 3,
+    "load": 128.9,
+    "rate": 79.8,
+    "lv": 2,
     "rv": 3
    },
-   "ts": 1789612123669,
-   "tsCn": "2026/9/17 10:28:43",
+   "ts": 1789612234162,
+   "tsCn": "2026/9/17 10:30:34",
    "lastLevel": 3,
    "muted": false,
    "minLevel": 2,
@@ -22,36 +22,36 @@
    "levelName": "正常",
    "color": "蓝",
    "vals": {
-    "load": 87.9,
+    "load": 88,
     "rate": 84.1,
     "lv": 0,
     "rv": 2,
     "src": "周报口径(今实时)",
     "wDays": 4,
     "sum": {
-     "call": 3163,
-     "ans": 2660,
-     "den400": 3599,
-     "on": 2640,
+     "call": 3188,
+     "ans": 2682,
+     "den400": 3623,
+     "on": 2659,
      "denOn": 3960
     }
    },
-   "ts": 1789612123669,
-   "tsCn": "2026/9/17 10:28:43",
+   "ts": 1789612234162,
+   "tsCn": "2026/9/17 10:30:34",
    "lastLevel": 1,
    "muted": false,
    "minLevel": 2,
    "lastAlertTs": 1789606905664
   },
   "onld": {
-   "level": 1,
-   "levelName": "正常",
-   "color": "蓝",
+   "level": 0,
+   "levelName": "低负荷",
+   "color": "绿",
    "vals": {
-    "load": 90.1
+    "load": 88.1
    },
-   "ts": 1789612123669,
-   "tsCn": "2026/9/17 10:28:43",
+   "ts": 1789612234162,
+   "tsCn": "2026/9/17 10:30:34",
    "lastLevel": 1,
    "muted": true,
    "minLevel": 99,
@@ -62,19 +62,19 @@
    "levelName": "低负荷",
    "color": "绿",
    "vals": {
-    "load": 66.7,
+    "load": 67.1,
     "src": "周报口径(今实时)",
     "wDays": 4,
     "sum": {
-     "call": 3163,
-     "ans": 2660,
-     "den400": 3599,
-     "on": 2640,
+     "call": 3188,
+     "ans": 2682,
+     "den400": 3623,
+     "on": 2659,
      "denOn": 3960
     }
    },
-   "ts": 1789612123669,
-   "tsCn": "2026/9/17 10:28:43",
+   "ts": 1789612234162,
+   "tsCn": "2026/9/17 10:30:34",
    "lastLevel": 0,
    "muted": true,
    "minLevel": 99,
@@ -86,21 +86,21 @@
    "color": "蓝",
    "vals": {
     "stock": 35,
-    "un": 4,
+    "un": 5,
     "cap": 57.1,
     "load": 61.2,
     "lv": 0,
     "rv": 1,
     "agents": 2
    },
-   "ts": 1789612123669,
-   "tsCn": "2026/9/17 10:28:43",
+   "ts": 1789612234162,
+   "tsCn": "2026/9/17 10:30:34",
    "lastLevel": 1,
    "muted": false,
    "minLevel": 2,
    "lastAlertTs": 1789089575337
   }
  },
- "updated": "2026/9/17 10:28:43",
- "updatedTs": 1789612123669
+ "updated": "2026/9/17 10:30:34",
+ "updatedTs": 1789612234162
 }
