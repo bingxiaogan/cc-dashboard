@@ -695,18 +695,14 @@ function renderAdvice(res) {
   else {
     // 出勤人头 / 人时 / 时段在岗均值 三个数一次讲清（用户 2026-09-16：班表 8 人 vs 时段 7 人要对得上）
     head = '按 <b style="color:var(--accent)">' + (RATE_TGT * 100).toFixed(0) + '% 人工接通率</b>目标配人：需要 <b>' + res.needHc + ' 人</b>，班表出勤 <b>' + res.onHc + ' 人</b>' +
-           '<span style="font-weight:400;color:var(--dim)">（' + fmt1(res.onPh) + ' 人时 ÷ 人均 ' + fmt1(res.avgH) + ' h；摊到各时段平均在岗 <b>' + fmt1(rows.reduce((a,r)=>a+r.on,0)/rows.length) + ' 人</b> —— 人头 ≠ 同时在岗，早/晚班错开）</span>' +
-           '（出勤为需求的 <b>' + (res.ratio * 100).toFixed(0) + '%</b>，差额 <b style="color:' +
+           '（<b>' + fmt1(res.onPh) + ' 人时</b>，摊到各时段平均在岗 <b>' + fmt1(rows.reduce((a,r)=>a+r.on,0)/rows.length) + ' 人</b>）。' +
+           '出勤为需求的 <b>' + (res.ratio * 100).toFixed(0) + '%</b>，差额 <b style="color:' +
            (res.gapHc < 0 ? 'var(--bad)' : (res.gapHc > 0 ? 'var(--good)' : 'inherit')) + '">' +
-           (res.gapHc > 0 ? '+' : '') + res.gapHc + ' 人</b>）。';
+           (res.gapHc > 0 ? '+' : '') + res.gapHc + ' 人</b>。';
     head += '　全时段 ' + rows.length + ' 段：缺口 <b style="color:var(--bad)">' + over.length +
             '</b> 段 · 冗余 <b style="color:var(--good)">' + under.length + '</b> 段' +
-            (near.length ? ' · 其余 ' + (rows.length - over.length - under.length) + ' 段匹配（含 <b>' + near.length + '</b> 段临界偏紧，差不足 1 人，不必动作）' : '') + '。';
-    if (byMeal.length) head += '　⚠️ 其中 <b>' + byMeal.length + '</b> 段缺口是「用餐离岗」吃出来的 → 错峰排餐 / 时段内抽调即可，不必增编。';
-    head += '<br><span style="color:var(--dim);font-weight:400">判定阈值：<b>|缺口| ≥ 1 人</b>才计缺口/冗余（在岗数由班表人时摊分而来，不足 1 人的差落在形状误差内）。' +
-            '动作可行性：' +
-            '<b style="color:var(--good)">冗余可即时消化</b>（抽调支援 / 例会 / 培训 / 放休，无需审批）；' +
-            '<b style="color:var(--warn)">缺口需协调支援</b>（无实时储备人力，须走对应等级预案调配，当日难以临时增编）。</span>';
+            (near.length ? ' · 其余 ' + (rows.length - over.length - under.length) + ' 段匹配（含 <b>' + near.length + '</b> 段临界偏紧）' : '') + '。';
+    if (byMeal.length) head += '　⚠️ 其中 <b>' + byMeal.length + '</b> 段缺口由「用餐离岗」造成 → 错峰排餐 / 时段内抽调即可。';
   }
 
   let h = '<div style="font-weight:600;margin-bottom:7px;font-size:13.5px">' + head + '</div>';
