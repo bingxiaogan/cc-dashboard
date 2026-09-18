@@ -795,7 +795,8 @@ function renderDoc() {
     '进线量 / 转人工量：合力亿捷云客服「呼入时间趋势」四线合计（88236628 / 88236629 / 4001581707 / 9523622）；服务端统计滞后 30–60 分钟，最新 1–2 个时段缺失属正常。',
     '逐半小时明细（呼入量 / IVR 接通量 / 转人工量 / 排班人数 / 排班运能负荷）：飞书《【爱分类】现场调控》→ 表「2026年客服分时段数据监控」。',
     '折线图「实际」线 = 400 时段量级：当日为实时采集（四线合计，报表滞后约 15 分钟）、历史日期为飞书分时段表归档；<b>转人工量 = 呼入总量 − IVR 自助接起</b>（两条线同源）。',
-    '订单量：《风控人效预测看板》预估货量 ÷ ' + kg + ' kg/单，按日期自动带出，页顶可手工覆盖。',
+    '订单量：优先取<b>运营下发的节假日货量预测</b>（按<b>全国货量 ÷ ' + kg + ' kg/单</b> 折算）；其未覆盖的日期，回落自动抓取的《风控人效预测看板》快照。按日期自动带出，页顶可手工覆盖。'
+    + (PLAN && PLAN.cargo_override ? '当前下发版：<b>' + PLAN.cargo_override.source + '</b>（' + PLAN.cargo_override.from + ' ~ ' + PLAN.cargo_override.to + '，共 ' + PLAN.cargo_override.days + ' 天）。' : ''),
     '出勤人力：飞书「9月班表」（每日更新）→ HR 班表口径，只给<b>每日总人时</b>（如 8 人 × 11 h = 88 人时）、<b>不含上下班时间</b>；'
     + '各时段怎么分布，取<b>当天分时段表（飞书《现场调控》）现场填的排班人数</b>（谁上早班谁上晚班由现场定），'
     + '再按班表总人时等比缩放 → Σ在岗人时 ≡ 出勤人时，因此在岗恒 ≤ 出勤人头。该日还没有当日分时段表时（未来日期），回退近 4 个同周几均值。',
@@ -922,8 +923,16 @@ function renderPlan() {
   }
   const nFc = PLAN.days.filter(d => d.orders_src === '货量预测').length;
   const avgAll = (PLAN.days.reduce((a, d) => a + (d.avg_hours || 11), 0) / PLAN.days.length).toFixed(1);
-  $('planSub').innerHTML = '订单量：<b>' + (PLAN.cargo_src || '风控人效预测看板') + '</b>' +
-    (PLAN.cargo_snapshot ? '（快照 ' + PLAN.cargo_snapshot + '）' : '') +
+  // 订单量来源：人工下发的货量预测版本（cargo_override）优先，其未覆盖的日期才回落自动抓取的看板快照。
+  // 2026-09-18 加 —— 运营侧现在按节假日单独下发货量表，来源必须说准，否则页面上写着旧快照会误导。
+  const ov = PLAN.cargo_override;
+  const nOv = ov ? PLAN.days.filter(x => x.date >= ov.from && x.date <= ov.to).length : 0;
+  const ovName = ov ? String(ov.source).replace(/\.xlsx$/, '') : '';
+  const cargoSrcTxt = (ov && nOv)
+    ? '<b>' + ovName + '</b>（覆盖 ' + nOv + '/' + PLAN.days.length + ' 天）'
+    : '<b>' + (PLAN.cargo_src || '风控人效预测看板') + '</b>' +
+      (PLAN.cargo_snapshot ? '（快照 ' + PLAN.cargo_snapshot + '）' : '');
+  $('planSub').innerHTML = '订单量：' + cargoSrcTxt +
     '　·　<b>需求人力</b> = 转人工量 ÷ <b>' + CAP + ' 通/人/时</b> ÷ 人均出勤 <b>' + avgAll + ' h</b>（向上取整）' +
     '　·　<b>出勤人力</b> = <b>' + (PLAN_MODE === 'schedule' ? 'HR 班表出勤人数' : '运营分时段表（折人数）') + '</b>' +
     '　·　' + PLAN.range.from + ' ~ ' + PLAN.range.to + ' 共 <b>' + PLAN.days.length + '</b> 天' +
@@ -1100,11 +1109,29 @@ async function load() {
     $('modelSub').innerHTML = '<span class="err">系数加载失败：' + e.message + '　请先运行 <code>python forecast/export_coeffs.py</code></span>';
     return;
   }
-  // 货量预测（可选）：来自《风控人效预测看板》，按日期自动带出订单量
+  // 货量预测（可选）：自动抓取的《风控人效预测看板》快照 + 运营下发版的覆盖。
+  //   2026-09-18 加：运营侧现在按节假日单独下发《中秋&国庆货量预测 X.X版》这类表，
+  //   权威性高于抓取快照。这里必须与 build_plan.py 用同一套合并逻辑，否则
+  //   计划表（后端已合并）与单日预测（前端带出）会对同一天给出两个订单量。
   try {
     const rc = await fetch(bust('cargo.json'), {cache:'no-store'});
     CARGO = await rc.json();
   } catch (e) { CARGO = null; }
+  if (CARGO && CARGO.by_date) {
+    try {
+      // 注：不判 res.ok —— 文件不存在时 fetch 会失败或返回 404，下面 .json() 自然抛进 catch；
+      //     离线自检的 fetch 桩只提供 json()，判 ok 会让覆盖层在自检里静默失效。
+      const ovobj = await (await fetch(bust('cargo_override.json'), {cache: 'no-store'})).json();
+      const ovd = ovobj.by_date || {};
+      Object.keys(ovd).forEach(k => {
+        CARGO.by_date[k] = Object.assign({}, CARGO.by_date[k] || {}, ovd[k]);
+      });
+      if (Object.keys(ovd).length) {
+        const ks = Object.keys(ovd).sort();
+        CARGO.override = { source: ovobj.source, from: ks[0], to: ks[ks.length - 1], days: ks.length };
+      }
+    } catch (e) { /* 覆盖文件不存在属正常：没有下发版就用抓取快照 */ }
+  }
   // 排班计划表（build_plan.py → plan.json）：未来每日 + 逐半小时人力，含两套当班口径
   try {
     const rp = await fetch(bust('plan.json'), {cache:'no-store'});
@@ -1199,9 +1226,15 @@ function autoFillFromCargo() {
   $('dOrders').value = v.orders_forecast;
   const kind = v.is_forecast ? '货量预测' : '实际货量';
   const cv = v.is_forecast ? v.cargo_forecast : (v.cargo_actual != null ? v.cargo_actual : v.cargo_forecast);
+  // 来源要写对：被下发版覆盖的日期，不能再标成「风控看板 · 快照 xx」
+  const ovr = CARGO.override;
+  const isOv = !!(ovr && d >= ovr.from && d <= ovr.to);
+  const srcTxt = isOv
+    ? String(ovr.source || '下发版货量预测').replace(/\.xlsx$/, '')
+    : '风控人效预测看板 · 快照 ' + CARGO.snapshot_day;
   $('hint').innerHTML = '📦 ' + kind + ' <b>' + fmt(cv) + '</b> kg ÷ ' + CARGO.avg_item_weight_kg +
     ' kg/单 = <b>' + fmt(v.orders_forecast) + '</b> 单' +
-    '<span style="opacity:.65">（风控人效预测看板 · 快照 ' + CARGO.snapshot_day + '）</span>';
+    '<span style="opacity:.65">（' + srcTxt + '）</span>';
 }
 
 function run() {
