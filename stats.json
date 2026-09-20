@@ -1,16 +1,16 @@
 {
- "ts": 1789900598821,
- "collectedAtCn": "2026/9/20 18:36:38",
+ "ts": 1789900744134,
+ "collectedAtCn": "2026/9/20 18:39:04",
  "overview": {
-  "总排队数": "4",
-  "坐席空闲数": "35",
+  "总排队数": "1",
+  "坐席空闲数": "36",
   "坐席忙碌数": "1 (1)",
-  "接通率": "13.67%",
+  "接通率": "13.69%",
   "满意率": "100.00%",
-  "呼入总数": "20535",
-  "当前呼入数": "25",
-  "外呼总数": "6098",
-  "当前外呼数": "25",
+  "呼入总数": "20561",
+  "当前呼入数": "15",
+  "外呼总数": "6101",
+  "当前外呼数": "17",
   "呼入平均通话时长": "00:02:47",
   "AI通话数": "0 (3)"
  },
@@ -21,12 +21,12 @@
    "signIn": 9,
    "members": "王轩,蔡凌天,胡洁,杨敏霞,黄天琦,朱静珏,马艳,张宇骁,周志坤",
    "ring": 0,
-   "queue": 1,
+   "queue": 0,
    "todayAnswered": 512,
-   "missed": 63,
+   "missed": 64,
    "rate": 88.89,
    "total": 567,
-   "current": 4,
+   "current": 3,
    "avgDuration": "00:03:34",
    "transferIn": 10,
    "transferOut": 0
@@ -55,9 +55,9 @@
    "ring": 0,
    "queue": 0,
    "todayAnswered": 10,
-   "missed": 7,
-   "rate": 58.82,
-   "total": 16,
+   "missed": 8,
+   "rate": 55.56,
+   "total": 17,
    "current": 0,
    "avgDuration": "00:04:13",
    "transferIn": 0,
@@ -293,24 +293,24 @@
    "signIn": 9,
    "members": "王轩,蔡凌天,胡洁,杨敏霞,黄天琦,朱静珏,马艳,张宇骁,周志坤",
    "ring": 0,
-   "queue": 1,
-   "todayAnswered": 108,
-   "missed": 61,
-   "rate": 63.53,
+   "queue": 0,
+   "todayAnswered": 110,
+   "missed": 60,
+   "rate": 64.71,
    "total": 168,
-   "current": 5,
-   "avgDuration": "00:03:02",
+   "current": 3,
+   "avgDuration": "00:03:03",
    "transferIn": 1,
    "transferOut": 0
   }
  ],
  "skillSummary": {
   "idleSeats": 0,
-  "answered": 806,
-  "missed": 195,
-  "rate": 81.91,
-  "total": 984,
-  "queue": 2,
+  "answered": 808,
+  "missed": 196,
+  "rate": 82.03,
+  "total": 985,
+  "queue": 0,
   "signIn": 10
  },
  "services": [
@@ -496,11 +496,11 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 1659,
-   "ivr": 778,
+   "callIn": 1662,
+   "ivr": 777,
    "ringMissed": 5,
-   "queueAbandon": 117,
-   "answered": 759,
+   "queueAbandon": 119,
+   "answered": 761,
    "other": 0,
    "transferred": 0
   },
@@ -696,11 +696,11 @@
   },
   {
    "service": "81199(门店按键转接)",
-   "callIn": 460,
-   "ivr": 287,
+   "callIn": 463,
+   "ivr": 289,
    "ringMissed": 1,
    "queueAbandon": 30,
-   "answered": 142,
+   "answered": 143,
    "other": 0,
    "transferred": 0
   },
@@ -736,13 +736,13 @@
   },
   {
    "service": "81198(上门按键转接)",
-   "callIn": 637,
+   "callIn": 640,
    "ivr": 382,
-   "ringMissed": 5,
+   "ringMissed": 6,
    "queueAbandon": 49,
-   "answered": 217,
+   "answered": 220,
    "other": 0,
-   "transferred": 16
+   "transferred": 17
   },
   {
    "service": "88236601(京东渠道（抖音引流）)",
@@ -866,8 +866,8 @@
   },
   {
    "service": "80409(奢侈品商家-门店验货报价)",
-   "callIn": 731,
-   "ivr": 731,
+   "callIn": 738,
+   "ivr": 738,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -1151,11 +1151,11 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 1659,
-    "ivr": 778,
+    "callIn": 1662,
+    "ivr": 777,
     "ringMissed": 5,
-    "queueAbandon": 117,
-    "answered": 759,
+    "queueAbandon": 119,
+    "answered": 761,
     "other": 0,
     "transferred": 0
    },
@@ -1170,10 +1170,10 @@
     "transferred": 0
    }
   ],
-  "total": 1699,
-  "answered": 773,
-  "ivr": 801,
-  "connectRate": 92.64
+  "total": 1702,
+  "answered": 775,
+  "ivr": 800,
+  "connectRate": 92.54
  },
  "online": {
   "groups": [
@@ -1515,15 +1515,6 @@
   "rate400": 83.8
  },
  "history": [
-  {
-   "ts": 1789694186000,
-   "skillRate400": 87.1,
-   "skillQueue400": 0,
-   "callIn400": 93,
-   "signIn400": 18,
-   "onlineSessions": null,
-   "onlineSeat": 0
-  },
   {
    "ts": 1789694450986,
    "skillRate400": 86.54,
@@ -6011,6 +6002,15 @@
    "skillRate400": 81.91,
    "skillQueue400": 2,
    "callIn400": 984,
+   "signIn400": 10,
+   "onlineSessions": 498,
+   "onlineSeat": 2
+  },
+  {
+   "ts": 1789900744134,
+   "skillRate400": 82.03,
+   "skillQueue400": 0,
+   "callIn400": 985,
    "signIn400": 10,
    "onlineSessions": 498,
    "onlineSeat": 2
