@@ -1,13 +1,13 @@
 {
- "ts": 1789910863160,
- "collectedAtCn": "2026/9/20 21:27:43",
+ "ts": 1789910967340,
+ "collectedAtCn": "2026/9/20 21:29:27",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "1",
   "坐席忙碌数": "0 (0)",
-  "接通率": "15.02%",
+  "接通率": "15.01%",
   "满意率": "100.00%",
-  "呼入总数": "22134",
+  "呼入总数": "22148",
   "当前呼入数": "1",
   "外呼总数": "6779",
   "当前外呼数": "0",
@@ -240,8 +240,8 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 1965,
-   "ivr": 896,
+   "callIn": 1969,
+   "ivr": 900,
    "ringMissed": 7,
    "queueAbandon": 167,
    "answered": 895,
@@ -480,8 +480,8 @@
   },
   {
    "service": "81198(上门按键转接)",
-   "callIn": 955,
-   "ivr": 578,
+   "callIn": 959,
+   "ivr": 582,
    "ringMissed": 7,
    "queueAbandon": 97,
    "answered": 304,
@@ -610,8 +610,8 @@
   },
   {
    "service": "80409(奢侈品商家-门店验货报价)",
-   "callIn": 993,
-   "ivr": 993,
+   "callIn": 996,
+   "ivr": 996,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -886,8 +886,8 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 1965,
-    "ivr": 896,
+    "callIn": 1969,
+    "ivr": 900,
     "ringMissed": 7,
     "queueAbandon": 167,
     "answered": 895,
@@ -905,10 +905,10 @@
     "transferred": 0
    }
   ],
-  "total": 2014,
+  "total": 2018,
   "answered": 913,
-  "ivr": 921,
-  "connectRate": 91.06
+  "ivr": 925,
+  "connectRate": 91.08
  },
  "online": {
   "groups": [
@@ -1250,15 +1250,6 @@
   "rate400": 84
  },
  "history": [
-  {
-   "ts": 1789707623619,
-   "skillRate400": 87.81,
-   "skillQueue400": 0,
-   "callIn400": 443,
-   "signIn400": 15,
-   "onlineSessions": 270,
-   "onlineSeat": 2
-  },
   {
    "ts": 1789707757623,
    "skillRate400": 87.81,
@@ -5743,6 +5734,15 @@
   },
   {
    "ts": 1789910863160,
+   "skillRate400": 50,
+   "skillQueue400": 0,
+   "callIn400": 28,
+   "signIn400": 1,
+   "onlineSessions": 498,
+   "onlineSeat": 2
+  },
+  {
+   "ts": 1789910967340,
    "skillRate400": 50,
    "skillQueue400": 0,
    "callIn400": 28,
