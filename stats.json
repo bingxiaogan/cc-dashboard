@@ -1,16 +1,16 @@
 {
- "ts": 1789911755248,
- "collectedAtCn": "2026/9/20 21:42:35",
+ "ts": 1789911896661,
+ "collectedAtCn": "2026/9/20 21:44:56",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "1",
   "坐席忙碌数": "0 (0)",
   "接通率": "14.97%",
   "满意率": "100.00%",
-  "呼入总数": "22206",
-  "当前呼入数": "2",
+  "呼入总数": "22213",
+  "当前呼入数": "0",
   "外呼总数": "6779",
-  "当前外呼数": "8",
+  "当前外呼数": "0",
   "呼入平均通话时长": "00:02:48",
   "AI通话数": "0 (3)"
  },
@@ -240,8 +240,8 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 1977,
-   "ivr": 908,
+   "callIn": 1978,
+   "ivr": 909,
    "ringMissed": 7,
    "queueAbandon": 167,
    "answered": 895,
@@ -440,8 +440,8 @@
   },
   {
    "service": "81199(门店按键转接)",
-   "callIn": 575,
-   "ivr": 366,
+   "callIn": 576,
+   "ivr": 367,
    "ringMissed": 1,
    "queueAbandon": 41,
    "answered": 168,
@@ -610,8 +610,8 @@
   },
   {
    "service": "80409(奢侈品商家-门店验货报价)",
-   "callIn": 1016,
-   "ivr": 1016,
+   "callIn": 1020,
+   "ivr": 1020,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -886,8 +886,8 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 1977,
-    "ivr": 908,
+    "callIn": 1978,
+    "ivr": 909,
     "ringMissed": 7,
     "queueAbandon": 167,
     "answered": 895,
@@ -905,9 +905,9 @@
     "transferred": 0
    }
   ],
-  "total": 2027,
+  "total": 2028,
   "answered": 913,
-  "ivr": 934,
+  "ivr": 935,
   "connectRate": 91.12
  },
  "online": {
@@ -1250,15 +1250,6 @@
   "rate400": 84
  },
  "history": [
-  {
-   "ts": 1789708556233,
-   "skillRate400": 88.14,
-   "skillQueue400": 0,
-   "callIn400": 447,
-   "signIn400": 16,
-   "onlineSessions": 285,
-   "onlineSeat": 3
-  },
   {
    "ts": 1789708661319,
    "skillRate400": 88.14,
@@ -5743,6 +5734,15 @@
   },
   {
    "ts": 1789911755248,
+   "skillRate400": 50,
+   "skillQueue400": 0,
+   "callIn400": 28,
+   "signIn400": 1,
+   "onlineSessions": 498,
+   "onlineSeat": 2
+  },
+  {
+   "ts": 1789911896661,
    "skillRate400": 50,
    "skillQueue400": 0,
    "callIn400": 28,
