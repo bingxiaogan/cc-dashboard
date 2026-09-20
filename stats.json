@@ -1,14 +1,14 @@
 {
- "ts": 1789913378360,
- "collectedAtCn": "2026/9/20 22:09:38",
+ "ts": 1789913482474,
+ "collectedAtCn": "2026/9/20 22:11:22",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "1",
   "坐席忙碌数": "0 (0)",
   "接通率": "14.92%",
   "满意率": "100.00%",
-  "呼入总数": "22278",
-  "当前呼入数": "1",
+  "呼入总数": "22283",
+  "当前呼入数": "2",
   "外呼总数": "6779",
   "当前外呼数": "0",
   "呼入平均通话时长": "00:02:48",
@@ -240,8 +240,8 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 1994,
-   "ivr": 925,
+   "callIn": 1997,
+   "ivr": 928,
    "ringMissed": 7,
    "queueAbandon": 167,
    "answered": 895,
@@ -470,8 +470,8 @@
   },
   {
    "service": "88236602(其他渠道4000166088)",
-   "callIn": 588,
-   "ivr": 287,
+   "callIn": 589,
+   "ivr": 288,
    "ringMissed": 2,
    "queueAbandon": 39,
    "answered": 266,
@@ -480,8 +480,8 @@
   },
   {
    "service": "81198(上门按键转接)",
-   "callIn": 981,
-   "ivr": 604,
+   "callIn": 982,
+   "ivr": 605,
    "ringMissed": 7,
    "queueAbandon": 97,
    "answered": 304,
@@ -886,8 +886,8 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 1994,
-    "ivr": 925,
+    "callIn": 1997,
+    "ivr": 928,
     "ringMissed": 7,
     "queueAbandon": 167,
     "answered": 895,
@@ -905,10 +905,10 @@
     "transferred": 0
    }
   ],
-  "total": 2044,
+  "total": 2047,
   "answered": 913,
-  "ivr": 951,
-  "connectRate": 91.19
+  "ivr": 954,
+  "connectRate": 91.21
  },
  "online": {
   "groups": [
@@ -1250,15 +1250,6 @@
   "rate400": 84
  },
  "history": [
-  {
-   "ts": 1789710180320,
-   "skillRate400": 88.58,
-   "skillQueue400": 0,
-   "callIn400": 464,
-   "signIn400": 16,
-   "onlineSessions": 312,
-   "onlineSeat": 3
-  },
   {
    "ts": 1789710285277,
    "skillRate400": 88.65,
@@ -5743,6 +5734,15 @@
   },
   {
    "ts": 1789913378360,
+   "skillRate400": 50,
+   "skillQueue400": 0,
+   "callIn400": 28,
+   "signIn400": 1,
+   "onlineSessions": 498,
+   "onlineSeat": 2
+  },
+  {
+   "ts": 1789913482474,
    "skillRate400": 50,
    "skillQueue400": 0,
    "callIn400": 28,
