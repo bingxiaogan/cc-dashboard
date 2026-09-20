@@ -1,14 +1,14 @@
 {
- "ts": 1789910520070,
- "collectedAtCn": "2026/9/20 21:22:00",
+ "ts": 1789910624225,
+ "collectedAtCn": "2026/9/20 21:23:44",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "1",
   "坐席忙碌数": "0 (0)",
-  "接通率": "15.04%",
+  "接通率": "15.03%",
   "满意率": "100.00%",
-  "呼入总数": "22110",
-  "当前呼入数": "0",
+  "呼入总数": "22116",
+  "当前呼入数": "1",
   "外呼总数": "6779",
   "当前外呼数": "0",
   "呼入平均通话时长": "00:02:48",
@@ -240,8 +240,8 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 1956,
-   "ivr": 887,
+   "callIn": 1958,
+   "ivr": 889,
    "ringMissed": 7,
    "queueAbandon": 167,
    "answered": 895,
@@ -470,8 +470,8 @@
   },
   {
    "service": "88236602(其他渠道4000166088)",
-   "callIn": 582,
-   "ivr": 281,
+   "callIn": 583,
+   "ivr": 282,
    "ringMissed": 2,
    "queueAbandon": 39,
    "answered": 266,
@@ -480,8 +480,8 @@
   },
   {
    "service": "81198(上门按键转接)",
-   "callIn": 951,
-   "ivr": 574,
+   "callIn": 953,
+   "ivr": 576,
    "ringMissed": 7,
    "queueAbandon": 97,
    "answered": 304,
@@ -886,8 +886,8 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 1956,
-    "ivr": 887,
+    "callIn": 1958,
+    "ivr": 889,
     "ringMissed": 7,
     "queueAbandon": 167,
     "answered": 895,
@@ -905,10 +905,10 @@
     "transferred": 0
    }
   ],
-  "total": 2005,
+  "total": 2007,
   "answered": 913,
-  "ivr": 912,
-  "connectRate": 91.02
+  "ivr": 914,
+  "connectRate": 91.03
  },
  "online": {
   "groups": [
@@ -1250,15 +1250,6 @@
   "rate400": 82.8
  },
  "history": [
-  {
-   "ts": 1789707279087,
-   "skillRate400": 87.73,
-   "skillQueue400": 0,
-   "callIn400": 440,
-   "signIn400": 15,
-   "onlineSessions": 267,
-   "onlineSeat": 3
-  },
   {
    "ts": 1789707414356,
    "skillRate400": 87.53,
@@ -5743,6 +5734,15 @@
   },
   {
    "ts": 1789910520070,
+   "skillRate400": 50,
+   "skillQueue400": 0,
+   "callIn400": 28,
+   "signIn400": 1,
+   "onlineSessions": 498,
+   "onlineSeat": 2
+  },
+  {
+   "ts": 1789910624225,
    "skillRate400": 50,
    "skillQueue400": 0,
    "callIn400": 28,
