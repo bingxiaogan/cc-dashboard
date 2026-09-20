@@ -1,14 +1,14 @@
 {
- "ts": 1789909932783,
- "collectedAtCn": "2026/9/20 21:12:12",
+ "ts": 1789910036896,
+ "collectedAtCn": "2026/9/20 21:13:56",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "2",
   "坐席忙碌数": "0 (0)",
   "接通率": "15.07%",
   "满意率": "100.00%",
-  "呼入总数": "22054",
-  "当前呼入数": "1",
+  "呼入总数": "22066",
+  "当前呼入数": "3",
   "外呼总数": "6779",
   "当前外呼数": "1",
   "呼入平均通话时长": "00:02:48",
@@ -496,8 +496,8 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 1949,
-   "ivr": 880,
+   "callIn": 1952,
+   "ivr": 883,
    "ringMissed": 7,
    "queueAbandon": 167,
    "answered": 895,
@@ -696,8 +696,8 @@
   },
   {
    "service": "81199(门店按键转接)",
-   "callIn": 564,
-   "ivr": 355,
+   "callIn": 565,
+   "ivr": 356,
    "ringMissed": 1,
    "queueAbandon": 41,
    "answered": 168,
@@ -736,8 +736,8 @@
   },
   {
    "service": "81198(上门按键转接)",
-   "callIn": 936,
-   "ivr": 559,
+   "callIn": 942,
+   "ivr": 565,
    "ringMissed": 7,
    "queueAbandon": 97,
    "answered": 304,
@@ -776,8 +776,8 @@
   },
   {
    "service": "88236603(京东渠道4000990166)",
-   "callIn": 511,
-   "ivr": 178,
+   "callIn": 512,
+   "ivr": 179,
    "ringMissed": 5,
    "queueAbandon": 50,
    "answered": 283,
@@ -1143,8 +1143,8 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 1949,
-    "ivr": 880,
+    "callIn": 1952,
+    "ivr": 883,
     "ringMissed": 7,
     "queueAbandon": 167,
     "answered": 895,
@@ -1162,10 +1162,10 @@
     "transferred": 0
    }
   ],
-  "total": 1997,
+  "total": 2000,
   "answered": 913,
-  "ivr": 904,
-  "connectRate": 90.99
+  "ivr": 907,
+  "connectRate": 91
  },
  "online": {
   "groups": [
@@ -1508,15 +1508,6 @@
   "rate400": 82.8
  },
  "history": [
-  {
-   "ts": 1789706717656,
-   "skillRate400": 87.39,
-   "skillQueue400": 1,
-   "callIn400": 436,
-   "signIn400": 16,
-   "onlineSessions": 265,
-   "onlineSeat": 2
-  },
   {
    "ts": 1789706822092,
    "skillRate400": 87.67,
@@ -6001,6 +5992,15 @@
   },
   {
    "ts": 1789909932783,
+   "skillRate400": 79.37,
+   "skillQueue400": 0,
+   "callIn400": 1202,
+   "signIn400": 2,
+   "onlineSessions": 498,
+   "onlineSeat": 2
+  },
+  {
+   "ts": 1789910036896,
    "skillRate400": 79.37,
    "skillQueue400": 0,
    "callIn400": 1202,
