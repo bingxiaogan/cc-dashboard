@@ -1,13 +1,13 @@
 {
- "ts": 1789932927574,
- "collectedAtCn": "2026/9/21 03:35:27",
+ "ts": 1789933136527,
+ "collectedAtCn": "2026/9/21 03:38:56",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "0",
   "坐席忙碌数": "0 (0)",
   "接通率": "0%",
   "满意率": "100.00%",
-  "呼入总数": "11",
+  "呼入总数": "13",
   "当前呼入数": "0",
   "外呼总数": "0",
   "当前外呼数": "0",
@@ -330,8 +330,8 @@
   },
   {
    "service": "88236639(pjt-买家)",
-   "callIn": 0,
-   "ivr": 0,
+   "callIn": 2,
+   "ivr": 2,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -1250,24 +1250,6 @@
   "rate400": 84
  },
  "history": [
-  {
-   "ts": 1789873990004,
-   "skillRate400": 82.78,
-   "skillQueue400": 0,
-   "callIn400": 331,
-   "signIn400": 17,
-   "onlineSessions": 200,
-   "onlineSeat": 2
-  },
-  {
-   "ts": 1789874157887,
-   "skillRate400": 83.04,
-   "skillQueue400": 0,
-   "callIn400": 336,
-   "signIn400": 17,
-   "onlineSessions": 204,
-   "onlineSeat": 2
-  },
   {
    "ts": 1789874271053,
    "skillRate400": 83.14,
@@ -5743,6 +5725,24 @@
   },
   {
    "ts": 1789932927574,
+   "skillRate400": null,
+   "skillQueue400": 0,
+   "callIn400": 0,
+   "signIn400": 1,
+   "onlineSessions": 498,
+   "onlineSeat": 2
+  },
+  {
+   "ts": 1789933031698,
+   "skillRate400": null,
+   "skillQueue400": 0,
+   "callIn400": 0,
+   "signIn400": 1,
+   "onlineSessions": 498,
+   "onlineSeat": 2
+  },
+  {
+   "ts": 1789933136527,
    "skillRate400": null,
    "skillQueue400": 0,
    "callIn400": 0,
