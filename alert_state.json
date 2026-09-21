@@ -5,13 +5,13 @@
    "levelName": "正常",
    "color": "蓝",
    "vals": {
-    "load": 2.7,
-    "rate": 50,
-    "lv": 0,
-    "rv": 4
+    "load": 200,
+    "rate": 100,
+    "lv": 4,
+    "rv": 0
    },
-   "ts": 1789948831178,
-   "tsCn": "2026/9/21 08:00:31",
+   "ts": 1789949039532,
+   "tsCn": "2026/9/21 08:03:59",
    "lastLevel": 1,
    "muted": false,
    "minLevel": 2,
@@ -22,22 +22,22 @@
    "levelName": "正常",
    "color": "蓝",
    "vals": {
-    "load": 2.6,
-    "rate": 50,
-    "lv": 0,
-    "rv": 4,
+    "load": 192.6,
+    "rate": 100,
+    "lv": 4,
+    "rv": 0,
     "src": "周报口径(今实时)",
     "wDays": 1,
     "sum": {
-     "call": 28,
-     "ans": 14,
-     "den400": 1080,
-     "on": 969,
+     "call": 2,
+     "ans": 2,
+     "den400": 1,
+     "on": 498,
      "denOn": 990
     }
    },
-   "ts": 1789948831178,
-   "tsCn": "2026/9/21 08:00:31",
+   "ts": 1789949039532,
+   "tsCn": "2026/9/21 08:03:59",
    "lastLevel": 1,
    "muted": false,
    "minLevel": 2,
@@ -58,24 +58,24 @@
    "lastAlertTs": 1789094040506
   },
   "onlw": {
-   "level": 1,
-   "levelName": "正常",
-   "color": "蓝",
+   "level": 0,
+   "levelName": "低负荷",
+   "color": "绿",
    "vals": {
-    "load": 97.9,
+    "load": 50.3,
     "src": "周报口径(今实时)",
     "wDays": 1,
     "sum": {
-     "call": 28,
-     "ans": 14,
-     "den400": 1080,
-     "on": 969,
+     "call": 2,
+     "ans": 2,
+     "den400": 1,
+     "on": 498,
      "denOn": 990
     }
    },
-   "ts": 1789948831178,
-   "tsCn": "2026/9/21 08:00:31",
-   "lastLevel": 1,
+   "ts": 1789949039532,
+   "tsCn": "2026/9/21 08:03:59",
+   "lastLevel": 0,
    "muted": true,
    "minLevel": 99,
    "lastAlertTs": 1789019438886
@@ -93,14 +93,14 @@
     "rv": 0,
     "agents": 2
    },
-   "ts": 1789948831178,
-   "tsCn": "2026/9/21 08:00:31",
+   "ts": 1789949039532,
+   "tsCn": "2026/9/21 08:03:59",
    "lastLevel": 0,
    "muted": false,
    "minLevel": 2,
    "lastAlertTs": 1789089575337
   }
  },
- "updated": "2026/9/21 08:00:31",
- "updatedTs": 1789948831178
+ "updated": "2026/9/21 08:03:59",
+ "updatedTs": 1789949039532
 }
