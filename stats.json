@@ -1,17 +1,17 @@
 {
- "ts": 1789953701640,
- "collectedAtCn": "2026/9/21 09:21:41",
+ "ts": 1789953807121,
+ "collectedAtCn": "2026/9/21 09:23:27",
  "overview": {
   "总排队数": "0",
-  "坐席空闲数": "47",
+  "坐席空闲数": "50",
   "坐席忙碌数": "0 (0)",
-  "接通率": "11.46%",
+  "接通率": "11.07%",
   "满意率": "100.00%",
-  "呼入总数": "1661",
-  "当前呼入数": "24",
-  "外呼总数": "273",
-  "当前外呼数": "13",
-  "呼入平均通话时长": "00:02:19",
+  "呼入总数": "1764",
+  "当前呼入数": "20",
+  "外呼总数": "300",
+  "当前外呼数": "18",
+  "呼入平均通话时长": "00:02:23",
   "AI通话数": "0 (3)"
  },
  "skillGroups": [
@@ -26,8 +26,8 @@
    "missed": 9,
    "rate": 87.32,
    "total": 69,
-   "current": 5,
-   "avgDuration": "00:02:47",
+   "current": 3,
+   "avgDuration": "00:02:57",
    "transferIn": 2,
    "transferOut": 0
   },
@@ -496,8 +496,8 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 229,
-   "ivr": 117,
+   "callIn": 236,
+   "ivr": 124,
    "ringMissed": 0,
    "queueAbandon": 21,
    "answered": 91,
@@ -526,8 +526,8 @@
   },
   {
    "service": "88236633(pjt物流收货)",
-   "callIn": 6,
-   "ivr": 6,
+   "callIn": 7,
+   "ivr": 7,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -556,8 +556,8 @@
   },
   {
    "service": "88236634(pjt-卖家)",
-   "callIn": 4,
-   "ivr": 4,
+   "callIn": 5,
+   "ivr": 5,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -656,8 +656,8 @@
   },
   {
    "service": "80540(80540)",
-   "callIn": 836,
-   "ivr": 836,
+   "callIn": 921,
+   "ivr": 921,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -666,8 +666,8 @@
   },
   {
    "service": "88236609(运营中心异常外呼)",
-   "callIn": 11,
-   "ivr": 10,
+   "callIn": 13,
+   "ivr": 12,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 1,
@@ -736,11 +736,11 @@
   },
   {
    "service": "81198(上门按键转接)",
-   "callIn": 76,
+   "callIn": 78,
    "ivr": 62,
    "ringMissed": 3,
    "queueAbandon": 0,
-   "answered": 11,
+   "answered": 13,
    "other": 0,
    "transferred": 0
   },
@@ -776,11 +776,11 @@
   },
   {
    "service": "88236603(京东渠道4000990166)",
-   "callIn": 32,
-   "ivr": 22,
-   "ringMissed": 0,
+   "callIn": 33,
+   "ivr": 20,
+   "ringMissed": 1,
    "queueAbandon": 0,
-   "answered": 11,
+   "answered": 13,
    "other": 0,
    "transferred": 1
   },
@@ -1156,8 +1156,8 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 229,
-    "ivr": 117,
+    "callIn": 236,
+    "ivr": 124,
     "ringMissed": 0,
     "queueAbandon": 21,
     "answered": 91,
@@ -1175,10 +1175,10 @@
     "transferred": 0
    }
   ],
-  "total": 235,
+  "total": 242,
   "answered": 91,
-  "ivr": 123,
-  "connectRate": 91.06
+  "ivr": 130,
+  "connectRate": 91.32
  },
  "online": {
   "groups": [
@@ -1521,15 +1521,6 @@
   "rate400": 81.3
  },
  "history": [
-  {
-   "ts": 1789895961718,
-   "skillRate400": 84.59,
-   "skillQueue400": 0,
-   "callIn400": 863,
-   "signIn400": 15,
-   "onlineSessions": 498,
-   "onlineSeat": 2
-  },
   {
    "ts": 1789896104107,
    "skillRate400": 84.61,
@@ -6014,6 +6005,15 @@
   },
   {
    "ts": 1789953701640,
+   "skillRate400": 81.74,
+   "skillQueue400": 0,
+   "callIn400": 115,
+   "signIn400": 15,
+   "onlineSessions": 498,
+   "onlineSeat": 2
+  },
+  {
+   "ts": 1789953807121,
    "skillRate400": 81.74,
    "skillQueue400": 0,
    "callIn400": 115,
