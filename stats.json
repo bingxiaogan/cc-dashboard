@@ -1,14 +1,14 @@
 {
- "ts": 1790086916324,
- "collectedAtCn": "2026/9/22 22:21:56",
+ "ts": 1790087058455,
+ "collectedAtCn": "2026/9/22 22:24:18",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "3",
   "坐席忙碌数": "0 (0)",
   "接通率": "17.10%",
   "满意率": "100.00%",
-  "呼入总数": "16608",
-  "当前呼入数": "1",
+  "呼入总数": "16610",
+  "当前呼入数": "0",
   "外呼总数": "5895",
   "当前外呼数": "0",
   "呼入平均通话时长": "00:02:41",
@@ -470,8 +470,8 @@
   },
   {
    "service": "88236602(其他渠道4000166088)",
-   "callIn": 615,
-   "ivr": 303,
+   "callIn": 616,
+   "ivr": 304,
    "ringMissed": 3,
    "queueAbandon": 36,
    "answered": 281,
@@ -970,14 +970,14 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1293,
-    "assigned": 1251,
-    "current": 94,
+    "sessions": 1297,
+    "assigned": 1255,
+    "current": 97,
     "max": 90,
-    "queue": 5,
+    "queue": 3,
     "onlineSeats": "3(丁萌萌,陈可,沈东升)",
-    "done": 1108,
-    "answerRate": 96.75,
+    "done": 1109,
+    "answerRate": 96.76,
     "abandon": 42,
     "voicemail": 0,
     "satisfactionRate": 5
@@ -1086,7 +1086,7 @@
     "assigned": 409,
     "current": 24,
     "max": 90,
-    "queue": 3,
+    "queue": 4,
     "onlineSeats": "3(丁萌萌,陈可,沈东升)",
     "done": 380,
     "answerRate": 98.08,
@@ -1316,15 +1316,6 @@
   "rate400": 80.8
  },
  "history": [
-  {
-   "ts": 1789947783566,
-   "skillRate400": null,
-   "skillQueue400": 0,
-   "callIn400": 0,
-   "signIn400": 1,
-   "onlineSessions": 498,
-   "onlineSeat": 2
-  },
   {
    "ts": 1789947887696,
    "skillRate400": null,
@@ -5809,6 +5800,15 @@
   },
   {
    "ts": 1790086916324,
+   "skillRate400": 54.55,
+   "skillQueue400": 0,
+   "callIn400": 33,
+   "signIn400": 1,
+   "onlineSessions": 799,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1790087058455,
    "skillRate400": 54.55,
    "skillQueue400": 0,
    "callIn400": 33,
