@@ -1,13 +1,13 @@
 {
- "ts": 1790084216213,
- "collectedAtCn": "2026/9/22 21:36:56",
+ "ts": 1790084328354,
+ "collectedAtCn": "2026/9/22 21:38:48",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "2",
   "坐席忙碌数": "0 (0)",
-  "接通率": "17.20%",
+  "接通率": "17.19%",
   "满意率": "100.00%",
-  "呼入总数": "16511",
+  "呼入总数": "16518",
   "当前呼入数": "1",
   "外呼总数": "5894",
   "当前外呼数": "0",
@@ -240,8 +240,8 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 1839,
-   "ivr": 849,
+   "callIn": 1840,
+   "ivr": 850,
    "ringMissed": 8,
    "queueAbandon": 184,
    "answered": 798,
@@ -440,8 +440,8 @@
   },
   {
    "service": "81199(门店按键转接)",
-   "callIn": 492,
-   "ivr": 324,
+   "callIn": 493,
+   "ivr": 325,
    "ringMissed": 2,
    "queueAbandon": 27,
    "answered": 142,
@@ -480,8 +480,8 @@
   },
   {
    "service": "81198(上门按键转接)",
-   "callIn": 767,
-   "ivr": 458,
+   "callIn": 769,
+   "ivr": 460,
    "ringMissed": 7,
    "queueAbandon": 46,
    "answered": 283,
@@ -520,8 +520,8 @@
   },
   {
    "service": "88236603(京东渠道4000990166)",
-   "callIn": 359,
-   "ivr": 108,
+   "callIn": 360,
+   "ivr": 109,
    "ringMissed": 2,
    "queueAbandon": 35,
    "answered": 219,
@@ -610,8 +610,8 @@
   },
   {
    "service": "80409(奢侈品商家-门店验货报价)",
-   "callIn": 1057,
-   "ivr": 1057,
+   "callIn": 1058,
+   "ivr": 1058,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -886,8 +886,8 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 1839,
-    "ivr": 849,
+    "callIn": 1840,
+    "ivr": 850,
     "ringMissed": 8,
     "queueAbandon": 184,
     "answered": 798,
@@ -905,10 +905,10 @@
     "transferred": 0
    }
   ],
-  "total": 1891,
+  "total": 1892,
   "answered": 822,
-  "ivr": 872,
-  "connectRate": 89.58
+  "ivr": 873,
+  "connectRate": 89.59
  },
  "online": {
   "groups": [
@@ -970,15 +970,15 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1226,
-    "assigned": 1188,
+    "sessions": 1229,
+    "assigned": 1189,
     "current": 89,
     "max": 90,
-    "queue": 18,
+    "queue": 24,
     "onlineSeats": "3(李宜慢,丁萌萌,沈东升)",
     "done": 1053,
-    "answerRate": 96.9,
-    "abandon": 38,
+    "answerRate": 96.75,
+    "abandon": 40,
     "voicemail": 0,
     "satisfactionRate": 5
    },
@@ -1316,15 +1316,6 @@
   "rate400": 80.8
  },
  "history": [
-  {
-   "ts": 1789945227640,
-   "skillRate400": null,
-   "skillQueue400": 0,
-   "callIn400": 0,
-   "signIn400": 1,
-   "onlineSessions": 498,
-   "onlineSeat": 2
-  },
   {
    "ts": 1789945361420,
    "skillRate400": null,
@@ -5809,6 +5800,15 @@
   },
   {
    "ts": 1790084216213,
+   "skillRate400": 54.55,
+   "skillQueue400": 0,
+   "callIn400": 33,
+   "signIn400": 1,
+   "onlineSessions": 799,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1790084328354,
    "skillRate400": 54.55,
    "skillQueue400": 0,
    "callIn400": 33,
