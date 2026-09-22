@@ -1,16 +1,16 @@
 {
- "ts": 1790082375333,
- "collectedAtCn": "2026/9/22 21:06:15",
+ "ts": 1790082487605,
+ "collectedAtCn": "2026/9/22 21:08:07",
  "overview": {
   "总排队数": "0",
-  "坐席空闲数": "9",
+  "坐席空闲数": "5",
   "坐席忙碌数": "0 (0)",
-  "接通率": "17.36%",
+  "接通率": "17.35%",
   "满意率": "100.00%",
-  "呼入总数": "16362",
-  "当前呼入数": "4",
-  "外呼总数": "5891",
-  "当前外呼数": "3",
+  "呼入总数": "16371",
+  "当前呼入数": "0",
+  "外呼总数": "5892",
+  "当前外呼数": "9",
   "呼入平均通话时长": "00:02:41",
   "AI通话数": "0 (3)"
  },
@@ -496,8 +496,8 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 1811,
-   "ivr": 821,
+   "callIn": 1813,
+   "ivr": 823,
    "ringMissed": 8,
    "queueAbandon": 184,
    "answered": 798,
@@ -736,8 +736,8 @@
   },
   {
    "service": "81198(上门按键转接)",
-   "callIn": 728,
-   "ivr": 419,
+   "callIn": 731,
+   "ivr": 422,
    "ringMissed": 7,
    "queueAbandon": 46,
    "answered": 283,
@@ -866,8 +866,8 @@
   },
   {
    "service": "80409(奢侈品商家-门店验货报价)",
-   "callIn": 1025,
-   "ivr": 1025,
+   "callIn": 1028,
+   "ivr": 1028,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -1145,8 +1145,8 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 1811,
-    "ivr": 821,
+    "callIn": 1813,
+    "ivr": 823,
     "ringMissed": 8,
     "queueAbandon": 184,
     "answered": 798,
@@ -1164,10 +1164,10 @@
     "transferred": 0
    }
   ],
-  "total": 1863,
+  "total": 1865,
   "answered": 822,
-  "ivr": 844,
-  "connectRate": 89.43
+  "ivr": 846,
+  "connectRate": 89.44
  },
  "online": {
   "groups": [
@@ -1229,14 +1229,14 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1185,
-    "assigned": 1149,
-    "current": 81,
+    "sessions": 1189,
+    "assigned": 1153,
+    "current": 84,
     "max": 120,
-    "queue": 15,
+    "queue": 14,
     "onlineSeats": "4(李宜慢,陈可,丁萌萌,沈东升)",
-    "done": 1023,
-    "answerRate": 96.96,
+    "done": 1024,
+    "answerRate": 96.97,
     "abandon": 36,
     "voicemail": 0,
     "satisfactionRate": 5.56
@@ -1341,11 +1341,11 @@
    },
    {
     "name": "官网严选自营售前咨询",
-    "sessions": 382,
-    "assigned": 375,
-    "current": 30,
+    "sessions": 383,
+    "assigned": 376,
+    "current": 31,
     "max": 120,
-    "queue": 6,
+    "queue": 8,
     "onlineSeats": "4(李宜慢,陈可,丁萌萌,沈东升)",
     "done": 341,
     "answerRate": 98.17,
@@ -1576,15 +1576,6 @@
   "rate400": 79.2
  },
  "history": [
-  {
-   "ts": 1789943497327,
-   "skillRate400": null,
-   "skillQueue400": 0,
-   "callIn400": 0,
-   "signIn400": 1,
-   "onlineSessions": 498,
-   "onlineSeat": 2
-  },
   {
    "ts": 1789943637674,
    "skillRate400": null,
@@ -6069,6 +6060,15 @@
   },
   {
    "ts": 1790082375333,
+   "skillRate400": 77.04,
+   "skillQueue400": 0,
+   "callIn400": 1141,
+   "signIn400": 4,
+   "onlineSessions": 799,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1790082487605,
    "skillRate400": 77.04,
    "skillQueue400": 0,
    "callIn400": 1141,
