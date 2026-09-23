@@ -579,7 +579,8 @@ function drawLine(box, { labels, series, h = 168, yFmt = n0, tipFmt }) {
     const li = s.data.length - 1;
     for (let i = li; i >= 0; i--) if (s.data[i] != null) {
       svg.appendChild(el('circle', { cx: X(i), cy: Y(s.data[i]), r: 3.4, fill: s.color, stroke: '#0e1729', 'stroke-width': 1.6 }));
-      if (s.label != null && i === li) ends.push({ x: X(i), y: Y(s.data[i]) - 8, text: s.label, color: s.color });
+      // 标签落在该序列最后一个有值的点上（不是数组最后一格），实际序列提前结束也能显示
+      if (s.label != null) ends.push({ x: X(i), y: Y(s.data[i]) - 8, text: s.label, color: s.color });
       break;
     }
   });
@@ -1248,6 +1249,18 @@ function onlHistToNow(c, labels) {
   let tot = 0;
   ds.forEach(d => { let s = 0; (h[d] || []).forEach(x => { if (set[String(x.t).slice(0, 5)]) s += x.total || 0; }); tot += s; });
   return Math.round(tot / ds.length);
+}
+/* 近 7 日同时段平均接待量（分时段基准线，与今日实际同口径） */
+function onlBaseSlots(c, labels) {
+  const h = (c && c.history) || {}, ds = Object.keys(h).sort().filter(d => d !== todayCn()).slice(-7);
+  if (!ds.length) return labels.map(() => null);
+  const acc = labels.map(() => ({ n: 0, s: 0 }));
+  ds.forEach(d => (h[d] || []).forEach(x => {
+    const i = labels.indexOf(String(x.t).slice(0, 5));
+    if (i < 0) return;
+    acc[i].n++; acc[i].s += x.total || 0;
+  }));
+  return acc.map(o => o.n ? Math.round(o.s / o.n) : null);
 }
 
 function renderOnlinefc() {
