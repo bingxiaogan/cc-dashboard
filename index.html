@@ -1352,20 +1352,21 @@ function render400fc(plan) {
   const nEst = days.filter(d => d.staff_est).length;
   if ($('#note400fc')) {
     $('#note400fc').textContent = `${days.length} 天`
-      + (nEst ? ` · 后 ${nEst} 天 HR 班表未出，「在岗」为同周几估算（标「估」）` : '');
+      + (nEst ? ` · 后 ${nEst} 天 HR 班表未出，「在岗 / 缺口」留空` : '');
   }
   tbl.innerHTML = `<thead><tr>
       <th>日期</th><th>星期</th><th>订单量</th><th>进线量</th><th>转人工</th>
       <th>所需人力</th><th>在岗</th><th>缺口</th><th>负荷</th></tr></thead><tbody>` +
     days.map(d => {
-      const cl = d.gap_hc < 0 ? 'r' : d.gap_hc > 0 ? 'g' : 'b';
-      const txt = d.gap_hc < 0 ? '缺 ' + Math.abs(d.gap_hc) : d.gap_hc > 0 ? '余 ' + d.gap_hc : '持平';
+      const est = !!d.staff_est;                              // 班表未出 → 在岗 / 缺口留空
+      const cl = est ? 'b' : d.gap_hc < 0 ? 'r' : d.gap_hc > 0 ? 'g' : 'b';
+      const txt = est ? '–' : d.gap_hc < 0 ? '缺 ' + Math.abs(d.gap_hc) : d.gap_hc > 0 ? '余 ' + d.gap_hc : '持平';
       return `<tr data-day="${d.date}" class="${d.date === today ? 'today' : ''}${d.date === PICK_DAY ? ' pick' : ''}">
         <td class="v">${d.date.slice(5)}</td><td>${d.wd}</td>
         <td>${(d.orders / 10000).toFixed(1)} 万</td>
         <td class="v">${n0(d.inbound)}</td><td>${n0(d.turn)}</td>
         <td class="v">${hc(d.need_hc_f != null ? d.need_hc_f : d.need_hc)}</td>
-        <td>${hc(d.onshift_hc)}${d.staff_est ? '<i style="font-style:normal;font-size:10px;color:var(--amber);margin-left:2px" title="HR 班表未出，按同周几估算">估</i>' : ''}</td>
+        <td>${est ? '<span title="HR 班表未出，实际排班待定">–</span>' : hc(d.onshift_hc)}</td>
         <td><span class="pill ${cl}">${txt}</span></td>
         <td>${n0(d.ratio)}%</td></tr>`;
     }).join('') + '</tbody>';
@@ -1384,10 +1385,11 @@ function renderDaySlicer() {
     PICK_DAY = days.some(d => d.date === today) ? today : days[0].date;
   }
   const nEst = days.filter(d => d.staff_est).length;
-  // 格内小字：缺口（缺 = 红 / 余 = 绿 / 持平 = 灰）；虚线格 = 班表未出、在岗为估算
-  const mk = d => d.gap_hc < 0 ? `<i class="cg">缺${Math.abs(d.gap_hc)}</i>`
-    : d.gap_hc > 0 ? `<i class="co">余${d.gap_hc}</i>` : `<i class="ch">持平</i>`;
-  box.innerHTML = calHtml(days, PICK_DAY, today, mk, nEst ? `虚线 = 班表未出` : '');
+  // 格内小字：缺口（缺 = 红 / 余 = 绿 / 持平 = 灰）；班表未出的日子没有实际排班 → 只标「待排」
+  const mk = d => d.staff_est ? `<i class="ch">待排</i>`
+    : d.gap_hc < 0 ? `<i class="cg">缺${Math.abs(d.gap_hc)}</i>`
+      : d.gap_hc > 0 ? `<i class="co">余${d.gap_hc}</i>` : `<i class="ch">持平</i>`;
+  box.innerHTML = calHtml(days, PICK_DAY, today, mk, nEst ? `${nEst} 天待排` : '');
   renderDayDetail();
 }
 
@@ -1396,6 +1398,8 @@ function renderDayDetail() {
   const box = $('#dayDetail');
   if (!d) { box.innerHTML = ''; return; }
   const today = todayCn();
+  /* HR 班表未出（10 月）：在岗 / 排班 / 缺口一律留空，不用同周几估算值冒充实际人力 */
+  const est = !!d.staff_est;
   /* 人力一律向上取整：所需 / 在岗 / 缺口都在整数域上算，避免表里出现 7.4 人 */
   const needI = hcn(d.need_hc_f != null ? d.need_hc_f : d.need_hc);
   const onI = hcn(d.onshift_hc);
@@ -1406,8 +1410,8 @@ function renderDayDetail() {
     ['预测进线量', n0(d.inbound), '呼入量（含 IVR）'],
     ['预测转人工量', n0(d.turn), '人工量 = 呼入 − IVR'],
     ['所需人力', (needI == null ? '–' : needI) + '<small>人</small>', d.need_hc_f != null ? '按 ' + n1(d.need_hc_f) + ' 人日进位' : '按 8h 班折算'],
-    ['在岗人力', (onI == null ? '–' : onI) + '<small>人</small>', '排班工时 ' + n1(d.staff_h) + ' h'],
-    ['人力缺口', gapTxt, '产能 ' + n1(d.onshift_ph) + ' 通/人时'],
+    ['在岗人力', est ? '–' : (onI == null ? '–' : onI) + '<small>人</small>', est ? 'HR 班表未出，待排' : '排班工时 ' + n1(d.staff_h) + ' h'],
+    ['人力缺口', est ? '–' : gapTxt, est ? '需班表才能算缺口' : '产能 ' + n1(d.onshift_ph) + ' 通/人时'],
     ['当日负荷', n0(d.ratio) + '%', d.ratio >= 110 ? '超负荷' : (d.ratio < 90 ? '偏松' : '正常')]
   ];
   /* 该日分时段人力：所需 = 预测转人工量 ÷（产能 × 0.5h）· 排班取班表 · 餐点取现场调控表 */
@@ -1422,9 +1426,12 @@ function renderDayDetail() {
     const full = slotFullKey(k);
     const pv = hh ? hh[i] : null;
     const need = hcn(pv == null ? null : pv / (capH * 0.5));   // 所需人力：进位
-    let staff = sched[full] != null ? sched[full] : (sheetDay[full] != null ? sheetDay[full] : null);
-    if (staff == null && sl[full] && sl[full].staff != null) staff = sl[full].staff;
-    staff = hcn(staff);                                        // 排班人数：进位
+    let staff = null;
+    if (!est) {                                                // HR 班表未出 → 实际排班留空，不用估算值顶
+      staff = sched[full] != null ? sched[full] : (sheetDay[full] != null ? sheetDay[full] : null);
+      if (staff == null && sl[full] && sl[full].staff != null) staff = sl[full].staff;
+      staff = hcn(staff);                                      // 排班人数：进位
+    }
     const gap = (need != null && staff != null) ? staff - need : null;   // 正值=富余，负值=缺
     const c = sl[full] || {};
     const meal = [];
@@ -1439,7 +1446,7 @@ function renderDayDetail() {
 
   box.innerHTML =
     `<div class="dhead"><b>${d.date}</b><span>${d.wd}</span>${d.date === today ? '<span class="pill b">今天</span>' : ''}
-       <span style="margin-left:auto;font-size:11px;color:var(--tx3)">${esc(d.staff_src || '')} · 排班形状 ${esc(d.staff_shape || '–')}${d.staff_est ? ' · <span style="color:var(--amber)">班表未出，当班为估算</span>' : ''}</span></div>
+       <span style="margin-left:auto;font-size:11px;color:var(--tx3)">${esc(d.staff_src || '')} · 排班形状 ${esc(d.staff_shape || '–')}${est ? ' · <span style="color:var(--amber)">HR 班表未出，实际人力待排</span>' : ''}</span></div>
      <div class="dgrid">${stats.map(s => `<div class="dstat"><div class="dk">${s[0]}</div><div class="dv">${s[1]}</div><div class="ds">${s[2]}</div></div>`).join('')}</div>
      <details class="fold" id="dayFold">
        <summary>
@@ -1450,7 +1457,7 @@ function renderDayDetail() {
        <div class="fbody">
          <div class="subhead">该日每半小时预测转人工量 <span>预测转人工量 × 时段形状占比</span></div>
          <div id="chDayHh"></div>
-         <div class="subhead">该日分时段人力安排 <span>所需 = 预测转人工 ÷ 产能 ${n1(capH)} 通/人时 × 0.5h · 人力一律向上取整 · 餐点取自现场调控表</span></div>
+         <div class="subhead">该日分时段人力安排 <span>所需 = 预测转人工 ÷ 产能 ${n1(capH)} 通/人时 × 0.5h · 人力一律向上取整${est ? ' · 班表未出，「排班人数 / 缺口」留空' : ' · 餐点取自现场调控表'}</span></div>
          <div class="tblwrap"><table class="tbl"><thead><tr>
            <th>时段</th><th>预测转人工</th><th>所需人力</th><th>排班人数</th><th>缺口</th><th>餐点安排</th>
          </tr></thead><tbody>${rows}</tbody></table></div>
