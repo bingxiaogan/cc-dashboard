@@ -503,13 +503,6 @@ svg{display:block;width:100%;overflow:visible}
             <span class="hint" id="noteOnlinehh"></span>
           </div>
           <div id="chOnlinehh"></div>
-          <div class="subhead">分时段接起率 <span>会话管理口径</span>
-            <div class="lgd">
-              <span><em style="background:#22d3ee"></em>实际</span>
-              <span><em style="background:#a78bfa"></em>近 7 日同时段基准</span>
-            </div>
-          </div>
-          <div id="chOnlinehhRate"></div>
         </div>
         <div class="panel wide">
           <div class="phead">
@@ -1251,8 +1244,8 @@ function renderStrategy400(o) {
 function renderStrategyOnline(o) {
   const box = $('#stratOnline'); if (!box) return;
   const items = [];
-  const a = o.a, sumT = o.sumT, histNow = o.histNow, labels = o.labels || [];
-  const arrR = o.arrR || [], baseR = o.baseR || [], fcAll = o.fcAll || [];
+  const a = o.a, sumT = o.sumT, histNow = o.histNow;
+  const fcAll = o.fcAll || [];
 
   /* ① 进度：分时段累计 vs 近 7 日同期（同为会话管理口径，可直接比） */
   if (sumT && histNow) {
@@ -1598,12 +1591,10 @@ function renderOnline() {
      <span>出勤 <b>${on}/${duty}</b></span>
      <span>技能组 <b>${a.groups.length}</b> 个</span>`;
 
-  /* —— 分时段（会话管理口径：接待量与接起率同源可比）—— */
+  /* —— 分时段（会话管理口径：只看接待量；在线不看接起率，见下方 KPI 注释）—— */
   const c = D.hhon, slots = (c && c.date === todayCn() && Array.isArray(c.slots)) ? c.slots : [];
   const labels = slots.map(s => String(s.t).slice(0, 5));
   const arrT = slots.map(s => s.total);
-  const arrR = slots.map(s => { const v = parseFloat(String(s.rate == null ? '' : s.rate).replace('%', '')); return isNaN(v) ? null : v; });
-  const baseR = onlRateBase(c, labels);
   const baseT = onlBaseSlots(c, labels);
   const sumT = sum(slots, s => s.total);
   const histNow = onlHistToNow(c, labels);
@@ -1631,7 +1622,7 @@ function renderOnline() {
 
   renderStrategyOnline({ slots, labels, sumT, histNow, fcAll, a, seats, duty, on });
 
-  /* 今日分时段：接待量（柱）+ 接起率（实际 + 基准） */
+  /* 今日分时段：接待量（柱）+ 近 7 日同期基准 */
   if (slots.length) {
     $('#noteOnlinehh').textContent = `已出 ${slots.length} 个时段 · 合计 ${n0(sumT)} 会话`
       + (baseT.some(v => v != null) ? ` · 近 7 日同期基准 ${n0(sum(baseT.filter(v => v != null), v => v))} 会话` : '');
@@ -1702,21 +1693,7 @@ function devHtml(actual, base, who) {
   if (Math.abs(d) < 5) return '<span style="color:var(--tx3)">与' + (who || '预测') + '持平</span>';
   return `<span class="${d > 0 ? 'warn' : 'ok'}">${d > 0 ? '高于' : '低于'}${who || '预测'} ${Math.abs(d).toFixed(0)}%</span>`;
 }
-const avgN = a => { const v = (a || []).filter(x => x != null && !isNaN(x)); return v.length ? v.reduce((s, x) => s + x, 0) / v.length : null; };
-
-/* 在线分时段（会话管理口径）近 7 日同时段基准：加权接起率 / 同期累计接待 */
-function onlRateBase(c, labels) {
-  const h = (c && c.history) || {}, ds = Object.keys(h).sort().filter(d => d !== todayCn()).slice(-7);
-  const acc = labels.map(() => ({ w: 0, s: 0 }));
-  ds.forEach(d => (h[d] || []).forEach(x => {
-    const i = labels.indexOf(String(x.t).slice(0, 5));
-    if (i < 0) return;
-    const r = parseFloat(String(x.rate == null ? '' : x.rate).replace('%', ''));
-    if (isNaN(r)) return;
-    acc[i].w += x.total || 0; acc[i].s += (x.total || 0) * r;
-  }));
-  return acc.map(o => o.w ? +(o.s / o.w).toFixed(1) : null);
-}
+/* 在线分时段（会话管理口径）近 7 日同时段基准：同期累计接待 */
 function onlHistToNow(c, labels) {
   const h = (c && c.history) || {}, ds = Object.keys(h).sort().filter(d => d !== todayCn()).slice(-7);
   if (!ds.length || !labels.length) return null;
