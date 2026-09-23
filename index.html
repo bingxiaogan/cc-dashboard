@@ -1410,59 +1410,109 @@ function renderStrategyTicket(o) {
   box.innerHTML = items.map(x => `<div class="st"><span class="tag ${x.cls}">${x.tag}</span><div>${x.html}</div></div>`).join('');
 }
 
+/* ── 近 30 天：实际升级 / 实际处理 + 未来 7 天预测（同口径可直接比）── */
 function renderTicketTrend() {
   const t = D.tt;
-  if (!t || !t.days) { $('#chTickettr').innerHTML = '<div class="empty">趋势数据未生成</div>'; return; }
-  const days = t.days.slice(-30), tp = t.types || {}, cs = tp.cs || {};
-  const line = k => days.map(d => (cs[k] || {})[d] == null ? null : cs[k][d]);
+  if (!t || !t.days || !t.days.length) { $('#chTickettr').innerHTML = '<div class="empty">趋势数据未生成</div>'; $('#chTicketStock').innerHTML = ''; return; }
+  const last30 = t.days.slice(-30), cs = (t.types || {}).cs || {};
+  const fc = ticketForecast();
+  const lastD = last30[last30.length - 1];
+  const fut = (fc ? fc.out : []).map(x => x.date);
+  const labels = last30.concat(fut);
+  const fcMap = {}; (fc ? fc.out : []).forEach(x => fcMap[x.date] = x);
+  const isFut = d => d > lastD;
+
+  const act = k => labels.map(d => (isFut(d) || (cs[k] || {})[d] == null) ? null : cs[k][d]);
+  const fcv = k => labels.map(d => (!isFut(d) || !fcMap[d]) ? null : fcMap[d][k]);
+  const lastOf = a => n0(a.filter(v => v != null).pop());
+
   drawLine($('#chTickettr'), {
-    labels: days.map(d => d.slice(5)), h: 172, tipFmt: v => `${n0(v)} 单`,
+    labels: labels.map(d => d.slice(5)), h: 200, tipFmt: v => `${n0(v)} 单`,
     series: [
-      { name: '升级量', data: line('new'), color: '#fbbf24', areaFill: 'rgba(251,191,36,.10)', label: n0(line('new').filter(v => v != null).pop()) },
-      { name: '处理量', data: line('done'), color: '#34d399', area: false, label: n0(line('done').filter(v => v != null).pop()) },
-      { name: '库存量', data: line('stock'), color: '#a78bfa', area: false, label: n0(line('stock').filter(v => v != null).pop()) }
+      { name: '实际升级', data: act('new'), color: '#fbbf24', areaFill: 'rgba(251,191,36,.10)', label: lastOf(act('new')) },
+      { name: '实际处理', data: act('done'), color: '#a78bfa', area: false, label: lastOf(act('done')) },
+      { name: '预测升级', data: fcv('nv'), color: 'rgba(251,191,36,.55)', area: false, dash: '5 4', label: lastOf(fcv('nv')) },
+      { name: '预测处理', data: fcv('done'), color: 'rgba(167,139,250,.55)', area: false, dash: '5 4', label: lastOf(fcv('done')) }
     ]
   });
+
+  /* 积压：近 30 天实际遗留 + 未来 7 天预测 */
+  const stkAct = labels.map(d => (isFut(d) || (cs.stock || {})[d] == null) ? null : cs.stock[d]);
+  const stkFc = labels.map(d => (!isFut(d) || !fcMap[d]) ? null : fcMap[d].stk);
+  if (stkAct.some(v => v != null) || stkFc.some(v => v != null)) {
+    drawLine($('#chTicketStock'), {
+      labels: labels.map(d => d.slice(5)), h: 168, tipFmt: v => `${n0(v)} 单`,
+      series: [
+        { name: '实际积压', data: stkAct, color: '#93c5fd', areaFill: 'rgba(96,165,250,.12)', label: lastOf(stkAct) },
+        { name: '预测积压', data: stkFc, color: 'rgba(251,191,36,.7)', area: false, dash: '5 4', label: lastOf(stkFc) }
+      ]
+    });
+  } else $('#chTicketStock').innerHTML = '<div class="empty">暂无积压数据</div>';
 }
 
 /* 工单预测：近 14 天净变化外推积压 */
 function renderTicketfc() {
-  const tbl = $('#fcTickett'), blk = $('#fTicket'), t = D.tt;
-  if (!t || !t.days) { blk.innerHTML = ''; tbl.innerHTML = '<tr><td class="empty">暂无数据</td></tr>'; return; }
-  const days = t.days.slice(-14), cs = (t.types || {}).cs || {};
-  const news = days.map(d => cs.new && cs.new[d]).filter(v => v != null);
-  const dones = days.map(d => cs.done && cs.done[d]).filter(v => v != null);
-  if (news.length < 7) { blk.innerHTML = ''; tbl.innerHTML = '<tr><td class="empty">历史样本不足</td></tr>'; return; }
-  const nAvg14 = sum(news, x => x) / news.length;
-  const dAvg = dones.length ? sum(dones.slice(-7), x => x) / Math.min(7, dones.length) : 0;   // 处理能力取近 7 天
-  const WD = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
-  const byWd = {}; days.forEach(d => { const v = cs.new[d]; if (v == null) return; const w = new Date(d + 'T00:00:00').getDay(); (byWd[w] = byWd[w] || []).push(v); });
-  const stockNow = (cs.stock && Object.values(cs.stock).pop()) || 0;
-  const out = []; let stk = stockNow; const lastD = new Date(t.days[t.days.length - 1] + 'T00:00:00');
-  for (let i = 1; i <= 7; i++) {
-    const dt = new Date(lastD.getTime() + i * 864e5), w = dt.getDay();
-    const iso = dt.getFullYear() + '-' + String(dt.getMonth() + 1).padStart(2, '0') + '-' + String(dt.getDate()).padStart(2, '0');
-    const nv = Math.round(byWd[w] ? sum(byWd[w], x => x) / byWd[w].length : nAvg14);
-    const done = Math.round(Math.min(dAvg, stk + nv));     // 处理量不可能超过待处理存量
-    stk = Math.max(0, stk + nv - done);
-    out.push({ date: iso, wd: WD[w], nv, done, stk: Math.round(stk) });
+  const tbl = $('#fcTickett');
+  const fc = ticketForecast();
+  if (!fc) {
+    tbl.innerHTML = '<tr><td class="empty">历史样本不足，暂不外推</td></tr>';
+    $('#ticketSlicer').innerHTML = ''; $('#ticketDetail').innerHTML = ''; return;
   }
-  const endStk = out[out.length - 1].stk, diff = endStk - stockNow;
-  const trendUp = diff > 0;
-  blk.innerHTML = [
-    { k: '日均新增', v: n0(nAvg14), c: 'c-amber', d: '近 14 天（投诉池）' },
-    { k: '日均处理', v: n0(dAvg), c: 'c-green', d: '近 7 天结案能力' },
-    { k: '当前库存', v: n0(stockNow), c: 'c-purple', d: '最近一日遗留量' },
-    {
-      k: '7 天后预估', v: endStk === 0 ? '清零' : n0(endStk), c: trendUp ? 'c-red' : 'c-green',
-      d: endStk === 0 ? '<span class="up">按当前节奏可清空</span>' : `<span class="${trendUp ? 'dn' : 'up'}">${trendUp ? '积压 +' + Math.abs(diff) : '消化 −' + Math.abs(diff)}</span>`
-    }
-  ].map(x => `<div class="kpi ${x.c}"><div class="kl">${x.k}</div><div class="kv">${x.v}</div><div class="kd">${x.d}</div></div>`).join('');
-
-  $('#noteTicketfc').textContent = `净变化 ${n1(nAvg14 - dAvg)} 单/天 · 处理量上限取近 7 天实际 · 驱动模型待建`;
+  const out = fc.out, net = fc.nAvg14 - fc.dAvg;
+  // 先定好选中日，表格才能一次画对高亮行（renderTicketSlicer 里同样的兜底是幂等的）
+  if (!PICK_TICKET || !out.some(f => f.date === PICK_TICKET)) PICK_TICKET = out[0].date;
+  $('#noteTicketfc').textContent = `净变化 ${net >= 0 ? '+' : '−'}${n1(Math.abs(net))} 单/天 · 处理量上限取近 7 天实际 · 驱动模型待建`;
   tbl.innerHTML = `<thead><tr><th>日期</th><th>星期</th><th>预估新增</th><th>预估处理</th><th>期末积压</th></tr></thead><tbody>` +
-    out.map(f => `<tr><td class="v">${f.date.slice(5)}</td><td>${f.wd}</td><td>${n0(f.nv)}</td><td>${n0(f.done)}</td>
-      <td class="v">${f.stk === 0 ? '<span class="pill g">清零</span>' : n0(f.stk) + (trendUp ? ' <span class="pill r">↑</span>' : ' <span class="pill g">↓</span>')}</td></tr>`).join('') + '</tbody>';
+    out.map((f, i) => {
+      const prev = i === 0 ? fc.stockNow : out[i - 1].stk;
+      const up = f.stk > prev;
+      return `<tr data-day="${f.date}" class="${f.date === PICK_TICKET ? ' pick' : ''}">
+        <td class="v">${f.date.slice(5)}</td><td>${f.wd}</td><td>${n0(f.nv)}</td><td>${n0(f.done)}</td>
+        <td class="v">${f.stk === 0 ? '<span class="pill g">清零</span>' : n0(f.stk) + ' ' + (up ? '<span class="pill r">↑</span>' : '<span class="pill g">↓</span>')}</td></tr>`;
+    }).join('') + '</tbody>';
+  bindTip(tbl);
+  renderTicketSlicer();
+}
+
+/* ── 工单逐日切片 ── */
+let PICK_TICKET = null;
+function renderTicketSlicer() {
+  const fc = ticketForecast();
+  const box = $('#ticketSlicer'), det = $('#ticketDetail');
+  if (!fc || !fc.out.length) { box.innerHTML = ''; det.innerHTML = ''; return; }
+  const out = fc.out;
+  if (!PICK_TICKET || !out.some(f => f.date === PICK_TICKET)) PICK_TICKET = out[0].date;
+  box.innerHTML = out.map((f, i) => {
+    const prev = i === 0 ? fc.stockNow : out[i - 1].stk;
+    const up = f.stk > prev, clear = f.stk === 0;
+    return `<button class="dchip${f.date === PICK_TICKET ? ' on' : ''}${up && !clear ? ' gap' : ''}" data-day="${f.date}">
+       <b>${f.date.slice(5)}</b><span>${f.wd}</span>${clear ? '<i>清零</i>' : up ? '<i>积压升</i>' : (i === 0 ? '<i style="color:#93c5fd">次日</i>' : '<i>积压降</i>')}
+     </button>`;
+  }).join('');
+  renderTicketDetail();
+}
+
+function renderTicketDetail() {
+  const fc = ticketForecast();
+  const box = $('#ticketDetail');
+  if (!fc) { box.innerHTML = ''; return; }
+  const out = fc.out, i = out.findIndex(x => x.date === PICK_TICKET);
+  const f = out[i];
+  if (!f) { box.innerHTML = ''; return; }
+  const prev = i === 0 ? fc.stockNow : out[i - 1].stk;
+  const dStk = f.stk - prev;
+  const net = f.nv - f.done;
+  const stats = [
+    ['预估新增', n0(f.nv) + '<small>单</small>', '同星期几基准 × 近 14 天均值'],
+    ['预估处理', n0(f.done) + '<small>单</small>', `近 7 天结案能力 ${n0(fc.dAvg)} 单/天`],
+    ['当日净变化', (net >= 0 ? '+' : '−') + n0(Math.abs(net)) + '<small>单</small>', net >= 0 ? '新增多于处理，积压在涨' : '处理多于新增，积压在消'],
+    ['期末积压', f.stk === 0 ? '清零' : n0(f.stk) + '<small>单</small>', `较前一日 ${dStk >= 0 ? '+' : '−'}${n0(Math.abs(dStk))}`],
+    ['对比当前积压', n0(fc.stockNow) + '<small>单</small>', devHtml(f.stk, fc.stockNow, '当前积压')]
+  ];
+  box.innerHTML =
+    `<div class="dhead"><b>${f.date}</b><span>${f.wd}</span>${f.stk > fc.stockNow ? '<span class="pill y">积压高于当前</span>' : (f.stk === 0 ? '<span class="pill g">可清零</span>' : '')}
+       <span style="margin-left:auto;font-size:11px;color:var(--tx3)">工单积压预测 · 驱动模型待建</span></div>
+     <div class="dgrid">${stats.map(s => `<div class="dstat"><div class="dk">${s[0]}</div><div class="dv">${s[1]}</div><div class="ds">${s[2]}</div></div>`).join('')}</div>`;
 }
 
 /* ══════════════════ 切片器 ══════════════════ */
@@ -1566,6 +1616,19 @@ $('#fcOnlinet').addEventListener('click', e => {
   if (!tr) return;
   PICK_ONLINE = tr.dataset.day;
   renderOnlinefc();
+});
+/* 工单逐日切片同款联动 */
+$('#ticketSlicer').addEventListener('click', e => {
+  const b = e.target.closest('.dchip');
+  if (!b) return;
+  PICK_TICKET = b.dataset.day;
+  renderTicketfc();
+});
+$('#fcTickett').addEventListener('click', e => {
+  const tr = e.target.closest('tr[data-day]');
+  if (!tr) return;
+  PICK_TICKET = tr.dataset.day;
+  renderTicketfc();
 });
 window.addEventListener('hashchange', () => showPane((location.hash || '').slice(1), { hash: false }));
 document.addEventListener('keydown', e => {
