@@ -1441,7 +1441,7 @@ function renderDayDetail() {
     ['预测转人工量', n0(d.turn), '人工量 = 呼入 − IVR'],
     ['所需人力', (needI == null ? '–' : needI) + '<small>人</small>', d.need_hc_f != null ? '按 ' + n1(d.need_hc_f) + ' 人日进位' : '按 8h 班折算'],
     ['在岗人力', est ? '–' : (onI == null ? '–' : onI) + '<small>人</small>', est ? 'HR 班表未出，待排' : '排班工时 ' + n1(d.staff_h) + ' h'],
-    ['人力差额', est ? '–' : gapTxt, est ? '需班表才能算差额' : '产能 ' + n1(d.onshift_ph) + ' 通/人时'],
+    ['人力差额', est ? '–' : gapTxt, est ? '需班表才能算差额' : '当班 ' + n1(d.onshift_ph) + ' 人时 · 需求 ' + n1(d.need_ph) + ' 人时'],
     ['当日负荷', n0(d.ratio) + '%', d.ratio >= 110 ? '超负荷' : (d.ratio < 90 ? '偏松' : '正常')]
   ];
   /* 该日分时段人力：所需 = 预测转人工量 ÷（产能 × 0.5h）· 排班取班表 · 餐点取现场调控表 */
