@@ -211,59 +211,43 @@ h1 em{font-style:normal;font-size:12px;font-weight:500;color:var(--tx3);letter-s
 .subhead span{font-weight:400;font-size:11px;color:var(--tx3)}
 .subhead .lgd{margin-left:auto}
 
-/* ── 日期切片器（日维度预测逐日查看） ── */
-.dslicer{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:13px}
-.dchip{
-  display:flex;flex-direction:column;align-items:center;gap:1px;min-width:64px;cursor:pointer;
-  padding:7px 11px;border-radius:10px;font:inherit;font-size:12px;
-  background:rgba(126,166,226,.055);border:1px solid var(--lin2);color:var(--tx2);transition:.15s;
-}
-.dchip b{font-size:12.5px;font-weight:650;color:var(--tx)}
-.dchip span{font-size:10.5px;color:var(--tx3)}
-.dchip i{font-style:normal;font-size:10px;color:var(--amber);font-weight:600}
-.dchip:hover{background:rgba(126,166,226,.12);transform:translateY(-1px)}
-.dchip.today{border-color:rgba(96,165,250,.42)}
-.dchip.on{
-  background:linear-gradient(145deg,rgba(var(--accs),.24),rgba(var(--accs),.06));
-  border-color:rgba(var(--accs),.6);box-shadow:0 4px 16px rgba(var(--accs),.18);
-}
-.dchip.on b,.dchip.on span{color:var(--tx)}
-.dchip.gap i{color:var(--red)}
+/* ── 日期选择（逐日切片）：紧凑月历 + 月份切换，整体收在折叠里 ── */
+.dslicer{display:flex;flex-direction:column;gap:9px;margin:2px 0 0}
 
-/* ── 日历选择器（逐日切片 · 自然月视图，周日起首 · 按月折叠） ── */
-.dcal{flex:1 1 100%;display:flex;gap:12px;flex-wrap:wrap;align-items:flex-start}
-.cal-m{flex:1 1 330px;max-width:392px;background:var(--card2);border:1px solid var(--lin2);
-  border-radius:12px;overflow:hidden;transition:border-color .15s}
-.cal-m[open]{border-color:rgba(var(--accs),.3)}
-.cal-m>summary{display:flex;align-items:center;gap:9px;cursor:pointer;list-style:none;
-  padding:10px 13px;font-size:12.5px;font-weight:650;color:var(--tx2);transition:background .15s}
-.cal-m>summary::-webkit-details-marker{display:none}
-.cal-m>summary:hover{background:rgba(126,166,226,.1)}
-.cal-m>summary .ft{color:var(--tx);letter-spacing:.03em}
-.cal-m>summary .fh{font-weight:400;font-size:11px;color:var(--tx3);flex:1}
-.cal-m>summary .fchev{width:8px;height:8px;border-right:1.8px solid var(--tx3);border-bottom:1.8px solid var(--tx3);
-  transform:rotate(45deg);margin:-3px 3px 0 2px;transition:transform .18s;flex:none}
-.cal-m[open]>summary .fchev{transform:rotate(-135deg);margin-top:3px}
-.cal-m[open]>summary{border-bottom:1px solid var(--lin2)}
-.calwrap{padding:9px 12px 12px}
-.calg{display:grid;grid-template-columns:repeat(7,42px);gap:3px;justify-content:center}
-.calw span{font-size:10px;color:var(--tx3);text-align:center;line-height:17px}
+/* ── 紧凑月历（周日起首）── */
+.dcal{display:flex;flex-direction:column;gap:7px;align-items:flex-start}
+.calbar{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.calmt{
+  font:inherit;font-size:11.5px;padding:4px 10px;border-radius:8px;cursor:pointer;
+  background:rgba(126,166,226,.06);border:1px solid var(--lin2);color:var(--tx2);transition:.14s;
+  display:inline-flex;align-items:center;gap:6px;
+}
+.calmt em{font-style:normal;font-size:10px;color:var(--tx3)}
+.calmt:hover{background:rgba(126,166,226,.15)}
+.calmt.on{background:rgba(var(--accs),.2);border-color:rgba(var(--accs),.55);color:var(--tx);font-weight:650}
+.calmt.on em{color:var(--tx2)}
+.calg{display:grid;grid-template-columns:repeat(7,34px);gap:3px;justify-content:start}
+.calw span{font-size:9.5px;color:var(--tx3);text-align:center;line-height:15px}
 .calw span:first-child,.calw span:last-child{color:var(--tx2);opacity:.75}
-.cald{position:relative;height:44px;border-radius:8px;border:1px solid transparent;
+.cald{position:relative;height:33px;border-radius:7px;border:1px solid transparent;
   background:rgba(126,166,226,.06);display:flex;flex-direction:column;align-items:center;
-  justify-content:center;gap:1px;cursor:pointer;transition:background .14s,border-color .14s}
-.cald .cdn{font-size:12.5px;font-weight:600;color:var(--tx2);line-height:1}
-.cald i{font-style:normal;font-size:9.5px;font-weight:600;line-height:1;white-space:nowrap}
+  justify-content:center;gap:0;cursor:pointer;transition:background .14s,border-color .14s}
+.cald .cdn{font-size:11.5px;font-weight:600;color:var(--tx2);line-height:1}
+.cald i{font-style:normal;font-size:8.5px;font-weight:600;line-height:1.35;white-space:nowrap}
 .cald i.cg{color:var(--red)} .cald i.co{color:var(--green)} .cald i.ch{color:var(--tx3)}
 .cald:hover{background:rgba(126,166,226,.17)}
 .cald.pad,.cald.off{background:none;cursor:default;pointer-events:none}
-.cald.off .cdn{color:var(--tx3);opacity:.32}
+.cald.off .cdn{color:var(--tx3);opacity:.28}
 .cald.today{border-color:rgba(96,165,250,.5)}
-.cald.est{border-style:dashed;border-color:rgba(251,191,36,.28)}
-.cald.today .cdn::after{content:"今";position:absolute;top:3px;right:4px;font-size:8px;color:#93c5fd;font-weight:600}
+.cald.est{border-style:dashed;border-color:rgba(251,191,36,.26)}
+.cald.today .cdn::after{content:"今";position:absolute;top:1px;right:3px;font-size:7.5px;color:#93c5fd;font-weight:600}
 .cald.on{background:rgba(var(--accs),.24);border-color:rgba(var(--accs),.62)}
 .cald.on .cdn{color:var(--tx)}
 .cald.on i.cg{color:#fca5a5}
+.calnote{font-size:10.5px;color:var(--tx3)}
+/* 按月折叠的预测表：外层只有月份 */
+.mth{margin-bottom:8px}
+.mth:last-child{margin-bottom:0}
 
 /* ── 现场 KPI 与调控策略建议（一行两栏：重点卡放大居中，次重点环绕在右与下，建议在最右） ── */
 .mergeline{display:grid;grid-template-columns:minmax(0,1fr) 452px;gap:14px;margin-bottom:16px;align-items:stretch}
@@ -342,8 +326,7 @@ h1 em{font-style:normal;font-size:12px;font-weight:500;color:var(--tx3);letter-s
 .fold[open]>summary{background:rgba(var(--accs),.11)}
 .fold .fbody{padding-top:2px}
 /* panel 内的折叠（未来计划表）：去掉顶部那条分隔线 */
-.fold-p{margin-top:0;border-top:none;padding-top:0}
-.fold-p>.fbody{padding-top:11px}
+.calhint{font-size:11px;color:var(--tx3);margin-top:9px}
 .tbl tbody tr[data-day]{cursor:pointer}
 .tbl tr.pick td{background:rgba(var(--accs),.10)}
 .tbl tr.pick td:first-child{box-shadow:inset 2px 0 0 var(--acc)}
@@ -458,26 +441,30 @@ svg{display:block;width:100%;overflow:visible}
 
     <div class="zone">
       <div class="zonetag fc"><i></i>预测 <span>货量 → 进线量 → 转人工 → 所需人力（日维度 · 可逐日切片）</span></div>
-      <div class="subhead">逐日切片 <span>点日期或点表格行，查看该日明细与分时段预测</span></div>
-      <div class="dslicer" id="daySlicer"></div>
-      <div class="dstats" id="dayDetail"></div>
       <div class="panels">
         <div class="panel wide">
-          <details class="fold fold-p">
+          <div class="phead">
+            <h3>每日进线量与所需人力</h3>
+            <span class="lgd">
+              <span><em style="background:var(--blue)"></em>进线量</span>
+              <span><em style="background:var(--amber)"></em>所需人力</span>
+              <span><em style="background:var(--green)"></em>在岗人力</span>
+            </span>
+            <span class="hint" id="note400fc"></span>
+          </div>
+          <details class="fold" id="calFold400">
             <summary>
-              <span class="ft">未来计划 · 每日进线量与所需人力</span>
-              <span class="fh" id="note400fc"></span>
+              <span class="ft">逐日切片 · 选日期</span>
+              <span class="fh" id="calPick400">—</span>
               <span class="fchev"></span>
             </summary>
             <div class="fbody">
-              <div class="lgd" style="margin-bottom:9px">
-                <span><em style="background:var(--blue)"></em>进线量</span>
-                <span><em style="background:var(--amber)"></em>所需人力</span>
-                <span><em style="background:var(--green)"></em>在岗人力</span>
-              </div>
-              <div class="tblwrap"><table class="tbl" id="fc400t"></table></div>
+              <div id="daySlicer"></div>
+              <div class="calhint">点日期或点下方表格行，查看该日明细与分时段预测</div>
             </div>
           </details>
+          <div class="dstats" id="dayDetail"></div>
+          <div id="fc400t"></div>
         </div>
       </div>
     </div>
@@ -925,42 +912,49 @@ const pad2 = n => String(n).padStart(2, '0');
    extra 可选，月份标题右侧的补充说明
    —— 含选中日期的月份默认展开，其余收起；周日起首与「自然周」口径一致 */
 const CAL_WD = ['日', '一', '二', '三', '四', '五', '六'];
-/* extra 可传字符串，也可传 (nDat, nEst) => string —— 传函数时按月给说明（如「N 天待排」） */
-function calHtml(days, pick, today, mk, extra) {
+/* ── 紧凑日历：顶部月份切换条（9 月 / 10 月…排在一起）+ 单月网格，周日起首 ──
+   days  [{date, ...}]   数据源（决定哪些天可选、以及格子小字来源）
+   pick  当前选中 ISO     today 今天 ISO
+   mk(d) 可选，格内小字   extra 可选，字符串或 (nDat, nEst) => string（底部说明）
+   当前展示的月份存在 CAL_MON[mkey]，点月份条切换 */
+const CAL_MON = {};
+function calHtml(days, pick, today, mk, extra, mkey) {
   if (!days || !days.length) return '';
   const map = {};
   days.forEach(d => { map[d.date] = d; });
   const ms = [];
   days.forEach(d => { const m = String(d.date).slice(0, 7); if (ms.indexOf(m) < 0) ms.push(m); });
+  ms.sort();
   const pickM = pick ? String(pick).slice(0, 7) : '';
-  return `<div class="dcal">` + ms.sort().map(ym => {
-    const y = +ym.slice(0, 4), mo = +ym.slice(5, 7);
-    const lead = new Date(y, mo - 1, 1).getDay();          // 周日 = 0
-    const dim = new Date(y, mo, 0).getDate();              // 当月天数
-    const cells = [];
-    let nDat = 0, nEstM = 0;
-    for (let i = 0; i < lead; i++) cells.push('<div class="cald pad"></div>');
-    for (let dd = 1; dd <= dim; dd++) {
-      const iso = ym + '-' + pad2(dd), d = map[iso];
-      if (!d) { cells.push(`<div class="cald off"><span class="cdn">${dd}</span></div>`); continue; }
-      nDat++;
-      if (d.staff_est) nEstM++;
-      const cls = 'cald' + (iso === pick ? ' on' : '') + (iso === today ? ' today' : '') + (d.staff_est ? ' est' : '');
-      cells.push(`<div class="${cls}" data-day="${iso}"><span class="cdn">${dd}</span>${mk ? mk(d) : ''}</div>`);
-    }
-    const ex = extra ? (typeof extra === 'function' ? extra(nDat, nEstM) : extra) : '';
-    return `<details class="cal-m"${ym === pickM ? ' open' : ''}>
-      <summary>
-        <span class="ft">${y} 年 ${mo} 月</span>
-        <span class="fh">${nDat} 天可选${ex ? ` · ${ex}` : ''}</span>
-        <span class="fchev"></span>
-      </summary>
-      <div class="calwrap">
-        <div class="calg calw">${CAL_WD.map(w => `<span>${w}</span>`).join('')}</div>
-        <div class="calg">${cells.join('')}</div>
-      </div>
-    </details>`;
-  }).join('') + `</div>`;
+  const k = mkey || '_';
+  const ym = ms.indexOf(CAL_MON[k]) >= 0 ? CAL_MON[k] : (ms.indexOf(pickM) >= 0 ? pickM : ms[0]);
+  CAL_MON[k] = ym;
+  const y = +ym.slice(0, 4), mo = +ym.slice(5, 7);
+  const lead = new Date(y, mo - 1, 1).getDay();            // 周日 = 0
+  const dim = new Date(y, mo, 0).getDate();                // 当月天数
+  const cells = [];
+  let nDat = 0, nEst = 0;
+  for (let i = 0; i < lead; i++) cells.push('<div class="cald pad"></div>');
+  for (let dd = 1; dd <= dim; dd++) {
+    const iso = ym + '-' + pad2(dd), d = map[iso];
+    if (!d) { cells.push(`<div class="cald off"><span class="cdn">${dd}</span></div>`); continue; }
+    nDat++;
+    if (d.staff_est) nEst++;
+    const cls = 'cald' + (iso === pick ? ' on' : '') + (iso === today ? ' today' : '') + (d.staff_est ? ' est' : '');
+    cells.push(`<div class="${cls}" data-day="${iso}"><span class="cdn">${dd}</span>${mk ? mk(d) : ''}</div>`);
+  }
+  const ex = extra ? (typeof extra === 'function' ? extra(nDat, nEst) : extra) : '';
+  const tabs = ms.length > 1
+    ? `<div class="calbar">` + ms.map(m => {
+      const n = days.filter(d => String(d.date).slice(0, 7) === m).length;
+      return `<button class="calmt${m === ym ? ' on' : ''}" data-m="${m}">${+m.slice(5, 7)} 月<em>${n} 天</em></button>`;
+    }).join('') + `</div>`
+    : '';
+  return `<div class="dcal">${tabs}
+    <div class="calg calw">${CAL_WD.map(w => `<span>${w}</span>`).join('')}</div>
+    <div class="calg">${cells.join('')}</div>
+    <div class="calnote">${y} 年 ${mo} 月 · ${nDat} 天可选${ex ? ` · ${ex}` : ''}</div>
+  </div>`;
 }
 /* 统一用 400_shape 的 26 个半小时槽（08:00~21:00），拿不到就本地兜底同构 */
 function slotShortKeys() {
@@ -1344,9 +1338,9 @@ function renderStrategyOnline(o) {
 
 /* ══════════════════ 01b 400 预测 ══════════════════ */
 function render400fc(plan) {
-  const tbl = $('#fc400t');
+  const wrap = $('#fc400t');
   if (!plan || !plan.days || !plan.days.length) {
-    tbl.innerHTML = '<tr><td class="empty">暂无预测数据</td></tr>';
+    wrap.innerHTML = '<div class="empty">暂无预测数据</div>';
     $('#daySlicer').innerHTML = ''; $('#dayDetail').innerHTML = ''; return;
   }
   const days = plan.days, today = todayCn();
@@ -1357,23 +1351,40 @@ function render400fc(plan) {
     $('#note400fc').textContent = `${days.length} 天`
       + (nEst ? ` · 后 ${nEst} 天 HR 班表未出，「在岗 / 缺口」留空` : '');
   }
-  tbl.innerHTML = `<thead><tr>
-      <th>日期</th><th>星期</th><th>订单量</th><th>进线量</th><th>转人工</th>
-      <th>所需人力</th><th>在岗</th><th>缺口</th><th>负荷</th></tr></thead><tbody>` +
-    days.map(d => {
-      const est = !!d.staff_est;                              // 班表未出 → 在岗 / 缺口留空
-      const cl = est ? 'b' : d.gap_hc < 0 ? 'r' : d.gap_hc > 0 ? 'g' : 'b';
-      const txt = est ? '–' : d.gap_hc < 0 ? '缺 ' + Math.abs(d.gap_hc) : d.gap_hc > 0 ? '余 ' + d.gap_hc : '持平';
-      return `<tr data-day="${d.date}" class="${d.date === today ? 'today' : ''}${d.date === PICK_DAY ? ' pick' : ''}">
-        <td class="v">${d.date.slice(5)}</td><td>${d.wd}</td>
-        <td>${(d.orders / 10000).toFixed(1)} 万</td>
-        <td class="v">${n0(d.inbound)}</td><td>${n0(d.turn)}</td>
-        <td class="v">${hc(d.need_hc_f != null ? d.need_hc_f : d.need_hc)}</td>
-        <td>${est ? '<span title="HR 班表未出，实际排班待定">–</span>' : hc(d.onshift_hc)}</td>
-        <td><span class="pill ${cl}">${txt}</span></td>
-        <td>${n0(d.ratio)}%</td></tr>`;
-    }).join('') + '</tbody>';
-  bindTip(tbl);
+  /* 按月折叠：外层只有 9 月 / 10 月，点开才是该月每天一行 */
+  const ms = [];
+  days.forEach(d => { const m = String(d.date).slice(0, 7); if (ms.indexOf(m) < 0) ms.push(m); });
+  const pickM = PICK_DAY.slice(0, 7);
+  wrap.innerHTML = ms.sort().map(ym => {
+    const sub = days.filter(d => String(d.date).slice(0, 7) === ym);
+    const estN = sub.filter(d => d.staff_est).length;
+    const needSum = sub.reduce((a, d) => a + (hcn(d.need_hc_f != null ? d.need_hc_f : d.need_hc) || 0), 0);
+    const onSum = sub.reduce((a, d) => a + (d.staff_est ? 0 : (hcn(d.onshift_hc) || 0)), 0);
+    return `<details class="fold mth"${ym === pickM ? ' open' : ''}>
+      <summary>
+        <span class="ft">${+ym.slice(0, 4)} 年 ${+ym.slice(5, 7)} 月</span>
+        <span class="fh">${sub.length} 天 · 需 ${needSum} 人日 · ${estN ? `${estN} 天待排` : `在岗 ${onSum} 人日`}</span>
+        <span class="fchev"></span>
+      </summary>
+      <div class="fbody"><div class="tblwrap"><table class="tbl">
+        <thead><tr><th>日期</th><th>星期</th><th>订单量</th><th>进线量</th><th>转人工</th>
+          <th>所需人力</th><th>在岗</th><th>缺口</th><th>负荷</th></tr></thead>
+        <tbody>${sub.map(d => {
+          const est = !!d.staff_est;                              // 班表未出 → 在岗 / 缺口留空
+          const cl = est ? 'b' : d.gap_hc < 0 ? 'r' : d.gap_hc > 0 ? 'g' : 'b';
+          const txt = est ? '–' : d.gap_hc < 0 ? '缺 ' + Math.abs(d.gap_hc) : d.gap_hc > 0 ? '余 ' + d.gap_hc : '持平';
+          return `<tr data-day="${d.date}" class="${d.date === today ? 'today' : ''}${d.date === PICK_DAY ? ' pick' : ''}">
+            <td class="v">${d.date.slice(5)}</td><td>${d.wd}</td>
+            <td>${(d.orders / 10000).toFixed(1)} 万</td>
+            <td class="v">${n0(d.inbound)}</td><td>${n0(d.turn)}</td>
+            <td class="v">${hc(d.need_hc_f != null ? d.need_hc_f : d.need_hc)}</td>
+            <td>${est ? '<span title="HR 班表未出，实际排班待定">–</span>' : hc(d.onshift_hc)}</td>
+            <td><span class="pill ${cl}">${txt}</span></td>
+            <td>${n0(d.ratio)}%</td></tr>`;
+        }).join('')}</tbody></table></div></div>
+    </details>`;
+  }).join('');
+  bindTip(wrap);
   renderDaySlicer();
 }
 
@@ -1391,7 +1402,9 @@ function renderDaySlicer() {
   const mk = d => d.staff_est ? `<i class="ch">待排</i>`
     : d.gap_hc < 0 ? `<i class="cg">缺${Math.abs(d.gap_hc)}</i>`
       : d.gap_hc > 0 ? `<i class="co">余${d.gap_hc}</i>` : `<i class="ch">持平</i>`;
-  box.innerHTML = calHtml(days, PICK_DAY, today, mk, (n, ne) => ne ? `${ne} 天待排（班表未出）` : '');
+  box.innerHTML = calHtml(days, PICK_DAY, today, mk, (n, ne) => ne ? `${ne} 天待排（班表未出）` : '', '400');
+  const pk = days.find(x => x.date === PICK_DAY) || {};
+  if ($('#calPick400')) $('#calPick400').textContent = `${PICK_DAY.slice(5)} ${pk.wd || ''} · 点开选日期`;
   renderDayDetail();
 }
 
@@ -2070,6 +2083,8 @@ $('#tabs').addEventListener('click', e => {
 });
 /* 日维度切片：点日期 chip 或预测表格行 → 同步高亮 + 明细 */
 $('#daySlicer').addEventListener('click', e => {
+  const mt = e.target.closest('.calmt');                 // 切月份：只重画日历，不动表格
+  if (mt) { CAL_MON['400'] = mt.dataset.m; renderDaySlicer(); return; }
   const b = e.target.closest('.cald[data-day]');
   if (!b) return;
   PICK_DAY = b.dataset.day;
