@@ -827,9 +827,7 @@ function render400() {
   const rateWk = cw.rate400;
 
   $('#h400r').innerHTML =
-    `<span>采集 <b>${esc(cc.collectedAtCn || '–')}</b></span>
-     <span>技能组 <b>${(cc.skillGroups || []).length}</b> 个</span>
-     <span>签入 <b>${n0(ss.signIn)}</b> 人</span>`;
+    `<span>采集 <b>${esc(cc.collectedAtCn || '–')}</b></span>`;
 
   /* —— 实时 vs 预测：按「已出时段」折算同期预测，两个口径同源可直接比 —— */
   const plan = D.plan;
