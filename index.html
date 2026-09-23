@@ -230,6 +230,29 @@ h1 em{font-style:normal;font-size:12px;font-weight:500;color:var(--tx3);letter-s
 .dchip.on b,.dchip.on span{color:var(--tx)}
 .dchip.gap i{color:var(--red)}
 
+/* ── 日历选择器（逐日切片 · 自然月视图，周日起首） ── */
+.dcal{flex:1 1 100%;display:flex;gap:14px;flex-wrap:wrap;align-items:flex-start}
+.cal{flex:0 0 auto;background:var(--card2);border:1px solid var(--lin2);border-radius:12px;padding:10px 11px 11px}
+.calh{font-size:12px;font-weight:650;color:var(--tx2);margin-bottom:8px;letter-spacing:.03em;display:flex;align-items:center;gap:7px}
+.calh em{font-style:normal;font-size:10.5px;font-weight:400;color:var(--tx3)}
+.calg{display:grid;grid-template-columns:repeat(7,38px);gap:3px}
+.calw span{font-size:10px;color:var(--tx3);text-align:center;line-height:17px}
+.calw span:first-child,.calw span:last-child{color:var(--tx2);opacity:.75}
+.cald{position:relative;height:44px;border-radius:8px;border:1px solid transparent;
+  background:rgba(126,166,226,.06);display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:1px;cursor:pointer;transition:background .14s,border-color .14s}
+.cald .cdn{font-size:12.5px;font-weight:600;color:var(--tx2);line-height:1}
+.cald i{font-style:normal;font-size:9.5px;font-weight:600;line-height:1;white-space:nowrap}
+.cald i.cg{color:var(--red)} .cald i.co{color:var(--green)} .cald i.ch{color:var(--tx3)}
+.cald:hover{background:rgba(126,166,226,.17)}
+.cald.pad,.cald.off{background:none;cursor:default;pointer-events:none}
+.cald.off .cdn{color:var(--tx3);opacity:.32}
+.cald.today{border-color:rgba(96,165,250,.5)}
+.cald.today .cdn::after{content:"今";position:absolute;top:3px;right:4px;font-size:8px;color:#93c5fd;font-weight:600}
+.cald.on{background:rgba(var(--accs),.24);border-color:rgba(var(--accs),.62)}
+.cald.on .cdn{color:var(--tx)}
+.cald.on i.cg{color:#fca5a5}
+
 /* ── 现场 KPI 与调控策略建议（一行两栏：重点卡放大居中，次重点环绕在右与下，建议在最右） ── */
 .mergeline{display:grid;grid-template-columns:minmax(0,1fr) 452px;gap:14px;margin-bottom:16px;align-items:stretch}
 .mergeline .kpis{grid-template-columns:repeat(3,minmax(0,1fr));margin-bottom:0}
@@ -837,8 +860,8 @@ function render400() {
       d: `${(ss.rate || 0) >= 85 ? '<span class="ok">达标</span>' : '<span class="warn">低于 85% 目标</span>'} · Σ技能组接听 ÷ Σ技能组呼入`
         + (wSlot ? ` · 最低 ${wSlot.k} ${wSlot.r.toFixed(0)}%` : ''),
       wk: week400 ? {
-        txt: `近 ${week400.n} 日`, v: pc(week400.rate),
-        rng: `${week400.from.slice(5)} ~ ${week400.to.slice(5)} · 日维度实时值在上`,
+        txt: week400.off === 0 ? '本周' : '上周', v: pc(week400.rate),
+        rng: `${week400.from.slice(5)} ~ ${week400.to.slice(5)}（周日~周六）· 已出 ${week400.n} 天`,
         ok: week400.rate >= 85
       } : null,
       sp: spark(hist, '#60a5fa')
@@ -914,37 +937,57 @@ function lowRateSlots() {
   return out;
 }
 
-/* 周维度接通率：近 7 个完整自然日加权（Σ接通 ÷ Σ转人工），口径与日维度一致
+/* 自然周（周日 ~ 周六）固定周期边界：offset=0 本周、-1 上周
+   —— 周期边界写死在「周日」，不随查看日滚动 */
+function weekSunSat(todayIso, offset) {
+  const dt = new Date(todayIso + 'T12:00:00');
+  const dow = dt.getDay();                                   // 0 = 周日
+  const sun = new Date(dt); sun.setDate(dt.getDate() - dow + (offset || 0) * 7);
+  const sat = new Date(sun); sat.setDate(sun.getDate() + 6);
+  const iso = x => x.getFullYear() + '-' + pad2(x.getMonth() + 1) + '-' + pad2(x.getDate());
+  return [iso(sun), iso(sat)];
+}
+/* 周维度接通率：自然周（周日~周六）加权（Σ接通 ÷ Σ转人工），口径与日维度一致
+   —— 不含今天（当日数据不完整）；本周完整日不足 2 天则回退上周
    —— 数据取看板自采固化的 daily_rate.json，不依赖现场调控表 */
-function weekRate400(daysBack) {
+function weekRate400() {
   const dr = D.drate;
   if (!dr || !dr.turn || !dr.ans) return null;
-  const n = daysBack || 7, today = todayCn();
-  const ds = Object.keys(dr.turn)
-    .filter(k => k < today && (+dr.turn[k] || 0) > 0)
-    .sort().slice(-n);
-  if (ds.length < 3) return null;
-  let t = 0, a = 0;
-  ds.forEach(k => { t += +dr.turn[k] || 0; a += +dr.ans[k] || 0; });
-  if (!t) return null;
-  return { rate: a / t * 100, turn: t, ans: a, n: ds.length, from: ds[0], to: ds[ds.length - 1] };
+  const today = todayCn();
+  for (const off of [0, -1]) {
+    const [a, b] = weekSunSat(today, off);
+    const ds = Object.keys(dr.turn)
+      .filter(k => k >= a && k <= b && k < today && (+dr.turn[k] || 0) > 0).sort();
+    if (ds.length < 2) continue;
+    let t = 0, an = 0;
+    ds.forEach(k => { t += +dr.turn[k] || 0; an += +dr.ans[k] || 0; });
+    if (!t) continue;
+    return { rate: an / t * 100, n: ds.length, from: a, to: b, last: ds[ds.length - 1], off };
+  }
+  return null;
 }
 
-/* 在线周维度接起率：近 7 个完整日按时段会话量加权（Σ接起 ÷ Σ接入）
+/* 在线周维度接起率：自然周（周日~周六）按时段会话量加权（Σ接起 ÷ Σ接入）
+   —— 不含今天；本周完整日不足 2 天回退上周
    —— 数据取 chat_halfhour.json 的 history（看板自采，每天固化） */
-function weekRateOnline(daysBack) {
+function weekRateOnline() {
   const h = (D.hhon && D.hhon.history) || {};
-  const n = daysBack || 7, today = todayCn();
-  const ds = Object.keys(h).filter(k => k < today && Array.isArray(h[k])).sort().slice(-n);
-  if (ds.length < 3) return null;
-  let t = 0, a = 0;
-  ds.forEach(k => h[k].forEach(s => {
-    const tot = +s.total || 0;
-    if (tot <= 0) return;
-    t += tot; a += tot * (parseFloat(s.rate) || 0) / 100;
-  }));
-  if (!t) return null;
-  return { rate: a / t * 100, n: ds.length, from: ds[0], to: ds[ds.length - 1], total: t };
+  const today = todayCn();
+  for (const off of [0, -1]) {
+    const [a, b] = weekSunSat(today, off);
+    const ds = Object.keys(h)
+      .filter(k => k >= a && k <= b && k < today && Array.isArray(h[k])).sort();
+    if (ds.length < 2) continue;
+    let t = 0, an = 0;
+    ds.forEach(k => h[k].forEach(s => {
+      const tot = +s.total || 0;
+      if (tot <= 0) return;
+      t += tot; an += tot * (parseFloat(s.rate) || 0) / 100;
+    }));
+    if (!t) continue;
+    return { rate: an / t * 100, n: ds.length, from: a, to: b, last: ds[ds.length - 1], off, total: t };
+  }
+  return null;
 }
 
 /* ── 每半小时：实际转人工量（柱）+ 预测转人工量（虚线）+ 接通率 ── */
@@ -1418,8 +1461,8 @@ function renderOnline() {
       d: `${rateOnl == null ? '<span style="color:var(--tx3)">待采集</span>' : rateOnl >= 95 ? '<span class="ok">达标</span>' : '<span class="warn">低于 95% 目标</span>'} · 会话管理口径 · 已出时段均值`
         + (lowestR ? ` · 最低 ${lowestR.k} ${lowestR.r.toFixed(0)}%` : ''),
       wk: weekOnl ? {
-        txt: `近 ${weekOnl.n} 日`, v: pc(weekOnl.rate),
-        rng: `${weekOnl.from.slice(5)} ~ ${weekOnl.to.slice(5)} · ${n0(weekOnl.total)} 会话加权`,
+        txt: weekOnl.off === 0 ? '本周' : '上周', v: pc(weekOnl.rate),
+        rng: `${weekOnl.from.slice(5)} ~ ${weekOnl.to.slice(5)}（周日~周六）· 已出 ${weekOnl.n} 天`,
         ok: weekOnl.rate >= 95
       } : null
     },
