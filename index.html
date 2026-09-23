@@ -158,6 +158,15 @@ h1 em{font-style:normal;font-size:12px;font-weight:500;color:var(--tx3);letter-s
 /* 偏差语义：warn = 压力（高于预测 / 积压增长），ok = 宽松（低于预测 / 消化） */
 .kpi .kd .warn{color:var(--amber)}
 .kpi .kd .ok{color:var(--green)}
+/* 周维度副行：字号明显小于日维度主值，跟在 kd 下面 */
+.kpi .kw{display:flex;align-items:baseline;gap:7px;flex-wrap:wrap;margin-top:8px;padding-top:7px;
+  border-top:1px solid var(--lin2);font-size:11px;color:var(--tx3)}
+.kpi .kw b{font-size:15px;font-weight:640;letter-spacing:-.01em;color:var(--tx2)}
+.kpi .kw i{font-style:normal;font-size:10.5px;opacity:.72}
+.kpi .kw.ok b{color:var(--green)}
+.kpi .kw.warn b{color:var(--amber)}
+.mergeline .kpis .kpi.lead .kw{font-size:12.5px;margin-top:11px}
+.mergeline .kpis .kpi.lead .kw b{font-size:19px}
 .kpi .spark{position:absolute;right:10px;bottom:8px;opacity:.55}
 .kpi.c-blue{--kc:var(--blue)} .kpi.c-green{--kc:var(--green)} .kpi.c-amber{--kc:var(--amber)}
 .kpi.c-purple{--kc:var(--purple)} .kpi.c-red{--kc:var(--red)} .kpi.c-cyan{--kc:var(--cyan)}
@@ -805,12 +814,18 @@ function render400() {
   /* 已出时段未达标清单（重点卡副文案、不达标解读、调控策略共用） */
   const lowSlots = lowRateSlots();
   const wSlot = lowSlots.slice().sort((a, b) => a.r - b.r)[0] || null;
+  const week400 = weekRate400();      // 周维度接通率（近 7 个完整日加权）
 
   $('#k400').innerHTML = [
     {
       k: '接通率', v: pc(ss.rate), lead: 1, hl: 1, c: (ss.rate || 0) >= 85 ? 'c-green' : 'c-red',
       d: `${(ss.rate || 0) >= 85 ? '<span class="ok">达标</span>' : '<span class="warn">低于 85% 目标</span>'} · Σ技能组接听 ÷ Σ技能组呼入`
         + (wSlot ? ` · 最低 ${wSlot.k} ${wSlot.r.toFixed(0)}%` : ''),
+      wk: week400 ? {
+        txt: `近 ${week400.n} 日`, v: pc(week400.rate),
+        rng: `${week400.from.slice(5)} ~ ${week400.to.slice(5)} · 日维度实时值在上`,
+        ok: week400.rate >= 85
+      } : null,
       sp: spark(hist, '#60a5fa')
     },
     {
@@ -830,7 +845,7 @@ function render400() {
     },
     { k: '呼入量（实时）', v: n0(sumIn), c: 'c-cyan', d: `${curEnd ? '截至 ' + curEnd : '待采集'} · ${devTxt(devIn)}` },
     { k: '人工量（实时）', v: n0(sumTurn), c: 'c-cyan', d: `${curEnd ? '截至 ' + curEnd : '待采集'} · ${devTxt(devTurn)}` }
-  ].map(x => `<div class="kpi ${x.c}${x.lead ? ' lead' : ''}"><div class="kl">${x.k}</div><div class="kv ${x.hl ? 'hl' : ''}">${x.v}</div><div class="kd">${x.d}</div>${x.sp || ''}</div>`).join('');
+  ].map(x => `<div class="kpi ${x.c}${x.lead ? ' lead' : ''}"><div class="kl">${x.k}</div><div class="kv ${x.hl ? 'hl' : ''}">${x.v}</div><div class="kd">${x.d}</div>${x.wk ? `<div class="kw ${x.wk.ok ? 'ok' : 'warn'}"><span>${x.wk.txt}</span><b>${x.wk.v}</b>${x.wk.rng ? `<i>${x.wk.rng}</i>` : ''}</div>` : ''}${x.sp || ''}</div>`).join('');
 
   /* —— 不达标解读（在上）+ 今日调控策略建议（在下） —— */
   renderDiag400({ ss, cap, devIn, planDay, low: lowSlots });
@@ -882,6 +897,39 @@ function lowRateSlots() {
     });
   }
   return out;
+}
+
+/* 周维度接通率：近 7 个完整自然日加权（Σ接通 ÷ Σ转人工），口径与日维度一致
+   —— 数据取看板自采固化的 daily_rate.json，不依赖现场调控表 */
+function weekRate400(daysBack) {
+  const dr = D.drate;
+  if (!dr || !dr.turn || !dr.ans) return null;
+  const n = daysBack || 7, today = todayCn();
+  const ds = Object.keys(dr.turn)
+    .filter(k => k < today && (+dr.turn[k] || 0) > 0)
+    .sort().slice(-n);
+  if (ds.length < 3) return null;
+  let t = 0, a = 0;
+  ds.forEach(k => { t += +dr.turn[k] || 0; a += +dr.ans[k] || 0; });
+  if (!t) return null;
+  return { rate: a / t * 100, turn: t, ans: a, n: ds.length, from: ds[0], to: ds[ds.length - 1] };
+}
+
+/* 在线周维度接起率：近 7 个完整日按时段会话量加权（Σ接起 ÷ Σ接入）
+   —— 数据取 chat_halfhour.json 的 history（看板自采，每天固化） */
+function weekRateOnline(daysBack) {
+  const h = (D.hhon && D.hhon.history) || {};
+  const n = daysBack || 7, today = todayCn();
+  const ds = Object.keys(h).filter(k => k < today && Array.isArray(h[k])).sort().slice(-n);
+  if (ds.length < 3) return null;
+  let t = 0, a = 0;
+  ds.forEach(k => h[k].forEach(s => {
+    const tot = +s.total || 0;
+    if (tot <= 0) return;
+    t += tot; a += tot * (parseFloat(s.rate) || 0) / 100;
+  }));
+  if (!t) return null;
+  return { rate: a / t * 100, n: ds.length, from: ds[0], to: ds[ds.length - 1], total: t };
 }
 
 /* ── 每半小时：实际转人工量（柱）+ 预测转人工量（虚线）+ 接通率 ── */
@@ -1270,7 +1318,7 @@ function renderDayDetail() {
      <div class="dgrid">${stats.map(s => `<div class="dstat"><div class="dk">${s[0]}</div><div class="dv">${s[1]}</div><div class="ds">${s[2]}</div></div>`).join('')}</div>
      <div class="subhead">该日每半小时预测转人工量 <span>预测转人工量 × 时段形状占比</span></div>
      <div id="chDayHh"></div>
-     <div class="subhead">该日分时段人力安排 <span>所需 = 预测转人工 ÷ 产能 ${n1(capH)} 通/人时 × 0.5h · 排班按两端半量折算 · 餐点取自现场调控表</span></div>
+     <div class="subhead">该日分时段人力安排 <span>所需 = 预测转人工 ÷ 产能 ${n1(capH)} 通/人时 × 0.5h · 人力一律向上取整 · 餐点取自现场调控表</span></div>
      <table class="tbl"><thead><tr>
        <th>时段</th><th>预测转人工</th><th>所需人力</th><th>排班人数</th><th>缺口</th><th>餐点安排</th>
      </tr></thead><tbody>${rows}</tbody></table>`;
@@ -1326,12 +1374,18 @@ function renderOnline() {
   const lowestR = labels.map((k, i) => ({ k, r: arrR[i], t: arrT[i] }))
     .filter(x => x.r != null && x.r > 0 && (x.t || 0) >= 3).sort((x, y) => x.r - y.r)[0] || null;
   const rateOnl = avgN(arrR);
+  const weekOnl = weekRateOnline();   // 周维度接起率（近 7 个完整日按时段会话量加权）
 
   $('#kOnline').innerHTML = [
     {
       k: '接起率', v: pc(rateOnl, 1), lead: 1, hl: 1, c: (rateOnl != null && rateOnl >= 95) ? 'c-green' : 'c-red',
       d: `${rateOnl == null ? '<span style="color:var(--tx3)">待采集</span>' : rateOnl >= 95 ? '<span class="ok">达标</span>' : '<span class="warn">低于 95% 目标</span>'} · 会话管理口径 · 已出时段均值`
-        + (lowestR ? ` · 最低 ${lowestR.k} ${lowestR.r.toFixed(0)}%` : '')
+        + (lowestR ? ` · 最低 ${lowestR.k} ${lowestR.r.toFixed(0)}%` : ''),
+      wk: weekOnl ? {
+        txt: `近 ${weekOnl.n} 日`, v: pc(weekOnl.rate),
+        rng: `${weekOnl.from.slice(5)} ~ ${weekOnl.to.slice(5)} · ${n0(weekOnl.total)} 会话加权`,
+        ok: weekOnl.rate >= 95
+      } : null
     },
     {
       k: '当前排队', v: n0(a.queue), c: (a.queue || 0) > 0 ? 'c-red' : 'c-green',
@@ -1341,7 +1395,7 @@ function renderOnline() {
     { k: '在线坐席（出勤 / 排班）', v: `${on}<small>/${duty}</small>`, c: on >= duty ? 'c-green' : 'c-amber', d: `在席 ${n0(seats)} 人 · 400 另签入 ${n0(signIn400)} 人` },
     { k: '今日会话（实时）', v: n0(a.sessions), c: 'c-green', d: `已完成 ${n0(a.done)} · 分配率 ${a.sessions ? pc(a.assigned / a.sessions * 100, 0) : '–'}`, sp: spark(hist, '#34d399') },
     { k: '分时段接待（实时）', v: n0(sumT), c: 'c-cyan', d: `${slots.length ? '已出 ' + slots.length + ' 段' : '待采集'} · ${devHtml(sumT, histNow, '近 7 日同期')}` }
-  ].map(x => `<div class="kpi ${x.c}${x.lead ? ' lead' : ''}"><div class="kl">${x.k}</div><div class="kv ${x.hl ? 'hl' : ''}">${x.v}</div><div class="kd">${x.d}</div>${x.sp || ''}</div>`).join('');
+  ].map(x => `<div class="kpi ${x.c}${x.lead ? ' lead' : ''}"><div class="kl">${x.k}</div><div class="kv ${x.hl ? 'hl' : ''}">${x.v}</div><div class="kd">${x.d}</div>${x.wk ? `<div class="kw ${x.wk.ok ? 'ok' : 'warn'}"><span>${x.wk.txt}</span><b>${x.wk.v}</b>${x.wk.rng ? `<i>${x.wk.rng}</i>` : ''}</div>` : ''}${x.sp || ''}</div>`).join('');
 
   renderDiagOnline({ rate: rateOnl, a, cap, sumT, histNow, on, duty, lowest: lowestR });
   renderStrategyOnline({ slots, labels, arrR, baseR, sumT, histNow, fcAll, a, seats, duty, on });
