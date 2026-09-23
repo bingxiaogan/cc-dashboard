@@ -260,6 +260,15 @@ h1 em{font-style:normal;font-size:12px;font-weight:500;color:var(--tx3);letter-s
 .strategy .tag.good{background:rgba(52,211,153,.15);color:var(--green)}
 .strategy .up{color:var(--amber);font-weight:600}
 .strategy .dn{color:var(--green);font-weight:600}
+/* 不达标解读：接通率未达目标时先讲原因，再往下才是调控策略 */
+.diag{padding:11px 13px;border-radius:12px;background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.26)}
+.diag.ok{background:rgba(52,211,153,.07);border-color:rgba(52,211,153,.24)}
+.diag .dh{font-size:12.5px;font-weight:600;color:var(--tx);margin-bottom:5px;display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.diag .dh b{font-size:15.5px;color:var(--red)}
+.diag.ok .dh b{color:var(--green)}
+.diag .dt{font-size:12px;line-height:1.66;color:var(--tx2)}
+.diag .dt b{color:var(--tx);font-weight:600}
+.strategy .secttl{font-size:11.5px;font-weight:700;color:var(--tx3);letter-spacing:.08em;margin:13px 0 3px;padding-top:11px;border-top:1px solid var(--lin2)}
 .kdp{font-size:11.5px;color:var(--tx3)}
 .kdp .up{color:var(--amber)}
 .kdp .dn{color:var(--green)}
@@ -346,6 +355,8 @@ svg{display:block;width:100%;overflow:visible}
         <div class="kpis" id="k400"></div>
         <aside class="strategy">
           <div class="shead"><h3>今日调控策略建议</h3><span class="hint">现场进度 + 预测自动生成</span></div>
+          <div id="diag400"></div>
+          <div class="secttl">调控策略</div>
           <div id="strat400"></div>
         </aside>
       </div>
@@ -420,6 +431,8 @@ svg{display:block;width:100%;overflow:visible}
         <div class="kpis" id="kOnline"></div>
         <aside class="strategy">
           <div class="shead"><h3>今日调控策略建议</h3><span class="hint">现场进度 + 预测自动生成</span></div>
+          <div id="diagOnline"></div>
+          <div class="secttl">调控策略</div>
           <div id="stratOnline"></div>
         </aside>
       </div>
@@ -670,14 +683,14 @@ function drawBar(box, { labels, data, color, colorFn, h = 168, yFmt = n0, tipFmt
     svg.appendChild(el('line', { x1: pl, x2: W - pr, y1: y, y2: y, stroke: 'rgba(126,166,226,.12)', 'stroke-dasharray': g === 4 ? '0' : '3 4' }));
     svg.appendChild(Object.assign(el('text', { x: pl - 7, y: y + 3.5, fill: '#5c7093', 'font-size': 10.5, 'text-anchor': 'end' }), { textContent: yFmt(mx * (1 - g / 4)) }));
   }
-  const vals = [];   // 常显数值标签收集（柱 + 折线统一避让）
+  const vlabels = [];   // 常显数值标签收集（柱 + 折线统一避让）
   data.forEach((v, i) => {
     if (v == null) return;
     const x = left0 + i * bw, bh = Math.max(1, (v / mx) * (H - pt - pb)), y = H - pb - bh;
     const r = el('rect', { x, y, width: bw, height: bh, rx: Math.min(3, bw / 2), fill: colorFn ? colorFn(v, i) : color, opacity: .92 });
     if (tipFmt) { r.style.cursor = 'crosshair'; r.dataset.tip = `${labels[i]}　${tipFmt(v)}`; }
     svg.appendChild(r);
-    if (showVals) vals.push({ x: x + bw / 2, y: y - 5, text: (valFmt || yFmt)(v), color: '#93c5fd' });
+    if (showVals) vlabels.push({ x: x + bw / 2, y: y - 5, text: (valFmt || yFmt)(v), color: '#93c5fd' });
   });
   if (line) {
     const lv = line.filter(x => x != null);
@@ -692,7 +705,7 @@ function drawBar(box, { labels, data, color, colorFn, h = 168, yFmt = n0, tipFmt
         pts.push([x, y, v, i]);
       });
       svg.appendChild(el('path', { d, fill: 'none', stroke: lineColor || '#fbbf24', 'stroke-width': 1.9, 'stroke-dasharray': '4 3', opacity: .95 }));
-      if (showVals) pts.forEach(p => vals.push({ x: p[0], y: p[1] - 6, text: (valFmt || yFmt)(p[2]), color: lineColor || '#fbbf24' }));
+      if (showVals) pts.forEach(p => vlabels.push({ x: p[0], y: p[1] - 6, text: (valFmt || yFmt)(p[2]), color: lineColor || '#fbbf24' }));
       if (lineTipFmt) {
         pts.forEach(p => {
           const c = el('circle', { cx: p[0], cy: p[1], r: 9, fill: 'transparent' });
@@ -704,7 +717,7 @@ function drawBar(box, { labels, data, color, colorFn, h = 168, yFmt = n0, tipFmt
       }
     }
   }
-  if (showVals && vals.length) placeVals(svg, vals);
+  if (showVals && vlabels.length) placeVals(svg, vlabels);
   const step = Math.ceil(labels.length / 10);
   labelIdx(labels.length, step).forEach(i =>
     svg.appendChild(el('text', { x: left0 + i * bw + bw / 2, y: H - 7, fill: '#5c7093', 'font-size': 10.5, 'text-anchor': 'middle' }, labels[i])));
@@ -786,12 +799,21 @@ function render400() {
      （cap.load400 的分子是技能组口径，直接用半小时口径的预测进线量去除会自相矛盾） —— */
   const predLoadNow = (cap.load400 != null && devIn != null && devIn > -95) ? cap.load400 / (1 + devIn / 100) : null;
 
+  /* 已出时段未达标清单（重点卡副文案、不达标解读、调控策略共用） */
+  const lowSlots = lowRateSlots();
+  const wSlot = lowSlots.slice().sort((a, b) => a.r - b.r)[0] || null;
+
   $('#k400').innerHTML = [
     {
-      k: '当前排队', v: n0(ss.queue), lead: 1, c: (ss.queue || 0) > 0 ? 'c-red' : 'c-green',
+      k: '接通率', v: pc(ss.rate), lead: 1, hl: 1, c: (ss.rate || 0) >= 85 ? 'c-green' : 'c-red',
+      d: `${(ss.rate || 0) >= 85 ? '<span class="ok">达标</span>' : '<span class="warn">低于 85% 目标</span>'} · Σ技能组接听 ÷ Σ技能组呼入`
+        + (wSlot ? ` · 最低 ${wSlot.k} ${wSlot.r.toFixed(0)}%` : ''),
+      sp: spark(hist, '#60a5fa')
+    },
+    {
+      k: '当前排队', v: n0(ss.queue), c: (ss.queue || 0) > 0 ? 'c-red' : 'c-green',
       d: `${(ss.queue || 0) > 0 ? '<span class="warn">有排队积压</span>' : '<span class="ok">无排队</span>'} · 空闲坐席 ${n0(ss.idleSeats)} 人 · 技能组实时汇总`
     },
-    { k: '接通率（实时）', v: pc(ss.rate), c: 'c-blue', d: `<span class="${(ss.rate || 0) >= 85 ? 'up' : 'dn'}">${(ss.rate || 0) >= 85 ? '达标' : '低于 85%'}</span> · 技能组口径`, sp: spark(hist, '#60a5fa') },
     {
       k: '运能负荷（实时）', v: pc(cap.load400, 0),
       c: (cap.load400 || 0) >= 110 ? 'c-red' : (cap.load400 || 0) < 90 ? 'c-blue' : 'c-green',
@@ -807,8 +829,9 @@ function render400() {
     { k: '人工量（实时）', v: n0(sumTurn), c: 'c-cyan', d: `${curEnd ? '截至 ' + curEnd : '待采集'} · ${devTxt(devTurn)}` }
   ].map(x => `<div class="kpi ${x.c}${x.lead ? ' lead' : ''}"><div class="kl">${x.k}</div><div class="kv ${x.hl ? 'hl' : ''}">${x.v}</div><div class="kd">${x.d}</div>${x.sp || ''}</div>`).join('');
 
-  /* —— 今日调控策略建议 —— */
-  renderStrategy400({ keys, full, act, sumTurn, sumIn, devTurn, devIn, predictTurnNow, doneN, planDay, lastI });
+  /* —— 不达标解读（在上）+ 今日调控策略建议（在下） —— */
+  renderDiag400({ ss, cap, devIn, planDay, low: lowSlots });
+  renderStrategy400({ keys, full, act, sumTurn, sumIn, devTurn, devIn, predictTurnNow, doneN, planDay, lastI, low: lowSlots });
 
   /* 每半小时人工量（现场）与接通率 */
   renderHh400();
@@ -838,6 +861,24 @@ function hhPredOf(dateIso) {
   const sh = D.shape;
   if (!d || d.turn == null || !sh || !sh.share_turn) return null;
   return slotShortKeys().map(k => Math.round(d.turn * (sh.share_turn[slotFullKey(k)] || 0)));
+}
+/* 已出时段里接通率低于 85% 的时段（不达标解读与调控策略共用） */
+function lowRateSlots() {
+  const keys = slotShortKeys(), im = {};
+  keys.forEach((k, i) => im[k] = i);
+  const out = [];
+  if (D.hh && D.hh.date === todayCn() && Array.isArray(D.hh.slots)) {
+    D.hh.slots.forEach(s => {
+      const i = im[String(s.t).slice(11, 16)];
+      if (i == null) return;
+      const turn = (+s.total || 0) - (+s.ivr || 0);
+      if (turn > 0) {
+        const r = (+s.answered || 0) / turn * 100;
+        if (r < 85) out.push({ k: keys[i], r, turn, ans: +s.answered || 0 });
+      }
+    });
+  }
+  return out;
 }
 
 /* ── 每半小时：实际转人工量（柱）+ 预测转人工量（虚线）+ 接通率 ── */
@@ -995,16 +1036,7 @@ function renderStrategy400(o) {
   }
 
   /* ④ 已出时段接通率是否达标 */
-  const low = [];
-  if (D.hh && D.hh.date === today && Array.isArray(D.hh.slots)) {
-    const im = {}; keys.forEach((k, i) => im[k] = i);
-    D.hh.slots.forEach(s => {
-      const i = im[String(s.t).slice(11, 16)];
-      if (i == null) return;
-      const turn = (+s.total || 0) - (+s.ivr || 0);
-      if (turn > 0) { const r = (+s.answered || 0) / turn * 100; if (r < 85) low.push({ k: keys[i], r }); }
-    });
-  }
+  const low = lowRateSlots();
   if (low.length) {
     const w = low.slice().sort((a, b) => a.r - b.r)[0];
     items.push({
@@ -1244,13 +1276,15 @@ function renderOnline() {
       colorFn: (v, i) => i === arrT.length - 1 ? '#6ee7b7' : 'rgba(52,211,153,.6)',
       tipFmt: v => `${n0(v)} 会话`,
       line: baseT.some(v => v != null) ? baseT : null,
-      lineSameScale: true, lineColor: 'rgba(167,139,250,.85)', lineTipFmt: v => `${n0(v)} 会话`
+      lineSameScale: true, lineColor: 'rgba(167,139,250,.85)', lineTipFmt: v => `${n0(v)} 会话`,
+      showVals: true, valFmt: v => n0(v)
     });
   } else $('#chOnlinehh').innerHTML = '<div class="empty">今日分时段数据待采集</div>';
 
   if (arrR.some(v => v != null) || baseR.some(v => v != null)) {
     drawLine($('#chOnlinehhRate'), {
-      labels, h: 152, yFmt: v => Math.round(v) + '%', tipFmt: v => (+v).toFixed(1) + '%',
+      labels, h: 158, yFmt: v => Math.round(v) + '%', tipFmt: v => (+v).toFixed(1) + '%',
+      showVals: true, valFmt: v => Math.round(v) + '%',
       series: [
         { name: '实际', data: arrR, color: '#22d3ee', area: false },
         { name: '基准', data: baseR, color: '#a78bfa', area: false, dash: '5 4' }
@@ -1269,7 +1303,8 @@ function renderOnline() {
     const act = lab.map(d => on2[d] == null ? null : on2[d]);
     const fcv = lab.map(d => (d > lastD && fcMap[d] != null) ? fcMap[d] : null);
     drawLine($('#chOnlinetr'), {
-      labels: lab.map(d => d.slice(5)), h: 190, tipFmt: v => `${n0(v)} 会话`,
+      labels: lab.map(d => d.slice(5)), h: 212, tipFmt: v => `${n0(v)} 会话`,
+      showVals: true, valFmt: v => n0(v),
       series: [
         { name: '实际', data: act, color: '#6ee7b7', areaFill: 'rgba(52,211,153,.13)', label: n0(act.filter(v => v != null).pop()) },
         { name: '预测', data: fcv, color: '#fbbf24', area: false, dash: '5 4', label: n0(fcv.filter(v => v != null).pop()) }
@@ -1558,7 +1593,8 @@ function renderTicketTrend() {
   const lastOf = a => n0(a.filter(v => v != null).pop());
 
   drawLine($('#chTickettr'), {
-    labels: labels.map(d => d.slice(5)), h: 200, tipFmt: v => `${n0(v)} 单`,
+    labels: labels.map(d => d.slice(5)), h: 212, tipFmt: v => `${n0(v)} 单`,
+    showVals: true, valFmt: v => n0(v),
     series: [
       { name: '实际升级', data: act('new'), color: '#fbbf24', areaFill: 'rgba(251,191,36,.10)', label: lastOf(act('new')) },
       { name: '实际处理', data: act('done'), color: '#a78bfa', area: false, label: lastOf(act('done')) },
@@ -1572,7 +1608,8 @@ function renderTicketTrend() {
   const stkFc = labels.map(d => (!isFut(d) || !fcMap[d]) ? null : fcMap[d].stk);
   if (stkAct.some(v => v != null) || stkFc.some(v => v != null)) {
     drawLine($('#chTicketStock'), {
-      labels: labels.map(d => d.slice(5)), h: 168, tipFmt: v => `${n0(v)} 单`,
+      labels: labels.map(d => d.slice(5)), h: 176, tipFmt: v => `${n0(v)} 单`,
+      showVals: true, valFmt: v => n0(v),
       series: [
         { name: '实际积压', data: stkAct, color: '#93c5fd', areaFill: 'rgba(96,165,250,.12)', label: lastOf(stkAct) },
         { name: '预测积压', data: stkFc, color: 'rgba(251,191,36,.7)', area: false, dash: '5 4', label: lastOf(stkFc) }
