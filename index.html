@@ -623,6 +623,9 @@ const pc = (v, d) => (v == null || isNaN(v)) ? '–' : (+v).toFixed(d == null ? 
 /* 人力一律向上取整（人不能是小数）：hcn 用于直接读取，hc 用于展示（带千分位） */
 const hcn = v => (v == null || isNaN(v)) ? null : Math.ceil(+v - 1e-9);
 const hc = v => { const x = hcn(v); return x == null ? '–' : x.toLocaleString('en-US'); };
+/* 人力差额一律带符号（2026-09-23 用户口径）：+N = 实际人多（绿）、-N = 少人（红）、0 = 持平
+   —— 全站禁止再写「富余 / 余 / 缺 X 人」这类文字 */
+const hcSign = v => (v == null || isNaN(v)) ? '–' : (+v > 0 ? '+' + (+v) : String(+v));
 const bust = u => u + (u.includes('?') ? '&' : '?') + '_=' + Date.now();
 const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
@@ -897,7 +900,7 @@ function render400() {
     {
       k: '在岗人力（出勤 / 排班）', v: `${on}<small>/${duty}</small>`, c: on >= duty ? 'c-green' : 'c-amber',
       d: planDay
-        ? `签入 ${n0(ss.signIn)} 人 · 预测需 ${n0(planDay.need_hc)} 人 · <span class="${planDay.gap_hc < 0 ? 'warn' : 'ok'}">${planDay.gap_hc < 0 ? '缺 ' + Math.abs(planDay.gap_hc) + ' 人' : '富余 ' + planDay.gap_hc + ' 人'}</span>`
+        ? `签入 ${n0(ss.signIn)} 人 · 预测需 ${n0(planDay.need_hc)} 人 · <span class="${planDay.gap_hc < 0 ? 'dn' : planDay.gap_hc > 0 ? 'up' : ''}">${hcSign(planDay.gap_hc)}</span>`
         : `签入 ${n0(ss.signIn)} 人 · 今日排班未生成`
     },
     { k: '呼入量（实时）', v: n0(sumIn), c: 'c-cyan', d: `${curEnd ? '截至 ' + curEnd : '待采集'} · ${devTxt(devIn)}` },
@@ -1173,7 +1176,7 @@ function renderDiag400(o) {
   }
   const rs = [];
   if (w) rs.push(`<b>${w.k}</b> 时段最吃紧，接通率仅 <b>${w.r.toFixed(0)}%</b>（转人工 ${n0(w.turn)} 通 / 接通 ${n0(w.ans)} 通）`);
-  if (o.planDay && o.planDay.gap_hc < 0) rs.push(`在岗 <b>${o.planDay.onshift_hc}</b> 人低于需求 <b>${o.planDay.need_hc}</b> 人，缺 <b>${Math.abs(o.planDay.gap_hc)}</b> 人`);
+  if (o.planDay && o.planDay.gap_hc < 0) rs.push(`在岗 <b>${o.planDay.onshift_hc}</b> 人低于需求 <b>${o.planDay.need_hc}</b> 人，人力 <b>${hcSign(o.planDay.gap_hc)}</b> 人`);
   if (o.cap && o.cap.load400 >= 110) rs.push(`运能负荷 <b>${n0(o.cap.load400)}%</b>，产能已被打满`);
   if (o.devIn != null && o.devIn > 5) rs.push(`呼入量高于预测 <b>${o.devIn.toFixed(0)}%</b>，进线集中`);
   if ((ss.queue || 0) > 0) rs.push(`当前排队 <b>${n0(ss.queue)}</b> 通，接听被挤压`);
@@ -1245,7 +1248,7 @@ function renderStrategy400(o) {
     items.push({
       tag: '人力', cls: gap < 0 ? 'risk' : 'good',
       html: `全日需 <b>${planDay.need_hc}</b> 人、在岗 <b>${planDay.onshift_hc}</b> 人，负荷 <b>${n0(planDay.ratio)}%</b>。` +
-        (gap < 0 ? `缺口 <b>${Math.abs(gap)}</b> 人，需要按 <b>${Math.abs(gap)}</b> 人支援。` : gap > 0 ? `富余 <b>${gap}</b> 人，可支援在线或积压工单。` : '人手与需求持平。')
+        (gap < 0 ? `人力 <b>${hcSign(gap)}</b> 人，需要按 <b>${Math.abs(gap)}</b> 人支援。` : gap > 0 ? `人力 <b>${hcSign(gap)}</b> 人，可支援在线或积压工单。` : '人力与需求持平。')
     });
   }
 
@@ -1384,7 +1387,7 @@ function render400fc(plan) {
         <tbody>${sub.map(d => {
           const est = !!d.staff_est;                              // 班表未出 → 在岗 / 缺口留空
           const cl = est ? 'b' : d.gap_hc < 0 ? 'r' : d.gap_hc > 0 ? 'g' : 'b';
-          const txt = est ? '–' : d.gap_hc < 0 ? '缺 ' + Math.abs(d.gap_hc) : d.gap_hc > 0 ? '余 ' + d.gap_hc : '持平';
+          const txt = est ? '–' : hcSign(d.gap_hc);
           return `<tr data-day="${d.date}" class="${d.date === today ? 'today' : ''}${d.date === PICK_DAY ? ' pick' : ''}">
             <td class="v">${d.date.slice(5)}</td><td>${d.wd}</td>
             <td>${(d.orders / 10000).toFixed(1)} 万</td>
