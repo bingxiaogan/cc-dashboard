@@ -210,6 +210,13 @@ h1 em{font-style:normal;font-size:12px;font-weight:500;color:var(--tx3);letter-s
 .subhead{display:flex;align-items:center;gap:10px;font-size:12px;font-weight:600;color:var(--tx2);margin:15px 2px 9px;letter-spacing:.03em;flex-wrap:wrap}
 .subhead span{font-weight:400;font-size:11px;color:var(--tx3)}
 .subhead .lgd{margin-left:auto}
+/* ── 餐点安排摘要（错峰排餐的一行说明）── */
+.mealsum{margin:-2px 0 10px;font-size:11.5px;color:var(--tx2);line-height:1.75}
+.mealsum b{color:var(--tx);font-weight:640}
+.mealsum .warn{color:var(--amber)}
+.mealsum .dim{color:var(--tx3)}
+/* 缺口是「吃出来」的：不扣餐不缺、扣了才缺 */
+.mnote{color:var(--amber);font-style:normal;font-size:10.5px}
 
 /* ── 日期选择（逐日切片）：紧凑月历 + 月份切换，整体收在折叠里 ── */
 
@@ -1403,6 +1410,80 @@ function render400fc(plan) {
   renderDaySlicer();
 }
 
+/* ══════════ 用餐安排（错峰排餐）══════════
+   口径与 400 预测页（forecast/index.html）**完全一致**，勿另立一套：
+   · 每人每天 2 餐 × 30 分钟；第一餐窗口 10:30–14:00、第二餐 17:00–20:00
+     （用户 2026-09-14 定；第一餐原 11:00–15:00）
+   · 排法 = 按各时段「空闲度」错峰：权重 = 0.4 + max(0, 在岗 − 需求)
+     —— 冗余大的时段多排、紧张的时段少排，对接通率影响最小
+     （用户 2026-09-14：出勤人多但没有实时储备人力，临时抽调支援很难）
+   · 单槽封顶 = 均匀份额 × 1.6，避免把人都堆到一个时段反而制造新缺口
+   · 生理需求：各槽人数定好后按名单顺序沿时间落位 → 第一餐吃得早的人，第二餐同样早
+   · ⚠️ 权重取自「不含用餐」的基础盘：先有基础负荷、再排餐
+   ───────────────────────────────────── */
+const MEAL_WINS = [
+  { key: 'A', name: '第一餐', from: 10 * 60 + 30, to: 14 * 60 },
+  { key: 'B', name: '第二餐', from: 17 * 60, to: 20 * 60 }
+];
+const MEAL_SLACK_FLOOR = 0.4;   // 无冗余时段的权重下限（仍可能被排到，只是最少）
+const MEAL_CAP_RATIO  = 1.6;    // 单槽离岗人数上限 = 均匀份额 × 此系数
+const MEAL_MIN = 30;            // 每餐时长（分钟）
+
+function hmMin(m) { return pad2(Math.floor(m / 60)) + ':' + pad2(m % 60); }
+/* 窗口内的半小时槽（起始升序）：10:30–14:00 → 7 段；17:00–20:00 → 6 段 */
+function mealSlots(win) {
+  const out = [];
+  for (let m = win.from; m + MEAL_MIN <= win.to; m += MEAL_MIN) out.push(hmMin(m) + '-' + hmMin(m + MEAL_MIN));
+  return out;
+}
+/* 按权重定各槽离岗人数 → 再按名单顺序沿时间落位 */
+function mealAllocate(names, slotLabels, weights) {
+  const map = {};
+  slotLabels.forEach(s => { map[s] = []; });
+  const L = slotLabels.length, N = names.length;
+  if (!L || !N) return map;
+  const w = slotLabels.map((s, i) => {
+    const x = weights ? weights[i] : 1;
+    return (x && x > 0) ? x : 0.01;
+  });
+  const cap = Math.max(1, Math.ceil(N / L * MEAL_CAP_RATIO));
+  const cnt = new Array(L).fill(0);
+  let rem = N;
+  for (let round = 0; round < 12 && rem > 0; round++) {
+    const free = cnt.map((c, i) => (c < cap ? w[i] : 0));
+    const sw = free.reduce((a, b) => a + b, 0);
+    if (!sw) break;
+    let placed = 0;
+    for (let i = 0; i < L; i++) {
+      if (!free[i]) continue;
+      const add = Math.min(cap - cnt[i], Math.floor(rem * free[i] / sw));
+      if (add > 0) { cnt[i] += add; placed += add; }
+    }
+    if (!placed) break;
+    rem -= placed;
+  }
+  w.map((x, i) => [x, i]).sort((a, b) => b[0] - a[0])
+    .forEach(p => { while (rem > 0 && cnt[p[1]] < cap) { cnt[p[1]]++; rem--; } });
+  if (rem > 0) for (let i = 0; i < L && rem > 0; i++) { cnt[i] += rem; rem = 0; }
+  let p = 0;
+  slotLabels.forEach((s, k) => { for (let j = 0; j < cnt[k]; j++) map[s].push(names[p++]); });
+  return map;
+}
+/* 某日出勤名单的排餐表：weightMap = { 完整时段键 → 权重 } */
+function mealPlanOfDay(names, weightMap) {
+  const out = {};
+  MEAL_WINS.forEach(w => {
+    const slots = mealSlots(w);
+    const weights = slots.map(s => {
+      const x = weightMap ? weightMap[s] : null;
+      return (x == null) ? 1 : x;
+    });
+    out[w.key] = { name: w.name, from: hmMin(w.from), to: hmMin(w.to), slots,
+                   map: mealAllocate(names || [], slots, weights) };
+  });
+  return out;
+}
+
 /* ── 日维度预测切片：日历选日 + 单日明细 + 该日分时段预测（折叠） ── */
 let PICK_DAY = null;
 function renderDaySlicer() {
@@ -1452,45 +1533,76 @@ function renderDayDetail() {
   const sheetDay = (ss.sheet || {})[d.date] || {};
   const sl = ((D.drate || {}).slots || {})[d.date] || {};
   const capH = (D.plan && D.plan.cap_per_hour) || 11.81;
-  /* 餐点人名：按当天在班名单（plan.days[].names）排 —— 组长可直接照着安排
-     规则：午市（15:00 前）沿名单顺序往后排，晚市倒着排，保证两餐的先后错开；
-           同一时段多人按排到的先后并列。名单保持原序，不另排序。 */
-  const roster = (d.names || []).filter(Boolean);
-  let mFwd = 0, mBwd = 0;
-  const mealWho = (n, isPM) => {
-    const L = roster.length;
-    if (!L || !n) return null;
-    const out = [];
-    for (let j = 0; j < n; j++) {
-      if (!isPM) { out.push(roster[mFwd % L]); mFwd++; }
-      else { out.push(roster[((L - 1 - mBwd) % L + L) % L]); mBwd++; }
-    }
-    return out;
-  };
-  const rows = keys.map((k, i) => {
-    const full = slotFullKey(k);
+  /* ① 先把 26 段的「预测转人工 / 所需人力 / 排班人数」铺平 —— 餐点排餐与表格共用同一份口径 */
+  const fulls = keys.map(slotFullKey);
+  const pvArr = [], needArr = [], staffArr = [];
+  keys.forEach((k, i) => {
     const pv = hh ? hh[i] : null;
-    const need = hcn(pv == null ? null : pv / (capH * 0.5));   // 所需人力：进位
-    let staff = null;
+    pvArr[i] = pv;
+    needArr[i] = hcn(pv == null ? null : pv / (capH * 0.5));   // 所需人力：进位
+    let st = null;
     if (!est) {                                                // HR 班表未出 → 实际排班留空，不用估算值顶
-      staff = sched[full] != null ? sched[full] : (sheetDay[full] != null ? sheetDay[full] : null);
-      if (staff == null && sl[full] && sl[full].staff != null) staff = sl[full].staff;
-      staff = hcn(staff);                                      // 排班人数：进位
+      st = sched[fulls[i]] != null ? sched[fulls[i]] : (sheetDay[fulls[i]] != null ? sheetDay[fulls[i]] : null);
+      if (st == null && sl[fulls[i]] && sl[fulls[i]].staff != null) st = sl[fulls[i]].staff;
+      st = hcn(st);                                            // 排班人数：进位
     }
-    const gap = (need != null && staff != null) ? staff - need : null;   // 正值=人多，负值=少人
+    staffArr[i] = st;
+  });
+
+  /* ② 错峰排餐：权重 = 0.4 + max(0, 在岗 − 需求)，取自**不含用餐**的基础盘 */
+  const roster = (d.names || []).filter(Boolean);
+  const baseW = {};
+  keys.forEach((k, i) => {
+    baseW[fulls[i]] = MEAL_SLACK_FLOOR + Math.max(0, (staffArr[i] || 0) - (needArr[i] || 0));
+  });
+  const mp = (est || !roster.length) ? null : mealPlanOfDay(roster, baseW);
+  const mealAt = {};      // 完整时段键 → { n, who, win }
+  if (mp) MEAL_WINS.forEach(w => {
+    const g = mp[w.key];
+    g.slots.forEach(s => {
+      const who = g.map[s] || [];
+      if (who.length) mealAt[s] = { n: who.length, who, win: w.name };
+    });
+  });
+
+  const rows = keys.map((k, i) => {
+    const full = fulls[i];
+    const pv = pvArr[i], need = needArr[i], staff = staffArr[i];
     const c = sl[full] || {};
-    const meal = [];
-    if (c.meal) {
-      const who = mealWho(+c.meal, +k.slice(0, 2) >= 15);   // 15:00 之后算晚市
-      meal.push('用餐' + c.meal + '人' + (who ? '：' + who.join('、') : ''));
-    }
-    if (c.off) meal.push('放休 ' + c.off + ' 人');
+    const mm = mealAt[full];
+    const mNow = mm ? mm.n : 0;
+    const avail = staff == null ? null : Math.max(0, staff - mNow);      // 实到 = 在岗 − 用餐
+    const gap = (need != null && avail != null) ? avail - need : null;   // 差额 = 实到 − 所需
+    const noMealGap = (need != null && staff != null) ? staff - need : null;
+    const cells = [];
+    if (mm) cells.push('用餐' + mm.n + '人：' + mm.who.join('、'));
+    if (c.off) cells.push('放休 ' + c.off + ' 人');
     const gp = gap == null ? '<span class="pill b">–</span>'
       : gap < 0 ? `<span class="pill r">${gap}</span>`
         : gap > 0 ? `<span class="pill g">+${gap}</span>` : '<span class="pill b">0</span>';
+    /* 不扣餐不缺、扣了才缺 → 缺口是吃出来的，优先错峰 / 时段内抽调，不必增编 */
+    const byMeal = (gap != null && gap < 0 && noMealGap != null && noMealGap >= 0)
+      ? ' <i class="mnote">用餐所致</i>' : '';
     return `<tr><td class="v">${k}</td><td>${pv == null ? '–' : n0(pv)}</td><td class="v">${need == null ? '–' : need}</td>
-      <td>${staff == null ? '–' : staff}</td><td>${gp}</td><td>${meal.length ? meal.join(' · ') : '–'}</td></tr>`;
+      <td>${staff == null ? '–' : staff}</td><td>${avail == null ? '–' : avail}</td><td>${gp}${byMeal}</td>
+      <td>${cells.length ? cells.join(' · ') : '–'}</td></tr>`;
   }).join('');
+
+  /* 餐点摘要：两餐各排多少人、铺在几段上 */
+  let mealSum;
+  if (est) mealSum = '<span class="dim">HR 班表未出，餐点待排班确定后再排</span>';
+  else if (!mp) mealSum = '<span class="dim">该日无 400 在班名单，餐点待排</span>';
+  else {
+    const parts = MEAL_WINS.map(w => {
+      const g = mp[w.key];
+      const tot = g.slots.reduce((a, s) => a + (g.map[s] || []).length, 0);
+      const seg = g.slots.filter(s => (g.map[s] || []).length).length;
+      return `<b>${w.name}</b> ${g.from}–${g.to} · ${tot} 人 / ${seg} 段`;
+    });
+    mealSum = '餐点安排：' + parts.join('　·　') +
+      '<span class="dim">　按各时段空闲度错峰 —— 冗余大的时段多排、紧张的少排；' +
+      '各段人数定好后按名单顺序沿时间落位，第一餐吃得早的人第二餐同样早</span>';
+  }
 
   box.innerHTML =
     `<div class="dhead"><b>${d.date}</b><span>${d.wd}</span>${d.date === today ? '<span class="pill b">今天</span>' : ''}
@@ -1499,15 +1611,16 @@ function renderDayDetail() {
      <details class="fold" id="dayFold">
        <summary>
          <span class="ft">该日分时段预测</span>
-         <span class="fh">每半小时转人工量 + 人力安排（所需 / 排班 / 差额 / 餐点）· 共 ${keys.length} 段</span>
+         <span class="fh">每半小时转人工量 + 人力安排（所需 / 排班 / 实到 / 差额 / 餐点）· 共 ${keys.length} 段</span>
          <span class="fchev"></span>
        </summary>
        <div class="fbody">
          <div class="subhead">该日每半小时预测转人工量 <span>预测转人工量 × 时段形状占比</span></div>
          <div id="chDayHh"></div>
-         <div class="subhead">该日分时段人力安排 <span>所需 = 预测转人工 ÷ 产能 ${n1(capH)} 通/人时 × 0.5h · 人力一律向上取整${est ? ' · 班表未出，「排班人数 / 差额」留空' : ' · 餐点人数取自现场调控表，人名按当天在班名单轮排'}</span></div>
+         <div class="subhead">该日分时段人力安排 <span>所需 = 预测转人工 ÷ 产能 ${n1(capH)} 通/人时 × 0.5h · 人力一律向上取整 · 差额 = 实到 − 所需，实到 = 在岗 − 用餐${est ? ' · 班表未出，「排班人数 / 实到 / 差额 / 餐点」留空' : ''}</span></div>
+         <div class="mealsum">${mealSum}</div>
          <div class="tblwrap"><table class="tbl"><thead><tr>
-           <th>时段</th><th>预测转人工</th><th>所需人力</th><th>排班人数</th><th>差额</th><th>餐点安排</th>
+           <th>时段</th><th>预测转人工</th><th>所需人力</th><th>排班人数</th><th>实到</th><th>差额</th><th>餐点安排</th>
          </tr></thead><tbody>${rows}</tbody></table></div>
        </div>
      </details>`;
