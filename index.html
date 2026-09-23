@@ -395,23 +395,49 @@ svg{display:block;width:100%;overflow:visible}
     </div>
 
     <div class="zone">
-      <div class="zonetag"><i></i>实时 <span>7x24cc 采集 · 90 秒</span></div>
-      <div class="kpis" id="kOnline"></div>
+      <div class="zonetag"><i></i>实时 + 预测 <span>7x24cc 采集 90 秒 · 预测每日 21:50 标定</span></div>
+      <div class="mergeline">
+        <div class="kpis" id="kOnline"></div>
+        <aside class="strategy">
+          <div class="shead"><h3>今日调控策略建议</h3><span class="hint">实时进度 + 预测自动生成</span></div>
+          <div id="stratOnline"></div>
+        </aside>
+      </div>
       <div class="panels">
-        <div class="panel">
-          <div class="phead"><h3>今日分时段接待量</h3><span class="hint" id="noteOnlinehh"></span></div>
+        <div class="panel wide">
+          <div class="phead">
+            <h3>今日分时段接待量 · 实时</h3>
+            <div class="lgd"><span><em style="background:var(--green)"></em>接待量</span></div>
+            <span class="hint" id="noteOnlinehh"></span>
+          </div>
           <div id="chOnlinehh"></div>
+          <div class="subhead">分时段接起率 <span>会话管理口径</span>
+            <div class="lgd">
+              <span><em style="background:#22d3ee"></em>实际</span>
+              <span><em style="background:#a78bfa"></em>近 7 日同时段基准</span>
+            </div>
+          </div>
+          <div id="chOnlinehhRate"></div>
         </div>
-        <div class="panel">
-          <div class="phead"><h3>近 30 天接待量</h3><span class="hint">技能组接待量</span></div>
+        <div class="panel wide">
+          <div class="phead">
+            <h3>近 30 天接待量 · 实时 + 预测</h3>
+            <div class="lgd">
+              <span><em style="background:var(--green)"></em>实际</span>
+              <span><em style="background:var(--amber)"></em>预测</span>
+            </div>
+            <span class="hint">技能组接待量</span>
+          </div>
           <div id="chOnlinetr"></div>
         </div>
       </div>
     </div>
 
     <div class="zone">
-      <div class="zonetag fc"><i></i>预测 <span>同星期几基准 × 近 7 天水平因子（驱动模型待建）</span></div>
-      <div class="kpis" id="fOnline"></div>
+      <div class="zonetag fc"><i></i>预测 <span>同星期几基准 × 近 7 天水平因子（日维度 · 可逐日切片）</span></div>
+      <div class="subhead">逐日切片 <span>点日期或点表格行，查看该日明细</span></div>
+      <div class="dslicer" id="onlineSlicer"></div>
+      <div class="dstats" id="onlineDetail"></div>
       <div class="panels">
         <div class="panel wide">
           <div class="phead"><h3>未来 7 天预估接待量与所需人力</h3><span class="hint" id="noteOnlinefc"></span></div>
@@ -987,7 +1013,8 @@ function onlineAgg(cc) {
   };
 }
 
-function renderOnline(cc) {
+function renderOnline() {
+  const cc = D.cc;
   if (!cc) return;
   const a = onlineAgg(cc), cap = cc.capacity || {}, at = cc.attendance || {}, ss = cc.skillSummary || {};
   const seats = (cc.onlineAgents || []).length, duty = (at.dutyOnline || []).length, on = (at.onOnline || []).length;
@@ -999,35 +1026,75 @@ function renderOnline(cc) {
      <span>出勤 <b>${on}/${duty}</b></span>
      <span>技能组 <b>${a.groups.length}</b> 个</span>`;
 
+  /* —— 分时段（会话管理口径：接待量与接起率同源可比）—— */
+  const c = D.hhon, slots = (c && c.date === todayCn() && Array.isArray(c.slots)) ? c.slots : [];
+  const labels = slots.map(s => String(s.t).slice(0, 5));
+  const arrT = slots.map(s => s.total);
+  const arrR = slots.map(s => { const v = parseFloat(String(s.rate == null ? '' : s.rate).replace('%', '')); return isNaN(v) ? null : v; });
+  const baseR = onlRateBase(c, labels);
+  const sumT = sum(slots, s => s.total);
+  const histNow = onlHistToNow(c, labels);
+
+  /* —— 预测（技能组口径，日维度）—— */
+  const fcAll = onlineForecastPlain() || [];
+  const mxDay = fcAll.slice().sort((x, y) => y.v - x.v)[0] || {};
+  const wkNeed = sum(fcAll, f => f.need);
+  const lastReal = ((D.tr && D.tr.days) || []).map(d => (D.tr.online || {})[d]).filter(v => v != null).pop();
+
   $('#kOnline').innerHTML = [
-    { k: '今日会话', v: n0(a.sessions), c: 'c-green', hl: 1, d: `已完成 ${n0(a.done)}`, sp: spark(hist, '#34d399') },
-    { k: '已分配', v: n0(a.assigned), c: 'c-cyan', d: a.sessions ? `分配率 ${pc(a.assigned / a.sessions * 100, 0)}` : '–' },
-    { k: '正在接待', v: n0(a.current), c: 'c-blue', d: `同时在线 ${n0(a.current)} 席` },
-    { k: '排队', v: n0(a.queue), c: (a.queue || 0) > 0 ? 'c-red' : 'c-green', d: (a.queue || 0) > 0 ? '有排队' : '无排队' },
-    { k: '在线坐席', v: n0(seats), c: 'c-purple', d: `400 另签入 ${n0(signIn400)} 人` },
-    { k: '满意度', v: pc(a.sat, 0), c: (a.sat != null && a.sat >= 95) ? 'c-green' : 'c-amber', d: '各技能组均值' },
-    { k: '当日负荷', v: pc(cap.loadOn, 0), c: (cap.loadOn || 0) >= 110 ? 'c-red' : (cap.loadOn || 0) < 90 ? 'c-blue' : 'c-green', d: `接待 ${n0(cap.inOn)} / 应接 ${n0(cap.capOn)}` }
+    { k: '今日会话（实时）', v: n0(a.sessions), c: 'c-green', hl: 1, d: `已完成 ${n0(a.done)} · 分配率 ${a.sessions ? pc(a.assigned / a.sessions * 100, 0) : '–'}`, sp: spark(hist, '#34d399') },
+    { k: '分时段接待（实时）', v: n0(sumT), c: 'c-cyan', d: `${slots.length ? '已出 ' + slots.length + ' 段' : '待采集'} · ${devHtml(sumT, histNow, '近 7 日同期')}` },
+    { k: '当前排队', v: n0(a.queue), c: (a.queue || 0) > 0 ? 'c-red' : 'c-green', d: `进行中 ${n0(a.current)} 席 · ${(a.queue || 0) > 0 ? '有积压' : '无排队'}` },
+    { k: '在线坐席', v: n0(seats), c: 'c-purple', d: `出勤 ${on}/${duty} · 400 另签入 ${n0(signIn400)} 人` },
+    { k: '满意度', v: pc(a.sat, 0), c: (a.sat != null && a.sat >= 95) ? 'c-green' : 'c-amber', d: '各技能组均值（剔除无数据组）' },
+    { k: '当日负荷（实时）', v: pc(cap.loadOn, 0), c: (cap.loadOn || 0) >= 110 ? 'c-red' : (cap.loadOn || 0) < 90 ? 'c-blue' : 'c-green', d: `接待 ${n0(cap.inOn)} / 应接 ${n0(cap.capOn)}` },
+    { k: '接起率（实时）', v: pc(avgN(arrR), 1), c: (avgN(arrR) != null && avgN(arrR) >= 95) ? 'c-green' : 'c-amber', d: '会话管理口径 · 已出时段均值' },
+    { k: '未来 7 天预估', v: n0(sum(fcAll, f => f.v)), c: 'c-green', d: fcAll.length ? `日均 ${n0(sum(fcAll, f => f.v) / fcAll.length)} 会话` : '样本不足' },
+    { k: '峰值日（预测）', v: mxDay.v != null ? n0(mxDay.v) : '–', c: 'c-amber', d: mxDay.date ? `${mxDay.date.slice(5)} ${mxDay.wd}` : '–' },
+    { k: '7 天所需人日', v: `${n0(wkNeed)}<small>人日</small>`, c: 'c-purple', d: '按 30 会话/人时 · 12h 窗口' },
+    { k: '当前水平', v: n0(lastReal), c: 'c-blue', d: '最近一日实际接待量' }
   ].map(x => `<div class="kpi ${x.c}"><div class="kl">${x.k}</div><div class="kv ${x.hl ? 'hl' : ''}">${x.v}</div><div class="kd">${x.d}</div>${x.sp || ''}</div>`).join('');
 
-  /* 今日分时段 */
-  const c = D.hhon, slots = (c && c.date === todayCn() && Array.isArray(c.slots)) ? c.slots : [];
+  renderStrategyOnline({ slots, labels, arrR, baseR, sumT, histNow, fcAll, a, seats, duty, on });
+
+  /* 今日分时段：接待量（柱）+ 接起率（实际 + 基准） */
   if (slots.length) {
-    $('#noteOnlinehh').textContent = `已出 ${slots.length} 个时段 · 合计 ${n0(sum(slots, s => s.total))} 会话`;
+    $('#noteOnlinehh').textContent = `已出 ${slots.length} 个时段 · 合计 ${n0(sumT)} 会话`;
     drawBar($('#chOnlinehh'), {
-      labels: slots.map(s => String(s.t).slice(0, 5)), data: slots.map(s => s.total), h: 172,
-      colorFn: (v, i) => i === slots.length - 1 ? '#6ee7b7' : 'rgba(52,211,153,.6)',
+      labels, data: arrT, h: 190,
+      colorFn: (v, i) => i === arrT.length - 1 ? '#6ee7b7' : 'rgba(52,211,153,.6)',
       tipFmt: v => `${n0(v)} 会话`
     });
   } else $('#chOnlinehh').innerHTML = '<div class="empty">今日分时段数据待采集</div>';
 
-  /* 近 30 天 */
+  if (arrR.some(v => v != null) || baseR.some(v => v != null)) {
+    drawLine($('#chOnlinehhRate'), {
+      labels, h: 152, yFmt: v => Math.round(v) + '%', tipFmt: v => (+v).toFixed(1) + '%',
+      series: [
+        { name: '实际', data: arrR, color: '#22d3ee', area: false },
+        { name: '基准', data: baseR, color: '#a78bfa', area: false, dash: '5 4' }
+      ]
+    });
+  } else $('#chOnlinehhRate').innerHTML = '<div class="empty">今日接起率待采集</div>';
+
+  /* 近 30 天：实际 + 预测（同为技能组接待量口径，可直接比） */
   const TRd = D.tr || {}, days = TRd.days || [], on2 = TRd.online || {};
-  const last = days.slice(-30).filter(d => on2[d] != null);
-  const ser = last.map(d => on2[d]);
-  drawLine($('#chOnlinetr'), {
-    labels: last.map(d => d.slice(5)), h: 172, tipFmt: v => `${n0(v)} 会话`,
-    series: [{ name: '在线', data: ser, color: '#6ee7b7', areaFill: 'rgba(52,211,153,.13)', label: n0(ser[ser.length - 1]) }]
-  });
+  const last30 = days.slice(-30);
+  if (last30.length) {
+    const lastD = last30[last30.length - 1];
+    const fcDays = fcAll.filter(f => f.date > lastD).map(f => f.date);
+    const lab = last30.concat(fcDays);
+    const fcMap = {}; fcAll.forEach(f => fcMap[f.date] = f.v);
+    const act = lab.map(d => on2[d] == null ? null : on2[d]);
+    const fcv = lab.map(d => (d > lastD && fcMap[d] != null) ? fcMap[d] : null);
+    drawLine($('#chOnlinetr'), {
+      labels: lab.map(d => d.slice(5)), h: 190, tipFmt: v => `${n0(v)} 会话`,
+      series: [
+        { name: '实际', data: act, color: '#6ee7b7', areaFill: 'rgba(52,211,153,.13)', label: n0(act.filter(v => v != null).pop()) },
+        { name: '预测', data: fcv, color: '#fbbf24', area: false, dash: '5 4', label: n0(fcv.filter(v => v != null).pop()) }
+      ]
+    });
+  } else $('#chOnlinetr').innerHTML = '<div class="empty">趋势数据未生成</div>';
 }
 
 /* 在线预测：同星期几基准 × 近 7 天水平因子（驱动模型待建） */
@@ -1165,7 +1232,7 @@ function renderTicketfc() {
 const D = { cc: null, tk: null, tr: null, plan: null, hh: null, hhon: null, tt: null, shape: null, hrate: null, drate: null, ready: false };
 const PANE_ORDER = ['400', 'online', 'ticket'];
 const PANE_FN = {
-  '400': () => { render400(D.cc); render400fc(D.plan); },
+  '400': () => { render400(); render400fc(D.plan); },
   online: () => { renderOnline(D.cc); renderOnlinefc(); },
   ticket: () => { renderTicket(D.tk); renderTicketTrend(); renderTicketfc(); }
 };
