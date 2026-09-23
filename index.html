@@ -872,7 +872,7 @@ function lowRateSlots() {
       const i = im[String(s.t).slice(11, 16)];
       if (i == null) return;
       const turn = (+s.total || 0) - (+s.ivr || 0);
-      if (turn > 0) {
+      if (turn >= 5) {                 // 样本太小的时段不列，避免「最低 0%」这类误导
         const r = (+s.answered || 0) / turn * 100;
         if (r < 85) out.push({ k: keys[i], r, turn, ans: +s.answered || 0 });
       }
@@ -971,6 +971,60 @@ function renderTr400() {
       series: [{ name: '接通率', data: rate, color: '#22d3ee', areaFill: 'rgba(34,211,238,.10)', label: n0(rLast) + '%' }]
     });
   } else $('#ch400trRate').innerHTML = '<div class="empty">暂无每日接通率</div>';
+}
+
+/* ── 不达标解读：接通率没到 85% 时先说清可能原因（排在调控策略上方） ── */
+function renderDiag400(o) {
+  const box = $('#diag400'); if (!box) return;
+  const ss = o.ss || {}, rate = ss.rate, low = o.low || [];
+  if (rate == null) { box.innerHTML = ''; return; }
+  const w = low.slice().sort((a, b) => a.r - b.r)[0];
+  if (rate >= 85) {
+    box.innerHTML = `<div class="diag ok">
+      <div class="dh">接通率 <b>${pc(rate)}</b> 已达 85%</div>
+      <div class="dt">${w ? `另有 <b>${low.length}</b> 个时段低于 85%，最低 <b>${w.k}</b> ${w.r.toFixed(0)}%，见下方策略。` : '已出时段全部达标，保持当前节奏。'}</div>
+    </div>`;
+    return;
+  }
+  const rs = [];
+  if (w) rs.push(`<b>${w.k}</b> 时段最吃紧，接通率仅 <b>${w.r.toFixed(0)}%</b>（转人工 ${n0(w.turn)} 通 / 接通 ${n0(w.ans)} 通）`);
+  if (o.planDay && o.planDay.gap_hc < 0) rs.push(`在岗 <b>${o.planDay.onshift_hc}</b> 人低于需求 <b>${o.planDay.need_hc}</b> 人，缺 <b>${Math.abs(o.planDay.gap_hc)}</b> 人`);
+  if (o.cap && o.cap.load400 >= 110) rs.push(`运能负荷 <b>${n0(o.cap.load400)}%</b>，产能已被打满`);
+  if (o.devIn != null && o.devIn > 5) rs.push(`呼入量高于预测 <b>${o.devIn.toFixed(0)}%</b>，进线集中`);
+  if ((ss.queue || 0) > 0) rs.push(`当前排队 <b>${n0(ss.queue)}</b> 通，接听被挤压`);
+  if (!rs.length) rs.push('暂未见明显瓶颈，需核查通话时长与技能组分配');
+  box.innerHTML = `<div class="diag">
+    <div class="dh">接通率 <b>${pc(rate)}</b> 未达 85%</div>
+    <div class="dt">可能的原因：${rs.slice(0, 4).join('；')}。</div>
+  </div>`;
+}
+
+/* ── 在线不达标解读：接起率没到 95% 时的原因分析 ── */
+function renderDiagOnline(o) {
+  const box = $('#diagOnline'); if (!box) return;
+  const r = o.rate, a = o.a || {};
+  if (r == null) { box.innerHTML = ''; return; }
+  if (r >= 95) {
+    box.innerHTML = `<div class="diag ok">
+      <div class="dh">接起率 <b>${pc(r, 1)}</b> 已达 95%</div>
+      <div class="dt">已出时段均值达标，保持当前节奏。</div>
+    </div>`;
+    return;
+  }
+  const rs = [];
+  if (o.cap && o.cap.loadOn >= 110) rs.push(`运能负荷 <b>${n0(o.cap.loadOn)}%</b>，接待量已超当前产能`);
+  if ((a.queue || 0) > 0) rs.push(`当前排队 <b>${n0(a.queue)}</b> 个会话`);
+  if (o.lowest) rs.push(`<b>${o.lowest.k}</b> 时段最低，仅 <b>${o.lowest.r.toFixed(0)}%</b>`);
+  if (o.sumT != null && o.histNow) {
+    const d = (o.sumT / o.histNow - 1) * 100;
+    if (Math.abs(d) > 10) rs.push(`已出时段接待量 ${d > 0 ? '高于' : '低于'}近 7 日同期 <b>${Math.abs(d).toFixed(0)}%</b>`);
+  }
+  if (o.on != null && o.duty != null && o.on < o.duty) rs.push(`在线出勤 <b>${o.on}/${o.duty}</b> 人，未满编`);
+  if (!rs.length) rs.push('暂未见明显瓶颈，需核查首响时长与会话分配');
+  box.innerHTML = `<div class="diag">
+    <div class="dh">接起率 <b>${pc(r, 1)}</b> 未达 95%</div>
+    <div class="dt">可能的原因：${rs.slice(0, 4).join('；')}。</div>
+  </div>`;
 }
 
 /* ── 今日调控策略建议：由实时进度 + 预测 + 分时段排班自动生成 ── */
@@ -1253,18 +1307,29 @@ function renderOnline() {
   /* —— 预测（技能组口径，日维度；供策略建议 / 切片共用）—— */
   const fcAll = onlineForecastPlain() || [];
 
+  /* 接起率未达标时段（重点卡副文案 + 不达标解读共用） */
+  /* 最低时段只看有量级的（r/t 都为 0 的多是未出时段或空数据，拿来当原因会误导） */
+  const lowestR = labels.map((k, i) => ({ k, r: arrR[i], t: arrT[i] }))
+    .filter(x => x.r != null && x.r > 0 && (x.t || 0) >= 3).sort((x, y) => x.r - y.r)[0] || null;
+  const rateOnl = avgN(arrR);
+
   $('#kOnline').innerHTML = [
     {
-      k: '当前排队', v: n0(a.queue), lead: 1, c: (a.queue || 0) > 0 ? 'c-red' : 'c-green',
+      k: '接起率', v: pc(rateOnl, 1), lead: 1, hl: 1, c: (rateOnl != null && rateOnl >= 95) ? 'c-green' : 'c-red',
+      d: `${rateOnl == null ? '<span style="color:var(--tx3)">待采集</span>' : rateOnl >= 95 ? '<span class="ok">达标</span>' : '<span class="warn">低于 95% 目标</span>'} · 会话管理口径 · 已出时段均值`
+        + (lowestR ? ` · 最低 ${lowestR.k} ${lowestR.r.toFixed(0)}%` : '')
+    },
+    {
+      k: '当前排队', v: n0(a.queue), c: (a.queue || 0) > 0 ? 'c-red' : 'c-green',
       d: `${(a.queue || 0) > 0 ? '<span class="warn">有排队积压</span>' : '<span class="ok">无排队</span>'} · 进行中 ${n0(a.current)} 席 · 在线技能组实时汇总`
     },
-    { k: '接起率（实时）', v: pc(avgN(arrR), 1), c: (avgN(arrR) != null && avgN(arrR) >= 95) ? 'c-green' : 'c-amber', d: '会话管理口径 · 已出时段均值' },
     { k: '运能负荷（实时）', v: pc(cap.loadOn, 0), c: (cap.loadOn || 0) >= 110 ? 'c-red' : (cap.loadOn || 0) < 90 ? 'c-blue' : 'c-green', d: `接待 ${n0(cap.inOn)} / 应接 ${n0(cap.capOn)} · 全天产能 ${n0(cap.capOnDay)}` },
     { k: '在线坐席（出勤 / 排班）', v: `${on}<small>/${duty}</small>`, c: on >= duty ? 'c-green' : 'c-amber', d: `在席 ${n0(seats)} 人 · 400 另签入 ${n0(signIn400)} 人` },
     { k: '今日会话（实时）', v: n0(a.sessions), c: 'c-green', d: `已完成 ${n0(a.done)} · 分配率 ${a.sessions ? pc(a.assigned / a.sessions * 100, 0) : '–'}`, sp: spark(hist, '#34d399') },
     { k: '分时段接待（实时）', v: n0(sumT), c: 'c-cyan', d: `${slots.length ? '已出 ' + slots.length + ' 段' : '待采集'} · ${devHtml(sumT, histNow, '近 7 日同期')}` }
   ].map(x => `<div class="kpi ${x.c}${x.lead ? ' lead' : ''}"><div class="kl">${x.k}</div><div class="kv ${x.hl ? 'hl' : ''}">${x.v}</div><div class="kd">${x.d}</div>${x.sp || ''}</div>`).join('');
 
+  renderDiagOnline({ rate: rateOnl, a, cap, sumT, histNow, on, duty, lowest: lowestR });
   renderStrategyOnline({ slots, labels, arrR, baseR, sumT, histNow, fcAll, a, seats, duty, on });
 
   /* 今日分时段：接待量（柱）+ 接起率（实际 + 基准） */
