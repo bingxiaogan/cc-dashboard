@@ -573,7 +573,20 @@ function labelIdx(n, step) {
   return idxs;
 }
 
-function drawLine(box, { labels, series, h = 168, yFmt = n0, tipFmt }) {
+/* 常显数值标签：同 x 邻域内挨太近就依次下移，避免两条线数值接近时叠字 */
+function placeVals(svg, list) {
+  list.sort((a, b) => a.y - b.y);
+  const placed = [];
+  list.forEach(L => {
+    let y = L.y, guard = 0;
+    while (placed.some(p => Math.abs(p.x - L.x) < 22 && Math.abs(p.y - y) < 9.5) && guard++ < 8) y += 10;
+    if (y < 8) y = 8;
+    placed.push({ x: L.x, y });
+    svg.appendChild(el('text', { x: L.x, y, fill: L.color, 'font-size': 8.6, 'font-weight': 600, 'text-anchor': 'middle', opacity: .92 }, L.text));
+  });
+}
+
+function drawLine(box, { labels, series, h = 168, yFmt = n0, tipFmt, showVals, valFmt }) {
   const W = 1000, H = h, pl = 46, pr = 14, pt = 14, pb = 26;
   const svg = el('svg', { viewBox: `0 0 ${W} ${H}`, preserveAspectRatio: 'none', style: `height:${h}px` });
   const all = series.flatMap(s => s.data.filter(v => v != null));
@@ -616,6 +629,15 @@ function drawLine(box, { labels, series, h = 168, yFmt = n0, tipFmt }) {
     placed.push({ x: e.x, y });
     svg.appendChild(el('text', { x: e.x, y, fill: e.color, 'font-size': 11, 'font-weight': 600, 'text-anchor': 'end' }, e.text));
   });
+  /* 常显数值：每个数据点直接标数，不必悬停 */
+  if (showVals) {
+    const list = [];
+    series.forEach(s => s.data.forEach((v, i) => {
+      if (v == null) return;
+      list.push({ x: X(i), y: Y(v) - 6, text: (s.valFmt || valFmt || yFmt)(v), color: s.color });
+    }));
+    placeVals(svg, list);
+  }
   const step = Math.ceil(labels.length / 9);
   labelIdx(labels.length, step).forEach(i =>
     svg.appendChild(el('text', { x: X(i), y: H - 7, fill: '#5c7093', 'font-size': 10.5, 'text-anchor': 'middle' }, labels[i])));
@@ -633,7 +655,7 @@ function drawLine(box, { labels, series, h = 168, yFmt = n0, tipFmt }) {
 }
 
 /* 柱状图（可按阈值着色 + 可选叠加折线） */
-function drawBar(box, { labels, data, color, colorFn, h = 168, yFmt = n0, tipFmt, line, lineColor, lineSameScale, lineTipFmt }) {
+function drawBar(box, { labels, data, color, colorFn, h = 168, yFmt = n0, tipFmt, line, lineColor, lineSameScale, lineTipFmt, showVals, valFmt }) {
   const W = 1000, H = h, pl = 46, pr = 14, pt = 14, pb = 26;
   const svg = el('svg', { viewBox: `0 0 ${W} ${H}`, preserveAspectRatio: 'none', style: `height:${h}px` });
   const vals = data.filter(v => v != null);
@@ -648,12 +670,14 @@ function drawBar(box, { labels, data, color, colorFn, h = 168, yFmt = n0, tipFmt
     svg.appendChild(el('line', { x1: pl, x2: W - pr, y1: y, y2: y, stroke: 'rgba(126,166,226,.12)', 'stroke-dasharray': g === 4 ? '0' : '3 4' }));
     svg.appendChild(Object.assign(el('text', { x: pl - 7, y: y + 3.5, fill: '#5c7093', 'font-size': 10.5, 'text-anchor': 'end' }), { textContent: yFmt(mx * (1 - g / 4)) }));
   }
+  const vals = [];   // 常显数值标签收集（柱 + 折线统一避让）
   data.forEach((v, i) => {
     if (v == null) return;
     const x = left0 + i * bw, bh = Math.max(1, (v / mx) * (H - pt - pb)), y = H - pb - bh;
     const r = el('rect', { x, y, width: bw, height: bh, rx: Math.min(3, bw / 2), fill: colorFn ? colorFn(v, i) : color, opacity: .92 });
     if (tipFmt) { r.style.cursor = 'crosshair'; r.dataset.tip = `${labels[i]}　${tipFmt(v)}`; }
     svg.appendChild(r);
+    if (showVals) vals.push({ x: x + bw / 2, y: y - 5, text: (valFmt || yFmt)(v), color: '#93c5fd' });
   });
   if (line) {
     const lv = line.filter(x => x != null);
@@ -668,6 +692,7 @@ function drawBar(box, { labels, data, color, colorFn, h = 168, yFmt = n0, tipFmt
         pts.push([x, y, v, i]);
       });
       svg.appendChild(el('path', { d, fill: 'none', stroke: lineColor || '#fbbf24', 'stroke-width': 1.9, 'stroke-dasharray': '4 3', opacity: .95 }));
+      if (showVals) pts.forEach(p => vals.push({ x: p[0], y: p[1] - 6, text: (valFmt || yFmt)(p[2]), color: lineColor || '#fbbf24' }));
       if (lineTipFmt) {
         pts.forEach(p => {
           const c = el('circle', { cx: p[0], cy: p[1], r: 9, fill: 'transparent' });
@@ -679,6 +704,7 @@ function drawBar(box, { labels, data, color, colorFn, h = 168, yFmt = n0, tipFmt
       }
     }
   }
+  if (showVals && vals.length) placeVals(svg, vals);
   const step = Math.ceil(labels.length / 10);
   labelIdx(labels.length, step).forEach(i =>
     svg.appendChild(el('text', { x: left0 + i * bw + bw / 2, y: H - 7, fill: '#5c7093', 'font-size': 10.5, 'text-anchor': 'middle' }, labels[i])));
@@ -850,13 +876,15 @@ function renderHh400() {
       colorFn: usePredBars ? null : (v, i) => i === lastI ? '#93c5fd' : 'rgba(96,165,250,.62)',
       tipFmt: v => n0(v) + ' 通',
       line: usePredBars ? null : pred,
-      lineSameScale: true, lineColor: 'rgba(251,191,36,.9)', lineTipFmt: v => n0(v) + ' 通'
+      lineSameScale: true, lineColor: 'rgba(251,191,36,.9)', lineTipFmt: v => n0(v) + ' 通',
+      showVals: true, valFmt: v => n0(v)
     });
   } else $('#ch400hh').innerHTML = '<div class="empty">今日半小时数据待采集</div>';
 
   if (rAct.some(v => v != null) || base.some(v => v != null)) {
     drawLine($('#ch400hhRate'), {
-      labels: keys, h: 156, yFmt: v => Math.round(v) + '%', tipFmt: v => (+v).toFixed(1) + '%',
+      labels: keys, h: 158, yFmt: v => Math.round(v) + '%', tipFmt: v => (+v).toFixed(1) + '%',
+      showVals: true, valFmt: v => Math.round(v) + '%',
       series: [
         { name: '实际', data: rAct, color: '#22d3ee', area: false },
         { name: '基准', data: base, color: '#a78bfa', area: false, dash: '5 4' }
@@ -878,10 +906,14 @@ function renderTr400() {
   const labels = last30.concat(future);
   const planTurn = {}; ((D.plan && D.plan.days) || []).forEach(d => planTurn[d.date] = d.turn);
   const act = labels.map(d => c400[d] == null ? null : c400[d]);
-  const fc = labels.map(d => (d >= today && planTurn[d] != null) ? planTurn[d] : null);
+  /* 预测线覆盖整个窗口：未来取 plan.days，历史取模型回算值（daily_rate.pred）——
+     过去的日子也有预测，才能直接看每天「实际 vs 预测」的偏差 */
+  const predTurn = (D.drate && D.drate.pred) || {};
+  const fc = labels.map(d => planTurn[d] != null ? planTurn[d] : (predTurn[d] == null ? null : predTurn[d]));
 
   drawLine($('#ch400tr'), {
-    labels: labels.map(d => d.slice(5)), h: 200, tipFmt: v => n0(v) + ' 通',
+    labels: labels.map(d => d.slice(5)), h: 212, tipFmt: v => n0(v) + ' 通',
+    showVals: true, valFmt: v => n0(v),
     series: [
       { name: '实际', data: act, color: '#93c5fd', areaFill: 'rgba(96,165,250,.13)', label: n0(act.filter(v => v != null).pop()) },
       { name: '预测', data: fc, color: '#fbbf24', area: false, dash: '5 4', label: n0(fc.filter(v => v != null).pop()) }
@@ -893,7 +925,8 @@ function renderTr400() {
   if (rate.some(v => v != null)) {
     const rLast = rate.filter(v => v != null).pop();
     drawLine($('#ch400trRate'), {
-      labels: labels.map(d => d.slice(5)), h: 156, yFmt: v => Math.round(v) + '%', tipFmt: v => (+v).toFixed(1) + '%',
+      labels: labels.map(d => d.slice(5)), h: 158, yFmt: v => Math.round(v) + '%', tipFmt: v => (+v).toFixed(1) + '%',
+      showVals: true, valFmt: v => n0(v) + '%',
       series: [{ name: '接通率', data: rate, color: '#22d3ee', areaFill: 'rgba(34,211,238,.10)', label: n0(rLast) + '%' }]
     });
   } else $('#ch400trRate').innerHTML = '<div class="empty">暂无每日接通率</div>';
@@ -1105,16 +1138,46 @@ function renderDayDetail() {
     ['人力缺口', gapTxt, '产能 ' + n1(d.onshift_ph) + ' 通/人时'],
     ['当日负荷', n0(d.ratio) + '%', d.ratio >= 110 ? '超负荷' : (d.ratio < 90 ? '偏松' : '正常')]
   ];
+  /* 该日分时段人力：所需 = 预测转人工量 ÷（产能 × 0.5h）· 排班取班表 · 餐点取现场调控表 */
+  const keys = slotShortKeys();
+  const hh = hhPredOf(d.date);
+  const ss = (D.plan && D.plan.staff_slots) || {};
+  const sched = (ss.schedule || {})[d.date] || {};
+  const sheetDay = (ss.sheet || {})[d.date] || {};
+  const sl = ((D.drate || {}).slots || {})[d.date] || {};
+  const capH = (D.plan && D.plan.cap_per_hour) || 11.81;
+  const rows = keys.map((k, i) => {
+    const full = slotFullKey(k);
+    const pv = hh ? hh[i] : null;
+    const need = pv == null ? null : pv / (capH * 0.5);
+    let staff = sched[full] != null ? sched[full] : (sheetDay[full] != null ? sheetDay[full] : null);
+    if (staff == null && sl[full] && sl[full].staff != null) staff = sl[full].staff;
+    const gap = (need != null && staff != null) ? need - staff : null;
+    const c = sl[full] || {};
+    const meal = [];
+    if (c.meal) meal.push('用餐 ' + c.meal + ' 人');
+    if (c.off) meal.push('放休 ' + c.off + ' 人');
+    const gp = gap == null ? '<span class="pill b">–</span>'
+      : gap > 0.4 ? `<span class="pill r">缺 ${n1(gap)}</span>`
+        : gap < -0.4 ? `<span class="pill g">余 ${n1(-gap)}</span>` : '<span class="pill b">持平</span>';
+    return `<tr><td class="v">${k}</td><td>${pv == null ? '–' : n0(pv)}</td><td class="v">${need == null ? '–' : n1(need)}</td>
+      <td>${staff == null ? '–' : n1(staff)}</td><td>${gp}</td><td>${meal.length ? meal.join(' · ') : '–'}</td></tr>`;
+  }).join('');
+
   box.innerHTML =
     `<div class="dhead"><b>${d.date}</b><span>${d.wd}</span>${d.date === today ? '<span class="pill b">今天</span>' : ''}
        <span style="margin-left:auto;font-size:11px;color:var(--tx3)">${esc(d.staff_src || '')} · 排班形状 ${esc(d.staff_shape || '–')}</span></div>
      <div class="dgrid">${stats.map(s => `<div class="dstat"><div class="dk">${s[0]}</div><div class="dv">${s[1]}</div><div class="ds">${s[2]}</div></div>`).join('')}</div>
      <div class="subhead">该日每半小时预测转人工量 <span>预测转人工量 × 时段形状占比</span></div>
-     <div id="chDayHh"></div>`;
-  const hh = hhPredOf(d.date);
+     <div id="chDayHh"></div>
+     <div class="subhead">该日分时段人力安排 <span>所需 = 预测转人工 ÷ 产能 ${n1(capH)} 通/人时 × 0.5h · 排班按两端半量折算 · 餐点取自现场调控表</span></div>
+     <table class="tbl"><thead><tr>
+       <th>时段</th><th>预测转人工</th><th>所需人力</th><th>排班人数</th><th>缺口</th><th>餐点安排</th>
+     </tr></thead><tbody>${rows}</tbody></table>`;
   if (hh) {
     drawBar($('#chDayHh'), {
-      labels: slotShortKeys(), data: hh, h: 150, color: 'rgba(251,191,36,.6)', tipFmt: v => n0(v) + ' 通'
+      labels: keys, data: hh, h: 158, color: 'rgba(251,191,36,.6)', tipFmt: v => n0(v) + ' 通',
+      showVals: true, valFmt: v => n0(v)
     });
   } else $('#chDayHh').innerHTML = '<div class="empty">缺时段形状（400_shape.json）或该日预测</div>';
 }
