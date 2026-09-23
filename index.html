@@ -221,16 +221,16 @@ h1 em{font-style:normal;font-size:12px;font-weight:500;color:var(--tx3);letter-s
 .dchip.on b,.dchip.on span{color:var(--tx)}
 .dchip.gap i{color:var(--red)}
 
-/* ── 实时+预测 KPI 与调控策略建议（一行两栏：KPI 在左，建议在右） ── */
-.mergeline{display:grid;grid-template-columns:minmax(0,1fr) 338px;gap:14px;margin-bottom:16px;align-items:start}
-.mergeline .kpis{grid-template-columns:repeat(4,minmax(0,1fr));margin-bottom:0}
-@media(max-width:1180px){
-  .mergeline{grid-template-columns:1fr}
-  .mergeline .kpis{grid-template-columns:repeat(auto-fit,minmax(158px,1fr))}
-}
-@media(max-width:640px){.mergeline .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
+/* ── 现场 KPI 与调控策略建议（一行两栏：KPI 2 列 × 3 行在左，建议在右） ── */
+.mergeline{display:grid;grid-template-columns:minmax(0,1fr) 452px;gap:14px;margin-bottom:16px;align-items:stretch}
+.mergeline .kpis{grid-template-columns:repeat(2,minmax(0,1fr));margin-bottom:0}
+/* 建议条目按两栏高度均分，底边与 KPI 区齐平 */
+.mergeline .strategy>div[id^="strat"]{flex:1;display:flex;flex-direction:column;justify-content:space-between}
+@media(max-width:1180px){.mergeline{grid-template-columns:1fr}}
+@media(max-width:620px){.mergeline .kpis{grid-template-columns:1fr}}
 .strategy{
-  padding:15px 17px 13px;border-radius:var(--r);min-width:0;
+  display:flex;flex-direction:column;
+  padding:15px 18px 13px;border-radius:var(--r);min-width:0;
   background:linear-gradient(180deg,rgba(251,191,36,.07),transparent 46%),var(--card);
   border:1px solid var(--line);
 }
@@ -323,23 +323,23 @@ svg{display:block;width:100%;overflow:visible}
     <div class="sechead">
       <span class="idx">01</span>
       <h2>400 电话</h2>
-      <span class="badge">实时 + 预测</span>
+      <span class="badge">现场</span>
       <div class="r" id="h400r"></div>
     </div>
 
     <div class="zone">
-      <div class="zonetag"><i></i>实时 + 预测 <span>7x24cc 采集 90 秒 · 预测每日 21:50 标定</span></div>
+      <div class="zonetag"><i></i>现场 <span>7x24cc 采集 90 秒 · 预测每日 21:50 标定</span></div>
       <div class="mergeline">
         <div class="kpis" id="k400"></div>
         <aside class="strategy">
-          <div class="shead"><h3>今日调控策略建议</h3><span class="hint">实时进度 + 预测自动生成</span></div>
+          <div class="shead"><h3>今日调控策略建议</h3><span class="hint">现场进度 + 预测自动生成</span></div>
           <div id="strat400"></div>
         </aside>
       </div>
       <div class="panels">
         <div class="panel wide">
           <div class="phead">
-            <h3>每半小时人工量 · 实时 + 预测</h3>
+            <h3>每半小时人工量 · 现场</h3>
             <div class="lgd">
               <span><em style="background:var(--blue)"></em>实际转人工量</span>
               <span><em style="background:var(--amber)"></em>预测转人工量</span>
@@ -357,7 +357,7 @@ svg{display:block;width:100%;overflow:visible}
         </div>
         <div class="panel wide">
           <div class="phead">
-            <h3>近 30 天人工量 · 实时 + 预测</h3>
+            <h3>近 30 天人工量 · 现场</h3>
             <div class="lgd">
               <span><em style="background:var(--blue)"></em>实际人工量</span>
               <span><em style="background:var(--amber)"></em>预测人工量</span>
@@ -397,16 +397,16 @@ svg{display:block;width:100%;overflow:visible}
     <div class="sechead">
       <span class="idx">02</span>
       <h2>在线客服</h2>
-      <span class="badge">实时 + 预测</span>
+      <span class="badge">现场</span>
       <div class="r" id="hOnliner"></div>
     </div>
 
     <div class="zone">
-      <div class="zonetag"><i></i>实时 + 预测 <span>7x24cc 采集 90 秒 · 预测每日 21:50 标定</span></div>
+      <div class="zonetag"><i></i>现场 <span>7x24cc 采集 90 秒 · 预测每日 21:50 标定</span></div>
       <div class="mergeline">
         <div class="kpis" id="kOnline"></div>
         <aside class="strategy">
-          <div class="shead"><h3>今日调控策略建议</h3><span class="hint">实时进度 + 预测自动生成</span></div>
+          <div class="shead"><h3>今日调控策略建议</h3><span class="hint">现场进度 + 预测自动生成</span></div>
           <div id="stratOnline"></div>
         </aside>
       </div>
@@ -431,7 +431,7 @@ svg{display:block;width:100%;overflow:visible}
         </div>
         <div class="panel wide">
           <div class="phead">
-            <h3>近 30 天接待量 · 实时 + 预测</h3>
+            <h3>近 30 天接待量 · 现场</h3>
             <div class="lgd">
               <span><em style="background:var(--green)"></em>实际</span>
               <span><em style="background:var(--amber)"></em>预测</span>
@@ -462,12 +462,12 @@ svg{display:block;width:100%;overflow:visible}
     <div class="sechead">
       <span class="idx">03</span>
       <h2>工单</h2>
-      <span class="badge">实时 + 预测</span>
+      <span class="badge">现场</span>
       <div class="r" id="hTicketr"></div>
     </div>
 
     <div class="zone">
-      <div class="zonetag"><i></i>实时 + 预测 <span>爱回收工单系统 2 小时 · 预测每日 21:50 标定</span></div>
+      <div class="zonetag"><i></i>现场 <span>爱回收工单系统 2 小时 · 预测每日 21:50 标定</span></div>
       <div class="mergeline">
         <div class="kpis" id="kTicket"></div>
         <aside class="strategy">
@@ -478,7 +478,7 @@ svg{display:block;width:100%;overflow:visible}
       <div class="panels">
         <div class="panel wide">
           <div class="phead">
-            <h3>近 30 天升级 / 处理 · 实时 + 预测</h3>
+            <h3>近 30 天升级 / 处理 · 现场</h3>
             <div class="lgd">
               <span><em style="background:#fbbf24"></em>实际升级</span>
               <span><em style="background:#a78bfa"></em>实际处理</span>
@@ -769,10 +769,10 @@ function render400() {
   /* —— 今日调控策略建议 —— */
   renderStrategy400({ keys, full, act, sumTurn, sumIn, devTurn, devIn, predictTurnNow, doneN, planDay, lastI });
 
-  /* 每半小时人工量（实时 + 预测）与接通率 */
+  /* 每半小时人工量（现场）与接通率 */
   renderHh400();
 
-  /* 近 30 天人工量（实时 + 预测）与每日接通率 */
+  /* 近 30 天人工量（现场）与每日接通率 */
   renderTr400();
 }
 
@@ -1350,9 +1350,10 @@ function renderTicket(tk) {
 
   $('#kTicket').innerHTML = [
     { k: '工单池', v: n0(tk.grand_total), c: 'c-purple', hl: 1, d: '含全部状态 · 创建日期口径' },
-    { k: '投诉', v: n0(bt['客诉处理']), c: 'c-red', d: '执行部门 = 客诉客服' },
-    { k: '工单', v: n0(bt['工单处理']), c: 'c-blue', d: '执行部门 ≠ 客诉客服' },
-    { k: '舆情', v: n0(bt['舆情客诉单']), c: 'c-amber', d: '分类舆情客诉单' },
+    {
+      k: '投诉 / 工单 / 舆情', v: n0(bt['客诉处理']), c: 'c-red',
+      d: `工单 ${n0(bt['工单处理'])} · 舆情 ${n0(bt['舆情客诉单'])} · 投诉按客诉客服口径`
+    },
     { k: '待处理', v: n0(st['待处理']), c: 'c-cyan', d: `待分配 ${n0(st['待分配'])} · 处理中 ${n0(st['处理中'])}` },
     { k: '超时未结（≥24h）', v: n0(overN), c: overN > 0 ? 'c-red' : 'c-green', d: `48h 以上 ${n0(over48)} · 96h 以上 ${n0(over96)} · 24h 内 ${n0(in24)}` },
     {
