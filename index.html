@@ -762,8 +762,7 @@ function render400() {
       k: '运能负荷（实时）', v: pc(cap.load400, 0),
       c: (cap.load400 || 0) >= 110 ? 'c-red' : (cap.load400 || 0) < 90 ? 'c-blue' : 'c-green',
       d: `进线 ${n0(cap.in400)} / 应接 ${n0(cap.cap400)}` + (predLoadNow != null ? ` · 预测同期 ${pc(predLoadNow, 0)}` : '')
-    },
-    { k: '周负荷', v: pc(cw.load400, 0), c: 'c-purple', d: `本周 ${n0(cw.wDays)} 天 · 周接通率 ${n0(rateWk)}%` }
+    }
   ].map(x => `<div class="kpi ${x.c}"><div class="kl">${x.k}</div><div class="kv ${x.hl ? 'hl' : ''}">${x.v}</div><div class="kd">${x.d}</div>${x.sp || ''}</div>`).join('');
 
   /* —— 今日调控策略建议 —— */
@@ -1148,7 +1147,6 @@ function renderOnline() {
     { k: '分时段接待（实时）', v: n0(sumT), c: 'c-cyan', d: `${slots.length ? '已出 ' + slots.length + ' 段' : '待采集'} · ${devHtml(sumT, histNow, '近 7 日同期')}` },
     { k: '当前排队', v: n0(a.queue), c: (a.queue || 0) > 0 ? 'c-red' : 'c-green', d: `进行中 ${n0(a.current)} 席 · ${(a.queue || 0) > 0 ? '有积压' : '无排队'}` },
     { k: '在线坐席（出勤 / 排班）', v: `${on}<small>/${duty}</small>`, c: on >= duty ? 'c-green' : 'c-amber', d: `在席 ${n0(seats)} 人 · 400 另签入 ${n0(signIn400)} 人` },
-    { k: '满意度', v: pc(a.sat, 0), c: (a.sat != null && a.sat >= 95) ? 'c-green' : 'c-amber', d: '各技能组均值（剔除无数据组）' },
     { k: '接起率（实时）', v: pc(avgN(arrR), 1), c: (avgN(arrR) != null && avgN(arrR) >= 95) ? 'c-green' : 'c-amber', d: '会话管理口径 · 已出时段均值' },
     { k: '运能负荷（实时）', v: pc(cap.loadOn, 0), c: (cap.loadOn || 0) >= 110 ? 'c-red' : (cap.loadOn || 0) < 90 ? 'c-blue' : 'c-green', d: `接待 ${n0(cap.inOn)} / 应接 ${n0(cap.capOn)} · 全天产能 ${n0(cap.capOnDay)}` }
   ].map(x => `<div class="kpi ${x.c}"><div class="kl">${x.k}</div><div class="kv ${x.hl ? 'hl' : ''}">${x.v}</div><div class="kd">${x.d}</div>${x.sp || ''}</div>`).join('');
