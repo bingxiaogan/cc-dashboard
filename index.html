@@ -1236,6 +1236,8 @@ function renderOnlinefc() {
     $('#onlineSlicer').innerHTML = ''; $('#onlineDetail').innerHTML = ''; return;
   }
   const lastReal = ((D.tr && D.tr.days) || []).map(d => (D.tr.online || {})[d]).filter(v => v != null).pop();
+  // 先定好选中日，表格才能一次画对高亮行（renderOnlineSlicer 里同样的兜底是幂等的）
+  if (!PICK_ONLINE || !fc.some(f => f.date === PICK_ONLINE)) PICK_ONLINE = fc[0].date;
   $('#noteOnlinefc').textContent = '按星期几基准 × 近 7 天水平因子外推 · 驱动模型待建';
   tbl.innerHTML = `<thead><tr><th>日期</th><th>星期</th><th>预估接待量</th><th>所需人力</th><th>建议单班人数</th></tr></thead><tbody>` +
     fc.map(f => `<tr data-day="${f.date}" class="${f.date === PICK_ONLINE ? ' pick' : ''}">
