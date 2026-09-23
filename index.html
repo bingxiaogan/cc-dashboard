@@ -1,1127 +1,885 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>客服中心 · 工单监控 合并看板</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>客服中心 · 实时与预测</title>
 <style>
-:root {
-  --bg: #0b1220; --card: #151e30; --card2: #1a2438; --border: #24304a;
-  --text: #e8edf5; --dim: #8b98ad; --accent: #5da8ff;
-  --red: #ff6b6b; --red-bg: rgba(255,107,107,.12);
-  --green: #3ddc84; --green-bg: rgba(61,220,132,.12);
-  --amber: #ffb454; --amber-bg: rgba(255,180,84,.12);
-  --blue-bg: rgba(93,168,255,.12);
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#070c18; --card:#0e1729; --card2:#131e35; --card3:#18243f;
+  --line:rgba(126,166,226,.16); --lin2:rgba(126,166,226,.08);
+  --tx:#e9effb; --tx2:#92a6c8; --tx3:#5c7093;
+  --blue:#60a5fa; --blue2:#93c5fd; --cyan:#22d3ee;
+  --green:#34d399; --purple:#a78bfa; --amber:#fbbf24; --red:#f87171;
+  --r:14px;
 }
-* { margin:0; padding:0; box-sizing:border-box; }
-body { background: var(--bg); color: var(--text); font-family: "Microsoft YaHei", system-ui, -apple-system, sans-serif; min-height:100vh; padding:20px; }
-.wrap { max-width:1280px; margin:0 auto; }
+html{-webkit-text-size-adjust:100%}
+body{
+  background:var(--bg); color:var(--tx); min-height:100vh; padding-bottom:70px;
+  font:14px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  font-variant-numeric:tabular-nums; letter-spacing:.01em;
+}
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:
+    radial-gradient(950px 520px at 10% -8%,rgba(96,165,250,.16),transparent 62%),
+    radial-gradient(820px 480px at 90% 2%,rgba(167,139,250,.12),transparent 64%),
+    radial-gradient(760px 520px at 50% 110%,rgba(52,211,153,.08),transparent 62%);
+}
+body::after{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.5;
+  background-image:
+    linear-gradient(rgba(126,166,226,.05) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(126,166,226,.05) 1px,transparent 1px);
+  background-size:52px 52px;
+  -webkit-mask-image:radial-gradient(ellipse at 50% 0%,#000 28%,transparent 82%);
+  mask-image:radial-gradient(ellipse at 50% 0%,#000 28%,transparent 82%);
+}
+.wrap{position:relative;z-index:1;max-width:1580px;margin:0 auto;padding:0 22px}
 
-/* ===== 顶部 ===== */
-.top { display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap; margin-bottom:18px; }
-.logo { display:flex; align-items:center; gap:10px; }
-.logo .ic { width:38px; height:38px; border-radius:10px; background:linear-gradient(135deg,#5da8ff,#7c5dff); display:flex; align-items:center; justify-content:center; font-size:19px; box-shadow:0 4px 14px rgba(93,168,255,.35); }
-.logo h1 { font-size:17px; font-weight:800; letter-spacing:.3px; }
-.logo .sub { font-size:11px; color:var(--dim); margin-top:2px; }
-.meta { display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
-.meta .t { background:var(--card); border:1px solid var(--border); padding:6px 12px; border-radius:8px; font-size:12px; color:var(--dim); }
-.meta .t b { color:var(--text); font-weight:600; }
-/* 400 进线量预测入口（相对路径，本地 8601 与公网 GitHub Pages 通用） */
-.meta .goFc { text-decoration:none; background:linear-gradient(135deg,#5da8ff,#7c5dff); color:#fff; border:none; box-shadow:0 3px 10px rgba(93,168,255,.28); font-weight:600; }
-.meta .goFc:hover { filter:brightness(1.08); }
-.btn { background:var(--card2); color:var(--text); border:1px solid var(--border); padding:7px 16px; border-radius:8px; cursor:pointer; font-size:13px; transition:.15s; }
-.btn:hover { border-color:var(--accent); color:var(--accent); }
-.btn.pri { background:linear-gradient(135deg,#5da8ff,#7c5dff); border:none; color:#fff; font-weight:700; }
-.switch { display:inline-flex; align-items:center; gap:6px; font-size:12px; color:var(--dim); cursor:pointer; }
+/* ── 顶栏 ── */
+.top{display:flex;align-items:center;gap:20px;padding:22px 0 18px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:13px}
+.mark{
+  width:42px;height:42px;border-radius:12px;display:grid;place-items:center;font-size:19px;
+  background:linear-gradient(145deg,rgba(96,165,250,.26),rgba(167,139,250,.18));
+  border:1px solid rgba(147,197,253,.34);color:var(--blue2);
+  box-shadow:0 0 22px rgba(96,165,250,.22) inset;
+}
+h1{font-size:19px;font-weight:650;letter-spacing:.02em;display:flex;align-items:baseline;gap:9px}
+h1 em{font-style:normal;font-size:12px;font-weight:500;color:var(--tx3);letter-spacing:.09em;text-transform:uppercase}
+.brand .sub{font-size:11.5px;color:var(--tx3);margin-top:2px;letter-spacing:.06em}
+.metaBar{display:flex;gap:9px;margin-left:auto;flex-wrap:wrap}
+.chip{
+  display:flex;align-items:center;gap:7px;padding:6px 12px;border-radius:9px;font-size:12px;
+  background:rgba(126,166,226,.06);border:1px solid var(--lin2);color:var(--tx2);white-space:nowrap;
+}
+.chip b{color:var(--tx);font-weight:600}
+.chip i{width:6px;height:6px;border-radius:50%;background:var(--tx3);flex:0 0 auto}
+.chip.ok i{background:var(--green);box-shadow:0 0 9px var(--green)}
+.chip.warn i{background:var(--amber);box-shadow:0 0 9px var(--amber)}
+.chip.bad i{background:var(--red);box-shadow:0 0 9px var(--red)}
+.act{display:flex;align-items:center;gap:11px}
+.sw{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--tx2);cursor:pointer;user-select:none}
+.sw input{display:none}
+.sw i{width:32px;height:18px;border-radius:10px;background:rgba(126,166,226,.16);position:relative;transition:.2s}
+.sw i::after{content:"";position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;background:var(--tx3);transition:.2s}
+.sw input:checked + i{background:rgba(96,165,250,.4)}
+.sw input:checked + i::after{left:16px;background:var(--blue2)}
+.btn{
+  padding:7px 15px;border-radius:9px;font-size:12.5px;font-weight:550;cursor:pointer;
+  background:linear-gradient(180deg,#1e63d6,#1a4fb0);border:1px solid #3273e2;color:#fff;
+  box-shadow:0 3px 14px rgba(30,99,214,.35);transition:.15s;
+}
+.btn:hover{filter:brightness(1.13)}
+.btn.ghost{background:rgba(126,166,226,.07);border-color:var(--line);color:var(--tx2);box-shadow:none}
+.btn.ghost:hover{background:rgba(126,166,226,.13);color:var(--tx)}
 
-/* ===== 筛选器 ===== */
-.filters { display:flex; gap:16px; flex-wrap:wrap; align-items:center; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:12px 18px; margin-bottom:18px; }
-.fg { display:flex; align-items:center; gap:8px; }
-.fg label { font-size:12px; color:var(--dim); white-space:nowrap; }
-.fg select { background:var(--card2); color:var(--text); border:1px solid var(--border); padding:6px 12px; border-radius:8px; font-size:13px; outline:none; cursor:pointer; }
-.fg select:focus { border-color:var(--accent); }
+/* ── 业务线切片器 ── */
+.tabs{display:flex;gap:10px;padding:0 0 22px;flex-wrap:wrap}
+.tab{
+  --tc:var(--blue); --tcs:96,165,250;
+  display:flex;align-items:center;gap:10px;padding:10px 18px;border-radius:12px;cursor:pointer;
+  background:rgba(126,166,226,.055);border:1px solid var(--lin2);color:var(--tx2);
+  font:inherit;font-size:13.5px;font-weight:550;letter-spacing:.01em;
+  transition:background .16s,border-color .16s,transform .16s,box-shadow .16s;
+}
+.tab.ton{--tc:var(--green);--tcs:52,211,153}
+.tab.ttk{--tc:var(--purple);--tcs:167,139,250}
+.tab .ti{font-size:11px;font-weight:800;letter-spacing:.09em;color:var(--tx3);transition:color .16s}
+.tab .tn{transition:color .16s}
+.tab .tm{
+  margin-left:2px;min-width:56px;text-align:center;padding:2px 9px;border-radius:7px;
+  font-size:11.5px;font-weight:650;background:rgba(126,166,226,.10);color:var(--tx2);transition:.16s;
+}
+.tab:hover{background:rgba(126,166,226,.11);color:var(--tx)}
+.tab.active{
+  color:var(--tx);transform:translateY(-1px);
+  background:linear-gradient(145deg,rgba(var(--tcs),.24),rgba(var(--tcs),.06));
+  border-color:rgba(var(--tcs),.58);
+  box-shadow:0 5px 22px rgba(var(--tcs),.2);
+}
+.tab.active .ti,.tab.active .tn{color:var(--tc)}
+.tab.active .tm{background:rgba(var(--tcs),.18);color:var(--tc)}
+.tab:focus-visible{outline:2px solid rgba(var(--tcs),.6);outline-offset:2px}
 
-/* ===== 板块标题 ===== */
-.sec { display:flex; align-items:center; gap:10px; margin:22px 0 12px; }
-.sec .bar { width:4px; height:16px; border-radius:2px; background:linear-gradient(180deg,#5da8ff,#7c5dff); }
-.sec h2 { font-size:15px; font-weight:800; }
-.sec .hint { font-size:11px; color:var(--dim); }
+/* ── 板块切换 ── */
+.pane{display:none}
+.pane.active{display:block;animation:paneIn .26s ease both}
+@keyframes paneIn{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){.pane.active{animation:none}.tab.active{transform:none}}
 
-/* ===== 网格 ===== */
-.grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
-.grid.cols3 { grid-template-columns:1fr 1fr 1fr; }
-@media (max-width:1080px) { .grid, .grid.cols3 { grid-template-columns:1fr; } }
-.card { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:18px; }
-.card h3 { font-size:13px; font-weight:700; margin-bottom:14px; display:flex; align-items:center; gap:8px; color:var(--text); }
-.card h3 .dot { width:8px; height:8px; border-radius:50%; }
-.card h3 .extra { font-size:11px; color:var(--dim); font-weight:400; margin-left:auto; }
+/* ── 业务板块 ── */
+.sec{--acc:var(--blue);--accs:96,165,250;margin-bottom:14px;scroll-margin-top:18px}
+.sec.online{--acc:var(--green);--accs:52,211,153}
+.sec.ticket{--acc:var(--purple);--accs:167,139,250}
+.sechead{
+  display:flex;align-items:center;gap:13px;padding:14px 20px;margin-bottom:16px;border-radius:var(--r);
+  background:linear-gradient(90deg,rgba(var(--accs),.13),rgba(var(--accs),.03) 46%,transparent);
+  border:1px solid rgba(var(--accs),.22);border-left:3px solid var(--acc);
+}
+.sechead .idx{
+  font-size:13px;font-weight:800;letter-spacing:.1em;color:var(--acc);
+  padding:3px 9px;border-radius:7px;background:rgba(var(--accs),.14);
+}
+.sechead h2{font-size:18px;font-weight:650;letter-spacing:.02em}
+.sechead .badge{
+  font-size:11px;padding:3px 10px;border-radius:20px;color:var(--acc);
+  background:rgba(var(--accs),.1);border:1px solid rgba(var(--accs),.26);letter-spacing:.04em;
+}
+.sechead .r{margin-left:auto;display:flex;gap:16px;font-size:12px;color:var(--tx2);flex-wrap:wrap}
+.sechead .r b{color:var(--tx);font-weight:600}
 
-/* ===== 指标卡 ===== */
-.kpis { display:grid; grid-template-columns:repeat(auto-fit,minmax(115px,1fr)); gap:10px; }
-.kpi { background:var(--card2); border:1px solid var(--border); border-radius:10px; padding:12px 14px; position:relative; overflow:hidden; }
-.kpi::before { content:""; position:absolute; left:0; top:0; bottom:0; width:3px; }
-.kpi.red::before { background:var(--red); }
-.kpi.green::before { background:var(--green); }
-.kpi.amber::before { background:var(--amber); }
-.kpi.blue::before { background:var(--accent); }
-.kpi .n { font-size:22px; font-weight:800; line-height:1.2; }
-.kpi .l { font-size:11px; color:var(--dim); margin-top:3px; }
-.kpi .ic { position:absolute; right:10px; top:10px; font-size:16px; opacity:.35; }
+/* ── 分区：实时 / 预测 ── */
+.zone{margin-bottom:16px}
+.zonetag{display:flex;align-items:center;gap:9px;font-size:12.5px;font-weight:600;color:var(--tx2);margin:0 2px 11px;letter-spacing:.04em}
+.zonetag i{width:14px;height:2px;border-radius:2px;background:var(--acc);box-shadow:0 0 8px rgba(var(--accs),.7)}
+.zonetag span{font-weight:400;color:var(--tx3);font-size:11.5px}
+.zonetag.fc i{background:var(--amber);box-shadow:0 0 8px rgba(251,191,36,.7)}
+.zonetag.fc{color:var(--amber)}
 
-/* ===== 表格 ===== */
-table { width:100%; border-collapse:collapse; font-size:12.5px; }
-th { text-align:left; color:var(--dim); font-weight:600; padding:7px 8px; border-bottom:1px solid var(--border); font-size:11.5px; white-space:nowrap; }
-td { padding:7px 8px; border-bottom:1px solid #1c273c; }
-tr:last-child td { border-bottom:none; }
-td.num { text-align:right; font-variant-numeric:tabular-nums; }
-.scroll { max-height:280px; overflow-y:auto; }
+/* ── KPI ── */
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(158px,1fr));gap:12px;margin-bottom:16px}
+.kpi{
+  position:relative;overflow:hidden;padding:15px 16px 14px;border-radius:var(--r);
+  background:linear-gradient(180deg,rgba(var(--accs),.05),transparent 52%),var(--card);
+  border:1px solid var(--line);transition:.18s;
+}
+.kpi::after{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--kc,var(--acc)),transparent 78%);opacity:.85}
+.kpi:hover{border-color:rgba(var(--accs),.42);transform:translateY(-2px)}
+.kpi .kl{font-size:11.5px;color:var(--tx3);letter-spacing:.05em;margin-bottom:7px;display:flex;align-items:center;gap:6px}
+.kpi .kv{font-size:37px;font-weight:640;line-height:1.06;letter-spacing:-.02em;color:var(--tx)}
+.kpi .kv small{font-size:15px;font-weight:500;color:var(--tx2);margin-left:2px;letter-spacing:0}
+.kpi .kv.hl{color:var(--kc,var(--acc))}
+.kpi .kd{font-size:11.5px;color:var(--tx3);margin-top:7px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.kpi .kd .up{color:var(--green)}
+.kpi .kd .dn{color:var(--red)}
+.kpi .spark{position:absolute;right:10px;bottom:8px;opacity:.55}
+.kpi.c-blue{--kc:var(--blue)} .kpi.c-green{--kc:var(--green)} .kpi.c-amber{--kc:var(--amber)}
+.kpi.c-purple{--kc:var(--purple)} .kpi.c-red{--kc:var(--red)} .kpi.c-cyan{--kc:var(--cyan)}
 
-/* ===== 条形图 ===== */
-.bars { display:flex; flex-direction:column; gap:12px; }
-.bar-row .bar-top { display:flex; justify-content:space-between; font-size:12.5px; margin-bottom:5px; }
-.bar-row .bar-top b { font-size:14px; }
-.bar-track { height:9px; border-radius:5px; background:var(--card2); overflow:hidden; display:flex; }
-.bar-fill { height:100%; border-radius:5px; transition:width .5s; }
-.bar-fill.blue { background:linear-gradient(90deg,#5da8ff,#7c5dff); }
-.bar-fill.red { background:linear-gradient(90deg,#ff6b6b,#ff9a6b); }
-.bar-fill.green { background:linear-gradient(90deg,#3ddc84,#6ee7a7); }
-.bar-fill.amber { background:linear-gradient(90deg,#ffb454,#ffd88a); }
-.bar-seg { height:100%; display:block; }
-.bar-seg.red { background:var(--red); }
-.bar-seg.amber { background:var(--amber); }
-.bar-seg.blue { background:var(--accent); }
-.legend { display:flex; gap:14px; font-size:11px; color:var(--dim); margin-top:10px; flex-wrap:wrap; }
-.legend span { display:inline-flex; align-items:center; gap:5px; }
-.legend i { width:10px; height:10px; border-radius:3px; display:inline-block; }
-.bar-detail { font-size:11px; color:var(--dim); margin-top:4px; display:flex; gap:12px; flex-wrap:wrap; }
-.bar-detail span { display:inline-flex; align-items:center; gap:4px; }
-.bar-detail i { width:8px; height:8px; border-radius:2px; display:inline-block; }
-.scroll { max-height:280px; overflow-y:auto; scrollbar-gutter:stable; scrollbar-width:thin; scrollbar-color:#3a4a66 var(--card); }
-.scroll::-webkit-scrollbar { width:6px; }
-.scroll::-webkit-scrollbar-thumb { background:#3a4a66; border-radius:3px; }
-.scroll::-webkit-scrollbar-track { background:transparent; }
+/* ── 面板 ── */
+.panels{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:1080px){.panels{grid-template-columns:1fr}}
+.panel{
+  padding:15px 17px 13px;border-radius:var(--r);background:var(--card);
+  border:1px solid var(--line);min-width:0;
+}
+.panel.wide{grid-column:1/-1}
+.phead{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.phead h3{font-size:13.5px;font-weight:600;color:var(--tx);letter-spacing:.02em}
+.phead .hint{font-size:11px;color:var(--tx3);margin-left:auto}
+.lgd{display:flex;gap:13px;font-size:11px;color:var(--tx3);flex-wrap:wrap}
+.lgd span{display:flex;align-items:center;gap:5px}
+.lgd em{width:9px;height:9px;border-radius:3px;display:block;font-style:normal}
 
-/* ===== 状态分布（总览）===== */
-.stats { display:flex; gap:16px; flex-wrap:wrap; }
-.stat-block { flex:1; min-width:150px; background:var(--card2); border:1px solid var(--border); border-radius:12px; padding:16px; text-align:center; }
-.stat-block .num { font-size:26px; font-weight:800; }
-.stat-block .num.red { color:var(--red); }
-.stat-block .num.amber { color:var(--amber); }
-.stat-block .num.blue { color:var(--accent); }
-.stat-block .num.green { color:var(--green); }
-.stat-block .lbl { font-size:11.5px; color:var(--dim); margin-top:4px; }
-.stat-block .pct { font-size:11px; color:var(--dim); margin-top:2px; }
-.stat-block.drill { cursor:pointer; transition:.15s; }
-.stat-block.drill:hover { border-color:var(--accent); transform:translateY(-2px); box-shadow:0 4px 12px rgba(93,168,255,.15); }
-.stat-block.drill .pct { color:var(--accent); }
-.drill-list { display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:10px; }
-.drill-item { background:var(--card2); border:1px solid var(--border); border-radius:10px; padding:14px; cursor:pointer; transition:.15s; }
-.drill-item:hover { border-color:var(--accent); transform:translateY(-1px); }
-.drill-item .n { font-size:22px; font-weight:800; }
-.drill-item .l { font-size:12px; color:var(--dim); margin-top:3px; }
-.drill-item .go { font-size:11px; color:var(--accent); margin-top:6px; }
-.bc { cursor:pointer; color:var(--dim); font-size:13px; }
-.bc:hover { color:var(--accent); }
-.bc.sep { cursor:default; color:var(--border); }
-.bc.active { color:var(--accent); font-weight:700; cursor:default; }
+/* ── 表格 ── */
+.tbl{width:100%;border-collapse:collapse;font-size:12.5px}
+.tbl th{
+  text-align:right;padding:8px 9px;font-weight:550;color:var(--tx3);font-size:11px;letter-spacing:.04em;
+  border-bottom:1px solid var(--line);white-space:nowrap;
+}
+.tbl th:first-child,.tbl td:first-child{text-align:left}
+.tbl td{padding:8px 9px;text-align:right;border-bottom:1px solid var(--lin2);color:var(--tx2);white-space:nowrap}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tbody tr:hover td{background:rgba(var(--accs),.055)}
+.tbl td.v{color:var(--tx);font-weight:600}
+.tbl .today td{background:rgba(var(--accs),.09)}
+.tbl .today td:first-child{box-shadow:inset 2px 0 0 var(--acc)}
+.tblwrap{overflow-x:auto;margin:0 -4px}
+.pill{padding:1px 7px;border-radius:6px;font-size:11px;font-weight:600}
+.pill.g{background:rgba(52,211,153,.14);color:var(--green)}
+.pill.y{background:rgba(251,191,36,.14);color:var(--amber)}
+.pill.r{background:rgba(248,113,113,.15);color:var(--red)}
+.pill.b{background:rgba(96,165,250,.14);color:var(--blue2)}
 
-/* ===== 名字 ===== */
-.names { display:flex; flex-wrap:wrap; gap:8px; }
-.name-chip { background:var(--green-bg); color:var(--green); border:1px solid rgba(61,220,132,.25); padding:4px 12px; border-radius:16px; font-size:12.5px; font-weight:600; }
-.name-chip.dim { background:var(--card2); color:var(--dim); border-color:var(--border); }
-.name-chip.off { background:var(--red-bg); color:var(--red); border:1px solid rgba(255,107,107,.35); }
-.block-label { font-size:11.5px; color:var(--dim); margin:14px 0 8px; }
-
-/* ===== 告警 ===== */
-.alert-item { background:var(--red-bg); border:1px solid rgba(255,107,107,.25); border-radius:10px; padding:10px 14px; margin-bottom:8px; font-size:12.5px; display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap; }
-.alert-item b { color:var(--red); }
-.alert-item .s { color:var(--dim); font-size:11.5px; }
-.empty { color:var(--dim); font-size:12.5px; padding:14px 0; text-align:center; }
-details summary { cursor:pointer; color:var(--dim); font-size:12.5px; margin-top:12px; }
-details[open] summary { color:var(--accent); }
-.footer { color:var(--dim); font-size:11px; text-align:center; margin-top:22px; padding-top:12px; border-top:1px solid var(--border); }
-
-/* ===== 取数口径说明（可折叠） ===== */
-.spec { margin-top:14px; background:rgba(148,163,184,.06); border:1px solid var(--border); border-radius:10px; overflow:hidden; }
-.spec > summary { cursor:pointer; padding:11px 15px; font-size:12.5px; font-weight:600; color:var(--text); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; }
-.spec > summary::-webkit-details-marker { display:none; }
-.spec > summary::before { content:'▸'; color:var(--accent); font-size:11px; transition:transform .15s; }
-.spec[open] > summary::before { transform:rotate(90deg); }
-.spec > summary:hover { background:rgba(148,163,184,.08); }
-.spec-hint { margin-left:auto; font-size:10.5px; font-weight:400; color:var(--dim); }
-.spec-body { padding:4px 15px 15px; border-top:1px solid var(--border); }
-.spec-sec { margin-top:14px; }
-.spec-sec:first-child { margin-top:10px; }
-.spec-sec h4 { font-size:12.5px; margin:0 0 7px; color:var(--text); font-weight:600; }
-.spec-sec p { margin:6px 0; font-size:12px; line-height:1.7; color:var(--text); }
-.spec-sub { font-weight:600; color:var(--accent) !important; font-size:11.5px !important; margin-top:10px !important; }
-.spec-sec ul { margin:5px 0 0; padding-left:19px; font-size:12px; line-height:1.85; color:var(--text); }
-.spec-sec li { margin:2px 0; }
-.spec-sec b { color:var(--text); font-weight:600; }
-.spec-formula { background:rgba(93,168,255,.1); border-left:2.5px solid var(--accent); padding:7px 11px !important; border-radius:4px; font-family:ui-monospace,Consolas,monospace; font-size:11.5px !important; color:var(--text) !important; }
-.spec-code { font-family:ui-monospace,Consolas,monospace; font-size:11.5px; background:rgba(148,163,184,.1); border-radius:3px; padding:1px 5px; }
-.spec-note { font-size:11px !important; color:var(--dim) !important; }
-.spec-tb { width:100%; border-collapse:collapse; font-size:11.5px; margin-top:5px; }
-.spec-tb th { text-align:left; padding:5px 9px; color:var(--dim); font-weight:500; border-bottom:1px solid var(--border); font-size:11px; }
-.spec-tb td { padding:5px 9px; border-bottom:1px solid var(--border); color:var(--text); }
-.spec-tb tr:last-child td { border-bottom:none; }
-.spec-tb td:first-child { white-space:nowrap; }
-.spec-dot { width:8px; height:8px; border-radius:50%; display:inline-block; margin-right:5px; vertical-align:-1px; }
-
-/* ===== 日进线量趋势 ===== */
-.di-sw { gap:5px; }
-.di-sw i { width:9px; height:9px; border-radius:50%; display:inline-block; flex:none; }
-.di-sw input { accent-color:var(--accent); }
-.di-note { display:flex; gap:16px; flex-wrap:wrap; margin-top:10px; font-size:11.5px; color:var(--dim); }
-.di-note b { color:var(--text); font-variant-numeric:tabular-nums; }
-.seg { display:inline-flex; gap:2px; margin-left:12px; vertical-align:2px; background:rgba(148,163,184,.12); border-radius:6px; padding:2px; }
-.seg-btn { border:0; background:transparent; color:var(--dim); font-size:11px; padding:3px 12px; border-radius:5px; cursor:pointer; font-family:inherit; }
-.seg-btn.on { background:#334155; color:#e2e8f0; font-weight:600; box-shadow:0 1px 3px rgba(0,0,0,.35); }
-.seg-btn:hover:not(.on) { color:var(--text); }
-.di-chart-svg { display:block; width:100%; }
-.di-axis { fill:var(--dim); font-size:10px; }
-.di-grid { stroke:#1c273c; stroke-width:1; }
-.di-last { font-size:10.5px; font-weight:700; }
-.di-tip { fill:var(--dim); font-size:10.5px; }
-
-/* ===== 分级预警状态卡 ===== */
-.al-wrap { display:flex; gap:10px; flex-wrap:wrap; }
-.al-pill { flex:1 1 170px; max-width:230px; border-radius:10px; padding:10px 12px; border:1px solid var(--border); background:var(--card2); }
-.al-pill .t { font-size:11px; color:var(--dim); display:flex; justify-content:space-between; align-items:center; }
-.al-pill .lv { font-size:17px; font-weight:700; margin:4px 0 2px; }
-.al-pill .v { font-size:11px; color:var(--dim); line-height:1.5; }
-.al-pill.lv0 { border-color:rgba(61,220,132,.45); } .al-pill.lv0 .lv { color:#3ddc84; }
-.al-pill.lv1 { border-color:rgba(93,168,255,.45); } .al-pill.lv1 .lv { color:#5da8ff; }
-.al-pill.lv2 { border-color:rgba(251,191,36,.6); background:rgba(251,191,36,.08); } .al-pill.lv2 .lv { color:#fbbf24; }
-.al-pill.lv3 { border-color:rgba(245,158,11,.65); background:rgba(245,158,11,.10); } .al-pill.lv3 .lv { color:#f59e0b; }
-.al-pill.lv4 { border-color:rgba(255,107,107,.7); background:rgba(255,107,107,.10); } .al-pill.lv4 .lv { color:#ff6b6b; }
-.al-pill.lv-1 { opacity:.65; } .al-pill .dim { color:var(--dim); font-weight:400; }
-.al-legend { margin-top:9px; font-size:11px; color:var(--dim); opacity:.85; }
-.al-dot { display:inline-block; width:8px; height:8px; border-radius:50%; margin-right:4px; vertical-align:1px; }
+/* ── 底栏 ── */
+.foot{
+  margin-top:20px;padding:17px 20px;border-radius:var(--r);background:rgba(14,23,41,.6);
+  border:1px solid var(--lin2);font-size:11.5px;color:var(--tx3);line-height:1.85;
+}
+.foot b{color:var(--tx2);font-weight:600}
+.empty{padding:26px;text-align:center;color:var(--tx3);font-size:12.5px}
+svg{display:block;width:100%;overflow:visible}
+.tip{
+  position:fixed;z-index:99;pointer-events:none;padding:8px 11px;border-radius:9px;font-size:12px;
+  background:rgba(9,15,28,.97);border:1px solid rgba(126,166,226,.28);color:var(--tx);
+  box-shadow:0 8px 26px rgba(0,0,0,.55);opacity:0;transition:opacity .12s;white-space:nowrap;
+}
+@media(max-width:640px){
+  .wrap{padding:0 14px}
+  .metaBar{order:3;width:100%;margin-left:0}
+  .tab{padding:9px 13px;font-size:13px}
+  .tab .tm{min-width:0}
+  .kpi .kv{font-size:31px}
+}
 </style>
 </head>
 <body>
 <div class="wrap">
 
-<div class="top">
-  <div class="logo">
-    <div class="ic">📊</div>
-    <div>
-      <h1>客服中心 · 工单监控</h1>
-      <div class="sub">7x24cc 实时 · 爱回收工单</div>
+  <header class="top">
+    <div class="brand">
+      <div class="mark">◎</div>
+      <div>
+        <h1>客服中心 · 实时与预测 <em>Live &amp; Forecast</em></h1>
+        <div class="sub">爱回收 · 爱分类 &nbsp;|&nbsp; 400 / 在线 / 工单</div>
+      </div>
     </div>
-  </div>
-  <div class="meta">
-    <span class="t">📞 客服 <b id="mCcTime">--</b></span>
-    <span class="t">🗂 工单 <b id="mTkTime">--</b></span>
-    <label class="switch"><input type="checkbox" id="ccRef" checked> 实时刷新 90s</label>
-    <label class="switch"><input type="checkbox" id="tkRef" checked> 工单刷新 2h</label>
-    <a class="t goFc" id="goFc" href="forecast/" target="_blank" rel="noopener">📞 400 进线量预测</a>
-    <!-- 手动刷新按钮已隐藏：数据由后台采集自动刷新（实时 90s / 工单 2h），点它不会触发重新采集，无实际作用（2026-09-10 用户要求） -->
-    <button class="btn pri" onclick="load()" style="display:none">🔄 刷新</button>
-  </div>
-</div>
-
-<div class="filters">
-  <div class="fg"><label>工单池</label><select id="fBucket"><option>全部</option><option>客诉处理</option><option>工单处理</option><option>舆情客诉单</option></select></div>
-  <div class="fg"><label>状态</label><select id="fStatus"><option>全部</option><option>待分配</option><option>待处理</option><option>处理中</option></select></div>
-  <div class="fg"><label>投诉大类</label><select id="fTop"><option>全部</option></select></div>
-  <div class="fg" style="margin-left:auto;"><label>业务线</label><select id="fBiz"><option>全部</option><option>400</option><option>在线</option></select></div>
-</div>
-
-<!-- ===== 预警状态条 ===== -->
-<div class="sec"><div class="bar" style="background:#f59e0b"></div><h2>🚨 分级预警</h2><span class="hint" id="alMeta">—</span></div>
-<div class="card" style="margin-bottom:16px;">
-  <div class="al-wrap" id="alRow">加载中…</div>
-  <div class="al-legend">低负荷=产能富余 · 正常=健康 · 一级/二级/三级=需关注（推送规则见页底「取数口径与计算逻辑」）</div>
-</div>
-
-<!-- ===== 板块 A：客服中心 ===== -->
-<div class="sec"><div class="bar"></div><h2>客服中心实时</h2><span class="hint">90 秒采集刷新</span></div>
-<div class="grid">
-  <div class="card">
-    <h3><span class="dot" style="background:var(--accent)"></span>📞 400 电话</h3>
-    <div class="kpis">
-      <div class="kpi blue"><div class="n" id="sRate">--</div><div class="l">接通率</div><div class="ic">📈</div></div>
-      <div class="kpi" id="sQueueBox"><div class="n" id="sQueue">--</div><div class="l">当前排队</div><div class="ic">⏳</div></div>
-      <div class="kpi blue"><div class="n" id="sCallIn">--</div><div class="l">呼入总数</div><div class="ic">📞</div></div>
-      <div class="kpi green"><div class="n" id="sSign">--</div><div class="l">签入坐席</div><div class="ic">👥</div></div>
-      <div class="kpi amber"><div class="n" id="sAtt400">--</div><div class="l">出勤</div><div class="ic">✅</div></div>
+    <div class="metaBar" id="metaBar"></div>
+    <div class="act">
+      <label class="sw"><input type="checkbox" id="autoSw" checked><i></i><span>自动刷新</span></label>
+      <button class="btn" id="btnRefresh">↻ 刷新</button>
     </div>
-    <div class="block-label">400 签入坐席（去重）</div>
-      <div class="names" id="sign400List"></div>
-    <div class="block-label">400 未出勤（红色）</div>
-      <div class="names" id="off400List"></div>
-    <details><summary>技能组明细（点击展开）</summary>
-      <div class="scroll"><table><thead><tr><th>技能组</th><th class="num">接通率</th><th class="num">接通</th><th class="num">呼入</th><th class="num">排队</th><th class="num">签入</th></tr></thead>
-      <tbody id="skill400Rows"></tbody></table></div>
-    </details>
-  </div>
-  <div class="card">
-    <h3><span class="dot" style="background:var(--green)"></span>💬 在线客服</h3>
-    <div class="kpis">
-      <div class="kpi green"><div class="n" id="oTotal">--</div><div class="l">会话数</div><div class="ic">💬</div></div>
-      <div class="kpi blue"><div class="n" id="oAssigned">--</div><div class="l">已分配</div><div class="ic">📤</div></div>
-      <div class="kpi" id="oQueueBox"><div class="n" id="oQueue">--</div><div class="l">排队</div><div class="ic">⏳</div></div>
-      <div class="kpi green"><div class="n" id="oSatisfy">--</div><div class="l">满意度</div><div class="ic">⭐</div></div>
-      <div class="kpi amber"><div class="n" id="oAtt">--</div><div class="l">出勤</div><div class="ic">✅</div></div>
+  </header>
+
+  <nav class="tabs" id="tabs" role="tablist" aria-label="业务线">
+    <button class="tab t400 active" data-pane="400" role="tab" aria-selected="true">
+      <span class="ti">01</span><span class="tn">400 电话</span><span class="tm" id="tab400">–</span>
+    </button>
+    <button class="tab ton" data-pane="online" role="tab" aria-selected="false">
+      <span class="ti">02</span><span class="tn">在线客服</span><span class="tm" id="tabOnline">–</span>
+    </button>
+    <button class="tab ttk" data-pane="ticket" role="tab" aria-selected="false">
+      <span class="ti">03</span><span class="tn">工单</span><span class="tm" id="tabTicket">–</span>
+    </button>
+  </nav>
+
+  <!-- ═══ 01 400 ═══ -->
+  <section class="sec pane active" id="s400" data-pane="400" role="tabpanel">
+    <div class="sechead">
+      <span class="idx">01</span>
+      <h2>400 电话</h2>
+      <span class="badge">实时 + 预测</span>
+      <div class="r" id="h400r"></div>
     </div>
-    <div class="block-label">在线坐席</div>
-      <div class="names" id="onlineSeats"></div>
-    <div class="block-label">在线未出勤（红色）</div>
-      <div class="names" id="offOnlineList"></div>
-  </div>
-</div>
 
-<!-- 运能负荷 -->
-<div class="card" style="margin-bottom:16px;">
-  <h3><span class="dot" style="background:var(--amber)"></span>⚡ 运能负荷 <span class="extra" id="capDate">进线量 ÷ 当前应接量（400 130单/人/天·两端半量；在线 班表工时×30单/人/时·09:00-21:00）</span></h3>
-  <div class="stats">
-    <div class="stat-block"><div class="num blue" id="cp400">--</div><div class="lbl">📞 400 当日负荷</div><div class="pct" id="cp400d">进线 -- / 应接 --</div></div>
-    <div class="stat-block"><div class="num green" id="cpOn">--</div><div class="lbl">💬 在线当日负荷</div><div class="pct" id="cpOnd">进线 -- / 应接 --</div></div>
-    <div class="stat-block"><div class="num amber" id="cpRate">--</div><div class="lbl">📞 400 接通率</div><div class="pct">当日实时</div></div>
-    <div class="stat-block"><div class="num" id="cpWeek" style="color:var(--dim)">--</div><div class="lbl">📅 周负荷（本周累计）</div><div class="pct" id="cpWeekd">本周 0 天</div></div>
-  </div>
-</div>
+    <div class="zone">
+      <div class="zonetag"><i></i>实时 <span>7x24cc 采集 · 90 秒</span></div>
+      <div class="kpis" id="k400"></div>
+      <div class="panels">
+        <div class="panel">
+          <div class="phead"><h3>今日每半小时呼入</h3><span class="hint" id="note400hh"></span></div>
+          <div id="ch400hh"></div>
+        </div>
+        <div class="panel">
+          <div class="phead"><h3>近 30 天进线量</h3><span class="hint">人工量（呼入 − IVR）</span></div>
+          <div id="ch400tr"></div>
+        </div>
+      </div>
+    </div>
 
-<!-- 时段量级板块（400 电话 / 在线会话 切换） -->
-<div class="sec"><div class="bar"></div>
-  <h2>📊 时段量级<span class="seg" id="hhSeg">
-    <button class="seg-btn on" data-tab="call" onclick="switchHalf('call')">📞 400</button>
-    <button class="seg-btn" data-tab="chat" onclick="switchHalf('chat')">💬 在线</button>
-  </span></h2>
-  <span class="hint" id="hhMeta">加载中</span>
-</div>
-<div class="card" style="margin-bottom:16px;">
-  <h3><span class="dot" id="hhDot" style="background:#5da8ff"></span><span id="hhSub">当日每半小时呼入 · 400 四线（88236628 / 88236629 / 4001581707 / 9523622）</span>
-    <span class="extra" style="margin-left:auto">柱=量级 · 最新时段高亮</span>
-  </h3>
-  <div id="hhChart" style="width:100%;height:240px;"></div>
-  <div class="di-note" id="hhNote"></div>
-</div>
+    <div class="zone">
+      <div class="zonetag fc"><i></i>预测 <span>货量 → 进线量 → 转人工 → 所需人力</span></div>
+      <div class="kpis" id="f400"></div>
+      <div class="panels">
+        <div class="panel wide">
+          <div class="phead">
+            <h3>未来计划 · 每日进线量与所需人力</h3>
+            <div class="lgd">
+              <span><em style="background:var(--blue)"></em>进线量</span>
+              <span><em style="background:var(--amber)"></em>所需人力</span>
+              <span><em style="background:var(--green)"></em>在岗人力</span>
+            </div>
+          </div>
+          <div class="tblwrap"><table class="tbl" id="fc400t"></table></div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-<!-- 进线量趋势板块（切片器：400/在线 × 日/周/月 · 单图） -->
-<div class="sec"><div class="bar"></div>
-  <h2>📈 进线量趋势<span class="seg" id="trModeSeg">
-    <button class="seg-btn on" data-tab="call" onclick="switchTrendMode('call')">📞 400</button>
-    <button class="seg-btn" data-tab="chat" onclick="switchTrendMode('chat')">💬 在线</button>
-  </span></h2>
-  <span class="hint" id="trMeta">加载中</span>
-</div>
-<div class="card" style="margin-bottom:16px;">
-  <h3>
-    <span class="dot" id="trDot" style="background:#5da8ff"></span><span id="trTitle">📞 400 呼入（人工量）</span>
-    <span class="extra" style="margin-left:auto"><span class="seg" id="trSeg">
-      <button class="seg-btn on" data-tab="day" onclick="switchTrend('day')">日</button>
-      <button class="seg-btn" data-tab="week" onclick="switchTrend('week')">周</button>
-      <button class="seg-btn" data-tab="month" onclick="switchTrend('month')">月</button>
-    </span></span>
-  </h3>
-  <div id="trChart" style="width:100%;height:230px;"></div>
-  <div class="di-note" id="trNote"></div>
-</div>
+  <!-- ═══ 02 在线 ═══ -->
+  <section class="sec online pane" id="sOnline" data-pane="online" role="tabpanel">
+    <div class="sechead">
+      <span class="idx">02</span>
+      <h2>在线客服</h2>
+      <span class="badge">实时 + 预测</span>
+      <div class="r" id="hOnliner"></div>
+    </div>
 
-<!-- 工单量级日记录（切片器：类型 × 升级/库存/处理 · 单图） -->
-<div class="sec"><div class="bar"></div>
-  <h2>🗂 工单量级<span class="seg" id="ttSeg">
-    <button class="seg-btn on" data-tab="cs" onclick="switchTicketTrend('cs')">投诉</button>
-    <button class="seg-btn" data-tab="gd" onclick="switchTicketTrend('gd')">工单(纠纷+申诉)</button>
-    <button class="seg-btn" data-tab="yq" onclick="switchTicketTrend('yq')">舆情</button>
-  </span></h2>
-  <span class="hint" id="ttMeta">加载中</span>
-</div>
-<div class="card" style="margin-bottom:16px;">
-  <h3>
-    <span class="dot" id="ttDot" style="background:#f59e0b"></span><span id="ttTitle">升级量</span>
-    <span class="extra" style="margin-left:auto"><span class="seg" id="tqSeg">
-      <button class="seg-btn on" data-tab="new" onclick="switchTicketQty('new')">升级量</button>
-      <button class="seg-btn" data-tab="stock" onclick="switchTicketQty('stock')">库存量</button>
-      <button class="seg-btn" data-tab="done" onclick="switchTicketQty('done')">处理量</button>
-    </span></span>
-  </h3>
-  <div id="ttChart" style="width:100%;height:230px;"></div>
-  <div class="di-note" id="ttNote"></div>
-</div>
+    <div class="zone">
+      <div class="zonetag"><i></i>实时 <span>7x24cc 采集 · 90 秒</span></div>
+      <div class="kpis" id="kOnline"></div>
+      <div class="panels">
+        <div class="panel">
+          <div class="phead"><h3>今日分时段接待量</h3><span class="hint" id="noteOnlinehh"></span></div>
+          <div id="chOnlinehh"></div>
+        </div>
+        <div class="panel">
+          <div class="phead"><h3>近 30 天接待量</h3><span class="hint">技能组接待量</span></div>
+          <div id="chOnlinetr"></div>
+        </div>
+      </div>
+    </div>
 
-<!-- ===== 板块 B：工单监控（钻取式） ===== -->
-<div class="sec"><div class="bar"></div><h2>工单监控</h2><span class="hint">升级工单 · 点击数字逐层下钻</span></div>
+    <div class="zone">
+      <div class="zonetag fc"><i></i>预测 <span>同星期几基准 × 近 7 天水平因子（驱动模型待建）</span></div>
+      <div class="kpis" id="fOnline"></div>
+      <div class="panels">
+        <div class="panel wide">
+          <div class="phead"><h3>未来 7 天预估接待量与所需人力</h3><span class="hint" id="noteOnlinefc"></span></div>
+          <div class="tblwrap"><table class="tbl" id="fcOnlinet"></table></div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-<!-- 总览（按部门/池，点击进入） -->
-<div class="card" style="margin-bottom:16px;">
-  <h3><span class="dot" style="background:var(--accent)"></span>🗂 工单总览 <span class="extra">按部门 · 点击数字下钻</span></h3>
-  <div class="stats">
-    <div class="stat-block drill" onclick="goDrill('cs')"><div class="num green" id="tCs">--</div><div class="lbl">投诉</div><div class="pct">点击下钻 ▸</div></div>
-    <div class="stat-block drill" onclick="goDrill('gd')"><div class="num blue" id="tGd">--</div><div class="lbl">工单</div><div class="pct">点击下钻 ▸</div></div>
-    <div class="stat-block drill" onclick="goDrill('op')"><div class="num amber" id="tOp">--</div><div class="lbl">舆情</div><div class="pct">点击下钻 ▸</div></div>
-    <div class="stat-block drill" onclick="goDrill('city')"><div class="num red" id="tCity">--</div><div class="lbl">城市升级工单</div><div class="pct">点击下钻 ▸</div></div>
-    <div class="stat-block"><div class="num" style="color:var(--dim)" id="tTotal">--</div><div class="lbl">工单总量</div><div class="pct">含全部状态</div></div>
-  </div>
-</div>
+  <!-- ═══ 03 工单 ═══ -->
+  <section class="sec ticket pane" id="sTicket" data-pane="ticket" role="tabpanel">
+    <div class="sechead">
+      <span class="idx">03</span>
+      <h2>工单</h2>
+      <span class="badge">实时 + 预测</span>
+      <div class="r" id="hTicketr"></div>
+    </div>
 
-<!-- 下钻区 -->
-<div class="card" style="margin-bottom:16px;">
-  <h3><span class="dot" style="background:var(--amber)"></span>🔍 下钻查看 <span class="extra" id="drillHint">点击上方大数字进入</span>
-    <span class="extra" style="margin-left:auto;display:flex;gap:6px;">
-      <button class="btn" style="padding:4px 12px;font-size:12px;" onclick="goDrill('matrix')">状态×量级</button>
-      <button class="btn" style="padding:4px 12px;font-size:12px;" onclick="goDrill('time')">时长×量级</button>
-    </span>
-  </h3>
-  <div id="backRow" style="display:none;margin-bottom:12px;"><button class="btn" onclick="drill={level:0};renderDrill()" style="padding:5px 14px;font-size:12.5px;">← 返回总览</button></div>
-  <div id="drillContent"><div class="empty">点击「投诉 / 工单 / 舆情 / 城市升级工单」或上方「状态×量级 / 时长×量级」开始下钻</div></div>
-</div>
+    <div class="zone">
+      <div class="zonetag"><i></i>实时 <span>爱回收工单系统 · 2 小时</span></div>
+      <div class="kpis" id="kTicket"></div>
+      <div class="panels">
+        <div class="panel">
+          <div class="phead"><h3>近 30 天升级 / 处理 / 库存</h3>
+            <div class="lgd">
+              <span><em style="background:#fbbf24"></em>升级量</span>
+              <span><em style="background:#34d399"></em>处理量</span>
+              <span><em style="background:#a78bfa"></em>库存量</span>
+            </div>
+          </div>
+          <div id="chTickettr"></div>
+        </div>
+        <div class="panel">
+          <div class="phead"><h3>状态 × 工单池</h3><span class="hint" id="noteTicketmx"></span></div>
+          <div class="tblwrap"><table class="tbl" id="tkMatrix"></table></div>
+        </div>
+      </div>
+    </div>
 
-<div class="grid">
-  <div class="card">
-    <h3><span class="dot" style="background:var(--red)"></span>🚨 命中告警 <span class="extra">待分配 + 投诉类型</span></h3>
-    <div id="alertList"></div>
-  </div>
-  <div class="card">
-    <h3><span class="dot" style="background:var(--blue)"></span>📋 投诉中类明细 <span class="extra">全部 · 独立展示</span></h3>
-    <div class="scroll" id="midList"></div>
+    <div class="zone">
+      <div class="zonetag fc"><i></i>预测 <span>近 14 天净变化外推积压（驱动模型待建）</span></div>
+      <div class="kpis" id="fTicket"></div>
+      <div class="panels">
+        <div class="panel wide">
+          <div class="phead"><h3>未来 7 天预估新增与积压</h3><span class="hint" id="noteTicketfc"></span></div>
+          <div class="tblwrap"><table class="tbl" id="fcTickett"></table></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="foot">
+    <b>数据源</b>　实时：7x24cc（400 / 在线，90 秒）· 爱回收工单系统（2 小时）　|　趋势：飞书日报（每日 21:50 固化）　|　400 预测：货量 → 进线量 → 转人工 → 所需人力（产能按 85% 人工接通率标定）<br>
+    <b>口径提示</b>　400 实时接通率 = Σ技能组接听 ÷ Σ技能组呼入（含 IVR 与「95分…」溢出组）；400 趋势为人工量（呼入 − IVR），两者统计范围不同，数值不可直接比较。在线负荷只看量级，不看接通率。在线与工单预测为趋势外推，非驱动模型。<br>
+    <b>操作</b>　顶部切换业务线（也可按 <b>1</b> / <b>2</b> / <b>3</b> 键），地址栏 <b>#400</b> / <b>#online</b> / <b>#ticket</b> 可直接定位板块。
   </div>
 </div>
-
-<div class="footer">数据源：7x24cc（8601）实时采集 · 爱回收工单系统（8600）· 时段量级：400 呼入时间趋势 / 在线技能组时间趋势 · 400 进线量预测：风控人效预测看板货量 ÷ 2.6 ｜合并看板 v2.7</div>
-
-<!-- 取数口径与计算逻辑（可折叠） -->
-<details class="spec">
-  <summary>📖 取数口径与计算逻辑<span class="spec-hint">点击展开 · 数据定义 / 计算公式 / 刷新频率</span></summary>
-  <div class="spec-body">
-
-    <div class="spec-sec">
-      <h4>🔄 刷新频率</h4>
-      <table class="spec-tb">
-        <thead><tr><th>数据</th><th>频率</th><th>说明</th></tr></thead>
-        <tbody>
-          <tr><td>400 / 在线实时</td><td>90 秒</td><td>7x24cc 采集器轮询，前端同步拉取</td></tr>
-          <tr><td>运能负荷</td><td>15 分钟</td><td>进线量与应接量按窗口推进更新</td></tr>
-          <tr><td>时段量级</td><td>约 15 分钟</td><td>报表页采集，得当日各半小时值</td></tr>
-          <tr><td>工单数据</td><td>2 小时</td><td>9:00 起按 9/11/13/15/17/19/21 整点</td></tr>
-          <tr><td>进线量趋势</td><td>每日 21:50</td><td>拉飞书日报精确值后固化封存</td></tr>
-          <tr><td>在线班表</td><td>每日 21:50</td><td>拉飞书「9月班表」解析工时</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="spec-sec">
-      <h4>⚡ 运能负荷</h4>
-      <p class="spec-formula">负荷% = 当日进线量 ÷ 到当前时刻应接量 × 100</p>
-      <p class="spec-sub">📞 400 应接量</p>
-      <ul>
-        <li>人效基准 <b>130 单/人/天（12 小时）</b>；在班人数取当日排班表中 <b>部门=400</b> 的人数</li>
-        <li>排班分两班：一班 8:00–20:00、一班 9:00–21:00，因此按「两端半量」折算</li>
-        <li class="spec-code">应接 = 人数 × (完整小时数 × 130/12 + 半量小时数 × 130/24)</li>
-      </ul>
-      <p class="spec-sub">💬 在线应接量</p>
-      <ul>
-        <li>人效基准 <b>30 单/人/小时</b>；在班窗口 <b>09:00–21:00</b></li>
-        <li>工时来源：飞书「9月班表」逐日解析，<b>单元格数字即出勤小时</b></li>
-        <li><b>带教 / 考核新人同样计入</b>（如「带-8」= 带教 8 小时），按 30 单/小时折算</li>
-        <li class="spec-code">应接 = Σ 每人 min(在岗小时, 已过窗口小时) × 30</li>
-        <li class="spec-note">例：3 人 9:00 到岗，10:00 时已过 3 人·小时 → 应接 105 单；至 21:00 收敛为全天 30 人·小时 → 1050 单</li>
-      </ul>
-      <p class="spec-sub">进线量口径</p>
-      <ul>
-        <li>400：技能组累计呼入量（当日 0 点归零累加）</li>
-        <li>在线：技能组累计接待量；若实时值异常偏小，用半小时报表「<b>已过时段累计</b>」兜底</li>
-      </ul>
-    </div>
-
-    <div class="spec-sec">
-      <h4>🎯 接通率</h4>
-      <p class="spec-sub">📞 实时接通率（顶部 KPI 卡 / 400 能力卡 / 周维度）</p>
-      <ul>
-        <li>范围：名称含「分类回收400」「分类400」的全部技能组，<b>含「95分…」溢出组</b></li>
-        <li class="spec-code">接通率 = Σ各技能组今日接听 ÷ Σ各技能组呼入总数</li>
-        <li class="spec-note">分母<b>含 IVR 自助接起</b>；不取页面「合计」行，由采集器手动求和后重算</li>
-      </ul>
-      <p class="spec-sub">📞 人工接通率（进线量趋势 / 时段量级）</p>
-      <ul>
-        <li>范围：按 400 四线号码统计（88236628 / 88236629 / 4001581707 / 9523622）</li>
-        <li class="spec-code">人工接通率 = 人工接听 ÷（呼入总数 − IVR 自助接起）</li>
-        <li class="spec-note">分母<b>剔除 IVR 自动分流</b>；与技能组口径统计范围不同，两者数值不可直接比较</li>
-      </ul>
-    </div>
-
-    <div class="spec-sec">
-      <h4>🚨 分级预警档位</h4>
-      <table class="spec-tb">
-        <thead><tr><th>档位</th><th>负荷区间</th><th>含义</th><th>推送</th></tr></thead>
-        <tbody>
-          <tr><td><span class="spec-dot" style="background:#3ddc84"></span>低负荷</td><td>&lt; 90%</td><td>产能富余</td><td>不推</td></tr>
-          <tr><td><span class="spec-dot" style="background:#5da8ff"></span>正常</td><td>90% – 110%</td><td>健康区间</td><td>不推</td></tr>
-          <tr><td><span class="spec-dot" style="background:#eab308"></span>一级</td><td>110% – 130%</td><td>需关注</td><td>400 推 / 在线不推</td></tr>
-          <tr><td><span class="spec-dot" style="background:#f59e0b"></span>二级</td><td>130% – 150%</td><td>需干预</td><td>400 推 / 在线不推</td></tr>
-          <tr><td><span class="spec-dot" style="background:#ef4444"></span>三级</td><td>≥ 150%</td><td>告急</td><td>400 推 / 在线不推</td></tr>
-        </tbody>
-      </table>
-      <ul>
-        <li>400 呼入为<b>双指标联动</b>：「运能负荷」与「接通率」须<b>同时</b>落同一档才判该档（负荷 &lt;90% 且 接通率 ≥90% = 低负荷；两者都没进预警档 = 正常）。在线接待<b>只看负荷</b></li>
-        <li>接通率档位：<b>≥90%</b> 低负荷 / 85~90% 正常 / 80~85% 一级 / 75~80% 二级 / <b>&lt;75%</b> 三级</li>
-        <li>400 呼入、客诉工单：<b>一级起推</b>；在线接待：<b>暂不推送</b>（看板照常展示档位，仅不发飞书）</li>
-        <li>飞书推送带 <b>30 分钟冷却</b>，同对象同档位 30 分钟内不重复推送</li>
-      </ul>
-    </div>
-
-    <div class="spec-sec">
-      <h4>📊 时段量级</h4>
-      <ul>
-        <li>按半小时分桶（08:00–21:00 共 26+ 时段），取自报表页「呼入时间趋势」/「在线技能组时间趋势」</li>
-        <li>柱高为量级，最新时段高亮；末柱为当日已发生时段</li>
-        <li>400 号源固定四线：<b>88236628 / 88236629 / 4001581707 / 9523622</b></li>
-      </ul>
-    </div>
-
-    <div class="spec-sec">
-      <h4>📈 进线量趋势</h4>
-      <ul>
-        <li>切片：📞 400 / 💬 在线 × 日 / 周 / 月</li>
-        <li>数据来源优先级：<b>飞书日报（8-9月日报表，精确值）</b> &gt; 半小时报表实时 &gt; 历史离线报表 &gt; 采集器日快照（近似）</li>
-        <li>日视图近 31 天，今日为实时累计，<b>21:50 后固化</b>为精确值；周视图按「周一~周日」聚合，仅展示有数据的周</li>
-        <li>周/月柱的悬浮提示为环比（WoW / MoM）</li>
-      </ul>
-    </div>
-
-    <div class="spec-sec">
-      <h4>🗂 工单量级</h4>
-      <p class="spec-sub">量级分桶（按工单模板 + 当前执行部门）</p>
-      <ul>
-        <li><b>客诉处理</b>：投诉工单 + 用户申诉工单，且当前执行部门 = 客诉客服</li>
-        <li><b>工单处理</b>：投诉工单 + 用户申诉工单，执行部门为其余部门</li>
-        <li><b>舆情客诉单</b>：舆情模板全量</li>
-      </ul>
-      <p class="spec-sub">三类指标</p>
-      <ul>
-        <li><b>升级量</b>：当日新建工单数（按创建日期归属）</li>
-        <li><b>库存量</b>：当日仍在流转的工单数</li>
-        <li><b>处理量</b>：当日完成/结案的工单数</li>
-      </ul>
-      <p class="spec-sub">时长分桶（仅【客诉处理】量级，累计包含）</p>
-      <p class="spec-formula">升级时长(小时) = 24 − remainTime(小时)</p>
-      <ul>
-        <li>remainTime &gt; 0 为倒计时剩余（如剩 3h → 升级时长 21h）；remainTime ≤ 0 为<b>已超时</b>，时长继续累加</li>
-        <li>桶位：24h内 / 24h以上 / 48h以上 / 72h以上 / 96h以上，<b>更高级别被低级桶累计包含</b></li>
-      </ul>
-    </div>
-
-    <div class="spec-sec">
-      <h4>🔍 工单监控 · 下钻</h4>
-      <ul>
-        <li>工单状态全览：<b>待分配 / 待处理 / 处理中 / 已完成 / 已关闭</b></li>
-        <li>外层显示合计，点击数字逐层下钻 <b>部门 → 大类 → 子类</b>，明细按行展开不合并</li>
-        <li>在班人数：当日排班表「休」= 不排班，数字 = 排班；在班/未出勤按实时签入名单比对</li>
-      </ul>
-    </div>
-
-  </div>
-</details>
-
-</div>
+<div class="tip" id="tip"></div>
 
 <script>
-// 缓存击穿：GitHub Pages 的 CDN/浏览器会给 JSON 打 ~10 分钟缓存，
-// 不加时间戳会导致看板「数字一直不变」（2026-09-11 用户报障根因）
-const bust = u => u + (u.indexOf('?') >= 0 ? '&' : '?') + '_t=' + Date.now();
-let ccData = null, tkData = null;
-const $ = id => document.getElementById(id);
+/* ══════════════════ 工具 ══════════════════ */
+const $ = (s, r) => (r || document).querySelector(s);
+const $$ = (s, r) => Array.from((r || document).querySelectorAll(s));
+const n0 = v => (v == null || isNaN(v)) ? '–' : Math.round(+v).toLocaleString('en-US');
+const n1 = v => (v == null || isNaN(v)) ? '–' : (+v).toFixed(1);
+const pc = (v, d) => (v == null || isNaN(v)) ? '–' : (+v).toFixed(d == null ? 1 : d) + '%';
+const bust = u => u + (u.includes('?') ? '&' : '?') + '_=' + Date.now();
+const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
-async function loadCC() {
-  // 客服实时：公网/本地 http 用同目录 stats.json；file:// 直接打开时 fallback 本机 8601
-  try { ccData = await fetch(bust('stats.json'), { cache: 'no-store' }).then(r => r.json()); }
-  catch (e) {
-    try { ccData = await fetch(bust('http://127.0.0.1:8601/stats.json'), { cache: 'no-store' }).then(r => r.json()); }
-    catch (e2) { $('mCcTime').textContent = '获取失败'; }
+async function jget(u, fb) {
+  try { const r = await fetch(bust(u), { cache: 'no-store' }); if (!r.ok) throw 0; return await r.json(); }
+  catch (e) { if (fb) { try { const r = await fetch(bust(fb), { cache: 'no-store' }); return await r.json(); } catch (_) { } } return null; }
+}
+const sum = (a, f) => (a || []).reduce((s, x) => s + (+f(x) || 0), 0);
+
+/* tooltip */
+const tipEl = $('#tip');
+function bindTip(root) {
+  $$('[data-tip]', root || document).forEach(el => {
+    el.onmousemove = e => { tipEl.textContent = el.dataset.tip; tipEl.style.opacity = 1; tipEl.style.left = Math.min(e.clientX + 14, innerWidth - tipEl.offsetWidth - 12) + 'px'; tipEl.style.top = (e.clientY - 34) + 'px'; };
+    el.onmouseleave = () => tipEl.style.opacity = 0;
+  });
+}
+const NS = 'http://www.w3.org/2000/svg';
+function el(t, a, txt) { const e = document.createElementNS(NS, t); for (const k in (a || {})) e.setAttribute(k, a[k]); if (txt != null) e.textContent = txt; return e; }
+
+/* 折线 + 面积（带网格、最近值高亮） */
+function drawLine(box, { labels, series, h = 168, yFmt = n0, tipFmt }) {
+  const W = 1000, H = h, pl = 46, pr = 14, pt = 14, pb = 26;
+  const svg = el('svg', { viewBox: `0 0 ${W} ${H}`, preserveAspectRatio: 'none', style: `height:${h}px` });
+  const all = series.flatMap(s => s.data.filter(v => v != null));
+  if (!all.length) { box.innerHTML = '<div class="empty">暂无数据</div>'; return; }
+  let mx = Math.max(...all), mn = Math.min(...all);
+  if (mn > 0) mn = Math.max(0, mn - (mx - mn) * 0.8);
+  const span = mx - mn || 1;
+  const X = i => pl + i * (W - pl - pr) / Math.max(1, labels.length - 1);
+  const Y = v => pt + (1 - (v - mn) / span) * (H - pt - pb);
+  for (let g = 0; g <= 4; g++) {
+    const y = pt + g * (H - pt - pb) / 4;
+    svg.appendChild(el('line', { x1: pl, x2: W - pr, y1: y, y2: y, stroke: 'rgba(126,166,226,.12)', 'stroke-dasharray': g === 4 ? '0' : '3 4' }));
+    svg.appendChild(Object.assign(el('text', { x: pl - 7, y: y + 3.5, fill: '#5c7093', 'font-size': 10.5, 'text-anchor': 'end' }), { textContent: yFmt(mn + span * (1 - g / 4)) }));
   }
-  renderCC();
+  series.forEach(s => {
+    let d = '', ar = '', started = false, firstX = 0, lastX = 0;
+    s.data.forEach((v, i) => {
+      if (v == null) return;
+      const x = X(i), y = Y(v);
+      if (!started) { d += `M${x} ${y}`; ar += `M${x} ${y}`; firstX = x; started = true; } else d += `L${x} ${y}`;
+      ar += `L${x} ${y}`; lastX = x;
+    });
+    if (s.area !== false) svg.appendChild(el('path', { d: ar + `L${lastX} ${H - pb}L${firstX} ${H - pb}Z`, fill: s.areaFill || 'none', opacity: .9 }));
+    svg.appendChild(el('path', { d, fill: 'none', stroke: s.color, 'stroke-width': 2.1, 'stroke-linejoin': 'round', 'stroke-linecap': 'round', 'stroke-dasharray': s.dash || '' }));
+    const li = s.data.length - 1;
+    for (let i = li; i >= 0; i--) if (s.data[i] != null) {
+      svg.appendChild(el('circle', { cx: X(i), cy: Y(s.data[i]), r: 3.4, fill: s.color, stroke: '#0e1729', 'stroke-width': 1.6 }));
+      if (s.label != null && i === li) svg.appendChild(el('text', { x: X(i), y: Y(s.data[i]) - 8, fill: s.color, 'font-size': 11, 'font-weight': 600, 'text-anchor': 'end' }, s.label));
+      break;
+    }
+  });
+  const step = Math.ceil(labels.length / 9);
+  labels.forEach((L, i) => { if (i % step && i !== labels.length - 1) return; svg.appendChild(el('text', { x: X(i), y: H - 7, fill: '#5c7093', 'font-size': 10.5, 'text-anchor': 'middle' }, L)); });
+  box.innerHTML = ''; box.appendChild(svg);
+  if (tipFmt) {
+    series.forEach(s => s.data.forEach((v, i) => {
+      if (v == null) return;
+      const c = el('circle', { cx: X(i), cy: Y(v), r: 9, fill: 'transparent' });
+      c.style.cursor = 'crosshair';
+      c.dataset.tip = `${labels[i]}　${s.name} ${tipFmt(v)}`;
+      svg.appendChild(c);
+    }));
+    bindTip(svg);
+  }
 }
 
-async function loadTicket() {
-  // 工单数据：本地走 /ticket-stats 代理，公网 fallback 到同目录 ticket_stats.json
-  try { tkData = await fetch(bust('/ticket-stats'), { cache: 'no-store' }).then(r => r.json()); }
-  catch (e) {
-    try { tkData = await fetch(bust('ticket_stats.json'), { cache: 'no-store' }).then(r => r.json()); }
-    catch (e2) { $('mTkTime').textContent = '获取失败'; }
+/* 柱状图（可按阈值着色 + 可选叠加折线） */
+function drawBar(box, { labels, data, color, colorFn, h = 168, yFmt = n0, tipFmt, line, lineColor }) {
+  const W = 1000, H = h, pl = 46, pr = 14, pt = 14, pb = 26;
+  const svg = el('svg', { viewBox: `0 0 ${W} ${H}`, preserveAspectRatio: 'none', style: `height:${h}px` });
+  const vals = data.filter(v => v != null);
+  if (!vals.length) { box.innerHTML = '<div class="empty">暂无数据</div>'; return; }
+  const mx = Math.max(...vals) * 1.12 || 1;
+  const n = data.length;
+  const rawW = (W - pl - pr) / n;
+  const bw = Math.max(3, Math.min(rawW * 0.68, 68));      // 限宽：时段少时不至于撑成大色块
+  const left0 = pl + ((W - pl - pr) - bw * n) / 2;        // 整体居中
+  for (let g = 0; g <= 4; g++) {
+    const y = pt + g * (H - pt - pb) / 4;
+    svg.appendChild(el('line', { x1: pl, x2: W - pr, y1: y, y2: y, stroke: 'rgba(126,166,226,.12)', 'stroke-dasharray': g === 4 ? '0' : '3 4' }));
+    svg.appendChild(Object.assign(el('text', { x: pl - 7, y: y + 3.5, fill: '#5c7093', 'font-size': 10.5, 'text-anchor': 'end' }), { textContent: yFmt(mx * (1 - g / 4)) }));
   }
-  renderTicket();
-  fillTopOptions();
+  data.forEach((v, i) => {
+    if (v == null) return;
+    const x = left0 + i * bw, bh = Math.max(1, (v / mx) * (H - pt - pb)), y = H - pb - bh;
+    const r = el('rect', { x, y, width: bw, height: bh, rx: Math.min(3, bw / 2), fill: colorFn ? colorFn(v, i) : color, opacity: .92 });
+    if (tipFmt) { r.style.cursor = 'crosshair'; r.dataset.tip = `${labels[i]}　${tipFmt(v)}`; }
+    svg.appendChild(r);
+  });
+  if (line) {
+    const lv = line.filter(x => x != null);
+    if (lv.length) {
+      const lmx = Math.max(...lv) * 1.25 || 1;
+      let d = '', st = false;
+      line.forEach((v, i) => {
+        if (v == null) return;
+        const x = left0 + i * bw + bw / 2, y = pt + (1 - (v / lmx)) * (H - pt - pb);
+        d += (st ? 'L' : 'M') + x.toFixed(1) + ' ' + y.toFixed(1); st = true;
+      });
+      svg.appendChild(el('path', { d, fill: 'none', stroke: lineColor || '#fbbf24', 'stroke-width': 1.9, 'stroke-dasharray': '4 3', opacity: .95 }));
+    }
+  }
+  const step = Math.ceil(labels.length / 10);
+  labels.forEach((L, i) => {
+    if (i % step && i !== labels.length - 1) return;
+    svg.appendChild(el('text', { x: left0 + i * bw + bw / 2, y: H - 7, fill: '#5c7093', 'font-size': 10.5, 'text-anchor': 'middle' }, L));
+  });
+  box.innerHTML = ''; box.appendChild(svg);
+  if (tipFmt) bindTip(svg);
+}
+
+/* 迷你走势（KPI 卡右下角） */
+function spark(vals, color) {
+  const v = (vals || []).filter(x => x != null).slice(-24);
+  if (v.length < 2) return '';
+  const W = 74, H = 22, mx = Math.max(...v), mn = Math.min(...v), sp = (mx - mn) || 1;
+  const d = v.map((x, i) => `${i ? 'L' : 'M'}${(i * W / (v.length - 1)).toFixed(1)} ${(H - (x - mn) / sp * H).toFixed(1)}`).join('');
+  return `<svg class="spark" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}"><path d="${d}" fill="none" stroke="${color}" stroke-width="1.6" opacity=".75" stroke-linejoin="round"/></svg>`;
+}
+
+function todayCn() {
+  const d = new Date();
+  return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+}
+
+/* ══════════════════ 顶栏状态 ══════════════════ */
+function setMeta(list) {
+  $('#metaBar').innerHTML = list.map(x =>
+    `<div class="chip ${x.state || 'ok'}" data-tip="${esc(x.tip || '')}"><i></i>${esc(x.label)} <b>${esc(x.value || '')}</b></div>`).join('');
+  bindTip($('#metaBar'));
+}
+
+/* ══════════════════ 01 400 ══════════════════ */
+function render400(cc) {
+  if (!cc) return;
+  const ss = cc.skillSummary || {}, cap = cc.capacity || {}, cw = cc.capacity_week || {}, at = cc.attendance || {};
+  const on = (at.on400 || []).length, duty = (at.duty400 || []).length;
+  const hist = (cc.history || []).map(h => h.skillRate400);
+  const rateWk = cw.rate400;
+
+  $('#h400r').innerHTML =
+    `<span>采集 <b>${esc(cc.collectedAtCn || '–')}</b></span>
+     <span>技能组 <b>${(cc.skillGroups || []).length}</b> 个</span>
+     <span>签入 <b>${n0(ss.signIn)}</b> 人</span>`;
+
+  $('#k400').innerHTML = [
+    { k: '接通率', v: pc(ss.rate), hl: 1, c: 'c-blue', d: `<span class="${(ss.rate || 0) >= 85 ? 'up' : 'dn'}">${(ss.rate || 0) >= 85 ? '达标' : '低于 85%'}</span> · 技能组口径`, sp: spark(hist, '#60a5fa') },
+    { k: '呼入总数', v: n0(ss.total), c: 'c-cyan', d: `接通 <b>${n0(ss.answered)}</b> · 未接 ${n0(ss.missed)}` },
+    { k: '当前排队', v: n0(ss.queue), c: (ss.queue || 0) > 0 ? 'c-red' : 'c-green', d: (ss.queue || 0) > 0 ? '有排队积压' : '无排队' },
+    { k: '签入坐席', v: n0(ss.signIn), c: 'c-green', d: `空闲 ${n0(ss.idleSeats)} 人` },
+    { k: '出勤', v: `${on}<small>/${duty}</small>`, c: on >= duty ? 'c-green' : 'c-amber', d: on >= duty ? '全员出勤' : `缺 ${duty - on} 人` },
+    { k: '当日负荷', v: pc(cap.load400, 0), c: (cap.load400 || 0) >= 110 ? 'c-red' : (cap.load400 || 0) < 90 ? 'c-blue' : 'c-green', d: `进线 ${n0(cap.in400)} / 应接 ${n0(cap.cap400)}` },
+    { k: '周负荷', v: pc(cw.load400, 0), c: 'c-purple', d: `本周 ${n0(cw.wDays)} 天 · 周接通率 ${n0(rateWk)}%` }
+  ].map(x => `<div class="kpi ${x.c}"><div class="kl">${x.k}</div><div class="kv ${x.hl ? 'hl' : ''}">${x.v}</div><div class="kd">${x.d}</div>${x.sp || ''}</div>`).join('');
+
+  /* 今日半小时 */
+  const hh = D.hh;
+  const slots = (hh && hh.date === todayCn() && Array.isArray(hh.slots)) ? hh.slots : [];
+  const hhLabels = slots.map(s => String(s.t).slice(11, 16));
+  const hhTotal = slots.map(s => s.total);
+  const hhRate = slots.map(s => s.total ? +((s.answered / (s.total - (s.ivr || 0) || 1)) * 100).toFixed(1) : null);
+  if (slots.length) {
+    $('#note400hh').textContent = `已出 ${slots.length} 个时段 · 转人工 ${n0(sum(slots, s => s.total - (s.ivr || 0)))} 通`;
+    drawBar($('#ch400hh'), {
+      labels: hhLabels, data: hhTotal, h: 172,
+      colorFn: (v, i) => i === hhTotal.length - 1 ? '#93c5fd' : 'rgba(96,165,250,.62)',
+      tipFmt: v => `${n0(v)} 通`,
+      line: hhRate, lineColor: 'rgba(251,191,36,.85)'
+    });
+  } else $('#ch400hh').innerHTML = '<div class="empty">今日半小时数据待采集</div>';
+
+  /* 近 30 天 */
+  const TRd = D.tr || {}, days = TRd.days || [], c400 = TRd.call400 || {};
+  const last = days.slice(-30);
+  const ser = last.map(d => c400[d] == null ? null : c400[d]);
+  drawLine($('#ch400tr'), {
+    labels: last.map(d => d.slice(5)), h: 172, tipFmt: v => `${n0(v)} 通`,
+    series: [{ name: '400', data: ser, color: '#93c5fd', areaFill: 'rgba(96,165,250,.13)', label: n0(ser.filter(v => v != null).pop()) }]
+  });
+}
+
+/* ══════════════════ 01b 400 预测 ══════════════════ */
+function render400fc(plan) {
+  const blk = $('#f400'), tbl = $('#fc400t');
+  if (!plan || !plan.days || !plan.days.length) {
+    blk.innerHTML = '<div class="kpi"><div class="kl">预测</div><div class="kv">–</div><div class="kd">plan.json 未生成</div></div>';
+    tbl.innerHTML = '<tr><td class="empty">暂无预测数据</td></tr>'; return;
+  }
+  const days = plan.days, today = todayCn();
+  const ti = Math.max(0, days.findIndex(d => d.date === today));
+  const t = days[ti], next7 = days.slice(ti + 1, ti + 8);
+  const gapDays = next7.filter(d => d.gap_hc < 0);
+  const worst = next7.slice().sort((a, b) => (a.gap_hc - b.gap_hc))[0] || {};
+  const needSum = sum(next7, d => d.need_hc_f);
+
+  blk.innerHTML = [
+    { k: '今日预测进线量', v: n0(t.inbound), c: 'c-blue', d: `订单 ${(t.orders / 10000).toFixed(1)} 万 · 进线比 ${(t.R * 100).toFixed(2)}%` },
+    { k: '今日转人工', v: n0(t.turn), c: 'c-cyan', d: `可接量 ${n0(t.handled)} 通` },
+    { k: '今日所需人力', v: `${n0(t.need_hc)}<small>人</small>`, c: 'c-amber', d: `在岗 ${n0(t.onshift_hc)} 人 · <span class="${t.gap_hc < 0 ? 'dn' : 'up'}">${t.gap_hc < 0 ? '缺 ' + Math.abs(t.gap_hc) : '富余 ' + t.gap_hc} 人</span>` },
+    { k: '今日负荷', v: pc(t.ratio, 0), c: (t.ratio >= 110 ? 'c-red' : t.ratio < 90 ? 'c-blue' : 'c-green'), d: `目标接通率 85% · 产能 ${n1(plan.cap_per_hour)} 通/人时` },
+    { k: '未来 7 天需求', v: `${n0(needSum)}<small>人日</small>`, c: 'c-purple', d: `缺口日 ${gapDays.length} 天` },
+    { k: '最大缺口', v: worst.date ? `${Math.abs(worst.gap_hc)}<small>人</small>` : '–', c: (worst.gap_hc < 0 ? 'c-red' : 'c-green'), d: worst.date ? `${worst.date.slice(5)} ${worst.wd}（负荷 ${n0(worst.ratio)}%）` : '–' }
+  ].map(x => `<div class="kpi ${x.c}"><div class="kl">${x.k}</div><div class="kv">${x.v}</div><div class="kd">${x.d}</div></div>`).join('');
+
+  tbl.innerHTML = `<thead><tr>
+      <th>日期</th><th>星期</th><th>订单量</th><th>进线量</th><th>转人工</th>
+      <th>所需人力</th><th>在岗</th><th>缺口</th><th>负荷</th></tr></thead><tbody>` +
+    days.map(d => {
+      const cl = d.gap_hc < 0 ? 'r' : d.gap_hc > 0 ? 'g' : 'b';
+      const txt = d.gap_hc < 0 ? '缺 ' + Math.abs(d.gap_hc) : d.gap_hc > 0 ? '余 ' + d.gap_hc : '持平';
+      return `<tr class="${d.date === today ? 'today' : ''}">
+        <td class="v">${d.date.slice(5)}</td><td>${d.wd}</td>
+        <td>${(d.orders / 10000).toFixed(1)} 万</td>
+        <td class="v">${n0(d.inbound)}</td><td>${n0(d.turn)}</td>
+        <td class="v">${d.need_hc_f != null ? n1(d.need_hc_f) : n0(d.need_hc)}</td>
+        <td>${n0(d.onshift_hc)}</td>
+        <td><span class="pill ${cl}">${txt}</span></td>
+        <td>${n0(d.ratio)}%</td></tr>`;
+    }).join('') + '</tbody>';
+  bindTip(tbl);
+}
+
+/* ══════════════════ 02 在线 ══════════════════ */
+function onlineAgg(cc) {
+  const o = (cc && cc.online) || {}, gs = (o.groups || []).slice();
+  if (o.fenlei && !gs.some(g => g.name === o.fenlei.name)) gs.push(o.fenlei);
+  return {
+    groups: gs,
+    sessions: sum(gs, g => g.sessions), assigned: sum(gs, g => g.assigned),
+    current: sum(gs, g => g.current), queue: sum(gs, g => g.queue),
+    done: sum(gs, g => g.done),
+    sat: (() => { const r = gs.filter(g => g.satisfactionRate > 0); return r.length ? sum(r, g => g.satisfactionRate) / r.length : null; })()
+  };
+}
+
+function renderOnline(cc) {
+  if (!cc) return;
+  const a = onlineAgg(cc), cap = cc.capacity || {}, at = cc.attendance || {}, ss = cc.skillSummary || {};
+  const seats = (cc.onlineAgents || []).length, duty = (at.dutyOnline || []).length, on = (at.onOnline || []).length;
+  const hist = (cc.history || []).map(h => h.onlineSessions);
+  const signIn400 = ss.signIn || 0;
+
+  $('#hOnliner').innerHTML =
+    `<span>坐席 <b>${seats}</b> 人</span>
+     <span>出勤 <b>${on}/${duty}</b></span>
+     <span>技能组 <b>${a.groups.length}</b> 个</span>`;
+
+  $('#kOnline').innerHTML = [
+    { k: '今日会话', v: n0(a.sessions), c: 'c-green', hl: 1, d: `已完成 ${n0(a.done)}`, sp: spark(hist, '#34d399') },
+    { k: '已分配', v: n0(a.assigned), c: 'c-cyan', d: a.sessions ? `分配率 ${pc(a.assigned / a.sessions * 100, 0)}` : '–' },
+    { k: '正在接待', v: n0(a.current), c: 'c-blue', d: `同时在线 ${n0(a.current)} 席` },
+    { k: '排队', v: n0(a.queue), c: (a.queue || 0) > 0 ? 'c-red' : 'c-green', d: (a.queue || 0) > 0 ? '有排队' : '无排队' },
+    { k: '在线坐席', v: n0(seats), c: 'c-purple', d: `400 另签入 ${n0(signIn400)} 人` },
+    { k: '满意度', v: pc(a.sat, 0), c: (a.sat != null && a.sat >= 95) ? 'c-green' : 'c-amber', d: '各技能组均值' },
+    { k: '当日负荷', v: pc(cap.loadOn, 0), c: (cap.loadOn || 0) >= 110 ? 'c-red' : (cap.loadOn || 0) < 90 ? 'c-blue' : 'c-green', d: `接待 ${n0(cap.inOn)} / 应接 ${n0(cap.capOn)}` }
+  ].map(x => `<div class="kpi ${x.c}"><div class="kl">${x.k}</div><div class="kv ${x.hl ? 'hl' : ''}">${x.v}</div><div class="kd">${x.d}</div>${x.sp || ''}</div>`).join('');
+
+  /* 今日分时段 */
+  const c = D.hhon, slots = (c && c.date === todayCn() && Array.isArray(c.slots)) ? c.slots : [];
+  if (slots.length) {
+    $('#noteOnlinehh').textContent = `已出 ${slots.length} 个时段 · 合计 ${n0(sum(slots, s => s.total))} 会话`;
+    drawBar($('#chOnlinehh'), {
+      labels: slots.map(s => String(s.t).slice(0, 5)), data: slots.map(s => s.total), h: 172,
+      colorFn: (v, i) => i === slots.length - 1 ? '#6ee7b7' : 'rgba(52,211,153,.6)',
+      tipFmt: v => `${n0(v)} 会话`
+    });
+  } else $('#chOnlinehh').innerHTML = '<div class="empty">今日分时段数据待采集</div>';
+
+  /* 近 30 天 */
+  const TRd = D.tr || {}, days = TRd.days || [], on2 = TRd.online || {};
+  const last = days.slice(-30).filter(d => on2[d] != null);
+  const ser = last.map(d => on2[d]);
+  drawLine($('#chOnlinetr'), {
+    labels: last.map(d => d.slice(5)), h: 172, tipFmt: v => `${n0(v)} 会话`,
+    series: [{ name: '在线', data: ser, color: '#6ee7b7', areaFill: 'rgba(52,211,153,.13)', label: n0(ser[ser.length - 1]) }]
+  });
+}
+
+/* 在线预测：同星期几基准 × 近 7 天水平因子（驱动模型待建） */
+function onlineForecast(days, vals, n = 7) {
+  const pts = days.map((d, i) => ({ d, v: vals[i] })).filter(p => p.v != null);
+  if (pts.length < 14) return null;
+  const WD = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
+  const byWd = {}, all = [];
+  pts.forEach(p => { const w = new Date(p.d + 'T00:00:00').getDay(); (byWd[w] = byWd[w] || []).push(p.v); all.push(p.v); });
+  const wdAvg = {}; Object.keys(byWd).forEach(w => wdAvg[w] = sum(byWd[w], x => x) / byWd[w].length);
+  const recent = pts.slice(-7), base = sum(all, x => x) / all.length;
+  const factor = (sum(recent, p => p.v) / recent.length) / (base || 1);
+  const out = []; const lastD = new Date(pts[pts.length - 1].d + 'T00:00:00');
+  for (let i = 1; i <= n; i++) {
+    const dt = new Date(lastD.getTime() + i * 864e5), w = dt.getDay();
+    const iso = dt.getFullYear() + '-' + String(dt.getMonth() + 1).padStart(2, '0') + '-' + String(dt.getDate()).padStart(2, '0');
+    out.push({ date: iso, wd: WD[w], v: Math.round((wdAvg[w] || base) * factor) });
+  }
+  return out;
+}
+
+function renderOnlinefc() {
+  const tr = D.tr, tbl = $('#fcOnlinet'), blk = $('#fOnline');
+  const days = (tr && tr.days) || [], vals = days.map(d => (tr.online || {})[d]);
+  const fc = onlineForecast(days, vals, 7);
+  const CAP = 30, HOURS = 12;              // 人效基准：30 会话/人/时 · 窗口 09:00-21:00
+  if (!fc) { blk.innerHTML = ''; tbl.innerHTML = '<tr><td class="empty">历史样本不足，暂不外推</td></tr>'; return; }
+  fc.forEach(f => { f.need = Math.ceil(f.v / (CAP * HOURS)); f.hc = Math.ceil(f.v / (CAP * 11)); });
+  const wk = sum(fc, f => f.need), mx = fc.slice().sort((a, b) => b.v - a.v)[0];
+  const lastReal = vals.filter(v => v != null).pop();
+  blk.innerHTML = [
+    { k: '未来 7 天预估', v: n0(sum(fc, f => f.v)), c: 'c-green', d: `日均 ${n0(sum(fc, f => f.v) / 7)} 会话` },
+    { k: '峰值日', v: n0(mx.v), c: 'c-amber', d: `${mx.date.slice(5)} ${mx.wd}` },
+    { k: '7 天所需人日', v: `${n0(wk)}<small>人日</small>`, c: 'c-purple', d: `按 30 会话/人时 · 12h 窗口` },
+    { k: '当前水平', v: n0(lastReal), c: 'c-blue', d: '最近一日实际接待量' }
+  ].map(x => `<div class="kpi ${x.c}"><div class="kl">${x.k}</div><div class="kv">${x.v}</div><div class="kd">${x.d}</div></div>`).join('');
+
+  $('#noteOnlinefc').textContent = '按星期几基准 × 近 7 天水平因子外推 · 驱动模型待建';
+  tbl.innerHTML = `<thead><tr><th>日期</th><th>星期</th><th>预估接待量</th><th>所需人力</th><th>建议单班人数</th></tr></thead><tbody>` +
+    fc.map(f => `<tr><td class="v">${f.date.slice(5)}</td><td>${f.wd}</td><td class="v">${n0(f.v)}</td>
+      <td>${f.need} 人日</td><td><span class="pill ${f.v > (lastReal || 0) * 1.15 ? 'y' : 'b'}">${f.hc} 人</span></td></tr>`).join('') + '</tbody>';
+}
+
+/* ══════════════════ 03 工单 ══════════════════ */
+function renderTicket(tk) {
+  if (!tk) return;
+  const bt = tk.bucket_totals || {}, st = tk.status_totals || {}, tb = tk.time_buckets || {};
+  const OVER = ['24h以上', '48h以上', '72h以上', '96h以上'];
+  const overCnt = k => sum(['待处理', '待分配', '处理中'], s => (tb[k] || {})[s] || 0);
+  const overN = sum(OVER, overCnt);
+  const in24 = sum(['待处理', '待分配', '处理中'], s => (tb['24h内'] || {})[s] || 0);
+  const city = Object.entries(tk.city_totals || {}).sort((a, b) => b[1] - a[1]);
+
+  $('#hTicketr').innerHTML =
+    `<span>生成 <b>${esc(tk.generated_at || '–')}</b></span>
+     <span>工单池 <b>${n0(tk.grand_total)}</b></span>`;
+
+  $('#kTicket').innerHTML = [
+    { k: '工单池', v: n0(tk.grand_total), c: 'c-purple', hl: 1, d: '含全部状态' },
+    { k: '投诉', v: n0(bt['客诉处理']), c: 'c-red', d: '执行部门 = 客诉客服' },
+    { k: '工单', v: n0(bt['工单处理']), c: 'c-blue', d: '执行部门 ≠ 客诉客服' },
+    { k: '舆情', v: n0(bt['舆情客诉单']), c: 'c-amber', d: '分类舆情客诉单' },
+    { k: '待处理', v: n0(st['待处理']), c: 'c-cyan', d: `待分配 ${n0(st['待分配'])} · 处理中 ${n0(st['处理中'])}` },
+    { k: '超时未结（≥24h）', v: n0(overN), c: overN > 0 ? 'c-red' : 'c-green', d: `24h以上 ${n0(overCnt('24h以上'))} · 48h以上 ${n0(overCnt('48h以上'))} · 72h以上 ${n0(overCnt('72h以上'))}` },
+    { k: '24h 内待结', v: n0(in24), c: 'c-amber', d: '未到超时线' }
+  ].map(x => `<div class="kpi ${x.c}"><div class="kl">${x.k}</div><div class="kv ${x.hl ? 'hl' : ''}">${x.v}</div><div class="kd">${x.d}</div></div>`).join('');
+
+  /* 状态 × 池 矩阵 */
+  const buckets = tk.buckets || [], statuses = tk.statuses || [], mx = tk.matrix || {};
+  $('#noteTicketmx').textContent = city.length ? `城市升级 TOP：${city.slice(0, 3).map(c => c[0] + ' ' + c[1]).join(' · ')}` : '';
+  $('#tkMatrix').innerHTML = `<thead><tr><th>状态</th>${buckets.map(b => `<th>${esc(b)}</th>`).join('')}<th>合计</th></tr></thead><tbody>` +
+    statuses.map(s => {
+      const row = buckets.map(b => (mx[s] || {})[b] || 0);
+      return `<tr><td class="v">${esc(s)}</td>${row.map(v => `<td>${n0(v)}</td>`).join('')}<td class="v">${n0(sum(row, x => x))}</td></tr>`;
+    }).join('') +
+    `<tr><td class="v">合计</td>${buckets.map(b => `<td class="v">${n0(bt[b])}</td>`).join('')}<td class="v">${n0(tk.grand_total)}</td></tr></tbody>`;
+}
+
+function renderTicketTrend() {
+  const t = D.tt;
+  if (!t || !t.days) { $('#chTickettr').innerHTML = '<div class="empty">趋势数据未生成</div>'; return; }
+  const days = t.days.slice(-30), tp = t.types || {}, cs = tp.cs || {};
+  const line = k => days.map(d => (cs[k] || {})[d] == null ? null : cs[k][d]);
+  drawLine($('#chTickettr'), {
+    labels: days.map(d => d.slice(5)), h: 172, tipFmt: v => `${n0(v)} 单`,
+    series: [
+      { name: '升级量', data: line('new'), color: '#fbbf24', areaFill: 'rgba(251,191,36,.10)', label: n0(line('new').filter(v => v != null).pop()) },
+      { name: '处理量', data: line('done'), color: '#34d399', area: false, label: n0(line('done').filter(v => v != null).pop()) },
+      { name: '库存量', data: line('stock'), color: '#a78bfa', area: false, label: n0(line('stock').filter(v => v != null).pop()) }
+    ]
+  });
+}
+
+/* 工单预测：近 14 天净变化外推积压 */
+function renderTicketfc() {
+  const tbl = $('#fcTickett'), blk = $('#fTicket'), t = D.tt;
+  if (!t || !t.days) { blk.innerHTML = ''; tbl.innerHTML = '<tr><td class="empty">暂无数据</td></tr>'; return; }
+  const days = t.days.slice(-14), cs = (t.types || {}).cs || {};
+  const news = days.map(d => cs.new && cs.new[d]).filter(v => v != null);
+  const dones = days.map(d => cs.done && cs.done[d]).filter(v => v != null);
+  if (news.length < 7) { blk.innerHTML = ''; tbl.innerHTML = '<tr><td class="empty">历史样本不足</td></tr>'; return; }
+  const nAvg14 = sum(news, x => x) / news.length;
+  const dAvg = dones.length ? sum(dones.slice(-7), x => x) / Math.min(7, dones.length) : 0;   // 处理能力取近 7 天
+  const WD = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
+  const byWd = {}; days.forEach(d => { const v = cs.new[d]; if (v == null) return; const w = new Date(d + 'T00:00:00').getDay(); (byWd[w] = byWd[w] || []).push(v); });
+  const stockNow = (cs.stock && Object.values(cs.stock).pop()) || 0;
+  const out = []; let stk = stockNow; const lastD = new Date(t.days[t.days.length - 1] + 'T00:00:00');
+  for (let i = 1; i <= 7; i++) {
+    const dt = new Date(lastD.getTime() + i * 864e5), w = dt.getDay();
+    const iso = dt.getFullYear() + '-' + String(dt.getMonth() + 1).padStart(2, '0') + '-' + String(dt.getDate()).padStart(2, '0');
+    const nv = Math.round(byWd[w] ? sum(byWd[w], x => x) / byWd[w].length : nAvg14);
+    const done = Math.round(Math.min(dAvg, stk + nv));     // 处理量不可能超过待处理存量
+    stk = Math.max(0, stk + nv - done);
+    out.push({ date: iso, wd: WD[w], nv, done, stk: Math.round(stk) });
+  }
+  const endStk = out[out.length - 1].stk, diff = endStk - stockNow;
+  const trendUp = diff > 0;
+  blk.innerHTML = [
+    { k: '日均新增', v: n0(nAvg14), c: 'c-amber', d: '近 14 天（投诉池）' },
+    { k: '日均处理', v: n0(dAvg), c: 'c-green', d: '近 7 天结案能力' },
+    { k: '当前库存', v: n0(stockNow), c: 'c-purple', d: '最近一日遗留量' },
+    {
+      k: '7 天后预估', v: endStk === 0 ? '清零' : n0(endStk), c: trendUp ? 'c-red' : 'c-green',
+      d: endStk === 0 ? '<span class="up">按当前节奏可清空</span>' : `<span class="${trendUp ? 'dn' : 'up'}">${trendUp ? '积压 +' + Math.abs(diff) : '消化 −' + Math.abs(diff)}</span>`
+    }
+  ].map(x => `<div class="kpi ${x.c}"><div class="kl">${x.k}</div><div class="kv">${x.v}</div><div class="kd">${x.d}</div></div>`).join('');
+
+  $('#noteTicketfc').textContent = `净变化 ${n1(nAvg14 - dAvg)} 单/天 · 处理量上限取近 7 天实际 · 驱动模型待建`;
+  tbl.innerHTML = `<thead><tr><th>日期</th><th>星期</th><th>预估新增</th><th>预估处理</th><th>期末积压</th></tr></thead><tbody>` +
+    out.map(f => `<tr><td class="v">${f.date.slice(5)}</td><td>${f.wd}</td><td>${n0(f.nv)}</td><td>${n0(f.done)}</td>
+      <td class="v">${f.stk === 0 ? '<span class="pill g">清零</span>' : n0(f.stk) + (trendUp ? ' <span class="pill r">↑</span>' : ' <span class="pill g">↓</span>')}</td></tr>`).join('') + '</tbody>';
+}
+
+/* ══════════════════ 切片器 ══════════════════ */
+const D = { cc: null, tk: null, tr: null, plan: null, hh: null, hhon: null, tt: null, ready: false };
+const PANE_ORDER = ['400', 'online', 'ticket'];
+const PANE_FN = {
+  '400': () => { render400(D.cc); render400fc(D.plan); },
+  online: () => { renderOnline(D.cc); renderOnlinefc(); },
+  ticket: () => { renderTicket(D.tk); renderTicketTrend(); renderTicketfc(); }
+};
+let CUR = '400';
+
+function showPane(key, opt) {
+  opt = opt || {};
+  const k = PANE_ORDER.indexOf(key) >= 0 ? key : '400';
+  CUR = k;
+  $$('.pane').forEach(p => p.classList.toggle('active', p.dataset.pane === k));
+  $$('.tab').forEach(t => {
+    const a = t.dataset.pane === k;
+    t.classList.toggle('active', a);
+    t.setAttribute('aria-selected', a ? 'true' : 'false');
+  });
+  if (opt.hash !== false) { const h = '#' + k; if (location.hash !== h) { try { history.replaceState(null, '', h); } catch (e) { location.hash = h; } } }
+  if (D.ready) PANE_FN[k]();
+  if (opt.scroll) window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function updateTabs() {
+  const cc = D.cc, tk = D.tk;
+  const ss = (cc && cc.skillSummary) || {};
+  $('#tab400').textContent = cc ? pc(ss.rate) : '–';
+  $('#tabOnline').textContent = cc ? n0(onlineAgg(cc).sessions) : '–';
+  $('#tabTicket').textContent = tk ? n0(tk.grand_total) : '–';
+}
+
+/* ══════════════════ 主流程 ══════════════════ */
+function setMetaBar(cc, tk, plan) {
+  const now = Date.now();
+  const fresh = (ts) => { if (!ts) return 'bad'; const dt = now - ts; return dt < 5 * 6e4 ? 'ok' : dt < 25 * 6e4 ? 'warn' : 'bad'; };
+  const tsOf = s => { if (!s) return null; const m = String(s).match(/(\d{4})[-/](\d{1,2})[-/](\d{1,2})[ T](\d{1,2}):(\d{2}):(\d{2})/); return m ? new Date(+m[1], +m[2] - 1, +m[3], +m[4], +m[5], +m[6]).getTime() : null; };
+  const ccTs = cc && (cc.ts || tsOf(cc.collectedAtCn));
+  const tkTs = tk && tsOf(tk.generated_at);
+  setMeta([
+    { label: '📞 400 实时', value: (cc && cc.collectedAtCn || '–').slice(-8), state: fresh(ccTs), tip: '7x24cc 采集' },
+    { label: '💬 在线实时', value: (cc && cc.collectedAtCn || '–').slice(-8), state: fresh(ccTs), tip: '与 400 同一采集批次' },
+    { label: '🗂 工单', value: (tk && tk.generated_at || '–').slice(-8), state: fresh(tkTs), tip: '爱回收工单系统' },
+    { label: '🔮 预测', value: plan ? plan.range.from.slice(5) + '~' + plan.range.to.slice(5) : '–', state: 'ok', tip: 'plan.json 生成于 ' + (plan ? plan.generated_at : '–') }
+  ]);
 }
 
 async function load() {
-  await Promise.all([loadCC(), loadTicket(), loadHalf(), loadTrend(), loadTicketTrend(), loadAlerts()]);
+  const btn = $('#btnRefresh'); btn.disabled = true; btn.textContent = '刷新中…';
+  const [cc, tk, tr, plan, hh, hhon, tt] = await Promise.all([
+    jget('stats.json', 'http://127.0.0.1:8601/stats.json'),
+    jget('/ticket-stats', 'ticket_stats.json'),
+    jget('/daily_trend.json', 'daily_trend.json'),
+    jget('forecast/plan.json'),
+    jget('call_halfhour.json'),
+    jget('chat_halfhour.json'),
+    jget('ticket_trend.json')
+  ]);
+  D.cc = cc; D.tk = tk; D.tr = tr; D.plan = plan; D.hh = hh; D.hhon = hhon; D.tt = tt; D.ready = true;
+  updateTabs();
+  PANE_FN[CUR]();                    // 只重绘当前切片，切走时再按需绘制
+  setMetaBar(cc, tk, plan);
+  bindTip(document);
+  btn.disabled = false; btn.textContent = '↻ 刷新';
 }
 
-/* ===== 时段量级（400 电话 / 在线会话 半小时） ===== */
-let hhData = null;
-let hhTab = 'call';
-const HH_FILES = { call: 'call_halfhour.json', chat: 'chat_halfhour.json' };
-function switchHalf(tab) {
-  hhTab = tab;
-  document.querySelectorAll('#hhSeg .seg-btn').forEach(b => b.classList.toggle('on', b.dataset.tab === tab));
-  loadHalf();
-}
-async function loadHalf() {
-  const isChat = hhTab === 'chat';
-  try {
-    hhData = await fetch(bust(HH_FILES[hhTab]), { cache: 'no-store' }).then(r => r.json());
-    const n = (hhData.slots || []).length;
-    $('hhMeta').textContent = `${isChat ? '技能组时间趋势 · 分类在线技能组' : '呼入时间趋势 · 400 四线'} · ${hhData.date || ''} · 更新 ${hhData.collectedAtCn || ''}`;
-    $('hhDot').style.background = isChat ? '#3ddc84' : '#5da8ff';
-    $('hhSub').textContent = isChat ? '当日每半小时会话量 · 分类在线技能组' : '当日每半小时呼入 · 400 四线（88236628 / 88236629 / 4001581707 / 9523622）';
-    renderHalf();
-  } catch (e) { $('hhMeta').textContent = isChat ? '在线数据暂不可用（collector 首轮在线采集后出现）' : '400 数据暂不可用'; }
-}
-function halfTime(s) { return s.t.length > 8 ? s.t.slice(11, 16) : s.t.slice(0, 5); }  // 400: 'YYYY-MM-DD HH:MM:SS' → HH:MM
-function renderHalf() {
-  const el = $('hhChart');
-  const isChat = hhTab === 'chat';
-  if (!hhData || !hhData.slots || !hhData.slots.length) {
-    el.innerHTML = '<div class="empty">暂无数据</div>';
-    $('hhNote').innerHTML = '';
-    return;
-  }
-  const slots = hhData.slots;
-  const sum = hhData.sum || {};
-  const W = el.clientWidth || 1000;
-  const H = 240, PL = 42, PR = 14, PT = 16, PB = 26;
-  const iw = W - PL - PR, ih = H - PT - PB;
-  const mx = Math.max(...slots.map(s => s.total), 1) * 1.12;
-  const n = slots.length;
-  const slotW = iw / n;
-  const bw = Math.min(slotW * 0.62, 30);
-  const yAt = v => PT + ih - (v / mx) * ih;
-  const lastIdx = n - 1;
-  const isNow = st => {
-    const now = new Date();
-    const hm = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes() < 30 ? '00' : '30');
-    return st === hm;
-  };
-  let svg = `<svg class="di-chart-svg" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">`;
-  for (let f = 0; f <= 4; f++) {
-    const yv = Math.round(mx / 4 * f);
-    const y = yAt(yv);
-    svg += `<line class="di-grid" x1="${PL}" y1="${y}" x2="${W - PR}" y2="${y}"/>`;
-    svg += `<text class="di-axis" x="${PL - 6}" y="${y + 3}" text-anchor="end">${yv.toLocaleString()}</text>`;
-  }
-  const showAt = new Set();
-  for (let i = 0; i < n; i++) if (i % Math.ceil(n / 9) === 0) showAt.add(i);
-  showAt.add(0); showAt.add(n - 1);
-  slots.forEach((s, i) => {
-    const st = halfTime(s);
-    const cx = PL + slotW * i + slotW / 2;
-    const x0 = cx - bw / 2, x1 = cx + bw / 2;
-    const yTop = yAt(s.total);
-    const live = isNow(st);
-    const last = (i === lastIdx);
-    const fill = last ? '#ffd76a' : (isChat ? '#3ddc84' : '#5da8ff');
-    const tip = isChat ? `${st} 会话 ${s.total} · 接起率 ${s.rate || '--'}` : `${st} 进线 ${s.total} · 已接听 ${s.answered} · IVR ${s.ivr} · 排队放弃 ${s.queueAbandon}`;
-    // ⚠️ tooltip 必须内嵌在 <rect> 内部：写成兄弟节点会变成整个 <svg> 的 title，
-    //    导致 hover 到任意柱子都只显示循环最后一项（2026-09-11 修复）
-    svg += `<rect x="${x0}" y="${yTop}" width="${bw}" height="${PT + ih - yTop}" rx="2" fill="${fill}" opacity="${last ? 0.95 : 0.82}"><title>${tip}</title></rect>`;
-    if (live || last) svg += `<rect x="${x0 - 1}" y="${yTop - 1}" width="${bw + 2}" height="${PT + ih - yTop + 2}" rx="3" fill="none" stroke="#ffd76a" stroke-width="1.4" stroke-dasharray="${live ? '3,2' : '0'}"/>`;
-    if (showAt.has(i)) svg += `<text class="di-axis" x="${cx}" y="${H - 8}" text-anchor="middle">${st}</text>`;
-    if (i === lastIdx) svg += `<text class="di-last" fill="#ffd76a" x="${cx}" y="${Math.max(yTop - 5, PT + 8)}" text-anchor="middle">${s.total}</text>`;
-  });
-  svg += '</svg>';
-  el.innerHTML = svg;
-  // 小结
-  const lastS = slots[lastIdx];
-  const avg = n ? Math.round(sum.total / n) : null;
-  if (isChat) {
-    $('hhNote').innerHTML =
-      `<span>今日累计 <b>${(sum.total || 0).toLocaleString()}</b></span>` +
-      `<span>已出时段 <b>${n}</b></span>` +
-      `<span>时段均值 <b>${avg == null ? '--' : avg.toLocaleString()}</b></span>` +
-      `<span>最新 ${halfTime(lastS)} <b>${lastS.total}</b></span>` +
-      (lastS.rate ? `<span>最新接起率 <b>${lastS.rate}</b></span>` : '') +
-      (hhData.history && Object.keys(hhData.history).length ? `<span style="opacity:.6">历史存档 ${Object.keys(hhData.history).length} 天</span>` : '');
-  } else {
-    const rate = (sum.total - sum.ivr) > 0 ? +((sum.answered / (sum.total - sum.ivr)) * 100).toFixed(1) : null;  // 人工接通率
-    $('hhNote').innerHTML =
-      `<span>今日累计 <b>${sum.total.toLocaleString()}</b></span>` +
-      `<span>已接听(人工) <b>${sum.answered.toLocaleString()}</b></span>` +
-      `<span>IVR 分流 <b>${sum.ivr.toLocaleString()}</b></span>` +
-      `<span>人工接通率 <b>${rate == null ? '--' : rate + '%'}</b></span>` +
-      `<span>时段均值 <b>${avg == null ? '--' : avg.toLocaleString()}</b></span>` +
-      `<span>最新 ${halfTime(lastS)} <b>${lastS.total}</b></span>` +
-      (hhData.history && Object.keys(hhData.history).length ? `<span style="opacity:.6">历史存档 ${Object.keys(hhData.history).length} 天（每日 21:30 后固化）</span>` : '');
-  }
-}
+/* 事件绑定 */
+$('#tabs').addEventListener('click', e => {
+  const b = e.target.closest('.tab');
+  if (b) showPane(b.dataset.pane, { scroll: true });
+});
+window.addEventListener('hashchange', () => showPane((location.hash || '').slice(1), { hash: false }));
+document.addEventListener('keydown', e => {
+  if (/^(INPUT|TEXTAREA|SELECT)$/.test(e.target && e.target.tagName || '')) return;
+  const i = ['1', '2', '3'].indexOf(e.key);
+  if (i >= 0) { e.preventDefault(); showPane(PANE_ORDER[i], { scroll: true }); }
+});
+$('#btnRefresh').onclick = load;
+setInterval(() => { const a = $('#autoSw'); if (a && a.checked) load(); }, 90000);
 
-/* ===== 进线量趋势（切片器：📞400/💬在线 × 日/周/月 · 单图） ===== */
-let trData = null;
-let trTab = 'day';      // 日/周/月
-let trMode = 'call';    // call=400 / chat=在线
-const TR_CFG = {
-  call: { name: '📞 400 呼入（人工量）', color: '#5da8ff', hist: '400 历史起 1/1' },
-  chat: { name: '💬 在线接待', color: '#3ddc84', hist: '在线历史起 8/24' }
-};
-async function loadTrend() {
-  try {
-    trData = await fetch(bust('daily_trend.json'), { cache: 'no-store' }).then(r => r.json());
-    renderTrend();
-  } catch (e) { $('trMeta').textContent = '趋势数据暂不可用（build_daily_trend.py 未生成）'; }
-}
-function switchTrendMode(mode) {
-  trMode = mode;
-  document.querySelectorAll('#trModeSeg .seg-btn').forEach(b => b.classList.toggle('on', b.dataset.tab === mode));
-  renderTrend();
-}
-function switchTrend(tab) {
-  trTab = tab;
-  document.querySelectorAll('#trSeg .seg-btn').forEach(b => b.classList.toggle('on', b.dataset.tab === tab));
-  renderTrend();
-}
-// 单序列柱状图：items = [{label, v, tip}], v 可 null
-function drawTrendBars(el, items, color) {
-  const W = el.clientWidth || 1100, H = 230, PL = 46, PR = 14, PT = 14, PB = 24;
-  const iw = W - PL - PR, ih = H - PT - PB;
-  const vals = [];
-  items.forEach(it => { if (it.v != null) vals.push(it.v); });
-  const mx = Math.max(...vals, 1) * 1.1;
-  const n = items.length, slotW = iw / n;
-  const bw = Math.max(Math.min(slotW * 0.62, 30), 2);
-  const yAt = v => PT + ih - (v / mx) * ih;
-  let svg = `<svg class="di-chart-svg" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">`;
-  for (let f = 0; f <= 4; f++) {
-    const yv = Math.round(mx / 4 * f);
-    const y = yAt(yv);
-    svg += `<line class="di-grid" x1="${PL}" y1="${y}" x2="${W - PR}" y2="${y}"/>`;
-    svg += `<text class="di-axis" x="${PL - 6}" y="${y + 3}" text-anchor="end">${yv.toLocaleString()}</text>`;
-  }
-  const showAt = new Set();
-  // 标签自适应：先按容量算步长，确保相邻标签间距 >= 每字约 6.5px
-  const labW = Math.max(...items.map(it => String(it.label).length), 1) * 6.5 + 6;
-  const maxLab = Math.max(Math.floor(iw / labW), 1);
-  const step = Math.max(Math.ceil(n / Math.min(n, maxLab)), 1);
-  for (let i = 0; i < n; i++) if (i % step === 0) showAt.add(i);
-  showAt.add(0); showAt.add(n - 1);
-  items.forEach((it, i) => {
-    const cx = PL + slotW * i + slotW / 2;
-    const isLast = i === n - 1;
-    if (it.v != null) {
-      const yT = yAt(it.v);
-      // tooltip 内嵌柱体（同上，勿拆成兄弟节点）
-      svg += `<rect x="${cx - bw / 2}" y="${yT}" width="${bw}" height="${PT + ih - yT}" rx="1.5" fill="${color}" opacity="${isLast ? 1 : .82}"><title>${it.label} · ${it.v.toLocaleString()}${it.tip ? ' · ' + it.tip : ''}</title></rect>`;
-    }
-    if (showAt.has(i)) svg += `<text class="di-axis" x="${cx}" y="${H - 8}" text-anchor="middle" font-size="10">${it.label}</text>`;
-    if (isLast && items.length > 1 && it.v != null) {
-      svg += `<text class="di-last" fill="#ffd76a" x="${cx}" y="${Math.max(yAt(it.v) - 4, PT + 8)}" text-anchor="middle" font-size="10.5">${it.v.toLocaleString()}</text>`;
-    }
-  });
-  svg += '</svg>';
-  el.innerHTML = svg;
-}
-function trendChip(label, val, extra) {
-  return `<span><b>${label}</b> ${val == null ? '--' : val.toLocaleString()}${extra ? '<em style="opacity:.75;font-style:normal"> ' + extra + '</em>' : ''}</span>`;
-}
-function renderTrend() {
-  const el = $('trChart');
-  if (!trData) { el.innerHTML = '<div class="empty">暂无趋势数据</div>'; return; }
-  const cfg = TR_CFG[trMode];
-  const days = trData.days || [], c400 = trData.call400 || {}, onl = trData.online || {};
-  const weeks = trData.weeks || [], months = trData.months || [];
-  const src = (trData.meta && trData.meta.src_count) || {};
-  const series = trMode === 'call' ? c400 : onl;
-  const dk = trMode === 'call' ? 'call400' : 'online';   // weeks/months 内的键名
-  const dkw = dk + '_wow', dkm = dk + '_mom';
-  $('trDot').style.background = cfg.color;
-  $('trTitle').textContent = cfg.name;
-  const build = (d, v, tip) => ({ label: lab(d), v: v != null ? v : null, tip: tip != null ? tip : '' });
-  let items = [], note = '';
-  const lab = d => d.slice(5).replace('-', '/');
-  if (trTab === 'day') {
-    const win = days.slice(-31);
-    items = win.map(d => build(d, series[d], ''));
-    const last = days[days.length - 1], prev = days[days.length - 2];
-    const l1 = series[last];
-    note = trendChip('今日', l1) +
-      (l1 != null && series[prev] ? `<span>较昨日 <b style="color:${l1 >= series[prev] ? 'var(--red)' : 'var(--green)'}">${l1 - series[prev] >= 0 ? '+' : ''}${(l1 - series[prev]).toLocaleString()}</b></span>` : '') +
-      `<span style="opacity:.6">近 31 天 · 今日为实时累计，21:50 后固化</span>`;
-  } else if (trTab === 'week') {
-    // 周视图只展示「有数据」的周（早期周 online 为 0/无来源，画出来是空柱反而干扰）
-    const hasData = weeks.filter(w => w[dk] != null && w[dk] > 0);
-    const win = hasData.slice(-26);
-    items = win.map(w => ({ label: w.label, v: w[dk] != null ? w[dk] : null,
-      tip: w[dkw] != null ? '环比 ' + (w[dkw] >= 0 ? '+' : '') + w[dkw] + '%' : '' }));
-    const wl = hasData[hasData.length - 1] || weeks[weeks.length - 1];
-    const wl2 = hasData[hasData.length - 2];
-    note = trendChip('本周', wl[dk], wl[dkw] != null ? `周环比 ${wl[dkw] >= 0 ? '+' : ''}${wl[dkw]}%` : null) +
-      (wl2 && wl2[dk] != null ? trendChip('上周', wl2[dk]) : '') +
-      trendChip('本周已过', wl.days, '天') +
-      `<span style="opacity:.6">周 = 周一~周日 · 共 ${hasData.length} 周</span>`;
-  } else {
-    const win = months.slice(-9);
-    items = win.map(m => ({ label: m.m, v: m[dk] != null ? m[dk] : null,
-      tip: m[dkm] != null ? '环比 ' + (m[dkm] >= 0 ? '+' : '') + m[dkm] + '%' : '' }));
-    const ml = months[months.length - 1];
-    note = trendChip('本月', ml[dk], ml[dkm] != null ? `月环比 ${ml[dkm] >= 0 ? '+' : ''}${ml[dkm]}%` : null) +
-      (ml.days < 31 ? `<span style="opacity:.6">当月进行中</span>` : '') +
-      `<span style="opacity:.6">${cfg.hist}</span>`;
-  }
-  drawTrendBars(el, items, cfg.color);
-  $('trNote').innerHTML = note;
-  // 数据源提示
-  const cc = src.call400 || {}, oc = src.online || {};
-  $('trMeta').textContent =
-    `数据截至 ${trData.days && trData.days[trData.days.length - 1]} · 400 人工量 ${Object.keys(c400).length} 天（8-9月日报 ${cc.feishu || 0} / 分时段表 ${cc.half400 || 0} / 实时 ${cc.half || 0} / 历史报表·呼入量 ${cc.xlsx || 0} / 快照 ${cc.cap || 0}）` +
-    ` · 在线接待 ${Object.keys(onl).length} 天（8-9月日报 ${oc.feishu || 0} / 实时 ${oc.half || 0} / 快照 ${oc.cap || 0}）` +
-    (trData.meta && trData.meta.updated ? ` · 封存 ${trData.meta.updated.slice(5, 16)}` : '');
-}
-
-
-/* ===== 分级预警状态（alert_state.json · 90s 随实时刷新） ===== */
-const AL_ORDER = ['c400d', 'c400w', 'onld', 'onlw', 'ks'];
-const AL_NAME = { c400d: '📞 400呼入·日', c400w: '📞 400呼入·周', onld: '💬 在线接待·日', onlw: '💬 在线接待·周', ks: '🗂 客诉工单·日' };
-const AL_LVNAME = { '-1': '无数据', '0': '低负荷', '1': '正常', '2': '一级', '3': '二级', '4': '三级' };
-async function loadAlerts() {
-  try {
-    const d = await fetch(bust('alert_state.json'), { cache: 'no-store' }).then(r => r.json());
-    renderAlerts(d);
-  } catch (e) {
-    const el = $('alRow'); if (el) el.innerHTML = '<div class="empty">预警模块未运行（alert_eval.js）</div>';
-    const m = $('alMeta'); if (m) m.textContent = '—';
-  }
-}
-function renderAlerts(d) {
-  const row = $('alRow'); if (!row) return;
-  const objs = d.objects || {};
-  let html = '';
-  AL_ORDER.forEach(k => {
-    const o = objs[k]; if (!o) return;
-    const lv = o.level != null ? o.level : -1;
-    const v = o.vals || {};
-    const bits = [];
-    if (v.load != null) bits.push('负荷 ' + v.load + '%');
-    if (v.rate != null) bits.push('接通率 ' + v.rate + '%');
-    if (v.un != null) bits.push('未分配 ' + v.un + ' 单');
-    if (v.stock != null) bits.push('库存 ' + v.stock + ' 单');
-    // 卡片上只展示档位与指标值，不带任何推送/静默注记（推送规则见页底口径说明）。
-    // 推送规则统一见页面底部「取数口径与计算逻辑 · 分级预警档位」（2026-09-11 用户口径）
-    const note = '';
-    const mark = lv >= 2 ? '⚠️' : (lv === 1 ? '✓' : '·');
-    html += `<div class="al-pill lv${lv}"><div class="t">${AL_NAME[k] || k}<span class="dim">${mark}</span></div>` +
-      `<div class="lv">${AL_LVNAME[lv]}${note}</div><div class="v">${bits.join(' · ') || '—'}</div></div>`;
-  });
-  row.innerHTML = html || '<div class="empty">暂无预警对象</div>';
-  const m = $('alMeta');
-  if (m) m.textContent = d.updated ? '更新 ' + String(d.updated).split(' ')[1] : '—';
-}
-
-/* ===== 工单量级（切片器：类型 × 升级/库存/处理 · 单图） ===== */
-let ttData = null;
-let ttTab = 'cs';     // cs=投诉 gd=工单(纠纷+申诉) yq=舆情
-let ttQty = 'new';    // new=升级量 stock=库存量 done=处理量
-const TT_NAME = { cs: '投诉', gd: '工单(纠纷+申诉)', yq: '舆情' };
-const TT_QNAME = { new: '升级量', stock: '库存量', done: '处理量' };
-const TT_QCOL = { new: '#f59e0b', stock: '#f87171', done: '#3ddc84' };
-const TT_QNOTE = { new: '升级=当日创建', stock: '库存=遗留(前日+升级-处理)', done: '处理=当日结案' };
-async function loadTicketTrend() {
-  try {
-    ttData = await fetch(bust('ticket_trend.json'), { cache: 'no-store' }).then(r => r.json());
-    renderTicketTrend();
-  } catch (e) { $('ttMeta').textContent = '工单量级数据暂不可用'; }
-}
-function switchTicketTrend(tab) {
-  ttTab = tab;
-  document.querySelectorAll('#ttSeg .seg-btn').forEach(b => b.classList.toggle('on', b.dataset.tab === tab));
-  renderTicketTrend();
-}
-function switchTicketQty(q) {
-  ttQty = q;
-  document.querySelectorAll('#tqSeg .seg-btn').forEach(b => b.classList.toggle('on', b.dataset.tab === q));
-  renderTicketTrend();
-}
-function renderTicketTrend() {
-  const el = $('ttChart');
-  if (!ttData) { el.innerHTML = '<div class="empty">暂无工单量级数据</div>'; return; }
-  const t = (ttData.types || {})[ttTab];
-  if (!t) { el.innerHTML = '<div class="empty">类型数据缺失</div>'; return; }
-  const days = ttData.days || [];
-  $('ttDot').style.background = TT_QCOL[ttQty];
-  $('ttTitle').textContent = TT_QNAME[ttQty];
-  const data = t[ttQty] || {};
-  const hasQty = days.some(d => data[d] != null);
-  if (!hasQty) { el.innerHTML = '<div class="empty">该类型无库存数据（日报无遗留量行）</div>'; $('ttNote').innerHTML = ''; return; }
-  const items = days.map(d => ({ label: d.slice(5).replace('-', '/'), v: data[d] != null ? data[d] : null, tip: '' }));
-  drawTrendBars(el, items, TT_QCOL[ttQty]);
-  const last = days[days.length - 1], prev = days[days.length - 2];
-  const v = data[last], pv = data[prev];
-  let note = `<span><b>最新${TT_QNAME[ttQty]}</b> ${v == null ? '--' : v.toLocaleString()}</span>`;
-  if (v != null && pv != null) {
-    const dd = v - pv;
-    note += `<span>较昨日 <b style="color:${dd >= 0 ? 'var(--red)' : 'var(--green)'}">${dd >= 0 ? '+' : ''}${dd.toLocaleString()}</b></span>`;
-  }
-  note += `<span style="opacity:.6">${TT_NAME[ttTab]} · ${TT_QNOTE[ttQty]} · 最新 ${last}</span>`;
-  $('ttNote').innerHTML = note;
-  const cov = (ttData.meta && ttData.meta.coverage) || {};
-  $('ttMeta').textContent =
-    `数据截至 ${last} · ${TT_NAME[ttTab]} 覆盖 ${(cov[ttTab] || 0)} 天` +
-    ` · 源 ${(ttData.meta && ttData.meta.src) || ''}` +
-    (ttData.meta && ttData.meta.updated ? ` · 构建 ${ttData.meta.updated.slice(5, 16)}` : '');
-}
-
-function renderCC() {
-  if (!ccData) return;
-  $('mCcTime').textContent = ccData.collectedAtCn || '--';
-  const sm = ccData.skillSummary || {};
-  $('sRate').textContent = sm.rate != null ? sm.rate + '%' : '--';
-  $('sCallIn').textContent = sm.total != null ? sm.total : (sm.answered ?? '--');
-  const q = sm.queue ?? 0;
-  $('sQueue').textContent = q;
-  $('sQueueBox').className = 'kpi' + (q > 0 ? ' amber' : ' blue');
-  $('sSign').textContent = (ccData.signInAgents400 || []).length;
-  const s400 = ccData.signInAgents400 || [];
-  $('sign400List').innerHTML = s400.map(n => `<span class="name-chip">${esc(n)}</span>`).join('') || '<span class="name-chip dim">暂无签入</span>';
-  const att = ccData.attendance || {};
-  $('sAtt400').textContent = att.duty400 ? `${att.on400 ? att.on400.length : 0} / ${att.duty400.length}` : '--';
-  const off400 = att.off400 || [];
-  $('off400List').innerHTML = off400.map(n => `<span class="name-chip off">${esc(n)}</span>`).join('') || '<span class="name-chip dim">全员出勤</span>';
-  $('skill400Rows').innerHTML = (ccData.skillGroups || []).map(g =>
-    `<tr><td>${esc(g.name)}</td><td class="num">${g.rate != null ? g.rate + '%' : '-'}</td><td class="num">${g.answered ?? 0}</td><td class="num">${g.total ?? 0}</td><td class="num">${g.queue ?? 0}</td><td class="num">${g.signIn ?? 0}</td></tr>`
-  ).join('') || '<tr><td colspan="6" class="empty">暂无</td></tr>';
-  const fl = (ccData.online && ccData.online.fenlei) || {};
-  $('oTotal').textContent = fl.sessions ?? '--';
-  $('oAssigned').textContent = fl.assigned ?? '--';
-  const oq = fl.queue ?? 0;
-  $('oQueue').textContent = oq;
-  $('oQueueBox').className = 'kpi' + (oq > 0 ? ' amber' : ' blue');
-  $('oSatisfy').textContent = fl.satisfactionRate != null ? fl.satisfactionRate.toFixed(2) + '%' : '--';
-  $('oAtt').textContent = att.dutyOnline ? `${att.onOnline ? att.onOnline.length : 0} / ${att.dutyOnline.length}` : '--';
-  const offOnline = att.offOnline || [];
-  $('offOnlineList').innerHTML = offOnline.map(n => `<span class="name-chip off">${esc(n)}</span>`).join('') || '<span class="name-chip dim">全员出勤</span>';
-  // 运能负荷
-  const cp = ccData.capacity || {};
-  $('capDate').textContent = (cp.date || '') + ' · 进线量 ÷ 当前应接量（400 130单/人/天·两端半量；在线 班表工时×30单/人/时·09:00-21:00）';
-  $('cp400').textContent = cp.load400 != null ? cp.load400 + '%' : '--';
-  $('cp400d').textContent = cp.in400 != null ? `进线 ${cp.in400} / 应接 ${cp.cap400}（${cp.p400}人）` : '--';
-  $('cpOn').textContent = cp.loadOn != null ? cp.loadOn + '%' : '--';
-  $('cpOnd').textContent = cp.inOn != null ? `进线 ${cp.inOn} / 应接 ${cp.capOn}（当日在班 ${cp.onHoursDay || '--'}h）` : '--';
-  $('cpRate').textContent = cp.rate400 != null ? cp.rate400 + '%' : '--';
-  // 周维度（本周累计）
-  const wk = ccData.capacity_week || {};
-  $('cpWeek').textContent = wk.load400 != null ? wk.load400 + '%' : '--';
-  $('cpWeekd').textContent = wk.wDays ? `400 ${wk.load400}% · 在线 ${wk.loadOn}% · 400接通率 ${wk.rate400}%（本周 ${wk.wDays} 天 · 进线 ${wk.wIn400}/${wk.wInOn} / 应接 ${wk.wExp400}/${wk.wExpOn}）` : '本周数据从今天开始累计';
-  const seats = ccData.onlineAgents || [];
-  $('onlineSeats').innerHTML = seats.map(n => `<span class="name-chip">${esc(n)}</span>`).join('') || '<span class="name-chip dim">暂无在线</span>';
-}
-
-function renderTicket() {
-  if (!tkData) return;
-  $('mTkTime').textContent = tkData.generated_at || '--';
-  const fb = $('fBucket').value, fs = $('fStatus').value, ft = $('fTop').value;
-  const st = tkData.status_totals || {};
-  const bt = tkData.bucket_totals || {};
-  const pick = m => Object.entries(m).filter(([k]) => fs === '全部' || k === fs).reduce((a, [, v]) => a + (typeof v === 'number' ? v : 0), 0);
-
-  // 总览大数字（按部门/池）
-  $('tTotal').textContent = tkData.grand_total ?? 0;
-  $('tCs').textContent = bt['客诉处理'] ?? 0;
-  $('tGd').textContent = bt['工单处理'] ?? 0;
-  $('tOp').textContent = bt['舆情客诉单'] ?? 0;
-  $('tCity').textContent = tkData.city_totals ? Object.values(tkData.city_totals).reduce((a, v) => a + v, 0) : '--';
-
-  renderDrill();
-  renderAlert(ft);
-  renderMid(ft, fs);
-}
-
-// ===== 下钻（按部门/池：投诉→大类→中类；工单/舆情→说明；城市→城市列表） =====
-let drill = { level: 0, dept: null, top: null };  // level: 0=未进入 1=部门 2=大类 3=中类 4=城市
-function goDrill(d) {
-  if (d === 'city') drill = { level: 4, dept: 'city', top: null };
-  else if (d === 'matrix') drill = { level: 10, dept: 'matrix', top: null };
-  else if (d === 'time') drill = { level: 11, dept: 'time', top: null };
-  else drill = { level: 2, dept: d, top: null };
-  renderDrill();
-}
-
-function renderDrill() {
-  const dc = $('drillContent');
-  if (drill.level === 0) {
-    $('drillHint').textContent = '点击上方大数字进入';
-    $('backRow').style.display = 'none';
-    dc.innerHTML = '<div class="empty">点击「投诉 / 工单 / 舆情 / 城市升级工单」任意一个开始下钻</div>';
-    return;
-  }
-  $('drillHint').textContent = '';
-  $('backRow').style.display = 'block';
-
-  // 状态×量级 矩阵
-  if (drill.dept === 'matrix') {
-    const mx = tkData.matrix || {};
-    const statuses = ['待分配', '待处理', '处理中'];
-    const buckets = ['客诉处理', '工单处理', '舆情客诉单'];
-    const rowSum = s => Object.values(mx[s] || {}).reduce((a, v) => a + v, 0);
-    const colSum = b => statuses.reduce((a, s) => a + ((mx[s] || {})[b] || 0), 0);
-    const total = statuses.reduce((a, s) => a + rowSum(s), 0) || 1;
-    let html = '<div class="scroll"><table><thead><tr><th>状态 \\ 量级</th>' + buckets.map(b => `<th class="num">${esc(b)}</th>`).join('') + '<th class="num">合计</th></tr></thead><tbody>';
-    for (const s of statuses) {
-      html += `<tr><td><b>${s}</b></td>` + buckets.map(b => `<td class="num">${(mx[s] || {})[b] || 0}</td>`).join('') + `<td class="num"><b>${rowSum(s)}</b>（${(rowSum(s) / total * 100).toFixed(1)}%）</td></tr>`;
-    }
-    html += `<tr><td><b>合计</b></td>` + buckets.map(b => `<td class="num"><b>${colSum(b)}</b></td>`).join('') + `<td class="num"><b>${total}</b></td></tr></tbody></table></div>`;
-    html += '<div class="legend" style="margin-top:8px;"><span>量级=工单池：客诉处理(执行部门=客诉客服)、工单处理(≠客诉客服)、舆情客诉单</span></div>';
-    dc.innerHTML = html;
-    return;
-  }
-  // 升级时长×状态（点击行下钻场景分布）
-  if (drill.dept === 'time') {
-    const tb = tkData.time_buckets || {};
-    const statuses = ['待分配', '待处理', '处理中'];
-    const BNAME = {'24h内': '升级24h内', '24h以上': '升级24h以上', '48h以上': '升级48h以上', '72h以上': '升级72h以上', '96h以上': '升级96h以上'};
-    const sumSt = m => statuses.reduce((a, s) => a + (m[s] || 0), 0);
-    let html = '<div class="scroll"><table><thead><tr><th>升级时长</th>' + statuses.map(s => `<th class="num">${s}</th>`).join('') + '<th class="num">合计</th><th></th></tr></thead><tbody>';
-    const rows = Object.entries(tb);
-    const total = rows.reduce((a, [, m]) => a + sumSt(m), 0) || 1;
-    for (const [k, m] of rows) {
-      const sum = sumSt(m);
-      html += `<tr onclick="timeDrill('${k}')" style="cursor:pointer;" title="点击查看该桶场景分布"><td><b>${BNAME[k] || esc(k)}</b></td>` + statuses.map(s => `<td class="num">${m[s] || 0}</td>`).join('') + `<td class="num"><b>${sum}</b>（${(sum / total * 100).toFixed(1)}%）</td><td class="num">▸</td></tr>`;
-    }
-    html += '</tbody></table></div>';
-    html += '<div class="legend" style="margin-top:8px;"><span>升级时长=工单升级入库起计时：24h − 剩余倒计时（剩3h→21h，归零后继续累加）；按 24h 一组累计分布（24h以上 含 48h/72h/96h以上）。点击行查看该桶场景分布。</span></div>';
-    html += '<div id="timeDrillDetail"></div>';
-    dc.innerHTML = html;
-    return;
-  }
-
-  const bt = tkData.bucket_totals || {};
-  const POOL = { cs: '客诉处理', gd: '工单处理', op: '舆情客诉单' };
-  const DEPTNAME = { cs: '投诉', gd: '工单', op: '舆情' };
-  // 池类型分布数据源：cs 用顶层键（兼容旧数据），gd/op 用 complaint_by_pool
-  const tkType = which => {
-    if (drill.dept === 'cs') return tkData[which] || {};
-    const p = (tkData.complaint_by_pool || {})[POOL[drill.dept]] || {};
-    const key = { complaint_by_top: 'by_top', complaint_by_mid: 'by_mid', complaint_by_leaf: 'by_leaf' }[which];
-    return p[key] || {};
-  };
-  const tops = tkType('complaint_by_top');
-  const mids = tkType('complaint_by_mid');
-
-  if (drill.level === 1) {
-    // 部门层：四个部门，点击进入
-    const defs = [['cs', '投诉', bt['客诉处理'] ?? 0, 'green'], ['gd', '工单', bt['工单处理'] ?? 0, 'blue'], ['op', '舆情', bt['舆情客诉单'] ?? 0, 'amber'], ['city', '城市升级工单', tkData.city_totals ? Object.values(tkData.city_totals).reduce((a, v) => a + v, 0) : null, 'red']];
-    dc.innerHTML = '<div class="drill-list">' + defs.map(([k, n, v, c]) =>
-      `<div class="drill-item" onclick="goDrill('${k}')"><div class="n" style="color:var(--${c})">${v == null ? '--' : v}</div><div class="l">${n}</div><div class="go">点击查看 ▸</div></div>`
-    ).join('') + '</div>';
-  } else if (drill.dept === 'city') {
-    // 城市列表
-    const ct = tkData.city_totals || {};
-    const rows = Object.entries(ct).sort((a, b) => b[1] - a[1]);
-    dc.innerHTML = rows.length ? '<div class="drill-list">' + rows.map(([k, v]) =>
-      `<div class="drill-item"><div class="n">${v}</div><div class="l">${esc(k)}</div></div>`
-    ).join('') + '</div>' : '<div class="empty">暂无城市数据（工单系统登录后自动补充）</div>';
-  } else {
-    // 投诉/工单/舆情池 → 大类 → 中类
-    const rows = Object.entries(tops).filter(([, m]) => Object.values(m).reduce((a, v) => a + v, 0) > 0).sort((a, b) => Object.values(b[1]).reduce((x, y) => x + y, 0) - Object.values(a[1]).reduce((x, y) => x + y, 0));
-    if (drill.level === 2) {
-      dc.innerHTML = rows.length ? '<div class="drill-list">' + rows.map(([k, m]) => {
-        const n = Object.values(m).reduce((a, v) => a + v, 0);
-        return `<div class="drill-item" onclick="drill={level:3,dept:'${drill.dept}',top:'${escAttr(k)}'};renderDrill()"><div class="n">${n}</div><div class="l">${esc(k)}</div><div class="go">点击查看中类 ▸</div></div>`;
-      }).join('') + '</div>' : `<div class="empty">${DEPTNAME[drill.dept] || ''}池暂无类型细分（该池工单无「创建投诉类型」字段或暂无数据）</div>`;
-    } else if (drill.level === 3) {
-      const sub = Object.entries(mids).filter(([k]) => k.startsWith(drill.top + '-')).map(([k, m]) => [k.replace(drill.top + '-', ''), Object.values(m).reduce((a, v) => a + v, 0)]).filter(([, v]) => v > 0).sort((a, b) => b[1] - a[1]);
-      const selfN = (mids[drill.top] ? Object.values(mids[drill.top]).reduce((a, v) => a + v, 0) : 0);
-      dc.innerHTML = sub.length ? '<div class="drill-list">' + sub.map(([k, v]) =>
-        `<div class="drill-item"><div class="n">${v}</div><div class="l">${esc(k)}</div></div>`
-      ).join('') + '</div>' : (selfN > 0 ? '<div class="empty">「' + drill.top + '」为单级类型，无更细分类</div>' : '<div class="empty">「' + drill.top + '」暂无中类明细</div>');
-    }
-  }
-}
-
-function renderAlert(ft) {
-  const ac = tkData.alert_counts || {};
-  const alertRows = Object.entries(ac).filter(([k]) => ft === '全部' || k.startsWith(ft));
-  const sum = m => Object.values(m || {}).reduce((a, v) => a + v, 0);
-  $('alertList').innerHTML = alertRows.map(([k, m]) => {
-    const n = sum(m);
-    if (n === 0) return '';
-    return `<div class="alert-item"><span>⚠️ <b>${esc(k)}</b></span><span class="s">${n} 单 · ${Object.entries(m).map(([s, v]) => s + ' ' + v).join(' / ')}</span></div>`;
-  }).join('') || '<div class="empty">当前无命中告警</div>';
-}
-
-function renderMid(ft, fs) {
-  const mids = tkData.complaint_by_mid || {};
-  const midRows = Object.entries(mids).filter(([k]) => ft === '全部' || k.startsWith(ft));
-  const midMax = Math.max(1, ...midRows.map(([, m]) => pick(m)));
-  $('midList').innerHTML = midRows.map(([k, m]) => {
-    const n = pick(m);
-    if (n === 0) return '';
-    return `<div class="bar-row"><div class="bar-top"><span>${esc(k)}</span><b>${n}</b></div></div>`;
-  }).join('') || '<div class="empty">无数据</div>';
-}
-
-function escAttr(s) { return String(s ?? '').replace(/["'<>]/g, c => ({ '"': '&quot;', "'": '&#39;', '<': '&lt;', '>': '&gt;' }[c])); }
-
-function esc(s) { return String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
-
-// 时长桶下钻：查看该桶场景分布（大类 + 完整场景 TOP10）
-function timeDrill(b) {
-  const tb = (tkData.time_buckets || {})[b] || {};
-  const statuses = ['待分配', '待处理', '处理中'];
-  const BNAME = {'24h内': '升级24h内', '24h以上': '升级24h以上', '48h以上': '升级48h以上', '72h以上': '升级72h以上', '96h以上': '升级96h以上'};
-  const sumSt = m => statuses.reduce((a, s) => a + (m[s] || 0), 0);
-  const el = document.getElementById('timeDrillDetail');
-  if (!el) return;
-  const tops = tb.by_top || {};
-  const leaves = tb.by_leaf || {};
-  const tk = Object.keys(tops);
-  const lk = Object.keys(leaves).slice(0, 10);
-  const rowHtml = (list, src) => list.map(k => {
-    const m = src[k] || {};
-    const n = sumSt(m);
-    return '<div style="display:flex;gap:10px;padding:4px 2px;font-size:12.5px;border-bottom:1px solid var(--border);">' +
-           '<span style="width:220px;flex-shrink:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="' + esc(k) + '">' + esc(k) + '</span>' +
-           '<b style="width:40px;flex-shrink:0;">' + n + '</b>' +
-           '<span style="color:var(--ink-soft);font-variant-numeric:tabular-nums;">' + statuses.map(s => s + ':' + (m[s] || 0)).join(' / ') + '</span></div>';
-  }).join('');
-  let html = '<div style="margin-top:12px;border-top:1px solid var(--border);padding-top:10px;">' +
-             '<b style="color:var(--primary);font-size:13.5px;">' + (BNAME[b] || b) + '</b> 场景分布（客诉处理 · ' + statuses.map(s => s + ' ' + (tb[s] || 0)).join(' / ') + '）</div>';
-  html += '<div style="margin-top:8px;font-size:12px;color:var(--ink-soft);">投诉类型大类：</div>' +
-          (tk.length ? rowHtml(tk, tops) : '<div class="empty">无数据</div>');
-  html += '<div style="margin-top:10px;font-size:12px;color:var(--ink-soft);">完整场景 TOP10：</div>' +
-          (lk.length ? rowHtml(lk, leaves) : '<div class="empty">无数据</div>');
-  el.innerHTML = html;
-}
-
-$('fBucket').onchange = renderTicket;
-$('fStatus').onchange = renderTicket;
-$('fTop').onchange = renderTicket;
-$('fBiz').onchange = () => {
-  const v = $('fBiz').value;
-  document.querySelectorAll('#cc400Card').forEach(() => {});
-  const cards = document.querySelectorAll('.grid .card');
-  if (v === '400') { cards[0].style.display = ''; cards[1].style.display = 'none'; }
-  else if (v === '在线') { cards[0].style.display = 'none'; cards[1].style.display = ''; }
-  else { cards[0].style.display = ''; cards[1].style.display = ''; }
-};
-
-async function fillTopOptions() {
-  try {
-    const t = await fetch(bust('/ticket-stats'), { cache: 'no-store' }).then(r => r.json()).catch(() => fetch(bust('ticket_stats.json'), { cache: 'no-store' }).then(r => r.json()));
-    const tops = Object.keys(t.complaint_by_top || {});
-    $('fTop').innerHTML = '<option>全部</option>' + tops.map(k => `<option>${esc(k)}</option>`).join('');
-  } catch (e) {}
-}
-
-load();
-setInterval(() => { if ($('ccRef').checked) { loadCC(); loadHalf(); loadAlerts(); } }, 90000);      // 实时数据 90s（含 400 半小时）
-setInterval(() => { if ($('tkRef').checked) loadTicket(); }, 7200000); // 工单数据 2h
-// 趋势图补刷（2026-09-11）：此前 loadTrend / loadTicketTrend 只在页面打开时执行一次，
-// 页面不关就一直显示打开那一刻的快照 → 用户看到的「趋势不刷新」。改为每 10 分钟重读。
-setInterval(() => { if ($('ccRef').checked) loadTrend(); }, 600000);        // 进线量趋势 10min
-setInterval(() => { if ($('tkRef').checked) loadTicketTrend(); }, 600000);  // 工单量级趋势 10min
-// 页面版本自检（2026-09-11）：本地 HTML 被改动（如取数口径新增小节）时自动重载。
-// 此前标签页长期不关 → 静态内容（含取数口径）永远停在打开那一刻，用户以为「没更新」。
-let __pgTag = null;
-async function checkPageVersion() {
-  try {
-    const r = await fetch(location.pathname + '?_v=' + Date.now(), { method: 'HEAD', cache: 'no-store' });
-    const tag = r.headers.get('etag') || r.headers.get('last-modified');
-    if (!tag) return;
-    if (__pgTag === null) { __pgTag = tag; return; }   // 首次只记基线，不重载
-    if (tag !== __pgTag) location.reload();
-  } catch (e) {}
-}
-setInterval(checkPageVersion, 180000);   // 3 分钟查一次
+/* 初始切片：URL hash 优先，默认 400 */
+(function () {
+  const h = (location.hash || '').replace('#', '');
+  showPane(PANE_ORDER.indexOf(h) >= 0 ? h : '400', { hash: false });
+  load();
+})();
 </script>
 </body>
 </html>
