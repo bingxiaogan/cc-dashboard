@@ -457,20 +457,30 @@ svg{display:block;width:100%;overflow:visible}
     </div>
 
     <div class="zone">
-      <div class="zonetag"><i></i>实时 <span>爱回收工单系统 · 2 小时</span></div>
-      <div class="kpis" id="kTicket"></div>
+      <div class="zonetag"><i></i>实时 + 预测 <span>爱回收工单系统 2 小时 · 预测每日 21:50 标定</span></div>
+      <div class="mergeline">
+        <div class="kpis" id="kTicket"></div>
+        <aside class="strategy">
+          <div class="shead"><h3>工单处置策略建议</h3><span class="hint">工单池 + 积压预测自动生成</span></div>
+          <div id="stratTicket"></div>
+        </aside>
+      </div>
       <div class="panels">
-        <div class="panel">
-          <div class="phead"><h3>近 30 天升级 / 处理 / 库存</h3>
+        <div class="panel wide">
+          <div class="phead">
+            <h3>近 30 天升级 / 处理 · 实时 + 预测</h3>
             <div class="lgd">
-              <span><em style="background:#fbbf24"></em>升级量</span>
-              <span><em style="background:#34d399"></em>处理量</span>
-              <span><em style="background:#a78bfa"></em>库存量</span>
+              <span><em style="background:#fbbf24"></em>实际升级</span>
+              <span><em style="background:#a78bfa"></em>实际处理</span>
+              <span><em style="background:#fbbf24;opacity:.4"></em>预测升级</span>
+              <span><em style="background:#a78bfa;opacity:.4"></em>预测处理</span>
             </div>
           </div>
           <div id="chTickettr"></div>
+          <div class="subhead">积压（期末工单池） <span>近 30 天实际 + 未来 7 天预测</span></div>
+          <div id="chTicketStock"></div>
         </div>
-        <div class="panel">
+        <div class="panel wide">
           <div class="phead"><h3>状态 × 工单池</h3><span class="hint" id="noteTicketmx"></span></div>
           <div class="tblwrap"><table class="tbl" id="tkMatrix"></table></div>
         </div>
@@ -478,8 +488,10 @@ svg{display:block;width:100%;overflow:visible}
     </div>
 
     <div class="zone">
-      <div class="zonetag fc"><i></i>预测 <span>近 14 天净变化外推积压（驱动模型待建）</span></div>
-      <div class="kpis" id="fTicket"></div>
+      <div class="zonetag fc"><i></i>预测 <span>近 14 天净变化外推积压（日维度 · 可逐日切片）</span></div>
+      <div class="subhead">逐日切片 <span>点日期或点表格行，查看该日预估明细</span></div>
+      <div class="dslicer" id="ticketSlicer"></div>
+      <div class="dstats" id="ticketDetail"></div>
       <div class="panels">
         <div class="panel wide">
           <div class="phead"><h3>未来 7 天预估新增与积压</h3><span class="hint" id="noteTicketfc"></span></div>
@@ -925,6 +937,65 @@ function renderStrategy400(o) {
   box.innerHTML = items.map(x => `<div class="st"><span class="tag ${x.cls}">${x.tag}</span><div>${x.html}</div></div>`).join('');
 }
 
+/* ── 在线调控策略建议 ── */
+function renderStrategyOnline(o) {
+  const box = $('#stratOnline'); if (!box) return;
+  const items = [];
+  const a = o.a, sumT = o.sumT, histNow = o.histNow, labels = o.labels || [];
+  const arrR = o.arrR || [], baseR = o.baseR || [], fcAll = o.fcAll || [];
+
+  /* ① 进度：分时段累计 vs 近 7 日同期（同为会话管理口径，可直接比） */
+  if (sumT && histNow) {
+    const d = (sumT / histNow - 1) * 100, amt = Math.abs(d);
+    const cls = amt >= 20 ? 'risk' : amt >= 5 ? 'slot' : 'good';
+    const dir = amt < 5 ? '与近 7 日同期基本一致' : (d > 0 ? '高于近 7 日同期 ' + amt.toFixed(0) + '%' : '低于近 7 日同期 ' + amt.toFixed(0) + '%');
+    const adv = (amt >= 20 && d > 0) ? '在线进线明显放大，建议临时增派坐席、缩短首响时长，并留意 400 溢出。'
+      : amt >= 20 ? '在线进线明显偏低，可抽人支援 400 或清理积压工单。'
+        : (amt >= 5 && d > 0) ? '略高于近期水平，盯住排队与首响即可。'
+          : amt >= 5 ? '略低于近期水平，可安排用餐或培训。'
+            : '节奏与近期一致，按计划推进。';
+    items.push({ tag: '整体', cls, html: `分时段累计接待 <b>${n0(sumT)}</b> 会话（近 7 日同期 ${n0(histNow)}），<b>${dir}</b>。${adv}` });
+  } else {
+    items.push({ tag: '整体', cls: 'all', html: '今日分时段数据待采集，先按近 7 日同时段水平值守。' });
+  }
+
+  /* ② 实时压力 */
+  const q = a.queue || 0;
+  items.push({
+    tag: '实时', cls: q > 0 ? 'risk' : 'good',
+    html: `在线坐席 <b>${o.seats}</b> 人（出勤 <b>${o.on}/${o.duty}</b>），进行中 <b>${n0(a.current)}</b> 席、排队 <b>${n0(q)}</b>。` +
+      (q > 0 ? '已有排队积压，建议启用溢出组，或拉 400 空闲坐席顶班。' : '无排队，连接正常。')
+  });
+
+  /* ③ 接起率（会话管理口径） */
+  const lowIdx = [];
+  arrR.forEach((v, i) => { if (v != null && v < 95) lowIdx.push({ k: labels[i], v, b: baseR[i] }); });
+  if (lowIdx.length) {
+    const w = lowIdx.slice().sort((x, y) => x.v - y.v)[0];
+    items.push({
+      tag: '接起率', cls: 'slot',
+      html: `已出时段有 <b>${lowIdx.length}</b> 个接起率低于 95%（最低 <b>${w.k}</b> ${w.v.toFixed(0)}%` +
+        (w.b != null ? `，同期基准 ${w.b.toFixed(0)}%` : '') + '）。建议核查该时段坐席在线数与首响时长。'
+    });
+  } else if (arrR.some(v => v != null)) {
+    items.push({ tag: '接起率', cls: 'good', html: '已出时段接起率均在 95% 以上。' });
+  }
+
+  /* ④ 未来 7 天峰值 */
+  if (fcAll.length) {
+    const mx = fcAll.slice().sort((x, y) => y.v - x.v)[0];
+    const lastReal = ((D.tr && D.tr.days) || []).map(d => (D.tr.online || {})[d]).filter(v => v != null).pop();
+    const hi = lastReal && mx.v > lastReal * 1.15;
+    items.push({
+      tag: '未来', cls: hi ? 'slot' : 'good',
+      html: `未来 7 天峰值在 <b>${mx.date.slice(5)} ${mx.wd}</b>，预估 <b>${n0(mx.v)}</b> 会话（${mx.need} 人日 / 建议单班 ${mx.hc} 人）。` +
+        (hi ? '高于当前水平，建议提前排够在线班次。' : '与当前水平相当，按常规排班即可。')
+    });
+  }
+
+  box.innerHTML = items.map(x => `<div class="st"><span class="tag ${x.cls}">${x.tag}</span><div>${x.html}</div></div>`).join('');
+}
+
 /* ══════════════════ 01b 400 预测 ══════════════════ */
 function render400fc(plan) {
   const tbl = $('#fc400t');
@@ -1116,26 +1187,100 @@ function onlineForecast(days, vals, n = 7) {
   return out;
 }
 
-function renderOnlinefc() {
-  const tr = D.tr, tbl = $('#fcOnlinet'), blk = $('#fOnline');
-  const days = (tr && tr.days) || [], vals = days.map(d => (tr.online || {})[d]);
+/* 在线预测（含人日折算）—— KPI / 趋势图 / 逐日切片共用 */
+function onlineForecastPlain() {
+  const tr = D.tr || {}, days = tr.days || [], vals = days.map(d => (tr.online || {})[d]);
   const fc = onlineForecast(days, vals, 7);
-  const CAP = 30, HOURS = 12;              // 人效基准：30 会话/人/时 · 窗口 09:00-21:00
-  if (!fc) { blk.innerHTML = ''; tbl.innerHTML = '<tr><td class="empty">历史样本不足，暂不外推</td></tr>'; return; }
+  if (!fc) return null;
+  const CAP = 30, HOURS = 12;
   fc.forEach(f => { f.need = Math.ceil(f.v / (CAP * HOURS)); f.hc = Math.ceil(f.v / (CAP * 11)); });
-  const wk = sum(fc, f => f.need), mx = fc.slice().sort((a, b) => b.v - a.v)[0];
-  const lastReal = vals.filter(v => v != null).pop();
-  blk.innerHTML = [
-    { k: '未来 7 天预估', v: n0(sum(fc, f => f.v)), c: 'c-green', d: `日均 ${n0(sum(fc, f => f.v) / 7)} 会话` },
-    { k: '峰值日', v: n0(mx.v), c: 'c-amber', d: `${mx.date.slice(5)} ${mx.wd}` },
-    { k: '7 天所需人日', v: `${n0(wk)}<small>人日</small>`, c: 'c-purple', d: `按 30 会话/人时 · 12h 窗口` },
-    { k: '当前水平', v: n0(lastReal), c: 'c-blue', d: '最近一日实际接待量' }
-  ].map(x => `<div class="kpi ${x.c}"><div class="kl">${x.k}</div><div class="kv">${x.v}</div><div class="kd">${x.d}</div></div>`).join('');
+  return fc;
+}
 
+/* 偏差文案：与基线比，<5% 记作持平；高于用暖色、低于用绿色 */
+function devHtml(actual, base, who) {
+  if (actual == null || !base) return '<span style="color:var(--tx3)">待采集</span>';
+  const d = (actual / base - 1) * 100;
+  if (Math.abs(d) < 5) return '<span style="color:var(--tx3)">与' + (who || '预测') + '持平</span>';
+  return `<span class="${d > 0 ? 'up' : 'dn'}">${d > 0 ? '高于' : '低于'}${who || '预测'} ${Math.abs(d).toFixed(0)}%</span>`;
+}
+const avgN = a => { const v = (a || []).filter(x => x != null && !isNaN(x)); return v.length ? v.reduce((s, x) => s + x, 0) / v.length : null; };
+
+/* 在线分时段（会话管理口径）近 7 日同时段基准：加权接起率 / 同期累计接待 */
+function onlRateBase(c, labels) {
+  const h = (c && c.history) || {}, ds = Object.keys(h).sort().filter(d => d !== todayCn()).slice(-7);
+  const acc = labels.map(() => ({ w: 0, s: 0 }));
+  ds.forEach(d => (h[d] || []).forEach(x => {
+    const i = labels.indexOf(String(x.t).slice(0, 5));
+    if (i < 0) return;
+    const r = parseFloat(String(x.rate == null ? '' : x.rate).replace('%', ''));
+    if (isNaN(r)) return;
+    acc[i].w += x.total || 0; acc[i].s += (x.total || 0) * r;
+  }));
+  return acc.map(o => o.w ? +(o.s / o.w).toFixed(1) : null);
+}
+function onlHistToNow(c, labels) {
+  const h = (c && c.history) || {}, ds = Object.keys(h).sort().filter(d => d !== todayCn()).slice(-7);
+  if (!ds.length || !labels.length) return null;
+  const set = {}; labels.forEach(k => set[k] = 1);
+  let tot = 0;
+  ds.forEach(d => { let s = 0; (h[d] || []).forEach(x => { if (set[String(x.t).slice(0, 5)]) s += x.total || 0; }); tot += s; });
+  return Math.round(tot / ds.length);
+}
+
+function renderOnlinefc() {
+  const tbl = $('#fcOnlinet');
+  const fc = onlineForecastPlain();
+  if (!fc) {
+    tbl.innerHTML = '<tr><td class="empty">历史样本不足，暂不外推</td></tr>';
+    $('#onlineSlicer').innerHTML = ''; $('#onlineDetail').innerHTML = ''; return;
+  }
+  const lastReal = ((D.tr && D.tr.days) || []).map(d => (D.tr.online || {})[d]).filter(v => v != null).pop();
   $('#noteOnlinefc').textContent = '按星期几基准 × 近 7 天水平因子外推 · 驱动模型待建';
   tbl.innerHTML = `<thead><tr><th>日期</th><th>星期</th><th>预估接待量</th><th>所需人力</th><th>建议单班人数</th></tr></thead><tbody>` +
-    fc.map(f => `<tr><td class="v">${f.date.slice(5)}</td><td>${f.wd}</td><td class="v">${n0(f.v)}</td>
+    fc.map(f => `<tr data-day="${f.date}" class="${f.date === PICK_ONLINE ? ' pick' : ''}">
+      <td class="v">${f.date.slice(5)}</td><td>${f.wd}</td><td class="v">${n0(f.v)}</td>
       <td>${f.need} 人日</td><td><span class="pill ${f.v > (lastReal || 0) * 1.15 ? 'y' : 'b'}">${f.hc} 人</span></td></tr>`).join('') + '</tbody>';
+  bindTip(tbl);
+  renderOnlineSlicer();
+}
+
+/* ── 在线逐日切片 ── */
+let PICK_ONLINE = null;
+function renderOnlineSlicer() {
+  const fc = onlineForecastPlain() || [];
+  const box = $('#onlineSlicer'), det = $('#onlineDetail');
+  if (!fc.length) { box.innerHTML = ''; det.innerHTML = ''; return; }
+  if (!PICK_ONLINE || !fc.some(f => f.date === PICK_ONLINE)) PICK_ONLINE = fc[0].date;
+  const lastReal = ((D.tr && D.tr.days) || []).map(d => (D.tr.online || {})[d]).filter(v => v != null).pop();
+  box.innerHTML = fc.map((f, i) => {
+    const hi = lastReal && f.v > lastReal * 1.15;
+    return `<button class="dchip${f.date === PICK_ONLINE ? ' on' : ''}${hi ? ' gap' : ''}" data-day="${f.date}">
+       <b>${f.date.slice(5)}</b><span>${f.wd}</span>${hi ? '<i>高于现水平</i>' : (i === 0 ? '<i style="color:#93c5fd">次日</i>' : '')}
+     </button>`;
+  }).join('');
+  renderOnlineDetail();
+}
+
+function renderOnlineDetail() {
+  const fc = onlineForecastPlain() || [];
+  const f = fc.find(x => x.date === PICK_ONLINE);
+  const box = $('#onlineDetail');
+  if (!f) { box.innerHTML = ''; return; }
+  const CAP = 30, HOURS = 12;
+  const lastReal = ((D.tr && D.tr.days) || []).map(d => (D.tr.online || {})[d]).filter(v => v != null).pop();
+  const hi = lastReal && f.v > lastReal * 1.15;
+  const stats = [
+    ['预估接待量', n0(f.v) + '<small>会话</small>', '星期几基准 × 近 7 天因子'],
+    ['对比当前水平', lastReal ? n0(lastReal) : '–', lastReal ? devHtml(f.v, lastReal, '现水平') : '–'],
+    ['所需人力', f.need + '<small>人日</small>', `按 ${CAP} 会话/人时 · ${HOURS}h 窗口`],
+    ['建议单班人数', f.hc + '<small>人</small>', '按 11h 覆盖窗口折算'],
+    ['覆盖窗口', '09:00–21:00', '窗口外预计量极低']
+  ];
+  box.innerHTML =
+    `<div class="dhead"><b>${f.date}</b><span>${f.wd}</span>${hi ? '<span class="pill y">高于现水平</span>' : ''}
+       <span style="margin-left:auto;font-size:11px;color:var(--tx3)">在线预测 · 驱动模型待建</span></div>
+     <div class="dgrid">${stats.map(s => `<div class="dstat"><div class="dk">${s[0]}</div><div class="dv">${s[1]}</div><div class="ds">${s[2]}</div></div>`).join('')}</div>`;
 }
 
 /* ══════════════════ 03 工单 ══════════════════ */
@@ -1152,14 +1297,25 @@ function renderTicket(tk) {
     `<span>生成 <b>${esc(tk.generated_at || '–')}</b></span>
      <span>工单池 <b>${n0(tk.grand_total)}</b></span>`;
 
+  /* —— 积压预测（近 14 天净变化外推）—— */
+  const fc = ticketForecast();
+  const endStk = fc ? fc.out[fc.out.length - 1].stk : null;
+  const diff = fc ? endStk - fc.stockNow : null;
+  const trendUp = diff != null && diff > 0;
+  const over96 = overCnt('96h以上'), over48 = overCnt('48h以上');
+
   $('#kTicket').innerHTML = [
-    { k: '工单池', v: n0(tk.grand_total), c: 'c-purple', hl: 1, d: '含全部状态' },
+    { k: '工单池', v: n0(tk.grand_total), c: 'c-purple', hl: 1, d: '含全部状态 · 创建日期口径' },
     { k: '投诉', v: n0(bt['客诉处理']), c: 'c-red', d: '执行部门 = 客诉客服' },
     { k: '工单', v: n0(bt['工单处理']), c: 'c-blue', d: '执行部门 ≠ 客诉客服' },
     { k: '舆情', v: n0(bt['舆情客诉单']), c: 'c-amber', d: '分类舆情客诉单' },
     { k: '待处理', v: n0(st['待处理']), c: 'c-cyan', d: `待分配 ${n0(st['待分配'])} · 处理中 ${n0(st['处理中'])}` },
-    { k: '超时未结（≥24h）', v: n0(overN), c: overN > 0 ? 'c-red' : 'c-green', d: `24h以上 ${n0(overCnt('24h以上'))} · 48h以上 ${n0(overCnt('48h以上'))} · 72h以上 ${n0(overCnt('72h以上'))}` },
-    { k: '24h 内待结', v: n0(in24), c: 'c-amber', d: '未到超时线' }
+    { k: '超时未结（≥24h）', v: n0(overN), c: overN > 0 ? 'c-red' : 'c-green', d: `48h以上 ${n0(over48)} · 96h以上 ${n0(over96)}` },
+    { k: '24h 内待结', v: n0(in24), c: 'c-amber', d: '未到超时线' },
+    { k: '日均新增（预测）', v: fc ? n0(fc.nAvg14) : '–', c: 'c-amber', d: '近 14 天投诉池均值' },
+    { k: '日均处理（预测）', v: fc ? n0(fc.dAvg) : '–', c: 'c-green', d: '近 7 天结案能力' },
+    { k: '当前积压（预测）', v: fc ? n0(fc.stockNow) : '–', c: 'c-purple', d: '最近一日期末遗留' },
+    { k: '7 天后预估积压', v: fc ? (endStk === 0 ? '清零' : n0(endStk)) : '–', c: trendUp ? 'c-red' : 'c-green', d: fc ? `<span class="${trendUp ? 'dn' : 'up'}">${endStk === 0 ? '按当前节奏可清空' : trendUp ? '积压 +' + Math.abs(diff) : '消化 −' + Math.abs(diff)}</span>` : '–' }
   ].map(x => `<div class="kpi ${x.c}"><div class="kl">${x.k}</div><div class="kv ${x.hl ? 'hl' : ''}">${x.v}</div><div class="kd">${x.d}</div></div>`).join('');
 
   /* 状态 × 池 矩阵 */
@@ -1171,6 +1327,87 @@ function renderTicket(tk) {
       return `<tr><td class="v">${esc(s)}</td>${row.map(v => `<td>${n0(v)}</td>`).join('')}<td class="v">${n0(sum(row, x => x))}</td></tr>`;
     }).join('') +
     `<tr><td class="v">合计</td>${buckets.map(b => `<td class="v">${n0(bt[b])}</td>`).join('')}<td class="v">${n0(tk.grand_total)}</td></tr></tbody>`;
+
+  renderStrategyTicket({ tk, fc, bt, st, overN, over48, over96, in24, city, endStk, diff });
+}
+
+/* ── 工单积压预测（近 14 天净变化外推，KPI/趋势图/切片共用）── */
+function ticketForecast() {
+  const t = D.tt;
+  if (!t || !t.days) return null;
+  const days = t.days.slice(-14), cs = (t.types || {}).cs || {};
+  const news = days.map(d => cs.new && cs.new[d]).filter(v => v != null);
+  const dones = days.map(d => cs.done && cs.done[d]).filter(v => v != null);
+  if (news.length < 7) return null;
+  const nAvg14 = sum(news, x => x) / news.length;
+  const dAvg = dones.length ? sum(dones.slice(-7), x => x) / Math.min(7, dones.length) : 0;  // 处理能力取近 7 天
+  const WD = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
+  const byWd = {};
+  days.forEach(d => { const v = cs.new[d]; if (v == null) return; const w = new Date(d + 'T00:00:00').getDay(); (byWd[w] = byWd[w] || []).push(v); });
+  const stockNow = (cs.stock && Object.values(cs.stock).pop()) || 0;
+  const out = []; let stk = stockNow;
+  const lastD = new Date(t.days[t.days.length - 1] + 'T00:00:00');
+  for (let i = 1; i <= 7; i++) {
+    const dt = new Date(lastD.getTime() + i * 864e5), w = dt.getDay();
+    const iso = dt.getFullYear() + '-' + String(dt.getMonth() + 1).padStart(2, '0') + '-' + String(dt.getDate()).padStart(2, '0');
+    const nv = Math.round(byWd[w] ? sum(byWd[w], x => x) / byWd[w].length : nAvg14);
+    const done = Math.round(Math.min(dAvg, stk + nv));      // 处理量不可能超过待处理存量
+    stk = Math.max(0, stk + nv - done);
+    out.push({ date: iso, wd: WD[w], nv, done, stk: Math.round(stk) });
+  }
+  return { out, nAvg14, dAvg, stockNow, lastDay: t.days[t.days.length - 1] };
+}
+
+/* ── 工单处置策略建议 ── */
+function renderStrategyTicket(o) {
+  const box = $('#stratTicket'); if (!box) return;
+  const items = [];
+  const fc = o.fc;
+
+  /* ① 积压走向 */
+  if (fc) {
+    const net = fc.nAvg14 - fc.dAvg;
+    const cls = (o.diff > 0 && o.endStk > fc.stockNow * 1.1) ? 'risk' : (o.diff > 0 ? 'slot' : 'good');
+    items.push({
+      tag: '积压', cls,
+      html: `当前积压 <b>${n0(fc.stockNow)}</b> 单，日均新增 <b>${n0(fc.nAvg14)}</b>、日均处理 <b>${n0(fc.dAvg)}</b>（净变化 ${net >= 0 ? '+' : '−'}${n1(Math.abs(net))} 单/天）。` +
+        (o.endStk === 0 ? '按当前处理能力，7 天内可清空。' : o.diff > 0 ? `7 天后预估升到 <b>${n0(o.endStk)}</b>，建议加派人手或延长处理时段。` : `7 天后预估降到 <b>${n0(o.endStk)}</b>，继续按现节奏消化。`)
+    });
+  }
+
+  /* ② 超时优先 */
+  if (o.over96 > 0 || o.over48 > 0) {
+    items.push({
+      tag: '超时', cls: o.over96 > 0 ? 'risk' : 'slot',
+      html: `超时未结 <b>${n0(o.overN)}</b> 单，其中 48h 以上 <b>${n0(o.over48)}</b>、96h 以上 <b>${n0(o.over96)}</b>。建议把 96h 以上的排到最前，按责任人逐单销项。`
+    });
+  } else if (o.overN > 0) {
+    items.push({ tag: '超时', cls: 'slot', html: `超时未结 <b>${n0(o.overN)}</b> 单，均在 48h 以内，当日盯住即可。` });
+  } else {
+    items.push({ tag: '超时', cls: 'good', html: '暂无超时未结工单。' });
+  }
+
+  /* ③ 分配环节 */
+  const unassigned = (o.st || {})['待分配'] || 0;
+  if (unassigned > 0) {
+    items.push({
+      tag: '分配', cls: unassigned > 20 ? 'risk' : 'slot',
+      html: `待分配 <b>${n0(unassigned)}</b> 单尚未落到处理人。建议先清分配，否则处理时长会耗在等待环节。`
+    });
+  }
+
+  /* ④ 城市集中度 */
+  const city = o.city || [];
+  if (city.length) {
+    const top3 = sum(city.slice(0, 3), c => c[1]);
+    const tot = sum(city, c => c[1]) || 1;
+    items.push({
+      tag: '城市', cls: 'all',
+      html: `工单集中在 <b>${city.slice(0, 3).map(c => c[0]).join('、')}</b>，TOP3 合计 <b>${n0(top3)}</b> 单（占 ${pc(top3 / tot * 100, 0)}）。建议按城市端统一催办。`
+    });
+  }
+
+  box.innerHTML = items.map(x => `<div class="st"><span class="tag ${x.cls}">${x.tag}</span><div>${x.html}</div></div>`).join('');
 }
 
 function renderTicketTrend() {
@@ -1233,7 +1470,7 @@ const D = { cc: null, tk: null, tr: null, plan: null, hh: null, hhon: null, tt: 
 const PANE_ORDER = ['400', 'online', 'ticket'];
 const PANE_FN = {
   '400': () => { render400(); render400fc(D.plan); },
-  online: () => { renderOnline(D.cc); renderOnlinefc(); },
+  online: () => { renderOnline(); renderOnlinefc(); },
   ticket: () => { renderTicket(D.tk); renderTicketTrend(); renderTicketfc(); }
 };
 let CUR = '400';
@@ -1316,6 +1553,19 @@ $('#fc400t').addEventListener('click', e => {
   if (!tr) return;
   PICK_DAY = tr.dataset.day;
   render400fc(D.plan);
+});
+/* 在线逐日切片同款联动 */
+$('#onlineSlicer').addEventListener('click', e => {
+  const b = e.target.closest('.dchip');
+  if (!b) return;
+  PICK_ONLINE = b.dataset.day;
+  renderOnlinefc();
+});
+$('#fcOnlinet').addEventListener('click', e => {
+  const tr = e.target.closest('tr[data-day]');
+  if (!tr) return;
+  PICK_ONLINE = tr.dataset.day;
+  renderOnlinefc();
 });
 window.addEventListener('hashchange', () => showPane((location.hash || '').slice(1), { hash: false }));
 document.addEventListener('keydown', e => {
