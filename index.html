@@ -212,7 +212,6 @@ h1 em{font-style:normal;font-size:12px;font-weight:500;color:var(--tx3);letter-s
 .subhead .lgd{margin-left:auto}
 
 /* ── 日期选择（逐日切片）：紧凑月历 + 月份切换，整体收在折叠里 ── */
-.dslicer{display:flex;flex-direction:column;gap:9px;margin:2px 0 0}
 
 /* ── 紧凑月历（周日起首）── */
 .dcal{display:flex;flex-direction:column;gap:7px;align-items:flex-start}
@@ -325,8 +324,6 @@ h1 em{font-style:normal;font-size:12px;font-weight:500;color:var(--tx3);letter-s
 .fold[open]>summary .fchev{transform:rotate(-135deg);margin-top:3px}
 .fold[open]>summary{background:rgba(var(--accs),.11)}
 .fold .fbody{padding-top:2px}
-/* panel 内的折叠（未来计划表）：去掉顶部那条分隔线 */
-.calhint{font-size:11px;color:var(--tx3);margin-top:9px}
 .tbl tbody tr[data-day]{cursor:pointer}
 .tbl tr.pick td{background:rgba(var(--accs),.10)}
 .tbl tr.pick td:first-child{box-shadow:inset 2px 0 0 var(--acc)}
@@ -460,7 +457,6 @@ svg{display:block;width:100%;overflow:visible}
             </summary>
             <div class="fbody">
               <div id="daySlicer"></div>
-              <div class="calhint">点日期或点下方表格行，查看该日明细与分时段预测</div>
             </div>
           </details>
           <div class="dstats" id="dayDetail"></div>
@@ -536,7 +532,6 @@ svg{display:block;width:100%;overflow:visible}
             </summary>
             <div class="fbody">
               <div id="onlineSlicer"></div>
-              <div class="calhint">点日期或点下方表格行，查看该日明细</div>
             </div>
           </details>
           <div class="dstats" id="onlineDetail"></div>
@@ -599,7 +594,6 @@ svg{display:block;width:100%;overflow:visible}
             </summary>
             <div class="fbody">
               <div id="ticketSlicer"></div>
-              <div class="calhint">点日期或点下方表格行，查看该日预估明细</div>
             </div>
           </details>
           <div class="dstats" id="ticketDetail"></div>
@@ -1424,7 +1418,7 @@ function renderDaySlicer() {
       : d.gap_hc > 0 ? `<i class="co">余${d.gap_hc}</i>` : `<i class="ch">持平</i>`;
   box.innerHTML = calHtml(days, PICK_DAY, today, mk, (n, ne) => ne ? `${ne} 天待排（班表未出）` : '', '400');
   const pk = days.find(x => x.date === PICK_DAY) || {};
-  if ($('#calPick400')) $('#calPick400').textContent = `${PICK_DAY.slice(5)} ${pk.wd || ''} · 点开选日期`;
+  if ($('#calPick400')) $('#calPick400').textContent = `${PICK_DAY.slice(5)} ${pk.wd || ''} · 点日期或点下方表格行`;
   renderDayDetail();
 }
 
@@ -1753,7 +1747,7 @@ function renderOnlineSlicer() {
   box.innerHTML = calHtml(fc, PICK_ONLINE, todayCn(), mk,
     lastReal ? `红线 = 高于当前 ${n0(lastReal)}` : '', 'online');
   const pk = fc.find(x => x.date === PICK_ONLINE) || {};
-  if ($('#calPickOnline')) $('#calPickOnline').textContent = `${PICK_ONLINE.slice(5)} ${pk.wd || ''} · 点开选日期`;
+  if ($('#calPickOnline')) $('#calPickOnline').textContent = `${PICK_ONLINE.slice(5)} ${pk.wd || ''} · 点日期或点下方表格行`;
   renderOnlineDetail();
 }
 
@@ -2013,7 +2007,7 @@ function renderTicketSlicer() {
   };
   box.innerHTML = calHtml(out, PICK_TICKET, todayCn(), mk, `当前积压 ${n0(fc.stockNow)} 单`, 'ticket');
   const pk = out.find(x => x.date === PICK_TICKET) || {};
-  if ($('#calPickTicket')) $('#calPickTicket').textContent = `${PICK_TICKET.slice(5)} ${pk.wd || ''} · 点开选日期`;
+  if ($('#calPickTicket')) $('#calPickTicket').textContent = `${PICK_TICKET.slice(5)} ${pk.wd || ''} · 点日期或点下方表格行`;
   renderTicketDetail();
 }
 
