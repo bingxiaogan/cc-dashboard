@@ -1482,7 +1482,7 @@ function renderDayDetail() {
     const meal = [];
     if (c.meal) {
       const who = mealWho(+c.meal, +k.slice(0, 2) >= 15);   // 15:00 之后算晚市
-      meal.push('用餐 ' + (who ? who.join('、') : c.meal + ' 人'));
+      meal.push('用餐' + c.meal + '人' + (who ? '：' + who.join('、') : ''));
     }
     if (c.off) meal.push('放休 ' + c.off + ' 人');
     const gp = gap == null ? '<span class="pill b">–</span>'
