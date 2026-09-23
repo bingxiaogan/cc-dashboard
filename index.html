@@ -194,6 +194,45 @@ h1 em{font-style:normal;font-size:12px;font-weight:500;color:var(--tx3);letter-s
 .pill.r{background:rgba(248,113,113,.15);color:var(--red)}
 .pill.b{background:rgba(96,165,250,.14);color:var(--blue2)}
 
+/* ── 图内小标题（同一面板里上下两张图） ── */
+.subhead{display:flex;align-items:center;gap:10px;font-size:12px;font-weight:600;color:var(--tx2);margin:15px 2px 9px;letter-spacing:.03em;flex-wrap:wrap}
+.subhead span{font-weight:400;font-size:11px;color:var(--tx3)}
+.subhead .lgd{margin-left:auto}
+
+/* ── 日期切片器（日维度预测逐日查看） ── */
+.dslicer{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:13px}
+.dchip{
+  display:flex;flex-direction:column;align-items:center;gap:1px;min-width:64px;cursor:pointer;
+  padding:7px 11px;border-radius:10px;font:inherit;font-size:12px;
+  background:rgba(126,166,226,.055);border:1px solid var(--lin2);color:var(--tx2);transition:.15s;
+}
+.dchip b{font-size:12.5px;font-weight:650;color:var(--tx)}
+.dchip span{font-size:10.5px;color:var(--tx3)}
+.dchip i{font-style:normal;font-size:10px;color:var(--amber);font-weight:600}
+.dchip:hover{background:rgba(126,166,226,.12);transform:translateY(-1px)}
+.dchip.today{border-color:rgba(96,165,250,.42)}
+.dchip.on{
+  background:linear-gradient(145deg,rgba(var(--accs),.24),rgba(var(--accs),.06));
+  border-color:rgba(var(--accs),.6);box-shadow:0 4px 16px rgba(var(--accs),.18);
+}
+.dchip.on b,.dchip.on span{color:var(--tx)}
+.dchip.gap i{color:var(--red)}
+
+/* ── 单日详情 ── */
+.dstats{margin-bottom:16px;padding:14px 16px 4px;border-radius:var(--r);background:rgba(19,30,53,.55);border:1px solid var(--lin2)}
+.dhead{display:flex;align-items:center;gap:9px;margin-bottom:11px;font-size:12.5px;color:var(--tx2)}
+.dhead b{font-size:14.5px;color:var(--tx);font-weight:650}
+.dgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(148px,1fr));gap:10px;margin-bottom:6px}
+.dstat{padding:10px 12px;border-radius:11px;background:var(--card2);border:1px solid var(--lin2)}
+.dstat .dk{font-size:11px;color:var(--tx3);margin-bottom:5px;letter-spacing:.04em}
+.dstat .dv{font-size:20px;font-weight:640;color:var(--tx);letter-spacing:-.01em}
+.dstat .dv small{font-size:12px;font-weight:500;color:var(--tx2);margin-left:2px}
+.dstat .ds{font-size:11px;color:var(--tx3);margin-top:4px}
+.tbl tbody tr[data-day]{cursor:pointer}
+.tbl tr.pick td{background:rgba(var(--accs),.10)}
+.tbl tr.pick td:first-child{box-shadow:inset 2px 0 0 var(--acc)}
+@media(max-width:640px){.dchip{min-width:56px;padding:6px 8px}.dstats{padding:12px 12px 2px}}
+
 /* ── 底栏 ── */
 .foot{
   margin-top:20px;padding:17px 20px;border-radius:var(--r);background:rgba(14,23,41,.6);
@@ -259,13 +298,36 @@ svg{display:block;width:100%;overflow:visible}
       <div class="zonetag"><i></i>实时 <span>7x24cc 采集 · 90 秒</span></div>
       <div class="kpis" id="k400"></div>
       <div class="panels">
-        <div class="panel">
-          <div class="phead"><h3>今日每半小时呼入</h3><span class="hint" id="note400hh"></span></div>
+        <div class="panel wide">
+          <div class="phead">
+            <h3>每半小时人工量 · 实时 + 预测</h3>
+            <div class="lgd">
+              <span><em style="background:var(--blue)"></em>实际转人工量</span>
+              <span><em style="background:var(--amber)"></em>预测转人工量</span>
+            </div>
+            <span class="hint" id="note400hh"></span>
+          </div>
           <div id="ch400hh"></div>
+          <div class="subhead">每半小时接通率 <span>接通量 ÷ 转人工量</span>
+            <div class="lgd">
+              <span><em style="background:#22d3ee"></em>实际</span>
+              <span><em style="background:#a78bfa"></em>同时段基准（近 7 日）</span>
+            </div>
+          </div>
+          <div id="ch400hhRate"></div>
         </div>
-        <div class="panel">
-          <div class="phead"><h3>近 30 天进线量</h3><span class="hint">人工量（呼入 − IVR）</span></div>
+        <div class="panel wide">
+          <div class="phead">
+            <h3>近 30 天人工量 · 实时 + 预测</h3>
+            <div class="lgd">
+              <span><em style="background:var(--blue)"></em>实际人工量</span>
+              <span><em style="background:var(--amber)"></em>预测人工量</span>
+            </div>
+            <span class="hint">人工量 = 呼入 − IVR</span>
+          </div>
           <div id="ch400tr"></div>
+          <div class="subhead">每日接通率 <span>接通量 ÷ 转人工量</span></div>
+          <div id="ch400trRate"></div>
         </div>
       </div>
     </div>
@@ -273,6 +335,9 @@ svg{display:block;width:100%;overflow:visible}
     <div class="zone">
       <div class="zonetag fc"><i></i>预测 <span>货量 → 进线量 → 转人工 → 所需人力</span></div>
       <div class="kpis" id="f400"></div>
+      <div class="subhead">逐日切片 <span>点日期或点表格行，查看该日明细与分时段预测</span></div>
+      <div class="dslicer" id="daySlicer"></div>
+      <div class="dstats" id="dayDetail"></div>
       <div class="panels">
         <div class="panel wide">
           <div class="phead">
@@ -451,7 +516,7 @@ function drawLine(box, { labels, series, h = 168, yFmt = n0, tipFmt }) {
 }
 
 /* 柱状图（可按阈值着色 + 可选叠加折线） */
-function drawBar(box, { labels, data, color, colorFn, h = 168, yFmt = n0, tipFmt, line, lineColor }) {
+function drawBar(box, { labels, data, color, colorFn, h = 168, yFmt = n0, tipFmt, line, lineColor, lineSameScale, lineTipFmt }) {
   const W = 1000, H = h, pl = 46, pr = 14, pt = 14, pb = 26;
   const svg = el('svg', { viewBox: `0 0 ${W} ${H}`, preserveAspectRatio: 'none', style: `height:${h}px` });
   const vals = data.filter(v => v != null);
@@ -476,14 +541,25 @@ function drawBar(box, { labels, data, color, colorFn, h = 168, yFmt = n0, tipFmt
   if (line) {
     const lv = line.filter(x => x != null);
     if (lv.length) {
-      const lmx = Math.max(...lv) * 1.25 || 1;
-      let d = '', st = false;
+      // lineSameScale：折线与柱共用同一 Y 尺度。「实际 vs 预测」必须同尺度，否则两条线不可比。
+      const lmx = lineSameScale ? mx : (Math.max(...lv) * 1.25 || 1);
+      let d = '', st = false; const pts = [];
       line.forEach((v, i) => {
         if (v == null) return;
         const x = left0 + i * bw + bw / 2, y = pt + (1 - (v / lmx)) * (H - pt - pb);
         d += (st ? 'L' : 'M') + x.toFixed(1) + ' ' + y.toFixed(1); st = true;
+        pts.push([x, y, v, i]);
       });
       svg.appendChild(el('path', { d, fill: 'none', stroke: lineColor || '#fbbf24', 'stroke-width': 1.9, 'stroke-dasharray': '4 3', opacity: .95 }));
+      if (lineTipFmt) {
+        pts.forEach(p => {
+          const c = el('circle', { cx: p[0], cy: p[1], r: 9, fill: 'transparent' });
+          c.style.cursor = 'crosshair';
+          c.dataset.tip = labels[p[3]] + '　预测 ' + lineTipFmt(p[2]);
+          svg.appendChild(c);
+        });
+        bindTip(svg);
+      }
     }
   }
   const step = Math.ceil(labels.length / 10);
