@@ -552,6 +552,9 @@ const $$ = (s, r) => Array.from((r || document).querySelectorAll(s));
 const n0 = v => (v == null || isNaN(v)) ? '–' : Math.round(+v).toLocaleString('en-US');
 const n1 = v => (v == null || isNaN(v)) ? '–' : (+v).toFixed(1);
 const pc = (v, d) => (v == null || isNaN(v)) ? '–' : (+v).toFixed(d == null ? 1 : d) + '%';
+/* 人力一律向上取整（人不能是小数）：hcn 用于直接读取，hc 用于展示（带千分位） */
+const hcn = v => (v == null || isNaN(v)) ? null : Math.ceil(+v - 1e-9);
+const hc = v => { const x = hcn(v); return x == null ? '–' : x.toLocaleString('en-US'); };
 const bust = u => u + (u.includes('?') ? '&' : '?') + '_=' + Date.now();
 const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
@@ -1189,8 +1192,8 @@ function render400fc(plan) {
         <td class="v">${d.date.slice(5)}</td><td>${d.wd}</td>
         <td>${(d.orders / 10000).toFixed(1)} 万</td>
         <td class="v">${n0(d.inbound)}</td><td>${n0(d.turn)}</td>
-        <td class="v">${d.need_hc_f != null ? n1(d.need_hc_f) : n0(d.need_hc)}</td>
-        <td>${n0(d.onshift_hc)}</td>
+        <td class="v">${hc(d.need_hc_f != null ? d.need_hc_f : d.need_hc)}</td>
+        <td>${hc(d.onshift_hc)}</td>
         <td><span class="pill ${cl}">${txt}</span></td>
         <td>${n0(d.ratio)}%</td></tr>`;
     }).join('') + '</tbody>';
@@ -1220,13 +1223,17 @@ function renderDayDetail() {
   const box = $('#dayDetail');
   if (!d) { box.innerHTML = ''; return; }
   const today = todayCn();
-  const gapTxt = d.gap_hc < 0 ? '缺 ' + Math.abs(d.gap_hc) + ' 人' : (d.gap_hc > 0 ? '富余 ' + d.gap_hc + ' 人' : '持平');
+  /* 人力一律向上取整：所需 / 在岗 / 缺口都在整数域上算，避免表里出现 7.4 人 */
+  const needI = hcn(d.need_hc_f != null ? d.need_hc_f : d.need_hc);
+  const onI = hcn(d.onshift_hc);
+  const gapI = (needI != null && onI != null) ? onI - needI : hcn(d.gap_hc || 0);
+  const gapTxt = gapI < 0 ? '缺 ' + Math.abs(gapI) + ' 人' : (gapI > 0 ? '富余 ' + gapI + ' 人' : '持平');
   const stats = [
     ['订单量', (d.orders / 10000).toFixed(1) + '<small>万</small>', '进线比 ' + (d.R * 100).toFixed(2) + '%'],
     ['预测进线量', n0(d.inbound), '呼入量（含 IVR）'],
     ['预测转人工量', n0(d.turn), '人工量 = 呼入 − IVR'],
-    ['所需人力', n0(d.need_hc) + '<small>人</small>', d.need_hc_f != null ? '精确 ' + n1(d.need_hc_f) + ' 人日' : '按 8h 班折算'],
-    ['在岗人力', n0(d.onshift_hc) + '<small>人</small>', '排班工时 ' + n1(d.staff_h) + ' h'],
+    ['所需人力', (needI == null ? '–' : needI) + '<small>人</small>', d.need_hc_f != null ? '按 ' + n1(d.need_hc_f) + ' 人日进位' : '按 8h 班折算'],
+    ['在岗人力', (onI == null ? '–' : onI) + '<small>人</small>', '排班工时 ' + n1(d.staff_h) + ' h'],
     ['人力缺口', gapTxt, '产能 ' + n1(d.onshift_ph) + ' 通/人时'],
     ['当日负荷', n0(d.ratio) + '%', d.ratio >= 110 ? '超负荷' : (d.ratio < 90 ? '偏松' : '正常')]
   ];
@@ -1241,19 +1248,20 @@ function renderDayDetail() {
   const rows = keys.map((k, i) => {
     const full = slotFullKey(k);
     const pv = hh ? hh[i] : null;
-    const need = pv == null ? null : pv / (capH * 0.5);
+    const need = hcn(pv == null ? null : pv / (capH * 0.5));   // 所需人力：进位
     let staff = sched[full] != null ? sched[full] : (sheetDay[full] != null ? sheetDay[full] : null);
     if (staff == null && sl[full] && sl[full].staff != null) staff = sl[full].staff;
-    const gap = (need != null && staff != null) ? need - staff : null;
+    staff = hcn(staff);                                        // 排班人数：进位
+    const gap = (need != null && staff != null) ? staff - need : null;   // 正值=富余，负值=缺
     const c = sl[full] || {};
     const meal = [];
     if (c.meal) meal.push('用餐 ' + c.meal + ' 人');
     if (c.off) meal.push('放休 ' + c.off + ' 人');
     const gp = gap == null ? '<span class="pill b">–</span>'
-      : gap > 0.4 ? `<span class="pill r">缺 ${n1(gap)}</span>`
-        : gap < -0.4 ? `<span class="pill g">余 ${n1(-gap)}</span>` : '<span class="pill b">持平</span>';
-    return `<tr><td class="v">${k}</td><td>${pv == null ? '–' : n0(pv)}</td><td class="v">${need == null ? '–' : n1(need)}</td>
-      <td>${staff == null ? '–' : n1(staff)}</td><td>${gp}</td><td>${meal.length ? meal.join(' · ') : '–'}</td></tr>`;
+      : gap < 0 ? `<span class="pill r">缺 ${Math.abs(gap)}</span>`
+        : gap > 0 ? `<span class="pill g">余 ${gap}</span>` : '<span class="pill b">持平</span>';
+    return `<tr><td class="v">${k}</td><td>${pv == null ? '–' : n0(pv)}</td><td class="v">${need == null ? '–' : need}</td>
+      <td>${staff == null ? '–' : staff}</td><td>${gp}</td><td>${meal.length ? meal.join(' · ') : '–'}</td></tr>`;
   }).join('');
 
   box.innerHTML =
