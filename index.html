@@ -248,6 +248,7 @@ h1 em{font-style:normal;font-size:12px;font-weight:500;color:var(--tx3);letter-s
 .cald.pad,.cald.off{background:none;cursor:default;pointer-events:none}
 .cald.off .cdn{color:var(--tx3);opacity:.32}
 .cald.today{border-color:rgba(96,165,250,.5)}
+.cald.est{border-style:dashed;border-color:rgba(251,191,36,.28)}
 .cald.today .cdn::after{content:"今";position:absolute;top:3px;right:4px;font-size:8px;color:#93c5fd;font-weight:600}
 .cald.on{background:rgba(var(--accs),.24);border-color:rgba(var(--accs),.62)}
 .cald.on .cdn{color:var(--tx)}
@@ -898,6 +899,38 @@ function render400() {
 
 /* ── 400 时段工具 ── */
 const pad2 = n => String(n).padStart(2, '0');
+/* ── 日历选择器：按自然月渲染（周日起首），只渲染给定 days 里的日子，其余置灰 ──
+   days  [{date, ...}]     数据源（决定哪些天可选、以及格子小字的来源）
+   pick  当前选中 ISO 日期   today 今天 ISO
+   mk(d) 可选，返回格子里的小字 HTML（缺口 / 建议人数等）
+   extra 可选，月份标题右侧的补充说明
+   —— 与「自然周（周日~周六）」口径一致，周日排每行第一格 */
+const CAL_WD = ['日', '一', '二', '三', '四', '五', '六'];
+function calHtml(days, pick, today, mk, extra) {
+  if (!days || !days.length) return '';
+  const map = {};
+  days.forEach(d => { map[d.date] = d; });
+  const ms = [];
+  days.forEach(d => { const m = String(d.date).slice(0, 7); if (ms.indexOf(m) < 0) ms.push(m); });
+  return `<div class="dcal">` + ms.sort().map(ym => {
+    const y = +ym.slice(0, 4), mo = +ym.slice(5, 7);
+    const lead = new Date(y, mo - 1, 1).getDay();          // 周日 = 0
+    const dim = new Date(y, mo, 0).getDate();              // 当月天数
+    const cells = [];
+    for (let i = 0; i < lead; i++) cells.push('<div class="cald pad"></div>');
+    for (let dd = 1; dd <= dim; dd++) {
+      const iso = ym + '-' + pad2(dd), d = map[iso];
+      if (!d) { cells.push(`<div class="cald off"><span class="cdn">${dd}</span></div>`); continue; }
+      const cls = 'cald' + (iso === pick ? ' on' : '') + (iso === today ? ' today' : '') + (d.staff_est ? ' est' : '');
+      cells.push(`<div class="${cls}" data-day="${iso}"><span class="cdn">${dd}</span>${mk ? mk(d) : ''}</div>`);
+    }
+    return `<div class="cal">
+      <div class="calh">${y} 年 ${mo} 月${extra ? `<em>${extra}</em>` : ''}</div>
+      <div class="calg calw">${CAL_WD.map(w => `<span>${w}</span>`).join('')}</div>
+      <div class="calg">${cells.join('')}</div>
+    </div>`;
+  }).join('') + `</div>`;
+}
 /* 统一用 400_shape 的 26 个半小时槽（08:00~21:00），拿不到就本地兜底同构 */
 function slotShortKeys() {
   const sh = D.shape;
@@ -1312,7 +1345,7 @@ function render400fc(plan) {
   renderDaySlicer();
 }
 
-/* ── 日维度预测切片：日期 chips + 单日明细 + 该日分时段预测 ── */
+/* ── 日维度预测切片：日历选日 + 单日明细 + 该日分时段预测（折叠） ── */
 let PICK_DAY = null;
 function renderDaySlicer() {
   const days = (D.plan && D.plan.days) || [];
@@ -1322,10 +1355,11 @@ function renderDaySlicer() {
   if (!PICK_DAY || !days.some(d => d.date === PICK_DAY)) {
     PICK_DAY = days.some(d => d.date === today) ? today : days[0].date;
   }
-  box.innerHTML = days.map(d =>
-    `<button class="dchip${d.date === PICK_DAY ? ' on' : ''}${d.date === today ? ' today' : ''}${d.gap_hc < 0 ? ' gap' : ''}" data-day="${d.date}">
-       <b>${d.date.slice(5)}</b><span>${d.wd}</span>${d.gap_hc < 0 ? `<i>缺 ${Math.abs(d.gap_hc)}</i>` : (d.date === today ? '<i style="color:#93c5fd">今天</i>' : '')}
-     </button>`).join('');
+  const nEst = days.filter(d => d.staff_est).length;
+  // 格内小字：缺口（缺 = 红 / 余 = 绿 / 持平 = 灰）；虚线格 = 班表未出、在岗为估算
+  const mk = d => d.gap_hc < 0 ? `<i class="cg">缺${Math.abs(d.gap_hc)}</i>`
+    : d.gap_hc > 0 ? `<i class="co">余${d.gap_hc}</i>` : `<i class="ch">持平</i>`;
+  box.innerHTML = calHtml(days, PICK_DAY, today, mk, nEst ? `虚线 = 班表未出` : '');
   renderDayDetail();
 }
 
@@ -1624,12 +1658,13 @@ function renderOnlineSlicer() {
   if (!fc.length) { box.innerHTML = ''; det.innerHTML = ''; return; }
   if (!PICK_ONLINE || !fc.some(f => f.date === PICK_ONLINE)) PICK_ONLINE = fc[0].date;
   const lastReal = ((D.tr && D.tr.days) || []).map(d => (D.tr.online || {})[d]).filter(v => v != null).pop();
-  box.innerHTML = fc.map((f, i) => {
+  // 格内小字：建议单班人数；高于当前水平的日子标红点
+  const mk = f => {
     const hi = lastReal && f.v > lastReal * 1.15;
-    return `<button class="dchip${f.date === PICK_ONLINE ? ' on' : ''}${hi ? ' gap' : ''}" data-day="${f.date}">
-       <b>${f.date.slice(5)}</b><span>${f.wd}</span>${hi ? '<i>高于现水平</i>' : (i === 0 ? '<i style="color:#93c5fd">次日</i>' : '')}
-     </button>`;
-  }).join('');
+    return `${f.hc ? `<i class="${hi ? 'cg' : 'ch'}">${f.hc}人</i>` : ''}`;
+  };
+  box.innerHTML = calHtml(fc, PICK_ONLINE, todayCn(), mk,
+    lastReal ? `红线 = 高于当前 ${n0(lastReal)}` : '');
   renderOnlineDetail();
 }
 
@@ -1862,13 +1897,14 @@ function renderTicketSlicer() {
   if (!fc || !fc.out.length) { box.innerHTML = ''; det.innerHTML = ''; return; }
   const out = fc.out;
   if (!PICK_TICKET || !out.some(f => f.date === PICK_TICKET)) PICK_TICKET = out[0].date;
-  box.innerHTML = out.map((f, i) => {
-    const prev = i === 0 ? fc.stockNow : out[i - 1].stk;
+  const idx = {}; out.forEach((f, i) => { idx[f.date] = i; });
+  // 格内小字：积压走势（升 = 红 / 降 = 灰 / 清零 = 绿）
+  const mk = f => {
+    const i = idx[f.date], prev = i === 0 ? fc.stockNow : out[i - 1].stk;
     const up = f.stk > prev, clear = f.stk === 0;
-    return `<button class="dchip${f.date === PICK_TICKET ? ' on' : ''}${up && !clear ? ' gap' : ''}" data-day="${f.date}">
-       <b>${f.date.slice(5)}</b><span>${f.wd}</span>${clear ? '<i>清零</i>' : up ? '<i>积压升</i>' : (i === 0 ? '<i style="color:#93c5fd">次日</i>' : '<i>积压降</i>')}
-     </button>`;
-  }).join('');
+    return `<i class="${clear ? 'co' : up ? 'cg' : 'ch'}">${clear ? '清零' : up ? '积压升' : '积压降'}</i>`;
+  };
+  box.innerHTML = calHtml(out, PICK_TICKET, todayCn(), mk, `当前积压 ${n0(fc.stockNow)} 单`);
   renderTicketDetail();
 }
 
@@ -1997,7 +2033,7 @@ $('#tabs').addEventListener('click', e => {
 });
 /* 日维度切片：点日期 chip 或预测表格行 → 同步高亮 + 明细 */
 $('#daySlicer').addEventListener('click', e => {
-  const b = e.target.closest('.dchip');
+  const b = e.target.closest('.cald[data-day]');
   if (!b) return;
   PICK_DAY = b.dataset.day;
   render400fc(D.plan);          // 内部会重建切片器/明细，并同步表格行高亮
@@ -2010,7 +2046,7 @@ $('#fc400t').addEventListener('click', e => {
 });
 /* 在线逐日切片同款联动 */
 $('#onlineSlicer').addEventListener('click', e => {
-  const b = e.target.closest('.dchip');
+  const b = e.target.closest('.cald[data-day]');
   if (!b) return;
   PICK_ONLINE = b.dataset.day;
   renderOnlinefc();
@@ -2023,7 +2059,7 @@ $('#fcOnlinet').addEventListener('click', e => {
 });
 /* 工单逐日切片同款联动 */
 $('#ticketSlicer').addEventListener('click', e => {
-  const b = e.target.closest('.dchip');
+  const b = e.target.closest('.cald[data-day]');
   if (!b) return;
   PICK_TICKET = b.dataset.day;
   renderTicketfc();
