@@ -615,30 +615,119 @@ function render400(cc) {
     { k: '周负荷', v: pc(cw.load400, 0), c: 'c-purple', d: `本周 ${n0(cw.wDays)} 天 · 周接通率 ${n0(rateWk)}%` }
   ].map(x => `<div class="kpi ${x.c}"><div class="kl">${x.k}</div><div class="kv ${x.hl ? 'hl' : ''}">${x.v}</div><div class="kd">${x.d}</div>${x.sp || ''}</div>`).join('');
 
-  /* 今日半小时 */
-  const hh = D.hh;
-  const slots = (hh && hh.date === todayCn() && Array.isArray(hh.slots)) ? hh.slots : [];
-  const hhLabels = slots.map(s => String(s.t).slice(11, 16));
-  const hhTotal = slots.map(s => s.total);
-  const hhRate = slots.map(s => s.total ? +((s.answered / (s.total - (s.ivr || 0) || 1)) * 100).toFixed(1) : null);
-  if (slots.length) {
-    $('#note400hh').textContent = `已出 ${slots.length} 个时段 · 转人工 ${n0(sum(slots, s => s.total - (s.ivr || 0)))} 通`;
+  /* 每半小时人工量（实时 + 预测）与接通率 */
+  renderHh400();
+
+  /* 近 30 天人工量（实时 + 预测）与每日接通率 */
+  renderTr400();
+}
+
+/* ── 400 时段工具 ── */
+const pad2 = n => String(n).padStart(2, '0');
+/* 统一用 400_shape 的 26 个半小时槽（08:00~21:00），拿不到就本地兜底同构 */
+function slotShortKeys() {
+  const sh = D.shape;
+  if (sh && Array.isArray(sh.slots) && sh.slots.length >= 24) return sh.slots.map(s => String(s).slice(0, 5));
+  const out = [];
+  for (let h = 8; h <= 20; h++) { out.push(pad2(h) + ':00'); out.push(pad2(h) + ':30'); }
+  return out;
+}
+/* '09:00' → '09:00-09:30'（call_halfhour 的 t 与 hh_rate/400_shape 的键对齐） */
+function slotFullKey(hhmm) {
+  const p = hhmm.split(':'), t = (+p[0]) * 60 + (+p[1]) + 30;
+  return hhmm + '-' + pad2(Math.floor(t / 60)) + ':' + pad2(t % 60);
+}
+/* 该日每半小时预测转人工量 = 该日预测转人工量 × 时段形状占比 */
+function hhPredOf(dateIso) {
+  const d = ((D.plan && D.plan.days) || []).find(x => x.date === dateIso);
+  const sh = D.shape;
+  if (!d || d.turn == null || !sh || !sh.share_turn) return null;
+  return slotShortKeys().map(k => Math.round(d.turn * (sh.share_turn[slotFullKey(k)] || 0)));
+}
+
+/* ── 每半小时：实际转人工量（柱）+ 预测转人工量（虚线）+ 接通率 ── */
+function renderHh400() {
+  const keys = slotShortKeys(), idxMap = {};
+  keys.forEach((k, i) => idxMap[k] = i);
+  const hh = D.hh, isToday = !!(hh && hh.date === todayCn() && Array.isArray(hh.slots));
+  const act = new Array(keys.length).fill(null), rAct = new Array(keys.length).fill(null);
+  let lastI = -1;
+  if (isToday) hh.slots.forEach(s => {
+    const i = idxMap[String(s.t).slice(11, 16)];
+    if (i == null) return;
+    const turn = (+s.total || 0) - (+s.ivr || 0);      // 人工量 = 呼入 − IVR
+    act[i] = turn;
+    if (turn > 0) rAct[i] = +(((+s.answered || 0) / turn) * 100).toFixed(1);
+    if (i > lastI) lastI = i;
+  });
+  const pred = hhPredOf(todayCn());
+  const base = keys.map(k => {
+    const v = D.hrate && D.hrate.slots ? D.hrate.slots[slotFullKey(k)] : null;
+    return v == null ? null : +(v * 100).toFixed(1);
+  });
+
+  const nAct = act.filter(v => v != null).length;
+  const usePredBars = !nAct && !!pred;
+  $('#note400hh').textContent = isToday
+    ? `已出 ${nAct}/${keys.length} 时段 · 实际 ${n0(sum(act.filter(v => v != null), v => v))} 通` +
+      (pred ? ` · 预测全天 ${n0(sum(pred, x => x))} 通` : '')
+    : '今日半小时数据待采集';
+
+  if (nAct || pred) {
     drawBar($('#ch400hh'), {
-      labels: hhLabels, data: hhTotal, h: 172,
-      colorFn: (v, i) => i === hhTotal.length - 1 ? '#93c5fd' : 'rgba(96,165,250,.62)',
-      tipFmt: v => `${n0(v)} 通`,
-      line: hhRate, lineColor: 'rgba(251,191,36,.85)'
+      labels: keys, h: 200,
+      data: usePredBars ? pred : act,
+      color: 'rgba(251,191,36,.55)',
+      colorFn: usePredBars ? null : (v, i) => i === lastI ? '#93c5fd' : 'rgba(96,165,250,.62)',
+      tipFmt: v => n0(v) + ' 通',
+      line: usePredBars ? null : pred,
+      lineSameScale: true, lineColor: 'rgba(251,191,36,.9)', lineTipFmt: v => n0(v) + ' 通'
     });
   } else $('#ch400hh').innerHTML = '<div class="empty">今日半小时数据待采集</div>';
 
-  /* 近 30 天 */
-  const TRd = D.tr || {}, days = TRd.days || [], c400 = TRd.call400 || {};
-  const last = days.slice(-30);
-  const ser = last.map(d => c400[d] == null ? null : c400[d]);
+  if (rAct.some(v => v != null) || base.some(v => v != null)) {
+    drawLine($('#ch400hhRate'), {
+      labels: keys, h: 156, yFmt: v => Math.round(v) + '%', tipFmt: v => (+v).toFixed(1) + '%',
+      series: [
+        { name: '实际', data: rAct, color: '#22d3ee', area: false },
+        { name: '基准', data: base, color: '#a78bfa', area: false, dash: '5 4' }
+      ]
+    });
+  } else $('#ch400hhRate').innerHTML = '<div class="empty">今日接通率待采集</div>';
+}
+
+/* ── 近 30 天：实际人工量 + 预测人工量 + 每日接通率 ── */
+function renderTr400() {
+  const tr = D.tr || {}, c400 = tr.call400 || {};
+  const last30 = (tr.days || []).slice(-30);
+  if (!last30.length) {
+    $('#ch400tr').innerHTML = '<div class="empty">趋势数据未生成</div>';
+    $('#ch400trRate').innerHTML = ''; return;
+  }
+  const today = todayCn(), lastD = last30[last30.length - 1];
+  const future = (((D.plan && D.plan.days) || []).filter(d => d.date > lastD).slice(0, 7)).map(d => d.date);
+  const labels = last30.concat(future);
+  const planTurn = {}; ((D.plan && D.plan.days) || []).forEach(d => planTurn[d.date] = d.turn);
+  const act = labels.map(d => c400[d] == null ? null : c400[d]);
+  const fc = labels.map(d => (d >= today && planTurn[d] != null) ? planTurn[d] : null);
+
   drawLine($('#ch400tr'), {
-    labels: last.map(d => d.slice(5)), h: 172, tipFmt: v => `${n0(v)} 通`,
-    series: [{ name: '400', data: ser, color: '#93c5fd', areaFill: 'rgba(96,165,250,.13)', label: n0(ser.filter(v => v != null).pop()) }]
+    labels: labels.map(d => d.slice(5)), h: 200, tipFmt: v => n0(v) + ' 通',
+    series: [
+      { name: '实际', data: act, color: '#93c5fd', areaFill: 'rgba(96,165,250,.13)', label: n0(act.filter(v => v != null).pop()) },
+      { name: '预测', data: fc, color: '#fbbf24', area: false, dash: '5 4', label: n0(fc.filter(v => v != null).pop()) }
+    ]
   });
+
+  const dr = (D.drate && D.drate.rate) || {};
+  const rate = labels.map(d => dr[d] == null ? null : +(dr[d] * 100).toFixed(1));
+  if (rate.some(v => v != null)) {
+    const rLast = rate.filter(v => v != null).pop();
+    drawLine($('#ch400trRate'), {
+      labels: labels.map(d => d.slice(5)), h: 156, yFmt: v => Math.round(v) + '%', tipFmt: v => (+v).toFixed(1) + '%',
+      series: [{ name: '接通率', data: rate, color: '#22d3ee', areaFill: 'rgba(34,211,238,.10)', label: n0(rLast) + '%' }]
+    });
+  } else $('#ch400trRate').innerHTML = '<div class="empty">暂无每日接通率</div>';
 }
 
 /* ══════════════════ 01b 400 预测 ══════════════════ */
@@ -646,7 +735,8 @@ function render400fc(plan) {
   const blk = $('#f400'), tbl = $('#fc400t');
   if (!plan || !plan.days || !plan.days.length) {
     blk.innerHTML = '<div class="kpi"><div class="kl">预测</div><div class="kv">–</div><div class="kd">plan.json 未生成</div></div>';
-    tbl.innerHTML = '<tr><td class="empty">暂无预测数据</td></tr>'; return;
+    tbl.innerHTML = '<tr><td class="empty">暂无预测数据</td></tr>';
+    $('#daySlicer').innerHTML = ''; $('#dayDetail').innerHTML = ''; return;
   }
   const days = plan.days, today = todayCn();
   const ti = Math.max(0, days.findIndex(d => d.date === today));
@@ -670,7 +760,7 @@ function render400fc(plan) {
     days.map(d => {
       const cl = d.gap_hc < 0 ? 'r' : d.gap_hc > 0 ? 'g' : 'b';
       const txt = d.gap_hc < 0 ? '缺 ' + Math.abs(d.gap_hc) : d.gap_hc > 0 ? '余 ' + d.gap_hc : '持平';
-      return `<tr class="${d.date === today ? 'today' : ''}">
+      return `<tr data-day="${d.date}" class="${d.date === today ? 'today' : ''}${d.date === PICK_DAY ? ' pick' : ''}">
         <td class="v">${d.date.slice(5)}</td><td>${d.wd}</td>
         <td>${(d.orders / 10000).toFixed(1)} 万</td>
         <td class="v">${n0(d.inbound)}</td><td>${n0(d.turn)}</td>
@@ -680,6 +770,53 @@ function render400fc(plan) {
         <td>${n0(d.ratio)}%</td></tr>`;
     }).join('') + '</tbody>';
   bindTip(tbl);
+  renderDaySlicer();
+}
+
+/* ── 日维度预测切片：日期 chips + 单日明细 + 该日分时段预测 ── */
+let PICK_DAY = null;
+function renderDaySlicer() {
+  const days = (D.plan && D.plan.days) || [];
+  const box = $('#daySlicer'), det = $('#dayDetail');
+  if (!days.length) { box.innerHTML = ''; det.innerHTML = ''; return; }
+  const today = todayCn();
+  if (!PICK_DAY || !days.some(d => d.date === PICK_DAY)) {
+    PICK_DAY = days.some(d => d.date === today) ? today : days[0].date;
+  }
+  box.innerHTML = days.map(d =>
+    `<button class="dchip${d.date === PICK_DAY ? ' on' : ''}${d.date === today ? ' today' : ''}${d.gap_hc < 0 ? ' gap' : ''}" data-day="${d.date}">
+       <b>${d.date.slice(5)}</b><span>${d.wd}</span>${d.gap_hc < 0 ? `<i>缺 ${Math.abs(d.gap_hc)}</i>` : (d.date === today ? '<i style="color:#93c5fd">今天</i>' : '')}
+     </button>`).join('');
+  renderDayDetail();
+}
+
+function renderDayDetail() {
+  const d = ((D.plan && D.plan.days) || []).find(x => x.date === PICK_DAY);
+  const box = $('#dayDetail');
+  if (!d) { box.innerHTML = ''; return; }
+  const today = todayCn();
+  const gapTxt = d.gap_hc < 0 ? '缺 ' + Math.abs(d.gap_hc) + ' 人' : (d.gap_hc > 0 ? '富余 ' + d.gap_hc + ' 人' : '持平');
+  const stats = [
+    ['订单量', (d.orders / 10000).toFixed(1) + '<small>万</small>', '进线比 ' + (d.R * 100).toFixed(2) + '%'],
+    ['预测进线量', n0(d.inbound), '呼入量（含 IVR）'],
+    ['预测转人工量', n0(d.turn), '人工量 = 呼入 − IVR'],
+    ['所需人力', n0(d.need_hc) + '<small>人</small>', d.need_hc_f != null ? '精确 ' + n1(d.need_hc_f) + ' 人日' : '按 8h 班折算'],
+    ['在岗人力', n0(d.onshift_hc) + '<small>人</small>', '排班工时 ' + n1(d.staff_h) + ' h'],
+    ['人力缺口', gapTxt, '产能 ' + n1(d.onshift_ph) + ' 通/人时'],
+    ['当日负荷', n0(d.ratio) + '%', d.ratio >= 110 ? '超负荷' : (d.ratio < 90 ? '偏松' : '正常')]
+  ];
+  box.innerHTML =
+    `<div class="dhead"><b>${d.date}</b><span>${d.wd}</span>${d.date === today ? '<span class="pill b">今天</span>' : ''}
+       <span style="margin-left:auto;font-size:11px;color:var(--tx3)">${esc(d.staff_src || '')} · 排班形状 ${esc(d.staff_shape || '–')}</span></div>
+     <div class="dgrid">${stats.map(s => `<div class="dstat"><div class="dk">${s[0]}</div><div class="dv">${s[1]}</div><div class="ds">${s[2]}</div></div>`).join('')}</div>
+     <div class="subhead">该日每半小时预测转人工量 <span>预测转人工量 × 时段形状占比</span></div>
+     <div id="chDayHh"></div>`;
+  const hh = hhPredOf(d.date);
+  if (hh) {
+    drawBar($('#chDayHh'), {
+      labels: slotShortKeys(), data: hh, h: 150, color: 'rgba(251,191,36,.6)', tipFmt: v => n0(v) + ' 通'
+    });
+  } else $('#chDayHh').innerHTML = '<div class="empty">缺时段形状（400_shape.json）或该日预测</div>';
 }
 
 /* ══════════════════ 02 在线 ══════════════════ */
@@ -870,7 +1007,7 @@ function renderTicketfc() {
 }
 
 /* ══════════════════ 切片器 ══════════════════ */
-const D = { cc: null, tk: null, tr: null, plan: null, hh: null, hhon: null, tt: null, ready: false };
+const D = { cc: null, tk: null, tr: null, plan: null, hh: null, hhon: null, tt: null, shape: null, hrate: null, drate: null, ready: false };
 const PANE_ORDER = ['400', 'online', 'ticket'];
 const PANE_FN = {
   '400': () => { render400(D.cc); render400fc(D.plan); },
@@ -919,16 +1056,20 @@ function setMetaBar(cc, tk, plan) {
 
 async function load() {
   const btn = $('#btnRefresh'); btn.disabled = true; btn.textContent = '刷新中…';
-  const [cc, tk, tr, plan, hh, hhon, tt] = await Promise.all([
+  const [cc, tk, tr, plan, hh, hhon, tt, shape, hrate, drate] = await Promise.all([
     jget('stats.json', 'http://127.0.0.1:8601/stats.json'),
     jget('/ticket-stats', 'ticket_stats.json'),
     jget('/daily_trend.json', 'daily_trend.json'),
     jget('forecast/plan.json'),
     jget('call_halfhour.json'),
     jget('chat_halfhour.json'),
-    jget('ticket_trend.json')
+    jget('ticket_trend.json'),
+    jget('forecast/400_shape.json'),
+    jget('forecast/hh_rate.json'),
+    jget('forecast/daily_rate.json')
   ]);
-  D.cc = cc; D.tk = tk; D.tr = tr; D.plan = plan; D.hh = hh; D.hhon = hhon; D.tt = tt; D.ready = true;
+  D.cc = cc; D.tk = tk; D.tr = tr; D.plan = plan; D.hh = hh; D.hhon = hhon; D.tt = tt;
+  D.shape = shape; D.hrate = hrate; D.drate = drate; D.ready = true;
   updateTabs();
   PANE_FN[CUR]();                    // 只重绘当前切片，切走时再按需绘制
   setMetaBar(cc, tk, plan);
@@ -940,6 +1081,19 @@ async function load() {
 $('#tabs').addEventListener('click', e => {
   const b = e.target.closest('.tab');
   if (b) showPane(b.dataset.pane, { scroll: true });
+});
+/* 日维度切片：点日期 chip 或预测表格行 → 同步高亮 + 明细 */
+$('#daySlicer').addEventListener('click', e => {
+  const b = e.target.closest('.dchip');
+  if (!b) return;
+  PICK_DAY = b.dataset.day;
+  render400fc(D.plan);          // 内部会重建切片器/明细，并同步表格行高亮
+});
+$('#fc400t').addEventListener('click', e => {
+  const tr = e.target.closest('tr[data-day]');
+  if (!tr) return;
+  PICK_DAY = tr.dataset.day;
+  render400fc(D.plan);
 });
 window.addEventListener('hashchange', () => showPane((location.hash || '').slice(1), { hash: false }));
 document.addEventListener('keydown', e => {
