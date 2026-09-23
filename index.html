@@ -1452,6 +1452,21 @@ function renderDayDetail() {
   const sheetDay = (ss.sheet || {})[d.date] || {};
   const sl = ((D.drate || {}).slots || {})[d.date] || {};
   const capH = (D.plan && D.plan.cap_per_hour) || 11.81;
+  /* 餐点人名：按当天在班名单（plan.days[].names）排 —— 组长可直接照着安排
+     规则：午市（15:00 前）沿名单顺序往后排，晚市倒着排，保证两餐的先后错开；
+           同一时段多人按排到的先后并列。名单保持原序，不另排序。 */
+  const roster = (d.names || []).filter(Boolean);
+  let mFwd = 0, mBwd = 0;
+  const mealWho = (n, isPM) => {
+    const L = roster.length;
+    if (!L || !n) return null;
+    const out = [];
+    for (let j = 0; j < n; j++) {
+      if (!isPM) { out.push(roster[mFwd % L]); mFwd++; }
+      else { out.push(roster[((L - 1 - mBwd) % L + L) % L]); mBwd++; }
+    }
+    return out;
+  };
   const rows = keys.map((k, i) => {
     const full = slotFullKey(k);
     const pv = hh ? hh[i] : null;
@@ -1465,7 +1480,10 @@ function renderDayDetail() {
     const gap = (need != null && staff != null) ? staff - need : null;   // 正值=人多，负值=少人
     const c = sl[full] || {};
     const meal = [];
-    if (c.meal) meal.push('用餐 ' + c.meal + ' 人');
+    if (c.meal) {
+      const who = mealWho(+c.meal, +k.slice(0, 2) >= 15);   // 15:00 之后算晚市
+      meal.push('用餐 ' + (who ? who.join('、') : c.meal + ' 人'));
+    }
     if (c.off) meal.push('放休 ' + c.off + ' 人');
     const gp = gap == null ? '<span class="pill b">–</span>'
       : gap < 0 ? `<span class="pill r">${gap}</span>`
@@ -1487,7 +1505,7 @@ function renderDayDetail() {
        <div class="fbody">
          <div class="subhead">该日每半小时预测转人工量 <span>预测转人工量 × 时段形状占比</span></div>
          <div id="chDayHh"></div>
-         <div class="subhead">该日分时段人力安排 <span>所需 = 预测转人工 ÷ 产能 ${n1(capH)} 通/人时 × 0.5h · 人力一律向上取整${est ? ' · 班表未出，「排班人数 / 差额」留空' : ' · 餐点取自现场调控表'}</span></div>
+         <div class="subhead">该日分时段人力安排 <span>所需 = 预测转人工 ÷ 产能 ${n1(capH)} 通/人时 × 0.5h · 人力一律向上取整${est ? ' · 班表未出，「排班人数 / 差额」留空' : ' · 餐点人数取自现场调控表，人名按当天在班名单轮排'}</span></div>
          <div class="tblwrap"><table class="tbl"><thead><tr>
            <th>时段</th><th>预测转人工</th><th>所需人力</th><th>排班人数</th><th>差额</th><th>餐点安排</th>
          </tr></thead><tbody>${rows}</tbody></table></div>
