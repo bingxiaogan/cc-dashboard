@@ -292,6 +292,20 @@ h1 em{font-style:normal;font-size:12px;font-weight:500;color:var(--tx3);letter-s
 .dstat .dv{font-size:20px;font-weight:640;color:var(--tx);letter-spacing:-.01em}
 .dstat .dv small{font-size:12px;font-weight:500;color:var(--tx2);margin-left:2px}
 .dstat .ds{font-size:11px;color:var(--tx3);margin-top:4px}
+/* ── 折叠区（日维度分时段预测）：默认收起，点标题展开 ── */
+.fold{margin-top:12px;border-top:1px solid var(--lin2);padding-top:11px}
+.fold>summary{display:flex;align-items:center;gap:9px;cursor:pointer;list-style:none;
+  font-size:12.5px;font-weight:600;color:var(--tx2);padding:7px 10px;border-radius:10px;
+  background:rgba(var(--accs),.07);border:1px solid var(--lin2);transition:background .15s,border-color .15s}
+.fold>summary::-webkit-details-marker{display:none}
+.fold>summary:hover{background:rgba(var(--accs),.13);border-color:rgba(var(--accs),.34)}
+.fold>summary .ft{color:var(--tx)}
+.fold>summary .fh{font-weight:400;font-size:11px;color:var(--tx3);flex:1}
+.fold>summary .fchev{width:8px;height:8px;border-right:1.8px solid var(--tx3);border-bottom:1.8px solid var(--tx3);
+  transform:rotate(45deg);margin:-3px 3px 0 2px;transition:transform .18s;flex:none}
+.fold[open]>summary .fchev{transform:rotate(-135deg);margin-top:3px}
+.fold[open]>summary{background:rgba(var(--accs),.11)}
+.fold .fbody{padding-top:2px}
 .tbl tbody tr[data-day]{cursor:pointer}
 .tbl tr.pick td{background:rgba(var(--accs),.10)}
 .tbl tr.pick td:first-child{box-shadow:inset 2px 0 0 var(--acc)}
@@ -418,6 +432,7 @@ svg{display:block;width:100%;overflow:visible}
               <span><em style="background:var(--amber)"></em>所需人力</span>
               <span><em style="background:var(--green)"></em>在岗人力</span>
             </div>
+            <span class="hint" id="note400fc"></span>
           </div>
           <div class="tblwrap"><table class="tbl" id="fc400t"></table></div>
         </div>
@@ -1230,6 +1245,11 @@ function render400fc(plan) {
   const days = plan.days, today = todayCn();
   // 先定好选中日，表格才能一次画对高亮行（renderDaySlicer 里同样的兜底是幂等的）
   if (!PICK_DAY || !days.some(d => d.date === PICK_DAY)) PICK_DAY = days.some(d => d.date === today) ? today : days[0].date;
+  const nEst = days.filter(d => d.staff_est).length;
+  if ($('#note400fc')) {
+    $('#note400fc').textContent = `${days.length} 天`
+      + (nEst ? ` · 后 ${nEst} 天 HR 班表未出，「在岗」为同周几估算（标「估」）` : '');
+  }
   tbl.innerHTML = `<thead><tr>
       <th>日期</th><th>星期</th><th>订单量</th><th>进线量</th><th>转人工</th>
       <th>所需人力</th><th>在岗</th><th>缺口</th><th>负荷</th></tr></thead><tbody>` +
@@ -1241,7 +1261,7 @@ function render400fc(plan) {
         <td>${(d.orders / 10000).toFixed(1)} 万</td>
         <td class="v">${n0(d.inbound)}</td><td>${n0(d.turn)}</td>
         <td class="v">${hc(d.need_hc_f != null ? d.need_hc_f : d.need_hc)}</td>
-        <td>${hc(d.onshift_hc)}</td>
+        <td>${hc(d.onshift_hc)}${d.staff_est ? '<i style="font-style:normal;font-size:10px;color:var(--amber);margin-left:2px" title="HR 班表未出，按同周几估算">估</i>' : ''}</td>
         <td><span class="pill ${cl}">${txt}</span></td>
         <td>${n0(d.ratio)}%</td></tr>`;
     }).join('') + '</tbody>';
@@ -1314,20 +1334,36 @@ function renderDayDetail() {
 
   box.innerHTML =
     `<div class="dhead"><b>${d.date}</b><span>${d.wd}</span>${d.date === today ? '<span class="pill b">今天</span>' : ''}
-       <span style="margin-left:auto;font-size:11px;color:var(--tx3)">${esc(d.staff_src || '')} · 排班形状 ${esc(d.staff_shape || '–')}</span></div>
+       <span style="margin-left:auto;font-size:11px;color:var(--tx3)">${esc(d.staff_src || '')} · 排班形状 ${esc(d.staff_shape || '–')}${d.staff_est ? ' · <span style="color:var(--amber)">班表未出，当班为估算</span>' : ''}</span></div>
      <div class="dgrid">${stats.map(s => `<div class="dstat"><div class="dk">${s[0]}</div><div class="dv">${s[1]}</div><div class="ds">${s[2]}</div></div>`).join('')}</div>
-     <div class="subhead">该日每半小时预测转人工量 <span>预测转人工量 × 时段形状占比</span></div>
-     <div id="chDayHh"></div>
-     <div class="subhead">该日分时段人力安排 <span>所需 = 预测转人工 ÷ 产能 ${n1(capH)} 通/人时 × 0.5h · 人力一律向上取整 · 餐点取自现场调控表</span></div>
-     <table class="tbl"><thead><tr>
-       <th>时段</th><th>预测转人工</th><th>所需人力</th><th>排班人数</th><th>缺口</th><th>餐点安排</th>
-     </tr></thead><tbody>${rows}</tbody></table>`;
-  if (hh) {
-    drawBar($('#chDayHh'), {
+     <details class="fold" id="dayFold">
+       <summary>
+         <span class="ft">该日分时段预测</span>
+         <span class="fh">每半小时转人工量 + 人力安排（所需 / 排班 / 缺口 / 餐点）· 共 ${keys.length} 段</span>
+         <span class="fchev"></span>
+       </summary>
+       <div class="fbody">
+         <div class="subhead">该日每半小时预测转人工量 <span>预测转人工量 × 时段形状占比</span></div>
+         <div id="chDayHh"></div>
+         <div class="subhead">该日分时段人力安排 <span>所需 = 预测转人工 ÷ 产能 ${n1(capH)} 通/人时 × 0.5h · 人力一律向上取整 · 餐点取自现场调控表</span></div>
+         <div class="tblwrap"><table class="tbl"><thead><tr>
+           <th>时段</th><th>预测转人工</th><th>所需人力</th><th>排班人数</th><th>缺口</th><th>餐点安排</th>
+         </tr></thead><tbody>${rows}</tbody></table></div>
+       </div>
+     </details>`;
+  /* ⚠️ 折叠状态下容器宽度为 0，SVG 会按 0 宽画歪 —— 所以展开时才绘制（2026-09-23 改折叠） */
+  const fold = $('#dayFold');
+  const drawDayHh = () => {
+    const el2 = $('#chDayHh');
+    if (!el2) return;
+    if (!hh) { el2.innerHTML = '<div class="empty">缺时段形状（400_shape.json）或该日预测</div>'; return; }
+    drawBar(el2, {
       labels: keys, data: hh, h: 158, color: 'rgba(251,191,36,.6)', tipFmt: v => n0(v) + ' 通',
       showVals: true, valFmt: v => n0(v)
     });
-  } else $('#chDayHh').innerHTML = '<div class="empty">缺时段形状（400_shape.json）或该日预测</div>';
+  };
+  fold.addEventListener('toggle', () => { if (fold.open) drawDayHh(); });
+  if (fold.open) drawDayHh();
 }
 
 /* ══════════════════ 02 在线 ══════════════════ */
