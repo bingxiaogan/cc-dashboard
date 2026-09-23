@@ -606,7 +606,7 @@ svg{display:block;width:100%;overflow:visible}
 
   <div class="foot">
     <b>数据源</b>　实时：7x24cc（400 / 在线，90 秒）· 爱回收工单系统（2 小时）　|　趋势：飞书日报（每日 21:50 固化）　|　400 预测：货量 → 进线量 → 转人工 → 所需人力（产能按 85% 人工接通率标定）<br>
-    <b>口径提示</b>　400 实时接通率 = Σ技能组接听 ÷ Σ技能组呼入（含 IVR 与「95分…」溢出组）；400 趋势为人工量（呼入 − IVR），两者统计范围不同，数值不可直接比较。在线<b>不看接通率、也没有排队</b>（会话直连坐席，系统里没有排队队列；唯一缺口来自顾客自行离开），只看接待量、坐席与并发负荷。在线与工单预测为趋势外推，非驱动模型。<br>
+    <b>口径提示</b>　400 实时接通率 = Σ技能组接听 ÷ Σ技能组呼入（含 IVR 与「95分…」溢出组）；400 趋势为人工量（呼入 − IVR），两者统计范围不同，数值不可直接比较。在线<b>不看接通率、也没有排队</b>（会话直连坐席，系统里没有排队队列；唯一缺口来自顾客自行离开），只看接待量、坐席与并发负荷（**口径统一为「分类在线技能组」**，不含抖音售后 / 官网严选自营 / 寄卖商服等其它在线组）。在线与工单预测为趋势外推，非驱动模型。<br>
     <b>操作</b>　顶部切换业务线（也可按 <b>1</b> / <b>2</b> / <b>3</b> 键），地址栏 <b>#400</b> / <b>#online</b> / <b>#ticket</b> 可直接定位板块。
   </div>
 </div>
@@ -1567,8 +1567,17 @@ function renderDayDetail() {
 
 /* ══════════════════ 02 在线 ══════════════════ */
 function onlineAgg(cc) {
-  const o = (cc && cc.online) || {}, gs = (o.groups || []).slice();
-  if (o.fenlei && !gs.some(g => g.name === o.fenlei.name)) gs.push(o.fenlei);
+  /* 🔴 在线只看「分类在线」（2026-09-23 用户定，别再加回全公司）：
+     cc.online.groups 是**全公司** 10 个在线技能组（腕表销售 / 抖音售后 / 爱回收官网接待组 /
+     官网严选自营 / 寄卖商服 …），而 capacity(inOn/capOn/loadOn)、attendance.dutyOnline、
+     chat_halfhour 分时段、history.onlineSessions、daily_trend.online 全部只算
+     「分类在线技能组」—— 混着聚合会让同一屏出现「今日会话 2812 / 负荷接待 483 / 分时段 450」
+     三个在线量打架，还会出现「进行中 177 席」挂在「坐席 2 人」旁边。
+     取数规则与采集端对齐（cc-collector.js 用 data.online.fenlei）：优先 fenlei，缺失时按组名兜底。 */
+  const o = (cc && cc.online) || {}, gs = [];
+  const push = g => { if (g && !gs.some(x => x.name === g.name)) gs.push(g); };
+  if (o.fenlei) push(o.fenlei);
+  else (o.groups || []).filter(g => /^分类在线技能组/.test(g.name || '')).forEach(push);
   return {
     groups: gs,
     sessions: sum(gs, g => g.sessions), assigned: sum(gs, g => g.assigned),
@@ -1589,7 +1598,7 @@ function renderOnline() {
   $('#hOnliner').innerHTML =
     `<span>坐席 <b>${seats}</b> 人</span>
      <span>出勤 <b>${on}/${duty}</b></span>
-     <span>技能组 <b>${a.groups.length}</b> 个</span>`;
+     <span>口径 <b>分类在线</b></span>`;
 
   /* —— 分时段（会话管理口径：只看接待量；在线不看接起率，见下方 KPI 注释）—— */
   const c = D.hhon, slots = (c && c.date === todayCn() && Array.isArray(c.slots)) ? c.slots : [];
