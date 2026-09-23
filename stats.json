@@ -1,17 +1,17 @@
 {
- "ts": 1790123941883,
- "collectedAtCn": "2026/9/23 08:39:01",
+ "ts": 1790124098129,
+ "collectedAtCn": "2026/9/23 08:41:38",
  "overview": {
   "总排队数": "0",
-  "坐席空闲数": "8",
+  "坐席空闲数": "11",
   "坐席忙碌数": "0 (0)",
-  "接通率": "12.23%",
+  "接通率": "12.73%",
   "满意率": "100.00%",
-  "呼入总数": "319",
-  "当前呼入数": "6",
-  "外呼总数": "14",
-  "当前外呼数": "2",
-  "呼入平均通话时长": "00:02:34",
+  "呼入总数": "330",
+  "当前呼入数": "3",
+  "外呼总数": "15",
+  "当前外呼数": "0",
+  "呼入平均通话时长": "00:02:29",
   "AI通话数": "0 (3)"
  },
  "skillGroups": [
@@ -22,12 +22,12 @@
    "members": "李华,孟佳欢,周贝儿,周志坤",
    "ring": 0,
    "queue": 0,
-   "todayAnswered": 20,
+   "todayAnswered": 22,
    "missed": 15,
-   "rate": 57.14,
-   "total": 35,
-   "current": 2,
-   "avgDuration": "00:01:59",
+   "rate": 59.46,
+   "total": 37,
+   "current": 3,
+   "avgDuration": "00:01:55",
    "transferIn": 0,
    "transferOut": 0
   },
@@ -66,8 +66,8 @@
   {
    "name": "分类回收400-4返航新生活动（爱分类）",
    "idleSeats": 1,
-   "signIn": 4,
-   "members": "李华,孟佳欢,周贝儿,周志坤",
+   "signIn": 5,
+   "members": "李华,孟佳欢,金浩,周贝儿,周志坤",
    "ring": 0,
    "queue": 0,
    "todayAnswered": 2,
@@ -242,8 +242,8 @@
   {
    "name": "95分分类回收400-4返航新生活动",
    "idleSeats": 1,
-   "signIn": 4,
-   "members": "李华,孟佳欢,周贝儿,周志坤",
+   "signIn": 5,
+   "members": "李华,孟佳欢,金浩,周贝儿,周志坤",
    "ring": 0,
    "queue": 0,
    "todayAnswered": 0,
@@ -292,26 +292,26 @@
    "idleSeats": 1,
    "signIn": 4,
    "members": "李华,孟佳欢,周贝儿,周志坤",
-   "ring": 1,
+   "ring": 0,
    "queue": 0,
-   "todayAnswered": 11,
-   "missed": 8,
-   "rate": 57.89,
+   "todayAnswered": 12,
+   "missed": 7,
+   "rate": 63.16,
    "total": 19,
-   "current": 1,
-   "avgDuration": "00:03:15",
+   "current": 0,
+   "avgDuration": "00:03:07",
    "transferIn": 0,
    "transferOut": 0
   }
  ],
  "skillSummary": {
   "idleSeats": 18,
-  "answered": 39,
-  "missed": 27,
-  "rate": 59.09,
-  "total": 66,
+  "answered": 42,
+  "missed": 26,
+  "rate": 61.76,
+  "total": 68,
   "queue": 0,
-  "signIn": 5
+  "signIn": 6
  },
  "services": [
   {
@@ -496,11 +496,11 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 169,
-   "ivr": 104,
-   "ringMissed": 2,
+   "callIn": 172,
+   "ivr": 105,
+   "ringMissed": 1,
    "queueAbandon": 24,
-   "answered": 39,
+   "answered": 42,
    "other": 0,
    "transferred": 0
   },
@@ -696,8 +696,8 @@
   },
   {
    "service": "81199(门店按键转接)",
-   "callIn": 7,
-   "ivr": 7,
+   "callIn": 9,
+   "ivr": 9,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -726,8 +726,8 @@
   },
   {
    "service": "88236602(其他渠道4000166088)",
-   "callIn": 11,
-   "ivr": 11,
+   "callIn": 13,
+   "ivr": 13,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -786,8 +786,8 @@
   },
   {
    "service": "88236606(ahs物流收货)",
-   "callIn": 1,
-   "ivr": 1,
+   "callIn": 3,
+   "ivr": 3,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -1120,7 +1120,8 @@
   "孟佳欢",
   "周贝儿",
   "周志坤",
-  "赵锦超"
+  "赵锦超",
+  "金浩"
  ],
  "keyServices": {
   "list": [
@@ -1146,11 +1147,11 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 169,
-    "ivr": 104,
-    "ringMissed": 2,
+    "callIn": 172,
+    "ivr": 105,
+    "ringMissed": 1,
     "queueAbandon": 24,
-    "answered": 39,
+    "answered": 42,
     "other": 0,
     "transferred": 0
    },
@@ -1165,10 +1166,10 @@
     "transferred": 0
    }
   ],
-  "total": 170,
-  "answered": 39,
-  "ivr": 105,
-  "connectRate": 84.71
+  "total": 173,
+  "answered": 42,
+  "ivr": 106,
+  "connectRate": 85.55
  },
  "online": {
   "groups": [
@@ -1368,15 +1369,6 @@
   "rate400": 79.6
  },
  "history": [
-  {
-   "ts": 1789954973359,
-   "skillRate400": 84.62,
-   "skillQueue400": 1,
-   "callIn400": 156,
-   "signIn400": 16,
-   "onlineSessions": 498,
-   "onlineSeat": 2
-  },
   {
    "ts": 1789955112569,
    "skillRate400": 85.19,
@@ -5865,6 +5857,15 @@
    "skillQueue400": 0,
    "callIn400": 66,
    "signIn400": 5,
+   "onlineSessions": null,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1790124098129,
+   "skillRate400": 61.76,
+   "skillQueue400": 0,
+   "callIn400": 68,
+   "signIn400": 6,
    "onlineSessions": null,
    "onlineSeat": 0
   }
