@@ -525,13 +525,22 @@ svg{display:block;width:100%;overflow:visible}
 
     <div class="zone">
       <div class="zonetag fc"><i></i>预测 <span>同星期几基准 × 近 7 天水平因子（日维度 · 可逐日切片）</span></div>
-      <div class="subhead">逐日切片 <span>点日期或点表格行，查看该日明细</span></div>
-      <div class="dslicer" id="onlineSlicer"></div>
-      <div class="dstats" id="onlineDetail"></div>
       <div class="panels">
         <div class="panel wide">
           <div class="phead"><h3>未来 7 天预估接待量与所需人力</h3><span class="hint" id="noteOnlinefc"></span></div>
-          <div class="tblwrap"><table class="tbl" id="fcOnlinet"></table></div>
+          <details class="fold" id="calFoldOnline">
+            <summary>
+              <span class="ft">逐日切片 · 选日期</span>
+              <span class="fh" id="calPickOnline">—</span>
+              <span class="fchev"></span>
+            </summary>
+            <div class="fbody">
+              <div id="onlineSlicer"></div>
+              <div class="calhint">点日期或点下方表格行，查看该日明细</div>
+            </div>
+          </details>
+          <div class="dstats" id="onlineDetail"></div>
+          <div id="fcOnlinet"></div>
         </div>
       </div>
     </div>
@@ -579,13 +588,24 @@ svg{display:block;width:100%;overflow:visible}
 
     <div class="zone">
       <div class="zonetag fc"><i></i>预测 <span>近 14 天净变化外推积压（日维度 · 可逐日切片）</span></div>
-      <div class="subhead">逐日切片 <span>点日期或点表格行，查看该日预估明细</span></div>
-      <div class="dslicer" id="ticketSlicer"></div>
-      <div class="dstats" id="ticketDetail"></div>
       <div class="panels">
         <div class="panel wide">
           <div class="phead"><h3>未来 7 天预估新增与积压</h3><span class="hint" id="noteTicketfc"></span></div>
-          <div class="tblwrap"><table class="tbl" id="fcTickett"></table></div>
+          <details class="fold" id="calFoldTicket">
+            <summary>
+              <span class="ft">逐日切片 · 选日期</span>
+              <span class="fh" id="calPickTicket">—</span>
+              <span class="fchev"></span>
+            </summary>
+            <div class="fbody">
+              <div id="ticketSlicer"></div>
+              <div class="calhint">点日期或点下方表格行，查看该日预估明细</div>
+            </div>
+          </details>
+          <div class="dstats" id="ticketDetail"></div>
+          <div id="fcTickett"></div>
+        </div>
+      </div>
         </div>
       </div>
     </div>
@@ -1682,21 +1702,38 @@ function onlBaseSlots(c, labels) {
 }
 
 function renderOnlinefc() {
-  const tbl = $('#fcOnlinet');
+  const wrap = $('#fcOnlinet');
   const fc = onlineForecastPlain();
   if (!fc) {
-    tbl.innerHTML = '<tr><td class="empty">历史样本不足，暂不外推</td></tr>';
+    wrap.innerHTML = '<div class="empty">历史样本不足，暂不外推</div>';
     $('#onlineSlicer').innerHTML = ''; $('#onlineDetail').innerHTML = ''; return;
   }
   const lastReal = ((D.tr && D.tr.days) || []).map(d => (D.tr.online || {})[d]).filter(v => v != null).pop();
   // 先定好选中日，表格才能一次画对高亮行（renderOnlineSlicer 里同样的兜底是幂等的）
   if (!PICK_ONLINE || !fc.some(f => f.date === PICK_ONLINE)) PICK_ONLINE = fc[0].date;
   $('#noteOnlinefc').textContent = '按星期几基准 × 近 7 天水平因子外推 · 驱动模型待建';
-  tbl.innerHTML = `<thead><tr><th>日期</th><th>星期</th><th>预估接待量</th><th>所需人力</th><th>建议单班人数</th></tr></thead><tbody>` +
-    fc.map(f => `<tr data-day="${f.date}" class="${f.date === PICK_ONLINE ? ' pick' : ''}">
-      <td class="v">${f.date.slice(5)}</td><td>${f.wd}</td><td class="v">${n0(f.v)}</td>
-      <td>${f.need} 人日</td><td><span class="pill ${f.v > (lastReal || 0) * 1.15 ? 'y' : 'b'}">${f.hc} 人</span></td></tr>`).join('') + '</tbody>';
-  bindTip(tbl);
+  /* 按月折叠：外层只有月份，点开才是该月每天一行 */
+  const ms = [];
+  fc.forEach(f => { const m = f.date.slice(0, 7); if (ms.indexOf(m) < 0) ms.push(m); });
+  const pickM = PICK_ONLINE.slice(0, 7);
+  wrap.innerHTML = ms.sort().map(ym => {
+    const sub = fc.filter(f => f.date.slice(0, 7) === ym);
+    const needSum = sub.reduce((a, f) => a + (hcn(f.need) || 0), 0);
+    return `<details class="fold mth"${ym === pickM ? ' open' : ''}>
+      <summary>
+        <span class="ft">${+ym.slice(0, 4)} 年 ${+ym.slice(5, 7)} 月</span>
+        <span class="fh">${sub.length} 天 · 需 ${needSum} 人日</span>
+        <span class="fchev"></span>
+      </summary>
+      <div class="fbody"><div class="tblwrap"><table class="tbl">
+        <thead><tr><th>日期</th><th>星期</th><th>预估接待量</th><th>所需人力</th><th>建议单班人数</th></tr></thead>
+        <tbody>${sub.map(f => `<tr data-day="${f.date}" class="${f.date === PICK_ONLINE ? ' pick' : ''}">
+          <td class="v">${f.date.slice(5)}</td><td>${f.wd}</td><td class="v">${n0(f.v)}</td>
+          <td>${f.need} 人日</td><td><span class="pill ${f.v > (lastReal || 0) * 1.15 ? 'y' : 'b'}">${f.hc} 人</span></td></tr>`).join('')}</tbody>
+      </table></div></div>
+    </details>`;
+  }).join('');
+  bindTip(wrap);
   renderOnlineSlicer();
 }
 
@@ -1714,7 +1751,9 @@ function renderOnlineSlicer() {
     return `${f.hc ? `<i class="${hi ? 'cg' : 'ch'}">${f.hc}人</i>` : ''}`;
   };
   box.innerHTML = calHtml(fc, PICK_ONLINE, todayCn(), mk,
-    lastReal ? `红线 = 高于当前 ${n0(lastReal)}` : '');
+    lastReal ? `红线 = 高于当前 ${n0(lastReal)}` : '', 'online');
+  const pk = fc.find(x => x.date === PICK_ONLINE) || {};
+  if ($('#calPickOnline')) $('#calPickOnline').textContent = `${PICK_ONLINE.slice(5)} ${pk.wd || ''} · 点开选日期`;
   renderOnlineDetail();
 }
 
@@ -1917,25 +1956,43 @@ function renderTicketTrend() {
 
 /* 工单预测：近 14 天净变化外推积压 */
 function renderTicketfc() {
-  const tbl = $('#fcTickett');
+  const wrap = $('#fcTickett');
   const fc = ticketForecast();
   if (!fc) {
-    tbl.innerHTML = '<tr><td class="empty">历史样本不足，暂不外推</td></tr>';
+    wrap.innerHTML = '<div class="empty">历史样本不足，暂不外推</div>';
     $('#ticketSlicer').innerHTML = ''; $('#ticketDetail').innerHTML = ''; return;
   }
   const out = fc.out, net = fc.nAvg14 - fc.dAvg;
   // 先定好选中日，表格才能一次画对高亮行（renderTicketSlicer 里同样的兜底是幂等的）
   if (!PICK_TICKET || !out.some(f => f.date === PICK_TICKET)) PICK_TICKET = out[0].date;
   $('#noteTicketfc').textContent = `净变化 ${net >= 0 ? '+' : '−'}${n1(Math.abs(net))} 单/天 · 处理量上限取近 7 天实际 · 驱动模型待建`;
-  tbl.innerHTML = `<thead><tr><th>日期</th><th>星期</th><th>预估新增</th><th>预估处理</th><th>期末积压</th></tr></thead><tbody>` +
-    out.map((f, i) => {
-      const prev = i === 0 ? fc.stockNow : out[i - 1].stk;
-      const up = f.stk > prev;
-      return `<tr data-day="${f.date}" class="${f.date === PICK_TICKET ? ' pick' : ''}">
-        <td class="v">${f.date.slice(5)}</td><td>${f.wd}</td><td>${n0(f.nv)}</td><td>${n0(f.done)}</td>
-        <td class="v">${f.stk === 0 ? '<span class="pill g">清零</span>' : n0(f.stk) + ' ' + (up ? '<span class="pill r">↑</span>' : '<span class="pill g">↓</span>')}</td></tr>`;
-    }).join('') + '</tbody>';
-  bindTip(tbl);
+  /* 上一日期末积压：跨月也要连续，先按全量算好映射再按月分组 */
+  const prevOf = {};
+  out.forEach((f, i) => { prevOf[f.date] = i === 0 ? fc.stockNow : out[i - 1].stk; });
+  /* 按月折叠：外层只有月份，点开才是该月每天一行 */
+  const ms = [];
+  out.forEach(f => { const m = f.date.slice(0, 7); if (ms.indexOf(m) < 0) ms.push(m); });
+  const pickM = PICK_TICKET.slice(0, 7);
+  wrap.innerHTML = ms.sort().map(ym => {
+    const sub = out.filter(f => f.date.slice(0, 7) === ym);
+    const endStk = sub[sub.length - 1].stk;
+    return `<details class="fold mth"${ym === pickM ? ' open' : ''}>
+      <summary>
+        <span class="ft">${+ym.slice(0, 4)} 年 ${+ym.slice(5, 7)} 月</span>
+        <span class="fh">${sub.length} 天 · 期末积压 ${n0(endStk)} 单</span>
+        <span class="fchev"></span>
+      </summary>
+      <div class="fbody"><div class="tblwrap"><table class="tbl">
+        <thead><tr><th>日期</th><th>星期</th><th>预估新增</th><th>预估处理</th><th>期末积压</th></tr></thead>
+        <tbody>${sub.map(f => {
+          const up = f.stk > prevOf[f.date];
+          return `<tr data-day="${f.date}" class="${f.date === PICK_TICKET ? ' pick' : ''}">
+            <td class="v">${f.date.slice(5)}</td><td>${f.wd}</td><td>${n0(f.nv)}</td><td>${n0(f.done)}</td>
+            <td class="v">${f.stk === 0 ? '<span class="pill g">清零</span>' : n0(f.stk) + ' ' + (up ? '<span class="pill r">↑</span>' : '<span class="pill g">↓</span>')}</td></tr>`;
+        }).join('')}</tbody></table></div></div>
+    </details>`;
+  }).join('');
+  bindTip(wrap);
   renderTicketSlicer();
 }
 
@@ -1954,7 +2011,9 @@ function renderTicketSlicer() {
     const up = f.stk > prev, clear = f.stk === 0;
     return `<i class="${clear ? 'co' : up ? 'cg' : 'ch'}">${clear ? '清零' : up ? '积压升' : '积压降'}</i>`;
   };
-  box.innerHTML = calHtml(out, PICK_TICKET, todayCn(), mk, `当前积压 ${n0(fc.stockNow)} 单`);
+  box.innerHTML = calHtml(out, PICK_TICKET, todayCn(), mk, `当前积压 ${n0(fc.stockNow)} 单`, 'ticket');
+  const pk = out.find(x => x.date === PICK_TICKET) || {};
+  if ($('#calPickTicket')) $('#calPickTicket').textContent = `${PICK_TICKET.slice(5)} ${pk.wd || ''} · 点开选日期`;
   renderTicketDetail();
 }
 
@@ -2098,6 +2157,8 @@ $('#fc400t').addEventListener('click', e => {
 });
 /* 在线逐日切片同款联动 */
 $('#onlineSlicer').addEventListener('click', e => {
+  const mt = e.target.closest('.calmt');
+  if (mt) { CAL_MON['online'] = mt.dataset.m; renderOnlineSlicer(); return; }
   const b = e.target.closest('.cald[data-day]');
   if (!b) return;
   PICK_ONLINE = b.dataset.day;
@@ -2111,6 +2172,8 @@ $('#fcOnlinet').addEventListener('click', e => {
 });
 /* 工单逐日切片同款联动 */
 $('#ticketSlicer').addEventListener('click', e => {
+  const mt = e.target.closest('.calmt');
+  if (mt) { CAL_MON['ticket'] = mt.dataset.m; renderTicketSlicer(); return; }
   const b = e.target.closest('.cald[data-day]');
   if (!b) return;
   PICK_TICKET = b.dataset.day;
