@@ -1,13 +1,13 @@
 {
- "ts": 1790172943827,
- "collectedAtCn": "2026/9/23 22:15:43",
+ "ts": 1790173056692,
+ "collectedAtCn": "2026/9/23 22:17:36",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "3",
   "坐席忙碌数": "0 (0)",
   "接通率": "19.21%",
   "满意率": "100.00%",
-  "呼入总数": "15310",
+  "呼入总数": "15314",
   "当前呼入数": "0",
   "外呼总数": "6581",
   "当前外呼数": "0",
@@ -240,8 +240,8 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 1954,
-   "ivr": 877,
+   "callIn": 1955,
+   "ivr": 878,
    "ringMissed": 5,
    "queueAbandon": 200,
    "answered": 872,
@@ -480,8 +480,8 @@
   },
   {
    "service": "81198(上门按键转接)",
-   "callIn": 798,
-   "ivr": 492,
+   "callIn": 801,
+   "ivr": 495,
    "ringMissed": 2,
    "queueAbandon": 55,
    "answered": 276,
@@ -886,8 +886,8 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 1954,
-    "ivr": 877,
+    "callIn": 1955,
+    "ivr": 878,
     "ringMissed": 5,
     "queueAbandon": 200,
     "answered": 872,
@@ -905,10 +905,10 @@
     "transferred": 0
    }
   ],
-  "total": 1991,
+  "total": 1992,
   "answered": 892,
-  "ivr": 890,
-  "connectRate": 89.5
+  "ivr": 891,
+  "connectRate": 89.51
  },
  "online": {
   "groups": [
@@ -988,7 +988,7 @@
     "assigned": 1310,
     "current": 82,
     "max": 60,
-    "queue": 0,
+    "queue": 1,
     "onlineSeats": "2(刘梓爱,陈可)",
     "done": 1180,
     "answerRate": 96.11,
@@ -1058,7 +1058,7 @@
     "assigned": 394,
     "current": 23,
     "max": 60,
-    "queue": 0,
+    "queue": 1,
     "onlineSeats": "2(刘梓爱,陈可)",
     "done": 360,
     "answerRate": 97.28,
@@ -1288,15 +1288,6 @@
   "rate400": 80.6
  },
  "history": [
-  {
-   "ts": 1790080933770,
-   "skillRate400": 77.23,
-   "skillQueue400": 2,
-   "callIn400": 1120,
-   "signIn400": 6,
-   "onlineSessions": 782,
-   "onlineSeat": 3
-  },
   {
    "ts": 1790081038849,
    "skillRate400": 77.18,
@@ -5781,6 +5772,15 @@
   },
   {
    "ts": 1790172943827,
+   "skillRate400": 71.88,
+   "skillQueue400": 0,
+   "callIn400": 32,
+   "signIn400": 1,
+   "onlineSessions": 797,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1790173056692,
    "skillRate400": 71.88,
    "skillQueue400": 0,
    "callIn400": 32,
