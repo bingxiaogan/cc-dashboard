@@ -386,7 +386,7 @@ svg{display:block;width:100%;overflow:visible}
               <span><em style="background:var(--blue)"></em>实际人工量</span>
               <span><em style="background:var(--amber)"></em>预测人工量</span>
             </div>
-            <span class="hint">人工量 = 呼入 − IVR</span>
+            <span class="hint" id="note400tr">人工量 = 呼入 − IVR</span>
           </div>
           <div id="ch400tr"></div>
           <div class="subhead">每日接通率 <span>接通量 ÷ 转人工量</span></div>
@@ -946,6 +946,12 @@ function renderTr400() {
   const future = (((D.plan && D.plan.days) || []).filter(d => d.date > lastD).slice(0, 7)).map(d => d.date);
   const labels = last30.concat(future);
   const planTurn = {}; ((D.plan && D.plan.days) || []).forEach(d => planTurn[d.date] = d.turn);
+  const km = (D.drate && D.drate.k_meta) || null;
+  if ($('#note400tr')) {
+    $('#note400tr').textContent = '人工量 = 呼入 − IVR'
+      + (D.k && D.k !== 1 ? ` · 预测已按 7x24cc 实测校正 ×${D.k.toFixed(3)}` +
+        (km ? `（近两周 ${km.n} 个完整采集日，平均偏差 ${km.mape_before}% → ${km.mape_after}%）` : '') : '');
+  }
   const act = labels.map(d => c400[d] == null ? null : c400[d]);
   /* 预测线覆盖整个窗口：未来取 plan.days，历史取模型回算值（daily_rate.pred）——
      过去的日子也有预测，才能直接看每天「实际 vs 预测」的偏差 */
@@ -1796,6 +1802,29 @@ function setMetaBar(cc, tk, plan) {
   ]);
 }
 
+/* 预测实测校正（2026-09-23 加）
+   预测链（R_base / turn_rate / 时段形状）是从飞书《现场调控》表标定的，那张表与看板
+   （7x24cc/合力）实际采集的量级有系统性偏差。forecast/build_daily_rate.py 用最近两周
+   采集完整的日子算出系数 k = Σ实测人工量 ÷ Σ模型回算，这里把 plan 的预测类字段整体
+   缩到实测水平 —— 凡是读 D.plan.days 的地方（KPI 偏差、30 天预测线、逐日切片、
+   半小时预测）自动保持同一口径。 */
+function applyLiveCorrection() {
+  const k = (D.drate && D.drate.k) || 1;
+  D.k = k;
+  if (k === 1 || !D.plan || !Array.isArray(D.plan.days)) return;
+  D.plan.days = D.plan.days.map(d => {
+    const o = Object.assign({}, d);
+    o.turn = Math.round(d.turn * k);
+    o.inbound = Math.round(d.inbound * k);
+    o.need_hc_f = +(d.need_hc_f * k).toFixed(2);
+    o.need_hc = Math.ceil(o.need_hc_f);
+    o.gap_hc = d.onshift_hc - o.need_hc;
+    o.ratio = d.need_ph ? +(d.onshift_ph / (d.need_ph * k) * 100).toFixed(1) : d.ratio;
+    o.k = k;
+    return o;
+  });
+}
+
 async function load() {
   const btn = $('#btnRefresh'); btn.disabled = true; btn.textContent = '刷新中…';
   const [cc, tk, tr, plan, hh, hhon, tt, shape, hrate, drate] = await Promise.all([
@@ -1812,6 +1841,7 @@ async function load() {
   ]);
   D.cc = cc; D.tk = tk; D.tr = tr; D.plan = plan; D.hh = hh; D.hhon = hhon; D.tt = tt;
   D.shape = shape; D.hrate = hrate; D.drate = drate; D.ready = true;
+  applyLiveCorrection();             // 用看板实测系数把预测拉回实测水平
   updateTabs();
   PANE_FN[CUR]();                    // 只重绘当前切片，切走时再按需绘制
   setMetaBar(cc, tk, plan);
