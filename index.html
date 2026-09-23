@@ -613,7 +613,7 @@ svg{display:block;width:100%;overflow:visible}
 
   <div class="foot">
     <b>数据源</b>　实时：7x24cc（400 / 在线，90 秒）· 爱回收工单系统（2 小时）　|　趋势：飞书日报（每日 21:50 固化）　|　400 预测：货量 → 进线量 → 转人工 → 所需人力（产能按 85% 人工接通率标定）<br>
-    <b>口径提示</b>　400 实时接通率 = Σ技能组接听 ÷ Σ技能组呼入（含 IVR 与「95分…」溢出组）；400 趋势为人工量（呼入 − IVR），两者统计范围不同，数值不可直接比较。在线负荷只看量级，不看接通率。在线与工单预测为趋势外推，非驱动模型。<br>
+    <b>口径提示</b>　400 实时接通率 = Σ技能组接听 ÷ Σ技能组呼入（含 IVR 与「95分…」溢出组）；400 趋势为人工量（呼入 − IVR），两者统计范围不同，数值不可直接比较。在线<b>不看接通率、也没有排队</b>（会话直连坐席，系统里没有排队队列；唯一缺口来自顾客自行离开），只看接待量、坐席与并发负荷。在线与工单预测为趋势外推，非驱动模型。<br>
     <b>操作</b>　顶部切换业务线（也可按 <b>1</b> / <b>2</b> / <b>3</b> 键），地址栏 <b>#400</b> / <b>#online</b> / <b>#ticket</b> 可直接定位板块。
   </div>
 </div>
@@ -1046,29 +1046,6 @@ function weekRate400() {
   return null;
 }
 
-/* 在线周维度接起率：自然周（周日~周六）按时段会话量加权（Σ接起 ÷ Σ接入）
-   —— 不含今天；本周完整日不足 2 天回退上周
-   —— 数据取 chat_halfhour.json 的 history（看板自采，每天固化） */
-function weekRateOnline() {
-  const h = (D.hhon && D.hhon.history) || {};
-  const today = todayCn();
-  for (const off of [0, -1]) {
-    const [a, b] = weekSunSat(today, off);
-    const ds = Object.keys(h)
-      .filter(k => k >= a && k <= b && k < today && Array.isArray(h[k])).sort();
-    if (ds.length < 2) continue;
-    let t = 0, an = 0;
-    ds.forEach(k => h[k].forEach(s => {
-      const tot = +s.total || 0;
-      if (tot <= 0) return;
-      t += tot; an += tot * (parseFloat(s.rate) || 0) / 100;
-    }));
-    if (!t) continue;
-    return { rate: an / t * 100, n: ds.length, from: a, to: b, last: ds[ds.length - 1], off, total: t };
-  }
-  return null;
-}
-
 /* ── 每半小时：实际转人工量（柱）+ 预测转人工量（虚线）+ 接通率 ── */
 function renderHh400() {
   const keys = slotShortKeys(), idxMap = {};
@@ -1284,7 +1261,7 @@ function renderStrategyOnline(o) {
     const dir = amt < 5 ? '与近 7 日同期基本一致' : (d > 0 ? '高于近 7 日同期 ' + amt.toFixed(0) + '%' : '低于近 7 日同期 ' + amt.toFixed(0) + '%');
     const adv = (amt >= 20 && d > 0) ? '在线进线明显放大，建议临时增派坐席、缩短首响时长，并留意 400 排队传导。'
       : amt >= 20 ? '在线进线明显偏低，可抽人支援 400 或清理积压工单。'
-        : (amt >= 5 && d > 0) ? '略高于近期水平，盯住排队与首响即可。'
+        : (amt >= 5 && d > 0) ? '略高于近期水平，盯住首响时长与并发席位数即可。'
           : amt >= 5 ? '略低于近期水平，可安排用餐或培训。'
             : '节奏与近期一致，按计划推进。';
     items.push({ tag: '整体', cls, html: `分时段累计接待 <b>${n0(sumT)}</b> 会话（近 7 日同期 ${n0(histNow)}），<b>${dir}</b>。${adv}` });
@@ -1292,27 +1269,12 @@ function renderStrategyOnline(o) {
     items.push({ tag: '整体', cls: 'all', html: '今日分时段数据待采集，先按近 7 日同时段水平值守。' });
   }
 
-  /* ② 实时压力 */
-  const q = a.queue || 0;
+  /* ② 实时压力（在线只看出勤与并发 —— 会话直连坐席，系统里没有排队队列） */
   items.push({
-    tag: '实时', cls: q > 0 ? 'risk' : 'good',
-    html: `在线坐席 <b>${o.seats}</b> 人（出勤 <b>${o.on}/${o.duty}</b>），进行中 <b>${n0(a.current)}</b> 席、排队 <b>${n0(q)}</b>。` +
-      (q > 0 ? '已有排队积压，建议拉 400 空闲坐席支援。' : '无排队，连接正常。')
+    tag: '实时', cls: o.on < o.duty ? 'slot' : 'good',
+    html: `在线坐席 <b>${o.seats}</b> 人（出勤 <b>${o.on}/${o.duty}</b>），进行中 <b>${n0(a.current)}</b> 席，已完成 <b>${n0(a.done)}</b>。` +
+      (o.on < o.duty ? '出勤未满编，建议先补齐在线班次。' : '出勤满编，按常规节奏值守。')
   });
-
-  /* ③ 接起率（会话管理口径） */
-  const lowIdx = [];
-  arrR.forEach((v, i) => { if (v != null && v < 95) lowIdx.push({ k: labels[i], v, b: baseR[i] }); });
-  if (lowIdx.length) {
-    const w = lowIdx.slice().sort((x, y) => x.v - y.v)[0];
-    items.push({
-      tag: '接起率', cls: 'slot',
-      html: `已出时段有 <b>${lowIdx.length}</b> 个接起率低于 95%（最低 <b>${w.k}</b> ${w.v.toFixed(0)}%` +
-        (w.b != null ? `，同期基准 ${w.b.toFixed(0)}%` : '') + '）。建议核查该时段坐席在线数与首响时长。'
-    });
-  } else if (arrR.some(v => v != null)) {
-    items.push({ tag: '接起率', cls: 'good', html: '已出时段接起率均在 95% 以上。' });
-  }
 
   /* ④ 未来 7 天峰值 */
   if (fcAll.length) {
