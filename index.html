@@ -406,8 +406,11 @@ svg{display:block;width:100%;overflow:visible}
       <div class="panels">
         <div class="panel wide">
           <div class="phead">
-            <h3>今日分时段接待量 · 实时</h3>
-            <div class="lgd"><span><em style="background:var(--green)"></em>接待量</span></div>
+            <h3>今日分时段接待量 · 实时 + 基准</h3>
+            <div class="lgd">
+              <span><em style="background:var(--green)"></em>实际接待量</span>
+              <span><em style="background:#a78bfa"></em>近 7 日同时段基准</span>
+            </div>
             <span class="hint" id="noteOnlinehh"></span>
           </div>
           <div id="chOnlinehh"></div>
@@ -1126,6 +1129,7 @@ function renderOnline() {
   const arrT = slots.map(s => s.total);
   const arrR = slots.map(s => { const v = parseFloat(String(s.rate == null ? '' : s.rate).replace('%', '')); return isNaN(v) ? null : v; });
   const baseR = onlRateBase(c, labels);
+  const baseT = onlBaseSlots(c, labels);
   const sumT = sum(slots, s => s.total);
   const histNow = onlHistToNow(c, labels);
 
@@ -1153,11 +1157,14 @@ function renderOnline() {
 
   /* 今日分时段：接待量（柱）+ 接起率（实际 + 基准） */
   if (slots.length) {
-    $('#noteOnlinehh').textContent = `已出 ${slots.length} 个时段 · 合计 ${n0(sumT)} 会话`;
+    $('#noteOnlinehh').textContent = `已出 ${slots.length} 个时段 · 合计 ${n0(sumT)} 会话`
+      + (baseT.some(v => v != null) ? ` · 近 7 日同期基准 ${n0(sum(baseT.filter(v => v != null), v => v))} 会话` : '');
     drawBar($('#chOnlinehh'), {
       labels, data: arrT, h: 190,
       colorFn: (v, i) => i === arrT.length - 1 ? '#6ee7b7' : 'rgba(52,211,153,.6)',
-      tipFmt: v => `${n0(v)} 会话`
+      tipFmt: v => `${n0(v)} 会话`,
+      line: baseT.some(v => v != null) ? baseT : null,
+      lineSameScale: true, lineColor: 'rgba(167,139,250,.85)', lineTipFmt: v => `${n0(v)} 会话`
     });
   } else $('#chOnlinehh').innerHTML = '<div class="empty">今日分时段数据待采集</div>';
 
