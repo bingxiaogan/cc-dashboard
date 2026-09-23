@@ -155,6 +155,9 @@ h1 em{font-style:normal;font-size:12px;font-weight:500;color:var(--tx3);letter-s
 .kpi .kd{font-size:11.5px;color:var(--tx3);margin-top:7px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
 .kpi .kd .up{color:var(--green)}
 .kpi .kd .dn{color:var(--red)}
+/* 偏差语义：warn = 压力（高于预测 / 积压增长），ok = 宽松（低于预测 / 消化） */
+.kpi .kd .warn{color:var(--amber)}
+.kpi .kd .ok{color:var(--green)}
 .kpi .spark{position:absolute;right:10px;bottom:8px;opacity:.55}
 .kpi.c-blue{--kc:var(--blue)} .kpi.c-green{--kc:var(--green)} .kpi.c-amber{--kc:var(--amber)}
 .kpi.c-purple{--kc:var(--purple)} .kpi.c-red{--kc:var(--red)} .kpi.c-cyan{--kc:var(--cyan)}
@@ -218,10 +221,14 @@ h1 em{font-style:normal;font-size:12px;font-weight:500;color:var(--tx3);letter-s
 .dchip.on b,.dchip.on span{color:var(--tx)}
 .dchip.gap i{color:var(--red)}
 
-/* ── 实时+预测 KPI 与调控策略建议（一行两栏） ── */
-.mergeline{display:grid;grid-template-columns:minmax(0,1fr) 338px;gap:14px;margin-bottom:16px;align-items:stretch}
-@media(max-width:1360px){.mergeline{grid-template-columns:1fr}}
-.mergeline .kpis{margin-bottom:0}
+/* ── 实时+预测 KPI 与调控策略建议（一行两栏：KPI 在左，建议在右） ── */
+.mergeline{display:grid;grid-template-columns:minmax(0,1fr) 338px;gap:14px;margin-bottom:16px;align-items:start}
+.mergeline .kpis{grid-template-columns:repeat(4,minmax(0,1fr));margin-bottom:0}
+@media(max-width:1180px){
+  .mergeline{grid-template-columns:1fr}
+  .mergeline .kpis{grid-template-columns:repeat(auto-fit,minmax(158px,1fr))}
+}
+@media(max-width:640px){.mergeline .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .strategy{
   padding:15px 17px 13px;border-radius:var(--r);min-width:0;
   background:linear-gradient(180deg,rgba(251,191,36,.07),transparent 46%),var(--card);
@@ -731,32 +738,31 @@ function render400() {
   const predictInNow = (planDay && shI) ? planDay.inbound * shI : null;
   const devTurn = (predictTurnNow && sumTurn) ? (sumTurn / predictTurnNow - 1) * 100 : null;
   const devIn = (predictInNow && sumIn) ? (sumIn / predictInNow - 1) * 100 : null;
-  /* 偏差文案：<5% 记作持平；高于预测用暖色（压力），低于用绿色 */
+  /* 偏差文案：<5% 记作持平；高于预测属压力（暖色），低于预测属宽松（绿色） */
   const devTxt = d => d == null ? '待采集'
     : (Math.abs(d) < 5 ? '<span style="color:var(--tx3)">与预测持平</span>'
-      : `<span class="${d > 0 ? 'up' : 'dn'}">${d > 0 ? '高于' : '低于'}预测 ${Math.abs(d).toFixed(0)}%</span>`);
+      : `<span class="${d > 0 ? 'warn' : 'ok'}">${d > 0 ? '高于' : '低于'}预测 ${Math.abs(d).toFixed(0)}%</span>`);
 
-  /* —— 预测段（今日 + 未来 7 天） —— */
-  const pdays = (plan && plan.days) || [];
-  const ti = Math.max(0, pdays.findIndex(d => d.date === todayCn()));
-  const next7 = pdays.slice(ti + 1, ti + 8);
-  const gapDays = next7.filter(d => d.gap_hc < 0);
-  const worst = next7.slice().sort((a, b) => (a.gap_hc - b.gap_hc))[0] || {};
-  const needSum = sum(next7, d => d.need_hc_f);
+  /* —— 预测同期负荷：预测进线量 ÷ 同期应接量（与实时负荷同分母，可直接比） —— */
+  const predLoadNow = (predictInNow && cap.cap400) ? predictInNow / cap.cap400 * 100 : null;
 
   $('#k400').innerHTML = [
     { k: '接通率（实时）', v: pc(ss.rate), hl: 1, c: 'c-blue', d: `<span class="${(ss.rate || 0) >= 85 ? 'up' : 'dn'}">${(ss.rate || 0) >= 85 ? '达标' : '低于 85%'}</span> · 技能组口径`, sp: spark(hist, '#60a5fa') },
     { k: '呼入量（实时）', v: n0(sumIn), c: 'c-cyan', d: `${curEnd ? '截至 ' + curEnd : '待采集'} · ${devTxt(devIn)}` },
     { k: '人工量（实时）', v: n0(sumTurn), c: 'c-cyan', d: `${curEnd ? '截至 ' + curEnd : '待采集'} · ${devTxt(devTurn)}` },
     { k: '当前排队', v: n0(ss.queue), c: (ss.queue || 0) > 0 ? 'c-red' : 'c-green', d: (ss.queue || 0) > 0 ? '有排队积压' : '无排队' },
-    { k: '签入坐席', v: n0(ss.signIn), c: 'c-green', d: `空闲 ${n0(ss.idleSeats)} 人 · 技能组通话 ${n0(ss.answered)}` },
-    { k: '出勤', v: `${on}<small>/${duty}</small>`, c: on >= duty ? 'c-green' : 'c-amber', d: on >= duty ? '全员出勤' : `缺 ${duty - on} 人` },
-    { k: '当日负荷（实时）', v: pc(cap.load400, 0), c: (cap.load400 || 0) >= 110 ? 'c-red' : (cap.load400 || 0) < 90 ? 'c-blue' : 'c-green', d: `进线 ${n0(cap.in400)} / 应接 ${n0(cap.cap400)}` },
-    { k: '周负荷', v: pc(cw.load400, 0), c: 'c-purple', d: `本周 ${n0(cw.wDays)} 天 · 周接通率 ${n0(rateWk)}%` },
-    { k: '今日所需人力（预测）', v: planDay ? `${n0(planDay.need_hc)}<small>人</small>` : '–', c: 'c-amber', d: planDay ? `在岗 ${n0(planDay.onshift_hc)} 人 · <span class="${planDay.gap_hc < 0 ? 'dn' : 'up'}">${planDay.gap_hc < 0 ? '缺 ' + Math.abs(planDay.gap_hc) + ' 人' : '富余 ' + planDay.gap_hc + ' 人'}</span>` : '–' },
-    { k: '今日负荷（预测）', v: planDay ? pc(planDay.ratio, 0) : '–', c: planDay ? (planDay.ratio >= 110 ? 'c-red' : planDay.ratio < 90 ? 'c-blue' : 'c-green') : 'c-blue', d: plan ? `目标接通率 85% · 产能 ${n1(plan.cap_per_hour)} 通/人时` : '–' },
-    { k: '未来 7 天需求', v: `${n0(needSum)}<small>人日</small>`, c: 'c-purple', d: `缺口日 ${gapDays.length} 天` },
-    { k: '未来 7 天最大缺口', v: worst.date ? `${Math.abs(worst.gap_hc)}<small>人</small>` : '–', c: (worst.gap_hc < 0 ? 'c-red' : 'c-green'), d: worst.date ? `${worst.date.slice(5)} ${worst.wd}（负荷 ${n0(worst.ratio)}%）` : '–' }
+    {
+      k: '在岗人力（出勤 / 需求）', v: `${on}<small>/${duty}</small>`, c: on >= duty ? 'c-green' : 'c-amber',
+      d: planDay
+        ? `签入 ${n0(ss.signIn)} 人 · 预测需 ${n0(planDay.need_hc)} 人 · <span class="${planDay.gap_hc < 0 ? 'warn' : 'ok'}">${planDay.gap_hc < 0 ? '缺 ' + Math.abs(planDay.gap_hc) + ' 人' : '富余 ' + planDay.gap_hc + ' 人'}</span>`
+        : `签入 ${n0(ss.signIn)} 人 · 今日排班未生成`
+    },
+    {
+      k: '运能负荷（实时）', v: pc(cap.load400, 0),
+      c: (cap.load400 || 0) >= 110 ? 'c-red' : (cap.load400 || 0) < 90 ? 'c-blue' : 'c-green',
+      d: `进线 ${n0(cap.in400)} / 应接 ${n0(cap.cap400)}` + (predLoadNow != null ? ` · 预测同期 ${pc(predLoadNow, 0)}` : '')
+    },
+    { k: '周负荷', v: pc(cw.load400, 0), c: 'c-purple', d: `本周 ${n0(cw.wDays)} 天 · 周接通率 ${n0(rateWk)}%` }
   ].map(x => `<div class="kpi ${x.c}"><div class="kl">${x.k}</div><div class="kv ${x.hl ? 'hl' : ''}">${x.v}</div><div class="kd">${x.d}</div>${x.sp || ''}</div>`).join('');
 
   /* —— 今日调控策略建议 —— */
@@ -1133,24 +1139,17 @@ function renderOnline() {
   const sumT = sum(slots, s => s.total);
   const histNow = onlHistToNow(c, labels);
 
-  /* —— 预测（技能组口径，日维度）—— */
+  /* —— 预测（技能组口径，日维度；供策略建议 / 切片共用）—— */
   const fcAll = onlineForecastPlain() || [];
-  const mxDay = fcAll.slice().sort((x, y) => y.v - x.v)[0] || {};
-  const wkNeed = sum(fcAll, f => f.need);
-  const lastReal = ((D.tr && D.tr.days) || []).map(d => (D.tr.online || {})[d]).filter(v => v != null).pop();
 
   $('#kOnline').innerHTML = [
     { k: '今日会话（实时）', v: n0(a.sessions), c: 'c-green', hl: 1, d: `已完成 ${n0(a.done)} · 分配率 ${a.sessions ? pc(a.assigned / a.sessions * 100, 0) : '–'}`, sp: spark(hist, '#34d399') },
     { k: '分时段接待（实时）', v: n0(sumT), c: 'c-cyan', d: `${slots.length ? '已出 ' + slots.length + ' 段' : '待采集'} · ${devHtml(sumT, histNow, '近 7 日同期')}` },
     { k: '当前排队', v: n0(a.queue), c: (a.queue || 0) > 0 ? 'c-red' : 'c-green', d: `进行中 ${n0(a.current)} 席 · ${(a.queue || 0) > 0 ? '有积压' : '无排队'}` },
-    { k: '在线坐席', v: n0(seats), c: 'c-purple', d: `出勤 ${on}/${duty} · 400 另签入 ${n0(signIn400)} 人` },
+    { k: '在线坐席（出勤 / 排班）', v: `${on}<small>/${duty}</small>`, c: on >= duty ? 'c-green' : 'c-amber', d: `在席 ${n0(seats)} 人 · 400 另签入 ${n0(signIn400)} 人` },
     { k: '满意度', v: pc(a.sat, 0), c: (a.sat != null && a.sat >= 95) ? 'c-green' : 'c-amber', d: '各技能组均值（剔除无数据组）' },
-    { k: '当日负荷（实时）', v: pc(cap.loadOn, 0), c: (cap.loadOn || 0) >= 110 ? 'c-red' : (cap.loadOn || 0) < 90 ? 'c-blue' : 'c-green', d: `接待 ${n0(cap.inOn)} / 应接 ${n0(cap.capOn)}` },
     { k: '接起率（实时）', v: pc(avgN(arrR), 1), c: (avgN(arrR) != null && avgN(arrR) >= 95) ? 'c-green' : 'c-amber', d: '会话管理口径 · 已出时段均值' },
-    { k: '未来 7 天预估', v: n0(sum(fcAll, f => f.v)), c: 'c-green', d: fcAll.length ? `日均 ${n0(sum(fcAll, f => f.v) / fcAll.length)} 会话` : '样本不足' },
-    { k: '峰值日（预测）', v: mxDay.v != null ? n0(mxDay.v) : '–', c: 'c-amber', d: mxDay.date ? `${mxDay.date.slice(5)} ${mxDay.wd}` : '–' },
-    { k: '7 天所需人日', v: `${n0(wkNeed)}<small>人日</small>`, c: 'c-purple', d: '按 30 会话/人时 · 12h 窗口' },
-    { k: '当前水平', v: n0(lastReal), c: 'c-blue', d: '最近一日实际接待量' }
+    { k: '运能负荷（实时）', v: pc(cap.loadOn, 0), c: (cap.loadOn || 0) >= 110 ? 'c-red' : (cap.loadOn || 0) < 90 ? 'c-blue' : 'c-green', d: `接待 ${n0(cap.inOn)} / 应接 ${n0(cap.capOn)} · 全天产能 ${n0(cap.capOnDay)}` }
   ].map(x => `<div class="kpi ${x.c}"><div class="kl">${x.k}</div><div class="kv ${x.hl ? 'hl' : ''}">${x.v}</div><div class="kd">${x.d}</div>${x.sp || ''}</div>`).join('');
 
   renderStrategyOnline({ slots, labels, arrR, baseR, sumT, histNow, fcAll, a, seats, duty, on });
@@ -1232,7 +1231,7 @@ function devHtml(actual, base, who) {
   if (actual == null || !base) return '<span style="color:var(--tx3)">待采集</span>';
   const d = (actual / base - 1) * 100;
   if (Math.abs(d) < 5) return '<span style="color:var(--tx3)">与' + (who || '预测') + '持平</span>';
-  return `<span class="${d > 0 ? 'up' : 'dn'}">${d > 0 ? '高于' : '低于'}${who || '预测'} ${Math.abs(d).toFixed(0)}%</span>`;
+  return `<span class="${d > 0 ? 'warn' : 'ok'}">${d > 0 ? '高于' : '低于'}${who || '预测'} ${Math.abs(d).toFixed(0)}%</span>`;
 }
 const avgN = a => { const v = (a || []).filter(x => x != null && !isNaN(x)); return v.length ? v.reduce((s, x) => s + x, 0) / v.length : null; };
 
@@ -1354,12 +1353,15 @@ function renderTicket(tk) {
     { k: '工单', v: n0(bt['工单处理']), c: 'c-blue', d: '执行部门 ≠ 客诉客服' },
     { k: '舆情', v: n0(bt['舆情客诉单']), c: 'c-amber', d: '分类舆情客诉单' },
     { k: '待处理', v: n0(st['待处理']), c: 'c-cyan', d: `待分配 ${n0(st['待分配'])} · 处理中 ${n0(st['处理中'])}` },
-    { k: '超时未结（≥24h）', v: n0(overN), c: overN > 0 ? 'c-red' : 'c-green', d: `48h以上 ${n0(over48)} · 96h以上 ${n0(over96)}` },
-    { k: '24h 内待结', v: n0(in24), c: 'c-amber', d: '未到超时线' },
-    { k: '日均新增（预测）', v: fc ? n0(fc.nAvg14) : '–', c: 'c-amber', d: '近 14 天投诉池均值' },
-    { k: '日均处理（预测）', v: fc ? n0(fc.dAvg) : '–', c: 'c-green', d: '近 7 天结案能力' },
-    { k: '当前积压（预测）', v: fc ? n0(fc.stockNow) : '–', c: 'c-purple', d: '最近一日期末遗留' },
-    { k: '7 天后预估积压', v: fc ? (endStk === 0 ? '清零' : n0(endStk)) : '–', c: trendUp ? 'c-red' : 'c-green', d: fc ? `<span class="${trendUp ? 'up' : 'dn'}">${endStk === 0 ? '按当前节奏可清空' : trendUp ? '积压 +' + Math.abs(diff) : '消化 −' + Math.abs(diff)}</span>` : '–' }
+    { k: '超时未结（≥24h）', v: n0(overN), c: overN > 0 ? 'c-red' : 'c-green', d: `48h 以上 ${n0(over48)} · 96h 以上 ${n0(over96)} · 24h 内 ${n0(in24)}` },
+    {
+      k: '日均新增 / 处理（预测）', v: fc ? n0(fc.nAvg14) : '–', c: 'c-amber',
+      d: fc ? `处理 ${n0(fc.dAvg)} · 净变化 ${n1(fc.nAvg14 - fc.dAvg)} 单/天` : '历史样本不足'
+    },
+    {
+      k: '积压（当前 → 7 天后）', v: fc ? n0(fc.stockNow) : '–', c: trendUp ? 'c-red' : 'c-green',
+      d: fc ? `7 天后 ${endStk === 0 ? '清零' : n0(endStk)} · <span class="${trendUp ? 'warn' : 'ok'}">${endStk === 0 ? '按当前节奏可清空' : trendUp ? '积压 +' + Math.abs(diff) : '消化 −' + Math.abs(diff)}</span>` : '历史样本不足'
+    }
   ].map(x => `<div class="kpi ${x.c}"><div class="kl">${x.k}</div><div class="kv ${x.hl ? 'hl' : ''}">${x.v}</div><div class="kd">${x.d}</div></div>`).join('');
 
   /* 状态 × 池 矩阵 */
