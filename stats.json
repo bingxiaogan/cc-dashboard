@@ -1,16 +1,16 @@
 {
- "ts": 1790169716450,
- "collectedAtCn": "2026/9/23 21:21:56",
+ "ts": 1790169829463,
+ "collectedAtCn": "2026/9/23 21:23:49",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "3",
   "坐席忙碌数": "0 (0)",
-  "接通率": "19.45%",
+  "接通率": "19.44%",
   "满意率": "100.00%",
-  "呼入总数": "15123",
-  "当前呼入数": "2",
+  "呼入总数": "15134",
+  "当前呼入数": "1",
   "外呼总数": "6581",
-  "当前外呼数": "1",
+  "当前外呼数": "0",
   "呼入平均通话时长": "00:02:38",
   "AI通话数": "0 (3)"
  },
@@ -496,8 +496,8 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 1918,
-   "ivr": 841,
+   "callIn": 1921,
+   "ivr": 844,
    "ringMissed": 5,
    "queueAbandon": 200,
    "answered": 872,
@@ -726,8 +726,8 @@
   },
   {
    "service": "88236602(其他渠道4000166088)",
-   "callIn": 645,
-   "ivr": 342,
+   "callIn": 647,
+   "ivr": 344,
    "ringMissed": 5,
    "queueAbandon": 55,
    "answered": 251,
@@ -736,8 +736,8 @@
   },
   {
    "service": "81198(上门按键转接)",
-   "callIn": 759,
-   "ivr": 453,
+   "callIn": 762,
+   "ivr": 456,
    "ringMissed": 2,
    "queueAbandon": 55,
    "answered": 276,
@@ -1144,8 +1144,8 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 1918,
-    "ivr": 841,
+    "callIn": 1921,
+    "ivr": 844,
     "ringMissed": 5,
     "queueAbandon": 200,
     "answered": 872,
@@ -1163,10 +1163,10 @@
     "transferred": 0
    }
   ],
-  "total": 1955,
+  "total": 1958,
   "answered": 892,
-  "ivr": 854,
-  "connectRate": 89.31
+  "ivr": 857,
+  "connectRate": 89.33
  },
  "online": {
   "groups": [
@@ -1242,14 +1242,14 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1293,
-    "assigned": 1241,
-    "current": 96,
+    "sessions": 1296,
+    "assigned": 1244,
+    "current": 99,
     "max": 120,
-    "queue": 7,
+    "queue": 5,
     "onlineSeats": "4(刘梓爱,陈可,李宜慢,丁萌萌)",
     "done": 1098,
-    "answerRate": 95.98,
+    "answerRate": 95.99,
     "abandon": 52,
     "voicemail": 0,
     "satisfactionRate": 0
@@ -1314,11 +1314,11 @@
     "name": "官网严选自营售前咨询",
     "sessions": 382,
     "assigned": 371,
-    "current": 36,
+    "current": 34,
     "max": 120,
     "queue": 0,
     "onlineSeats": "4(刘梓爱,陈可,李宜慢,丁萌萌)",
-    "done": 324,
+    "done": 326,
     "answerRate": 97.12,
     "abandon": 11,
     "voicemail": 0,
@@ -1547,15 +1547,6 @@
   "rate400": 79.3
  },
  "history": [
-  {
-   "ts": 1790077919952,
-   "skillRate400": 78.61,
-   "skillQueue400": 2,
-   "callIn400": 1047,
-   "signIn400": 9,
-   "onlineSessions": 700,
-   "onlineSeat": 3
-  },
   {
    "ts": 1790078053326,
    "skillRate400": 78.86,
@@ -6040,6 +6031,15 @@
   },
   {
    "ts": 1790169716450,
+   "skillRate400": 78.04,
+   "skillQueue400": 0,
+   "callIn400": 1193,
+   "signIn400": 3,
+   "onlineSessions": 797,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1790169829463,
    "skillRate400": 78.04,
    "skillQueue400": 0,
    "callIn400": 1193,
