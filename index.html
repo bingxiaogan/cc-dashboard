@@ -889,7 +889,7 @@ function render400() {
     },
     {
       k: '当前排队', v: n0(ss.queue), c: (ss.queue || 0) > 0 ? 'c-red' : 'c-green',
-      d: `${(ss.queue || 0) > 0 ? '<span class="warn">有排队积压</span>' : '<span class="ok">无排队</span>'} · 空闲坐席 ${n0(ss.idleSeats)} 人 · 技能组实时汇总`
+      d: `${(ss.queue || 0) > 0 ? '<span class="warn">有排队积压</span>' : '<span class="ok">无排队</span>'} · 技能组实时汇总`
     },
     {
       k: '运能负荷（实时）', v: pc(cap.load400, 0),
