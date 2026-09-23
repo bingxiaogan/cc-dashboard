@@ -739,6 +739,8 @@ function render400fc(plan) {
     $('#daySlicer').innerHTML = ''; $('#dayDetail').innerHTML = ''; return;
   }
   const days = plan.days, today = todayCn();
+  // 先定好选中日，表格才能一次画对高亮行（renderDaySlicer 里同样的兜底是幂等的）
+  if (!PICK_DAY || !days.some(d => d.date === PICK_DAY)) PICK_DAY = days.some(d => d.date === today) ? today : days[0].date;
   const ti = Math.max(0, days.findIndex(d => d.date === today));
   const t = days[ti], next7 = days.slice(ti + 1, ti + 8);
   const gapDays = next7.filter(d => d.gap_hc < 0);
