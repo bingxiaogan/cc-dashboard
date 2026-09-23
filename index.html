@@ -230,12 +230,23 @@ h1 em{font-style:normal;font-size:12px;font-weight:500;color:var(--tx3);letter-s
 .dchip.on b,.dchip.on span{color:var(--tx)}
 .dchip.gap i{color:var(--red)}
 
-/* ── 日历选择器（逐日切片 · 自然月视图，周日起首） ── */
-.dcal{flex:1 1 100%;display:flex;gap:14px;flex-wrap:wrap;align-items:flex-start}
-.cal{flex:0 0 auto;background:var(--card2);border:1px solid var(--lin2);border-radius:12px;padding:10px 11px 11px}
-.calh{font-size:12px;font-weight:650;color:var(--tx2);margin-bottom:8px;letter-spacing:.03em;display:flex;align-items:center;gap:7px}
-.calh em{font-style:normal;font-size:10.5px;font-weight:400;color:var(--tx3)}
-.calg{display:grid;grid-template-columns:repeat(7,38px);gap:3px}
+/* ── 日历选择器（逐日切片 · 自然月视图，周日起首 · 按月折叠） ── */
+.dcal{flex:1 1 100%;display:flex;gap:12px;flex-wrap:wrap;align-items:flex-start}
+.cal-m{flex:1 1 330px;max-width:392px;background:var(--card2);border:1px solid var(--lin2);
+  border-radius:12px;overflow:hidden;transition:border-color .15s}
+.cal-m[open]{border-color:rgba(var(--accs),.3)}
+.cal-m>summary{display:flex;align-items:center;gap:9px;cursor:pointer;list-style:none;
+  padding:10px 13px;font-size:12.5px;font-weight:650;color:var(--tx2);transition:background .15s}
+.cal-m>summary::-webkit-details-marker{display:none}
+.cal-m>summary:hover{background:rgba(126,166,226,.1)}
+.cal-m>summary .ft{color:var(--tx);letter-spacing:.03em}
+.cal-m>summary .fh{font-weight:400;font-size:11px;color:var(--tx3);flex:1}
+.cal-m>summary .fchev{width:8px;height:8px;border-right:1.8px solid var(--tx3);border-bottom:1.8px solid var(--tx3);
+  transform:rotate(45deg);margin:-3px 3px 0 2px;transition:transform .18s;flex:none}
+.cal-m[open]>summary .fchev{transform:rotate(-135deg);margin-top:3px}
+.cal-m[open]>summary{border-bottom:1px solid var(--lin2)}
+.calwrap{padding:9px 12px 12px}
+.calg{display:grid;grid-template-columns:repeat(7,42px);gap:3px;justify-content:center}
 .calw span{font-size:10px;color:var(--tx3);text-align:center;line-height:17px}
 .calw span:first-child,.calw span:last-child{color:var(--tx2);opacity:.75}
 .cald{position:relative;height:44px;border-radius:8px;border:1px solid transparent;
@@ -330,6 +341,9 @@ h1 em{font-style:normal;font-size:12px;font-weight:500;color:var(--tx3);letter-s
 .fold[open]>summary .fchev{transform:rotate(-135deg);margin-top:3px}
 .fold[open]>summary{background:rgba(var(--accs),.11)}
 .fold .fbody{padding-top:2px}
+/* panel 内的折叠（未来计划表）：去掉顶部那条分隔线 */
+.fold-p{margin-top:0;border-top:none;padding-top:0}
+.fold-p>.fbody{padding-top:11px}
 .tbl tbody tr[data-day]{cursor:pointer}
 .tbl tr.pick td{background:rgba(var(--accs),.10)}
 .tbl tr.pick td:first-child{box-shadow:inset 2px 0 0 var(--acc)}
@@ -449,16 +463,21 @@ svg{display:block;width:100%;overflow:visible}
       <div class="dstats" id="dayDetail"></div>
       <div class="panels">
         <div class="panel wide">
-          <div class="phead">
-            <h3>未来计划 · 每日进线量与所需人力</h3>
-            <div class="lgd">
-              <span><em style="background:var(--blue)"></em>进线量</span>
-              <span><em style="background:var(--amber)"></em>所需人力</span>
-              <span><em style="background:var(--green)"></em>在岗人力</span>
+          <details class="fold fold-p">
+            <summary>
+              <span class="ft">未来计划 · 每日进线量与所需人力</span>
+              <span class="fh" id="note400fc"></span>
+              <span class="fchev"></span>
+            </summary>
+            <div class="fbody">
+              <div class="lgd" style="margin-bottom:9px">
+                <span><em style="background:var(--blue)"></em>进线量</span>
+                <span><em style="background:var(--amber)"></em>所需人力</span>
+                <span><em style="background:var(--green)"></em>在岗人力</span>
+              </div>
+              <div class="tblwrap"><table class="tbl" id="fc400t"></table></div>
             </div>
-            <span class="hint" id="note400fc"></span>
-          </div>
-          <div class="tblwrap"><table class="tbl" id="fc400t"></table></div>
+          </details>
         </div>
       </div>
     </div>
@@ -899,12 +918,12 @@ function render400() {
 
 /* ── 400 时段工具 ── */
 const pad2 = n => String(n).padStart(2, '0');
-/* ── 日历选择器：按自然月渲染（周日起首），只渲染给定 days 里的日子，其余置灰 ──
+/* ── 日历选择器：按自然月渲染（周日起首），每月一个可折叠块 ──
    days  [{date, ...}]     数据源（决定哪些天可选、以及格子小字的来源）
    pick  当前选中 ISO 日期   today 今天 ISO
    mk(d) 可选，返回格子里的小字 HTML（缺口 / 建议人数等）
    extra 可选，月份标题右侧的补充说明
-   —— 与「自然周（周日~周六）」口径一致，周日排每行第一格 */
+   —— 含选中日期的月份默认展开，其余收起；周日起首与「自然周」口径一致 */
 const CAL_WD = ['日', '一', '二', '三', '四', '五', '六'];
 function calHtml(days, pick, today, mk, extra) {
   if (!days || !days.length) return '';
@@ -912,23 +931,32 @@ function calHtml(days, pick, today, mk, extra) {
   days.forEach(d => { map[d.date] = d; });
   const ms = [];
   days.forEach(d => { const m = String(d.date).slice(0, 7); if (ms.indexOf(m) < 0) ms.push(m); });
+  const pickM = pick ? String(pick).slice(0, 7) : '';
   return `<div class="dcal">` + ms.sort().map(ym => {
     const y = +ym.slice(0, 4), mo = +ym.slice(5, 7);
     const lead = new Date(y, mo - 1, 1).getDay();          // 周日 = 0
     const dim = new Date(y, mo, 0).getDate();              // 当月天数
     const cells = [];
+    let nDat = 0;
     for (let i = 0; i < lead; i++) cells.push('<div class="cald pad"></div>');
     for (let dd = 1; dd <= dim; dd++) {
       const iso = ym + '-' + pad2(dd), d = map[iso];
       if (!d) { cells.push(`<div class="cald off"><span class="cdn">${dd}</span></div>`); continue; }
+      nDat++;
       const cls = 'cald' + (iso === pick ? ' on' : '') + (iso === today ? ' today' : '') + (d.staff_est ? ' est' : '');
       cells.push(`<div class="${cls}" data-day="${iso}"><span class="cdn">${dd}</span>${mk ? mk(d) : ''}</div>`);
     }
-    return `<div class="cal">
-      <div class="calh">${y} 年 ${mo} 月${extra ? `<em>${extra}</em>` : ''}</div>
-      <div class="calg calw">${CAL_WD.map(w => `<span>${w}</span>`).join('')}</div>
-      <div class="calg">${cells.join('')}</div>
-    </div>`;
+    return `<details class="cal-m"${ym === pickM ? ' open' : ''}>
+      <summary>
+        <span class="ft">${y} 年 ${mo} 月</span>
+        <span class="fh">${nDat} 天可选${extra ? ` · ${extra}` : ''}</span>
+        <span class="fchev"></span>
+      </summary>
+      <div class="calwrap">
+        <div class="calg calw">${CAL_WD.map(w => `<span>${w}</span>`).join('')}</div>
+        <div class="calg">${cells.join('')}</div>
+      </div>
+    </details>`;
   }).join('') + `</div>`;
 }
 /* 统一用 400_shape 的 26 个半小时槽（08:00~21:00），拿不到就本地兜底同构 */
