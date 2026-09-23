@@ -565,6 +565,7 @@ function drawLine(box, { labels, series, h = 168, yFmt = n0, tipFmt }) {
     svg.appendChild(el('line', { x1: pl, x2: W - pr, y1: y, y2: y, stroke: 'rgba(126,166,226,.12)', 'stroke-dasharray': g === 4 ? '0' : '3 4' }));
     svg.appendChild(Object.assign(el('text', { x: pl - 7, y: y + 3.5, fill: '#5c7093', 'font-size': 10.5, 'text-anchor': 'end' }), { textContent: yFmt(mn + span * (1 - g / 4)) }));
   }
+  const ends = [];
   series.forEach(s => {
     let d = '', ar = '', started = false, firstX = 0, lastX = 0;
     s.data.forEach((v, i) => {
@@ -578,9 +579,18 @@ function drawLine(box, { labels, series, h = 168, yFmt = n0, tipFmt }) {
     const li = s.data.length - 1;
     for (let i = li; i >= 0; i--) if (s.data[i] != null) {
       svg.appendChild(el('circle', { cx: X(i), cy: Y(s.data[i]), r: 3.4, fill: s.color, stroke: '#0e1729', 'stroke-width': 1.6 }));
-      if (s.label != null && i === li) svg.appendChild(el('text', { x: X(i), y: Y(s.data[i]) - 8, fill: s.color, 'font-size': 11, 'font-weight': 600, 'text-anchor': 'end' }, s.label));
+      if (s.label != null && i === li) ends.push({ x: X(i), y: Y(s.data[i]) - 8, text: s.label, color: s.color });
       break;
     }
+  });
+  /* 末端数值标签：同一横向邻域内挨太近就依次下移，避免两条线收敛时叠字 */
+  ends.sort((a, b) => a.y - b.y);
+  const placed = [];
+  ends.forEach(e => {
+    let y = e.y;
+    while (placed.some(p => Math.abs(p.x - e.x) < 70 && Math.abs(p.y - y) < 12)) y += 13;
+    placed.push({ x: e.x, y });
+    svg.appendChild(el('text', { x: e.x, y, fill: e.color, 'font-size': 11, 'font-weight': 600, 'text-anchor': 'end' }, e.text));
   });
   const step = Math.ceil(labels.length / 9);
   labelIdx(labels.length, step).forEach(i =>
