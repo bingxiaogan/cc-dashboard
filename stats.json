@@ -1,16 +1,16 @@
 {
- "ts": 1790256823483,
- "collectedAtCn": "2026/9/24 21:33:43",
+ "ts": 1790256952730,
+ "collectedAtCn": "2026/9/24 21:35:52",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "1",
   "坐席忙碌数": "0 (0)",
-  "接通率": "19.44%",
+  "接通率": "19.43%",
   "满意率": "100.00%",
-  "呼入总数": "15595",
+  "呼入总数": "15603",
   "当前呼入数": "2",
   "外呼总数": "5592",
-  "当前外呼数": "9",
+  "当前外呼数": "0",
   "呼入平均通话时长": "00:02:38",
   "AI通话数": "0 (3)"
  },
@@ -240,8 +240,8 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 1664,
-   "ivr": 771,
+   "callIn": 1665,
+   "ivr": 772,
    "ringMissed": 4,
    "queueAbandon": 143,
    "answered": 746,
@@ -440,8 +440,8 @@
   },
   {
    "service": "81199(门店按键转接)",
-   "callIn": 562,
-   "ivr": 390,
+   "callIn": 563,
+   "ivr": 391,
    "ringMissed": 2,
    "queueAbandon": 36,
    "answered": 135,
@@ -470,8 +470,8 @@
   },
   {
    "service": "88236602(其他渠道4000166088)",
-   "callIn": 832,
-   "ivr": 337,
+   "callIn": 833,
+   "ivr": 338,
    "ringMissed": 8,
    "queueAbandon": 59,
    "answered": 439,
@@ -480,8 +480,8 @@
   },
   {
    "service": "81198(上门按键转接)",
-   "callIn": 831,
-   "ivr": 500,
+   "callIn": 833,
+   "ivr": 502,
    "ringMissed": 11,
    "queueAbandon": 73,
    "answered": 276,
@@ -610,8 +610,8 @@
   },
   {
    "service": "80409(奢侈品商家-门店验货报价)",
-   "callIn": 1057,
-   "ivr": 1057,
+   "callIn": 1058,
+   "ivr": 1058,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -886,8 +886,8 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 1664,
-    "ivr": 771,
+    "callIn": 1665,
+    "ivr": 772,
     "ringMissed": 4,
     "queueAbandon": 143,
     "answered": 746,
@@ -905,9 +905,9 @@
     "transferred": 0
    }
   ],
-  "total": 1700,
+  "total": 1701,
   "answered": 766,
-  "ivr": 783,
+  "ivr": 784,
   "connectRate": 91.12
  },
  "online": {
@@ -944,11 +944,11 @@
     "name": "官网严选寄卖售后咨询",
     "sessions": 246,
     "assigned": 231,
-    "current": 21,
+    "current": 20,
     "max": 90,
     "queue": 3,
     "onlineSeats": "3(刘梓爱,李宜慢,陈可)",
-    "done": 210,
+    "done": 211,
     "answerRate": 93.9,
     "abandon": 15,
     "voicemail": 0,
@@ -972,11 +972,11 @@
     "name": "官网严选自营售后咨询",
     "sessions": 1354,
     "assigned": 1302,
-    "current": 100,
+    "current": 96,
     "max": 90,
-    "queue": 13,
+    "queue": 21,
     "onlineSeats": "3(刘梓爱,李宜慢,陈可)",
-    "done": 1165,
+    "done": 1169,
     "answerRate": 96.16,
     "abandon": 52,
     "voicemail": 0,
@@ -1302,15 +1302,6 @@
   "rate400": 79.5
  },
  "history": [
-  {
-   "ts": 1790159025178,
-   "skillRate400": 81.04,
-   "skillQueue400": 0,
-   "callIn400": 981,
-   "signIn400": 10,
-   "onlineSessions": 580,
-   "onlineSeat": 2
-  },
   {
    "ts": 1790159132439,
    "skillRate400": 81.03,
@@ -5795,6 +5786,15 @@
   },
   {
    "ts": 1790256823483,
+   "skillRate400": 51.28,
+   "skillQueue400": 0,
+   "callIn400": 39,
+   "signIn400": 1,
+   "onlineSessions": 791,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1790256952730,
    "skillRate400": 51.28,
    "skillQueue400": 0,
    "callIn400": 39,
