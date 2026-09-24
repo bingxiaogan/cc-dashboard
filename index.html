@@ -324,14 +324,19 @@ h1 em{font-style:normal;font-size:12px;font-weight:500;color:var(--tx3);letter-s
 .kpis.row .kpi.lead .kv small{font-size:17px}
 .kpis.row .kpi:not(.lead) .kv{font-size:26px}
 #kOnline{grid-template-columns:minmax(214px,1.34fr) repeat(3,minmax(0,1fr))}
-#kTicket{grid-template-columns:minmax(198px,1.26fr) repeat(4,minmax(0,1fr))}
+/* #kTicket（工单处置 KPI 小方块）已于 2026-09-24 删除，相关栅格规则一并移除 */
 @media(max-width:1240px){
-  #kOnline,#kTicket{grid-template-columns:repeat(2,minmax(0,1fr))}
+  #kOnline{grid-template-columns:repeat(2,minmax(0,1fr))}
   .kpis.row .kpi.lead{grid-column:auto;grid-row:auto}
 }
 @media(max-width:520px){
-  #kOnline,#kTicket{grid-template-columns:1fr}
+  #kOnline{grid-template-columns:1fr}
 }
+/* 工单总量级下的文字版概况（原处置 KPI 方块改写而来） */
+.tkbrief{display:flex;flex-wrap:wrap;gap:6px 18px;margin-top:10px;font-size:11.5px;line-height:1.7;color:var(--tx3)}
+.tkbrief .bi{white-space:nowrap}
+.tkbrief b{font-weight:640;color:var(--tx2);font-variant-numeric:tabular-nums}
+.tkbrief .sep{color:var(--line2,var(--tx3));margin:0 2px;opacity:.6}
 .strategy{
   display:flex;flex-direction:column;
   padding:12px 15px 11px;border-radius:var(--r);min-width:0;
@@ -772,10 +777,12 @@ svg{display:block;width:100%;overflow:visible}
         </aside>
       </div>
 
-      <!-- 工单总量级（2026-09-24：板块最上面，客诉 / 纠纷 / 申诉 / 舆情 四类并列） -->
+      <!-- 工单总量级（2026-09-24：板块最上面，客诉 / 纠纷 / 申诉 / 舆情 四类并列）
+           下面这行文字版概况 = 原「处置 KPI」小方块删掉后保留下来的有用信息（2026-09-24 用户要求）。 -->
       <div class="zone">
         <div class="zonetag"><i></i>工单总量级 <span>客诉 / 纠纷 / 申诉 / 舆情 四类并列 · 纠纷 = 投诉 − 客诉 · 快照随工单系统刷新（2 小时）</span></div>
         <div class="tktypes" id="tkTypeCards"></div>
+        <div class="tkbrief" id="tkBrief"></div>
       </div>
 
       <!-- 升级时长分布（2026-09-24 用户要求：从「目前库存」移到「工单总量级」下方，
@@ -798,11 +805,10 @@ svg{display:block;width:100%;overflow:visible}
         </div>
       </div>
 
-      <!-- 处置 KPI（2026-09-24：删掉「现场 / 爱回收工单系统 2 小时 · 预测每日 21:50 标定」这一行；
-           原「状态 × 类型」板块亦按用户要求删除） -->
-      <div class="zone">
-        <div class="kpis row" id="kTicket"></div>
-      </div>
+      <!-- 处置 KPI 小方块（超时未结 / 待处理 / 待分配 / 积压 / 日均）**已删除**：
+           2026-09-24 用户「工单里面这几个展示小方块也删掉」+「有用的信息作为文案放到合适位置」
+           ⇒ 有用的口径（超时未结、待处理/待分配、7 天后积压、日均新增·处理）已改写成
+             「工单总量级」卡片下面那一行文字（#tkBrief）。这里不再有任何板块。 -->
 
       <!-- 场景明细（原「类型大类 / 完整场景」拆成左右两块，切片器放在本区右上角）
            2026-09-24 用户要求：① 删掉「状态 × 类型」；② 升级时长分布上移到「工单总量级」下方；
@@ -2481,20 +2487,15 @@ function renderTicket(tk) {
   const over96 = overCnt('96h以上', tbAll), over48 = overCnt('48h以上', tbAll);
   const unassigned = st['待分配'] || 0;
 
-  /* ③ 现场 KPI —— 总量级与四类已上移到板块顶部，这里只放处置口径 */
-  $('#kTicket').innerHTML = [
-    { k: '超时未结（≥24h）', v: n0(overN), lead: 1, c: overN > 0 ? 'c-red' : 'c-green', d: `48h 以上 ${n0(over48)} · 96h 以上 ${n0(over96)} · 24h 内 ${n0(in24)}` },
-    { k: '待处理', v: n0(st['待处理']), c: 'c-cyan', d: `待分配 ${n0(unassigned)} · 处理中 ${n0(st['处理中'])}` },
-    { k: '待分配', v: n0(unassigned), c: unassigned > 60 ? 'c-amber' : '', d: '尚未落到处理人 · 排在分配环节会先耗时长' },
-    {
-      k: '积压（当前 → 7 天后）', v: fc ? n0(fc.stockNow) : '–', c: trendUp ? 'c-red' : 'c-green',
-      d: fc ? `7 天后 ${endStk === 0 ? '清零' : n0(endStk)} · <span class="${trendUp ? 'warn' : 'ok'}">${endStk === 0 ? '按当前节奏可清空' : trendUp ? '积压 +' + Math.abs(diff) : '消化 −' + Math.abs(diff)}</span>` : '历史样本不足'
-    },
-    {
-      k: '日均新增 / 处理（预测）', v: fc ? n0(fc.nAvg14) : '–', c: 'c-amber',
-      d: fc ? `处理 ${n0(fc.dAvg)} · 净变化 ${n1(fc.nAvg14 - fc.dAvg)} 单/天` : '历史样本不足'
-    }
-  ].map(x => `<div class="kpi ${x.c}${x.lead ? ' lead' : ''}"><div class="kl">${x.k}</div><div class="kv ${x.hl ? 'hl' : ''}">${x.v}</div><div class="kd">${x.d}</div></div>`).join('');
+  /* ③ 概况文字（原「处置 KPI」小方块，2026-09-24 用户要求删掉方块、把有用的信息改成文字）
+     放在「工单总量级」四张卡片下面一行 —— 只陈述口径，不带建议（建议在处置策略建议里）。 */
+  const brief = [];
+  brief.push(`超时未结（≥24h） <b>${n0(overN)}</b> 单<span class="sep">·</span>其中 48h 以上 <b>${n0(over48)}</b>、96h 以上 <b>${n0(over96)}</b>`);
+  brief.push(`待处理 <b>${n0(st['待处理'])}</b>、待分配 <b>${n0(unassigned)}</b>、处理中 <b>${n0(st['处理中'])}</b>`);
+  if (fc) brief.push(`积压 <b>${n0(fc.stockNow)}</b> 单 → 7 天后 <b>${endStk === 0 ? '清零' : n0(endStk)}</b> 单（<span class="${trendUp ? 'warn' : 'ok'}">${endStk === 0 ? '按当前节奏可清空' : trendUp ? '积压 +' + Math.abs(diff) : '消化 −' + Math.abs(diff)}</span>）`);
+  if (fc) brief.push(`日均新增 <b>${n0(fc.nAvg14)}</b> / 处理 <b>${n0(fc.dAvg)}</b> 单<span class="sep">·</span>净变化 <b>${n1(fc.nAvg14 - fc.dAvg)}</b> 单/天`);
+  brief.push(`升级 24h 内 <b>${n0(in24)}</b> 单`);
+  if ($('#tkBrief')) $('#tkBrief').innerHTML = brief.map(x => `<span class="bi">${x}</span>`).join('');
 
   /* ④ 状态 × 类型 矩阵已删除（2026-09-24 用户：「目前库存里面的状态类型也删掉」） */
 
