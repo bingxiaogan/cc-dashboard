@@ -478,6 +478,28 @@ svg{display:block;width:100%;overflow:visible}
 }
 .chip2 .ct{font-weight:640;color:var(--red);font-size:14px;font-variant-numeric:tabular-nums}
 .chip2.z{background:rgba(126,166,226,.045);border-color:var(--line)}
+
+/* ── 工单四类切片器 + 总量级 / 部门量级（2026-09-24 用户要求）── */
+.tkchips{display:flex;gap:5px;flex-wrap:wrap}
+.tkchip{
+  padding:3px 10px;border-radius:999px;border:1px solid var(--line);background:transparent;
+  color:var(--tx3);font-size:11.5px;font-family:inherit;line-height:1.6;cursor:pointer;transition:.14s;
+}
+.tkchip:hover{color:var(--tx);border-color:rgba(var(--accs),.44)}
+.tkchip.on{background:rgba(var(--accs),.16);border-color:rgba(var(--accs),.52);color:var(--tx);font-weight:600}
+.tktypes{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}
+.tkt{border:1px solid var(--line);border-radius:10px;padding:9px 11px 10px;background:var(--card);min-width:0}
+.tkt.t-all{border-color:rgba(var(--accs),.4);background:linear-gradient(135deg,rgba(var(--accs),.1),transparent 62%),var(--card)}
+.tkt .tl{font-size:11.5px;color:var(--tx3);display:flex;align-items:center;gap:5px}
+.tkt .tl i{width:8px;height:8px;border-radius:2px;display:block;font-style:normal}
+.tkt .tn{font-size:27px;font-weight:680;letter-spacing:-.02em;line-height:1.16;font-variant-numeric:tabular-nums}
+.tkt .tn small{font-size:11.5px;font-weight:500;color:var(--tx3);margin-left:4px}
+.tkt .tp{font-size:11px;color:var(--tx3);margin-top:3px}
+.tkt .ts{display:flex;gap:9px;flex-wrap:wrap;font-size:11px;color:var(--tx3);margin-top:6px}
+.tkt .ts b{font-weight:620;font-variant-numeric:tabular-nums}
+@media(max-width:1080px){.tktypes{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:720px){.tktypes{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:460px){.tktypes{grid-template-columns:1fr}}
 .chip2.z .ct{color:var(--tx3)}
 @media(max-width:820px){
   .stk .sr{grid-template-columns:minmax(0,132px) 1fr 46px 84px;gap:8px}
