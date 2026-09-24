@@ -210,15 +210,9 @@ h1 em{font-style:normal;font-size:12px;font-weight:500;color:var(--tx3);letter-s
   border:1px solid var(--line);min-width:0;
 }
 .panel.wide{grid-column:1/-1}
-/* 目前库存区（原工单明细）：左栏 = 状态×类型（上）+ 升级时长（下），右栏 = 类型大类/完整场景（跨两行）。
-   两块各自贴合内容、互不拉伸 —— 这样「升级时长」下方不再拖着一大片空白。 */
-.panels.tkstock{align-items:start}
-.panels.tkstock .p-mx{grid-column:1;grid-row:1}
-.panels.tkstock .p-time{grid-column:1;grid-row:2}
-.panels.tkstock .p-cat{grid-column:2;grid-row:1/span 2}
-@media(max-width:1080px){
-  .panels.tkstock .p-mx,.panels.tkstock .p-time,.panels.tkstock .p-cat{grid-column:auto;grid-row:auto}
-}
+/* 场景明细区（2026-09-24）：类型大类 / 完整场景拆成左右两个等宽小板块，
+   两块各自贴合内容、互不拉伸（.panels 默认 1fr 1fr，≤1080px 自动落单列）。 */
+.panels.tkdetail{align-items:start}
 .phead{display:flex;align-items:center;gap:10px;margin-bottom:9px;flex-wrap:wrap}
 .phead h3{font-size:13.5px;font-weight:600;color:var(--tx);letter-spacing:.02em}
 .phead .hint{font-size:11px;color:var(--tx3);margin-left:auto}
@@ -806,42 +800,23 @@ svg{display:block;width:100%;overflow:visible}
         </div>
       </div>
 
-      <!-- 处置 KPI（2026-09-24 用户要求删掉「现场 / 爱回收工单系统 2 小时 · 预测每日 21:50 标定」这一行；
-           其中的「状态 × 类型」已移入下方「目前库存」区，作为该区第一个板块） -->
+      <!-- 处置 KPI（2026-09-24：删掉「现场 / 爱回收工单系统 2 小时 · 预测每日 21:50 标定」这一行；
+           原「状态 × 类型」板块亦按用户要求删除） -->
       <div class="zone">
         <div class="kpis row" id="kTicket"></div>
       </div>
 
-      <!-- 目前库存（原「工单明细」，2026-09-24 用户改名）：
-           左栏 = 状态 × 类型 + 升级时长分布（上下），右栏 = 类型大类 / 完整场景（跨两行）
-           —— 这样「升级时长」下方不再是一大片空白。各板块独立切片、点时长桶原地下钻。 -->
+      <!-- 场景明细（原「类型大类 / 完整场景」拆成左右两块，切片器放在本区右上角）
+           2026-09-24 用户要求：① 删掉「状态 × 类型」；② 升级时长分布上移到「工单总量级」下方；
+           ③ 原合体的「类型大类 / 完整场景」拆成两个小板块，本区命名为「场景明细」。 -->
       <div class="zone">
-        <div class="zonetag"><i></i>目前库存 <span>状态 × 类型 / 升级时长 / 类型大类 / 完整场景 · 各板块独立切片（默认「投诉」= 客诉 + 纠纷，可手动切其他类）· 点时长桶原地下钻</span></div>
-        <div class="panels tkstock">
-          <!-- 左栏上：状态 × 类型（原在「现场」区，按用户要求移入） -->
-          <div class="panel p-mx">
-            <div class="phead"><h3>状态 × 类型</h3><span class="tkchips" data-chips="matrix"></span><span class="hint" id="noteTicketmx"></span></div>
-            <div class="tblwrap"><table class="tbl" id="tkMatrix"></table></div>
-          </div>
-          <!-- 左栏下：升级时长分布（5 桶一排 · 点桶原地替换成下钻） -->
-          <div class="panel p-time">
+        <div class="zonetag"><i></i>场景明细 <span>类型大类 / 完整场景各自成块 · 切片（默认「投诉」= 客诉 + 纠纷，可手动切其他类）</span>
+          <span class="tkchips" data-chips="cat"></span>
+        </div>
+        <div class="panels tkdetail">
+          <div class="panel">
             <div class="phead">
-              <h3>升级时长分布</h3>
-              <span class="tkchips" data-chips="tb"></span>
-              <div class="lgd2">
-                <span><em class="sg-wait"></em>待分配</span>
-                <span><em class="sg-todo"></em>待处理</span>
-                <span><em class="sg-doing"></em>处理中</span>
-              </div>
-            </div>
-            <div class="tgrid" id="tkTimeBoxes"></div>
-            <div id="tkTimeDrill"></div>
-          </div>
-          <!-- 右栏：类型大类 / 完整场景 -->
-          <div class="panel p-cat">
-            <div class="phead">
-              <h3>类型大类 / 完整场景</h3>
-              <span class="tkchips" data-chips="cat"></span>
+              <h3>类型大类</h3>
               <span class="hint" id="noteTkTop"></span>
             </div>
             <div class="lgd2" style="margin-bottom:8px">
@@ -850,11 +825,21 @@ svg{display:block;width:100%;overflow:visible}
               <span><em class="sg-doing"></em>处理中</span>
             </div>
             <div class="stk" id="tkTopChart"></div>
-            <div class="subhead" style="margin-top:14px">完整场景 TOP 10 <span>按量级降序 · 右侧为 待分配/待处理/处理中</span></div>
+          </div>
+          <div class="panel">
+            <div class="phead">
+              <h3>完整场景 TOP 10</h3>
+              <span class="hint">按量级降序 · 右侧为 待分配/待处理/处理中</span>
+            </div>
+            <div class="lgd2" style="margin-bottom:8px">
+              <span><em class="sg-wait"></em>待分配</span>
+              <span><em class="sg-todo"></em>待处理</span>
+              <span><em class="sg-doing"></em>处理中</span>
+            </div>
             <div class="stk" id="tkLeafList"></div>
           </div>
-          </div>
         </div>
+      </div>
 
       <!-- 日维度区（与 400 / 在线同口径）：单日预估新增/处理/积压明细 + 逐日切片日历 -->
       <div class="zone">
@@ -1536,7 +1521,8 @@ function renderTr400() {
 }
 
 /* ── 不达标解读：接通率没到 85% 时先讲原因分析（排在调控策略上方）
-     2026-09-24 用户定措辞：「可能的原因」→「原因分析」、「最吃紧」→「最未达标」 ── */
+     2026-09-24 用户定措辞：「可能的原因」→「原因分析」、「最吃紧」→「最未达标」
+     → 再改为「接通率最低」（用户口径：不要「未达标」这种考核词，只陈述事实） ── */
 function renderDiag400(o) {
   const box = $('#diag400'); if (!box) return;
   const ss = o.ss || {}, rate = ss.rate, low = o.low || [];
@@ -1550,7 +1536,7 @@ function renderDiag400(o) {
     return;
   }
   const rs = [];
-  if (w) rs.push(`<b>${w.k}</b> 时段最未达标，接通率仅 <b>${w.r.toFixed(0)}%</b>（转人工 ${n0(w.turn)} 通 / 接通 ${n0(w.ans)} 通）`);
+  if (w) rs.push(`<b>${w.k}</b> 时段接通率最低，仅 <b>${w.r.toFixed(0)}%</b>（转人工 ${n0(w.turn)} 通 / 接通 ${n0(w.ans)} 通）`);
   if (o.planDay && o.planDay.gap_hc < 0) rs.push(`在岗 <b>${o.planDay.onshift_hc}</b> 人低于需求 <b>${o.planDay.need_hc}</b> 人，人力 <b>${hcSign(o.planDay.gap_hc)}</b> 人`);
   if (o.cap && o.cap.load400 >= 110) rs.push(`运能负荷 <b>${n0(o.cap.load400)}%</b>，产能已被打满`);
   if (o.devIn != null && o.devIn > 5) rs.push(`呼入量高于预测 <b>${o.devIn.toFixed(0)}%</b>，进线集中`);
@@ -2383,18 +2369,18 @@ function renderOnlineDetail() {
 const TK_TYPES = ['客诉', '纠纷', '申诉', '舆情'];
 const TK_TYPE_COLOR = { 客诉: 'var(--red)', 纠纷: 'var(--amber)', 申诉: 'var(--blue)', 舆情: 'var(--purple)' };
 /* 每个板块各自记住自己的四类选择（用户要求「每个板块都要做这四个问题的切片器」）
-   ⚠️ 2026-09-24 用户要求「不要按当前执行部门分类」→ 第二块切片器由 dept 改为 type，
-   该键只决定「各类型量级」表聚焦哪一类，不再影响任何按部门的聚合。
-   ⚠️ 2026-09-24 二次调整：「工单明细（升级时长 / 类型大类 / 完整场景 / 预警）里不要总和，
-   直接默认是投诉这个切片，可以手动选择其他切片」→ tb / cat / alert 去掉「全部」、默认「投诉」。
+   ⚠️ 2026-09-24 三次调整：
+   ① 「不要按当前执行部门分类」→ 第二块切片器由 dept 改为 type；
+   ② 「工单明细里不要总和，直接默认是投诉这个切片」→ tb / cat 去掉「全部」、默认「投诉」；
+   ③ 「各类型量级直接删掉」「目前库存里的状态类型也删掉」「类型大类 / 完整场景拆开、该区叫场景明细」
+      → type / matrix 两个切片器随板块一起下线，只剩 tb（升级时长分布）与 cat（场景明细）。
    用户口径：**投诉 = 客诉 + 纠纷**（互斥相加，不含申诉 / 舆情）。 */
 const TK_TYPE_GROUPS = { 投诉: ['客诉', '纠纷'] };
 const TK_VIEW_MODE = {
-  type: { withAll: true, def: 'all' }, matrix: { withAll: true, def: 'all' },
   tb: { withAll: false, def: '投诉' }, cat: { withAll: false, def: '投诉' }
 };
-/* 预警板块（#tkAlerts）已于 2026-09-24 应要求删除，故不再有 alert 键 */
-const TK_VIEW = { type: 'all', matrix: 'all', tb: '投诉', cat: '投诉' };
+/* 已下线：type（各类型量级）、matrix（状态 × 类型）、alert（预警场景 · 单量，2026-09-24 删） */
+const TK_VIEW = { tb: '投诉', cat: '投诉' };
 
 function tkAdd(dst, src) { TK_ORDER.forEach(s => { const v = (src || {})[s] || 0; if (v) dst[s] = (dst[s] || 0) + v; }); return dst; }
 function tkAddNested(dst, src) { Object.keys(src || {}).forEach(k => tkAdd(dst[k] = dst[k] || {}, src[k])); return dst; }
