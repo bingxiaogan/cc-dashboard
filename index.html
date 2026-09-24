@@ -321,7 +321,7 @@ h1 em{font-style:normal;font-size:12px;font-weight:500;color:var(--tx3);letter-s
 .kpis.row .kpi.lead .kv small{font-size:17px}
 .kpis.row .kpi:not(.lead) .kv{font-size:26px}
 #kOnline{grid-template-columns:minmax(214px,1.34fr) repeat(3,minmax(0,1fr))}
-#kTicket{grid-template-columns:minmax(198px,1.26fr) repeat(5,minmax(0,1fr))}
+#kTicket{grid-template-columns:minmax(198px,1.26fr) repeat(4,minmax(0,1fr))}
 @media(max-width:1240px){
   #kOnline,#kTicket{grid-template-columns:repeat(2,minmax(0,1fr))}
   .kpis.row .kpi.lead{grid-column:auto;grid-row:auto}
@@ -481,6 +481,7 @@ svg{display:block;width:100%;overflow:visible}
 
 /* ── 工单四类切片器 + 总量级 / 部门量级（2026-09-24 用户要求）── */
 .tkchips{display:flex;gap:5px;flex-wrap:wrap}
+.zonetag .tkchips{margin-left:auto}
 .tkchip{
   padding:3px 10px;border-radius:999px;border:1px solid var(--line);background:transparent;
   color:var(--tx3);font-size:11.5px;font-family:inherit;line-height:1.6;cursor:pointer;transition:.14s;
@@ -759,24 +760,42 @@ svg{display:block;width:100%;overflow:visible}
           <div id="stratTicket"></div>
         </aside>
       </div>
+
+      <!-- 工单总量级 + 各部门量级（2026-09-24 用户要求：板块最上面就展示这两块） -->
+      <div class="zone">
+        <div class="zonetag"><i></i>工单总量级 <span>客诉 / 纠纷 / 申诉 / 舆情 四类并列 · 纠纷 = 投诉 − 客诉 · 快照随工单系统刷新（2 小时）</span></div>
+        <div class="tktypes" id="tkTypeCards"></div>
+      </div>
+      <div class="zone">
+        <div class="zonetag"><i></i>各部门量级 <span>按「当前执行部门」聚合 · 可切四类查看</span>
+          <span class="tkchips" data-chips="dept"></span>
+        </div>
+        <div class="panels">
+          <div class="panel wide">
+            <div class="tblwrap"><table class="tbl" id="tkDept"></table></div>
+          </div>
+        </div>
+      </div>
+
       <div class="zone">
         <div class="zonetag"><i></i>现场 <span>爱回收工单系统 2 小时 · 预测每日 21:50 标定</span></div>
         <div class="kpis row" id="kTicket"></div>
         <div class="panels">
           <div class="panel wide">
-            <div class="phead"><h3>状态 × 工单池</h3><span class="hint" id="noteTicketmx"></span></div>
+            <div class="phead"><h3>状态 × 类型</h3><span class="tkchips" data-chips="matrix"></span><span class="hint" id="noteTicketmx"></span></div>
             <div class="tblwrap"><table class="tbl" id="tkMatrix"></table></div>
           </div>
         </div>
       </div>
 
-      <!-- 客诉处理明细（2026-09-24 从旧工单看板迁回）：升级时长 / 投诉类型大类 / 完整场景 / 预警 -->
+      <!-- 工单明细（含升级时长 / 类型大类 / 完整场景 / 预警）—— 每个板块都可切四类 -->
       <div class="zone">
-        <div class="zonetag"><i></i>客诉处理明细 <span>执行部门 = 客诉客服 · 快照随工单系统刷新（2 小时）· 点时长桶可下钻场景</span></div>
+        <div class="zonetag"><i></i>工单明细 <span>升级时长 / 类型大类 / 完整场景 / 预警 · 各板块独立切四类 · 点时长桶可下钻</span></div>
         <div class="panels">
           <div class="panel">
             <div class="phead">
               <h3>升级时长分布</h3>
+              <span class="tkchips" data-chips="tb"></span>
               <div class="lgd2">
                 <span><em class="sg-wait"></em>待分配</span>
                 <span><em class="sg-todo"></em>待处理</span>
@@ -788,20 +807,21 @@ svg{display:block;width:100%;overflow:visible}
           </div>
           <div class="panel">
             <div class="phead">
-              <h3>投诉类型大类</h3>
-              <div class="lgd2">
-                <span><em class="sg-wait"></em>待分配</span>
-                <span><em class="sg-todo"></em>待处理</span>
-                <span><em class="sg-doing"></em>处理中</span>
-              </div>
+              <h3>类型大类 / 完整场景</h3>
+              <span class="tkchips" data-chips="cat"></span>
               <span class="hint" id="noteTkTop"></span>
+            </div>
+            <div class="lgd2" style="margin-bottom:8px">
+              <span><em class="sg-wait"></em>待分配</span>
+              <span><em class="sg-todo"></em>待处理</span>
+              <span><em class="sg-doing"></em>处理中</span>
             </div>
             <div class="stk" id="tkTopChart"></div>
             <div class="subhead" style="margin-top:14px">完整场景 TOP 10 <span>按量级降序 · 右侧为 待分配/待处理/处理中</span></div>
             <div class="stk" id="tkLeafList"></div>
           </div>
           <div class="panel wide">
-            <div class="phead"><h3>预警场景 · 单量</h3><span class="hint">风控类 &amp; 活动风控 5 类 · 量级归零后删除</span></div>
+            <div class="phead"><h3>预警场景 · 单量</h3><span class="tkchips" data-chips="alert"></span><span class="hint">风控类 &amp; 活动风控 5 类 · 量级归零后删除</span></div>
             <div class="chips" id="tkAlerts"></div>
           </div>
         </div>
@@ -2245,39 +2265,118 @@ function renderOnlineDetail() {
 }
 
 /* ══════════════════ 03 工单 ══════════════════ */
+/* ══ 工单四类口径（2026-09-24 用户定案）══════════════════════════════════════
+   客诉 = 投诉工单 且 当前执行部门 = 客诉客服
+   纠纷 = 投诉工单 去掉客诉的部分（执行部门 ≠ 客诉客服）
+   申诉 = 用户申诉工单（全部）    舆情 = 舆情客诉单
+   四类互斥，合计 = 工单总量级。数据源 D.tk（/ticket-stats → ticket-monitor/stats.json）
+   ⚠️ 旧的「客诉处理 / 工单处理」两池是**按部门**切的另一套口径，别与四类混读：
+      客诉处理 = 客诉 + 申诉(部门=客诉客服)；工单处理 = 纠纷 + 申诉(其余部门) */
+const TK_TYPES = ['客诉', '纠纷', '申诉', '舆情'];
+const TK_TYPE_COLOR = { 客诉: 'var(--red)', 纠纷: 'var(--amber)', 申诉: 'var(--blue)', 舆情: 'var(--purple)' };
+/* 每个板块各自记住自己的四类选择（用户要求「每个板块都要做这四个问题的切片器」） */
+const TK_VIEW = { dept: 'all', matrix: 'all', tb: 'all', cat: 'all', alert: 'all' };
+
+function tkAdd(dst, src) { TK_ORDER.forEach(s => { const v = (src || {})[s] || 0; if (v) dst[s] = (dst[s] || 0) + v; }); return dst; }
+function tkAddNested(dst, src) { Object.keys(src || {}).forEach(k => tkAdd(dst[k] = dst[k] || {}, src[k])); return dst; }
+
+/* 取某个类型视图的聚合；ty='all' 时四类逐项相加（互斥口径，相加不重复计数） */
+function tkAggFor(tk, ty) {
+  const tys = (tk.types && tk.types.length) ? tk.types : TK_TYPES;
+  const list = (ty && ty !== 'all') ? [ty] : tys;
+  const o = { total: 0, matrix: {}, byTop: {}, byLeaf: {}, buckets: {}, alerts: {}, dept: {} };
+  list.forEach(t => {
+    o.total += (tk.type_totals || {})[t] || 0;
+    tkAdd(o.matrix, (tk.type_matrix || {})[t]);
+    tkAddNested(o.byTop, (tk.type_by_top || {})[t]);
+    tkAddNested(o.byLeaf, (tk.type_by_leaf || {})[t]);
+    const tbk = (tk.type_time_buckets || {})[t] || {};
+    TK_TB_ORDER.forEach(b => {
+      const cell = tbk[b] || {};
+      const dst = o.buckets[b] = o.buckets[b] || {};
+      tkAdd(dst, cell);
+      if (cell.by_top) tkAddNested(dst.by_top = dst.by_top || {}, cell.by_top);
+      if (cell.by_leaf) tkAddNested(dst.by_leaf = dst.by_leaf || {}, cell.by_leaf);
+    });
+    tkAddNested(o.alerts, (tk.type_alert_counts || {})[t]);
+    const td = (tk.type_dept || {})[t] || {};
+    Object.keys(td).forEach(d => o.dept[d] = (o.dept[d] || 0) + td[d]);
+  });
+  return o;
+}
+
+const tkViewName = v => (!v || v === 'all') ? '全部' : v;
+function tkChipsHTML(key) {
+  const cur = TK_VIEW[key] || 'all';
+  return [['all', '全部']].concat(TK_TYPES.map(t => [t, t]))
+    .map(([v, nm]) => `<button class="tkchip${cur === v ? ' on' : ''}" data-tkview="${esc(key)}" data-tkv="${esc(v)}">${nm}</button>`).join('');
+}
+/* 同步所有切片器按钮的选中态（重绘后不再整体替换 DOM） */
+function tkChipsSync() {
+  document.querySelectorAll('#sTicket [data-chips]').forEach(box => { box.innerHTML = tkChipsHTML(box.dataset.chips); });
+}
+
 function renderTicket(tk) {
   if (!tk) return;
-  const bt = tk.bucket_totals || {}, st = tk.status_totals || {}, tb = tk.time_buckets || {};
+  const st = tk.status_totals || {};
+  const aggAll = tkAggFor(tk, 'all');
+  const tbAll = aggAll.buckets || {};
   const OVER = ['24h以上', '48h以上', '72h以上', '96h以上'];
-  const overCnt = k => sum(['待处理', '待分配', '处理中'], s => (tb[k] || {})[s] || 0);
-  const overN = sum(OVER, overCnt);
-  const in24 = sum(['待处理', '待分配', '处理中'], s => (tb['24h内'] || {})[s] || 0);
+  const overCnt = (k, tb) => sum(['待处理', '待分配', '处理中'], s => (tb[k] || {})[s] || 0);
+  const overN = sum(OVER, k => overCnt(k, tbAll));
+  const in24 = overCnt('24h内', tbAll);
   const city = Object.entries(tk.city_totals || {}).sort((a, b) => b[1] - a[1]);
+  const TYS = (tk.types && tk.types.length) ? tk.types : TK_TYPES;
+  const grand = tk.grand_total || aggAll.total;
 
   /* 板块头部让位给切片器（2026-09-24） */
   const hTicketr = $('#hTicketr');
   if (hTicketr) hTicketr.innerHTML =
     `<span>生成 <b>${esc(tk.generated_at || '–')}</b></span>
-     <span>工单池 <b>${n0(tk.grand_total)}</b></span>`;
+     <span>工单总量级 <b>${n0(grand)}</b></span>`;
+
+  /* ① 工单总量级：四类并列 + 状态细分（2026-09-24 新增） */
+  const tt = tk.type_totals || {}, tmx = tk.type_matrix || {};
+  if ($('#tkTypeCards')) $('#tkTypeCards').innerHTML = TYS.map(t => {
+    const n = tt[t] || 0, m = tmx[t] || {};
+    return `<div class="tkt"><div class="tl"><i style="background:${TK_TYPE_COLOR[t] || 'var(--tx3)'}"></i>${esc(t)}</div>
+      <div class="tn">${n0(n)}<small>单</small></div>
+      <div class="tp">占总量 ${grand ? pc(n / grand * 100, 1) : '–'}</div>
+      <div class="ts">${TK_ORDER.map(s => `${s} <b>${n0(m[s] || 0)}</b>`).join('')}</div></div>`;
+  }).join('');
+
+  /* ② 各部门量级（按当前执行部门） */
+  const devTy = TK_VIEW.dept || 'all';
+  const devCols = (devTy === 'all') ? TYS : [devTy];
+  const tDept = tk.type_dept || {};
+  const dmap = {};
+  devCols.forEach(t => Object.keys(tDept[t] || {}).forEach(d => { (dmap[d] = dmap[d] || {})[t] = (tDept[t] || {})[d] || 0; }));
+  const drod = Object.keys(dmap).sort((a, b) => sum(devCols, t => dmap[b][t] || 0) - sum(devCols, t => dmap[a][t] || 0));
+  if ($('#tkDept')) $('#tkDept').innerHTML =
+    `<thead><tr><th>当前执行部门</th>${devCols.map(t => `<th>${esc(t)}</th>`).join('')}<th>合计</th></tr></thead><tbody>` +
+    (drod.length ? drod.map(d => {
+      const tot = sum(devCols, t => dmap[d][t] || 0);
+      return `<tr><td class="v">${esc(d)}</td>` +
+        devCols.map(t => `<td>${n0(dmap[d][t] || 0)}</td>`).join('') +
+        `<td class="v">${n0(tot)}</td></tr>`;
+    }).join('') +
+      `<tr><td class="v">合计</td>${devCols.map(t => `<td class="v">${n0(sum(drod, d => dmap[d][t] || 0))}</td>`).join('')}<td class="v">${n0(tkAggFor(tk, devTy).total)}</td></tr>`
+      : `<tr><td colspan="${devCols.length + 2}" style="text-align:center;color:var(--tx3)">该类型暂无工单</td></tr>`) +
+    `</tbody>`;
 
   /* —— 积压预测（近 14 天净变化外推）—— */
   const fc = ticketForecast();
   const endStk = fc ? fc.out[fc.out.length - 1].stk : null;
   const diff = fc ? endStk - fc.stockNow : null;
   const trendUp = diff != null && diff > 0;
-  const over96 = overCnt('96h以上'), over48 = overCnt('48h以上');
+  const over96 = overCnt('96h以上', tbAll), over48 = overCnt('48h以上', tbAll);
+  const unassigned = st['待分配'] || 0;
 
+  /* ③ 现场 KPI —— 总量级与四类已上移到板块顶部，这里只放处置口径 */
   $('#kTicket').innerHTML = [
-    {
-      k: '工单池', v: n0(tk.grand_total), lead: 1, c: 'c-purple',
-      d: `含全部状态 · 创建日期口径 · 待处理 ${n0(st['待处理'])} 单`
-    },
-    { k: '超时未结（≥24h）', v: n0(overN), c: overN > 0 ? 'c-red' : 'c-green', d: `48h 以上 ${n0(over48)} · 96h 以上 ${n0(over96)} · 24h 内 ${n0(in24)}` },
-    { k: '待处理', v: n0(st['待处理']), c: 'c-cyan', d: `待分配 ${n0(st['待分配'])} · 处理中 ${n0(st['处理中'])}` },
-    {
-      k: '投诉 / 工单 / 舆情', v: n0(bt['客诉处理']), c: 'c-red',
-      d: `工单 ${n0(bt['工单处理'])} · 舆情 ${n0(bt['舆情客诉单'])} · 投诉按客诉客服口径`
-    },
+    { k: '超时未结（≥24h）', v: n0(overN), lead: 1, c: overN > 0 ? 'c-red' : 'c-green', d: `48h 以上 ${n0(over48)} · 96h 以上 ${n0(over96)} · 24h 内 ${n0(in24)}` },
+    { k: '待处理', v: n0(st['待处理']), c: 'c-cyan', d: `待分配 ${n0(unassigned)} · 处理中 ${n0(st['处理中'])}` },
+    { k: '待分配', v: n0(unassigned), c: unassigned > 60 ? 'c-amber' : '', d: '尚未落到处理人 · 排在分配环节会先耗时长' },
     {
       k: '积压（当前 → 7 天后）', v: fc ? n0(fc.stockNow) : '–', c: trendUp ? 'c-red' : 'c-green',
       d: fc ? `7 天后 ${endStk === 0 ? '清零' : n0(endStk)} · <span class="${trendUp ? 'warn' : 'ok'}">${endStk === 0 ? '按当前节奏可清空' : trendUp ? '积压 +' + Math.abs(diff) : '消化 −' + Math.abs(diff)}</span>` : '历史样本不足'
@@ -2288,17 +2387,21 @@ function renderTicket(tk) {
     }
   ].map(x => `<div class="kpi ${x.c}${x.lead ? ' lead' : ''}"><div class="kl">${x.k}</div><div class="kv ${x.hl ? 'hl' : ''}">${x.v}</div><div class="kd">${x.d}</div></div>`).join('');
 
-  /* 状态 × 池 矩阵 */
-  const buckets = tk.buckets || [], statuses = tk.statuses || [], mx = tk.matrix || {};
-  $('#noteTicketmx').textContent = city.length ? `城市升级 TOP：${city.slice(0, 3).map(c => c[0] + ' ' + c[1]).join(' · ')}` : '';
-  $('#tkMatrix').innerHTML = `<thead><tr><th>状态</th>${buckets.map(b => `<th>${esc(b)}</th>`).join('')}<th>合计</th></tr></thead><tbody>` +
+  /* ④ 状态 × 类型 矩阵（切片器选某一类时列收窄为该类 + 合计） */
+  const statuses = tk.statuses || [];
+  const mxCols = (TK_VIEW.matrix === 'all') ? TYS : [TK_VIEW.matrix];
+  if ($('#noteTicketmx')) $('#noteTicketmx').textContent =
+    city.length ? `城市升级 TOP：${city.slice(0, 3).map(c => c[0] + ' ' + c[1]).join(' · ')}` : '';
+  if ($('#tkMatrix')) $('#tkMatrix').innerHTML =
+    `<thead><tr><th>状态</th>${mxCols.map(t => `<th>${esc(t)}</th>`).join('')}<th>合计</th></tr></thead><tbody>` +
     statuses.map(s => {
-      const row = buckets.map(b => (mx[s] || {})[b] || 0);
+      const row = mxCols.map(t => ((tmx[t] || {})[s]) || 0);
       return `<tr><td class="v">${esc(s)}</td>${row.map(v => `<td>${n0(v)}</td>`).join('')}<td class="v">${n0(sum(row, x => x))}</td></tr>`;
     }).join('') +
-    `<tr><td class="v">合计</td>${buckets.map(b => `<td class="v">${n0(bt[b])}</td>`).join('')}<td class="v">${n0(tk.grand_total)}</td></tr></tbody>`;
+    `<tr><td class="v">合计</td>${mxCols.map(t => `<td class="v">${n0(tt[t] || 0)}</td>`).join('')}<td class="v">${n0(sum(mxCols, t => tt[t] || 0))}</td></tr></tbody>`;
 
-  renderStrategyTicket({ tk, fc, bt, st, overN, over48, over96, in24, city, endStk, diff });
+  tkChipsSync();
+  renderStrategyTicket({ tk, fc, bt: tk.bucket_totals || {}, st, overN, over48, over96, in24, city, endStk, diff });
   renderTicketBreakdown(tk);
 }
 
@@ -2338,9 +2441,10 @@ function tkStack(rows) {
 
 function renderTicketBreakdown(tk) {
   if (!tk) return;
-  const tb = tk.time_buckets || {};
 
-  /* ① 升级时长 5 桶 */
+  /* ① 升级时长 5 桶（按所选四类） */
+  const aggTb = tkAggFor(tk, TK_VIEW.tb || 'all');
+  const tb = aggTb.buckets || {};
   const box = $('#tkTimeBoxes');
   if (box) box.innerHTML = TK_TB_ORDER.map((k, i) => {
     const d = tb[k] || {};
@@ -2359,10 +2463,10 @@ function renderTicketBreakdown(tk) {
       const leaves = Object.entries(d.by_leaf || {}).sort((a, b) => tkSum(b[1]) - tkSum(a[1])).slice(0, 10);
       const none = '<div class="empty" style="padding:14px">该桶暂无工单</div>';
       drill.innerHTML = `<div class="drill">
-        <div class="dh"><b>${TK_TB_NAME[TK_TIME_PICK]}</b>
+        <div class="dh"><b>${TK_TB_NAME[TK_TIME_PICK]}</b><span class="tkchip on" style="cursor:default">${esc(tkViewName(TK_VIEW.tb))}</span>
           <span>${tkNums(d)}（待分配 / 待处理 / 处理中）</span>
           <button class="btn" data-tbclose="1">收起</button></div>
-        <div class="dsec">投诉类型大类分布</div>
+        <div class="dsec">类型大类分布</div>
         <div class="stk">${tops.length ? tkStack(tops) : none}</div>
         <div class="dsec">完整场景 TOP 10</div>
         <div class="stk">${leaves.length ? tkStack(leaves) : none}</div>
@@ -2370,15 +2474,19 @@ function renderTicketBreakdown(tk) {
     }
   }
 
-  /* ③ 投诉类型大类 + 完整场景 TOP 10 */
-  const tops = Object.entries(tk.complaint_by_top || {}).sort((a, b) => tkSum(b[1]) - tkSum(a[1]));
-  const leaves = Object.entries(tk.complaint_by_leaf || {}).sort((a, b) => tkSum(b[1]) - tkSum(a[1])).slice(0, 10);
+  /* ③ 类型大类 + 完整场景 TOP 10（按所选四类） */
+  const aggCat = tkAggFor(tk, TK_VIEW.cat || 'all');
+  const tops = Object.entries(aggCat.byTop || {}).sort((a, b) => tkSum(b[1]) - tkSum(a[1]));
+  const leaves = Object.entries(aggCat.byLeaf || {}).sort((a, b) => tkSum(b[1]) - tkSum(a[1])).slice(0, 10);
+  const catN = sum(tops, t => tkSum(t[1]));
   if ($('#tkTopChart')) $('#tkTopChart').innerHTML = tops.length ? tkStack(tops) : '<div class="empty">无数据</div>';
   if ($('#tkLeafList')) $('#tkLeafList').innerHTML = leaves.length ? tkStack(leaves) : '<div class="empty">无数据</div>';
-  if ($('#noteTkTop')) $('#noteTkTop').textContent = `客诉处理 ${n0(tk.complaint_total || tkSum(tk.complaint_by_top))} 单`;
+  if ($('#noteTkTop')) $('#noteTkTop').textContent =
+    `${tkViewName(TK_VIEW.cat)} 量级 ${n0(aggCat.total)} 单 · 其中有类型标注 ${n0(catN)} 单`;
 
-  /* ④ 预警场景（风控类 & 活动风控 5 类） */
-  const al = tk.alert_types || [], ac = tk.alert_counts || {};
+  /* ④ 预警场景（风控类 & 活动风控 5 类，按所选四类） */
+  const aggAl = tkAggFor(tk, TK_VIEW.alert || 'all');
+  const al = tk.alert_types || [], ac = aggAl.alerts || {};
   if ($('#tkAlerts')) $('#tkAlerts').innerHTML = al.length ? al.map(t => {
     const d = ac[t] || {}, n = tkSum(d);
     return `<span class="chip2${n ? '' : ' z'}" title="${esc(t)}：待分配 ${d['待分配'] || 0} / 待处理 ${d['待处理'] || 0} / 处理中 ${d['处理中'] || 0}">
@@ -2781,6 +2889,13 @@ $('#tkTimeDrill').addEventListener('click', e => {
   if (!e.target.closest('[data-tbclose]')) return;
   TK_TIME_PICK = null;
   renderTicketBreakdown(D.tk);
+});
+/* 工单四类切片器：每个板块各自记住自己的选择（全部 / 客诉 / 纠纷 / 申诉 / 舆情） */
+$('#sTicket').addEventListener('click', e => {
+  const b = e.target.closest('[data-tkview]');
+  if (!b) return;
+  TK_VIEW[b.dataset.tkview] = b.dataset.tkv;
+  renderTicket(D.tk);
 });
 /* 浮层日历：点外部 / 按 Esc 收起（点 summary 本身走 details 原生 toggle，不拦） */
 document.addEventListener('click', e => {
