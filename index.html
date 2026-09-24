@@ -2562,16 +2562,21 @@ function tkStack(rows) {
 function renderTicketBreakdown(tk) {
   if (!tk) return;
 
-  /* ① 升级时长 5 桶（默认「投诉」= 客诉 + 纠纷，可手动切四类） */
+  /* ① 升级时长 5 桶（默认「投诉」= 客诉 + 纠纷，可手动切四类）
+     下钻 = **原地替换**（2026-09-24 用户要求「不要展开，直接切过去覆盖」）：
+     点桶 ⇒ 整排桶隐藏、下钻块占回同一位置；「返回时长分布」切回。 */
   const aggTb = tkAggFor(tk, TK_VIEW.tb || '投诉');
   const tb = aggTb.buckets || {};
   const box = $('#tkTimeBoxes');
-  if (box) box.innerHTML = TK_TB_ORDER.map((k, i) => {
-    const d = tb[k] || {};
-    return `<div class="tbox t${i + 1}${TK_TIME_PICK === k ? ' on' : ''}" data-tb="${esc(k)}" title="点开看「${TK_TB_NAME[k]}」的场景分布">
+  if (box) {
+    box.innerHTML = TK_TB_ORDER.map((k, i) => {
+      const d = tb[k] || {};
+      return `<div class="tbox t${i + 1}${TK_TIME_PICK === k ? ' on' : ''}" data-tb="${esc(k)}" title="点开看「${TK_TB_NAME[k]}」的场景分布">
       <div class="tl">${TK_TB_NAME[k]}</div><div class="tn">${n0(tkSum(d))}</div>
       <div class="ts">${tkNums(d)}</div></div>`;
-  }).join('');
+    }).join('');
+    box.style.display = TK_TIME_PICK ? 'none' : '';
+  }
 
   /* ② 时长桶下钻：该桶的大类 + 完整场景 TOP 10 */
   const drill = $('#tkTimeDrill');
@@ -2585,7 +2590,7 @@ function renderTicketBreakdown(tk) {
       drill.innerHTML = `<div class="drill">
         <div class="dh"><b>${TK_TB_NAME[TK_TIME_PICK]}</b><span class="tkchip on" style="cursor:default">${esc(tkViewName(TK_VIEW.tb))}</span>
           <span>${tkNums(d)}（待分配 / 待处理 / 处理中）</span>
-          <button class="btn" data-tbclose="1">收起</button></div>
+          <button class="btn" data-tbclose="1">← 返回时长分布</button></div>
         <div class="dsec">类型大类分布</div>
         <div class="stk">${tops.length ? tkStack(tops) : none}</div>
         <div class="dsec">完整场景 TOP 10</div>
