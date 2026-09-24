@@ -118,8 +118,8 @@ h1 em{font-style:normal;font-size:12px;font-weight:500;color:var(--tx3);letter-s
    切片器也挪到那一行右侧，省一行高度。 */
 
 /* ── 分区：实时 / 预测 ── */
-.zone{margin-bottom:16px}
-.zonetag{display:flex;align-items:center;gap:9px;font-size:12.5px;font-weight:600;color:var(--tx2);margin:0 2px 11px;letter-spacing:.04em}
+.zone{margin-bottom:12px}
+.zonetag{display:flex;align-items:center;gap:9px;font-size:12.5px;font-weight:600;color:var(--tx2);margin:0 2px 8px;letter-spacing:.04em}
 .zonetag i{width:14px;height:2px;border-radius:2px;background:var(--acc);box-shadow:0 0 8px rgba(var(--accs),.7)}
 .zonetag span{font-weight:400;color:var(--tx3);font-size:11.5px}
 .zonetag.fc i{background:var(--amber);box-shadow:0 0 8px rgba(251,191,36,.7)}
@@ -195,11 +195,11 @@ h1 em{font-style:normal;font-size:12px;font-weight:500;color:var(--tx3);letter-s
 .panels{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 @media(max-width:1080px){.panels{grid-template-columns:1fr}}
 .panel{
-  padding:15px 17px 13px;border-radius:var(--r);background:var(--card);
+  padding:12px 15px 11px;border-radius:var(--r);background:var(--card);
   border:1px solid var(--line);min-width:0;
 }
 .panel.wide{grid-column:1/-1}
-.phead{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.phead{display:flex;align-items:center;gap:10px;margin-bottom:9px;flex-wrap:wrap}
 .phead h3{font-size:13.5px;font-weight:600;color:var(--tx);letter-spacing:.02em}
 .phead .hint{font-size:11px;color:var(--tx3);margin-left:auto}
 .lgd{display:flex;gap:13px;font-size:11px;color:var(--tx3);flex-wrap:wrap}
@@ -227,7 +227,7 @@ h1 em{font-style:normal;font-size:12px;font-weight:500;color:var(--tx3);letter-s
 .pill.b{background:rgba(96,165,250,.14);color:var(--blue2)}
 
 /* ── 图内小标题（同一面板里上下两张图） ── */
-.subhead{display:flex;align-items:center;gap:10px;font-size:12px;font-weight:600;color:var(--tx2);margin:15px 2px 9px;letter-spacing:.03em;flex-wrap:wrap}
+.subhead{display:flex;align-items:center;gap:10px;font-size:12px;font-weight:600;color:var(--tx2);margin:11px 2px 7px;letter-spacing:.03em;flex-wrap:wrap}
 .subhead span{font-weight:400;font-size:11px;color:var(--tx3)}
 .subhead .lgd{margin-left:auto}
 /* ── 餐点安排（错峰排餐）──
@@ -365,13 +365,13 @@ h1 em{font-style:normal;font-size:12px;font-weight:500;color:var(--tx3);letter-s
 @media(max-width:640px){.kpis.hero{grid-template-columns:1fr}.kpis.hero .kpi.lead{grid-column:1}}
 
 /* ── 单日详情 ── */
-.dstats{margin-bottom:16px;padding:14px 16px 4px;border-radius:var(--r);background:rgba(19,30,53,.55);border:1px solid var(--lin2)}
-.dhead{display:flex;align-items:center;gap:9px;margin-bottom:11px;font-size:12.5px;color:var(--tx2)}
+.dstats{margin-bottom:12px;padding:12px 14px 3px;border-radius:var(--r);background:rgba(19,30,53,.55);border:1px solid var(--lin2)}
+.dhead{display:flex;align-items:center;gap:9px;margin-bottom:9px;font-size:12.5px;color:var(--tx2)}
 .dhead b{font-size:14.5px;color:var(--tx);font-weight:650}
-.dgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(148px,1fr));gap:10px;margin-bottom:6px}
-.dstat{padding:10px 12px;border-radius:11px;background:var(--card2);border:1px solid var(--lin2)}
-.dstat .dk{font-size:11px;color:var(--tx3);margin-bottom:5px;letter-spacing:.04em}
-.dstat .dv{font-size:20px;font-weight:640;color:var(--tx);letter-spacing:-.01em}
+.dgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(148px,1fr));gap:9px;margin-bottom:6px}
+.dstat{padding:9px 11px;border-radius:11px;background:var(--card2);border:1px solid var(--lin2)}
+.dstat .dk{font-size:11px;color:var(--tx3);margin-bottom:4px;letter-spacing:.04em}
+.dstat .dv{font-size:19px;font-weight:640;color:var(--tx);letter-spacing:-.01em}
 .dstat .dv small{font-size:12px;font-weight:500;color:var(--tx2);margin-left:2px}
 .dstat .ds{font-size:11px;color:var(--tx3);margin-top:4px}
 /* ── 折叠区（日维度分时段预测）：默认收起，点标题展开 ── */
@@ -497,9 +497,10 @@ svg{display:block;width:100%;overflow:visible}
         </div>
       </div>
 
-      <!-- 日维度切片（2026-09-24 从「30 天」切片挪到实时页 —— 逐日切片 / 餐点 / 人力安排是每天的操作用） -->
+      <!-- 日维度区（2026-09-24 定：**日维度」留实时页** —— 逐日切片 + 该日每半小时人力/餐点，是每天的操作用；
+           多日（月维度）的「每日进线量与所需人力」表放回 30 天切片，见下方 d30 -->
       <div class="zone">
-        <div class="zonetag fc"><i></i>预测 <span>货量 → 进线量 → 转人工 → 所需人力（日维度 · 可逐日切片）</span>
+        <div class="zonetag fc"><i></i>日维度预测 <span>该日每半小时转人工 → 所需 / 排班 / 实到 / 餐点（可逐日切片）</span>
           <details class="fold zfold" id="calFold400">
             <summary>
               <span class="ft">逐日切片 · 选日期</span>
@@ -514,16 +515,10 @@ svg{display:block;width:100%;overflow:visible}
         <div class="panels">
           <div class="panel wide">
             <div class="phead">
-              <h3>每日进线量与所需人力</h3>
-              <span class="lgd">
-                <span><em style="background:var(--blue)"></em>进线量</span>
-                <span><em style="background:var(--amber)"></em>所需人力</span>
-                <span><em style="background:var(--green)"></em>在岗人力</span>
-              </span>
-              <span class="hint" id="note400fc"></span>
+              <h3>该日时段预测 · 人力与餐点安排</h3>
+              <span class="hint">每半小时转人工量 · 所需 / 排班 / 实到 / 差额 / 餐点（共 26 段）</span>
             </div>
             <div class="dstats" id="dayDetail"></div>
-            <div id="fc400t"></div>
           </div>
         </div>
       </div>
@@ -546,6 +541,25 @@ svg{display:block;width:100%;overflow:visible}
             <div id="ch400tr"></div>
             <div class="subhead">每日接通率 <span>接通量 ÷ 转人工量</span></div>
             <div id="ch400trRate"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 月维度（多日）预测 —— 2026-09-24 用户定：「月维度的每日的预测放 30 天里面」 -->
+      <div class="zone">
+        <div class="zonetag fc"><i></i>月维度预测 <span>每日进线量与所需人力 · 货量 → 进线量 → 转人工 → 所需人力（点某一行可切换实时页的逐日切片）</span></div>
+        <div class="panels">
+          <div class="panel wide">
+            <div class="phead">
+              <h3>每日进线量与所需人力</h3>
+              <span class="lgd">
+                <span><em style="background:var(--blue)"></em>进线量</span>
+                <span><em style="background:var(--amber)"></em>所需人力</span>
+                <span><em style="background:var(--green)"></em>在岗人力</span>
+              </span>
+              <span class="hint" id="note400fc"></span>
+            </div>
+            <div id="fc400t"></div>
           </div>
         </div>
       </div>
@@ -581,6 +595,31 @@ svg{display:block;width:100%;overflow:visible}
           </div>
         </div>
       </div>
+
+      <!-- 日维度区（与 400 同口径）：单日接待量预测明细 + 逐日切片日历 -->
+      <div class="zone">
+        <div class="zonetag fc"><i></i>日维度预测 <span>该日预估接待量 → 所需人力 / 建议单班（可逐日切片）</span>
+          <details class="fold zfold" id="calFoldOnline">
+            <summary>
+              <span class="ft">逐日切片 · 选日期</span>
+              <span class="fh" id="calPickOnline">—</span>
+              <span class="fchev"></span>
+            </summary>
+            <div class="fbody">
+              <div id="onlineSlicer"></div>
+            </div>
+          </details>
+        </div>
+        <div class="panels">
+          <div class="panel wide">
+            <div class="phead">
+              <h3>该日接待量预测 · 人力安排</h3>
+              <span class="hint">按上面的日期切片 · 预估接待量 / 所需人力 / 建议单班</span>
+            </div>
+            <div class="dstats" id="onlineDetail"></div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- 切片 ② 30 天数据及预测 -->
@@ -602,23 +641,12 @@ svg{display:block;width:100%;overflow:visible}
         </div>
       </div>
 
+      <!-- 月维度（多日）预测 —— 与 400 同口径：多日清单留 30 天切片，单日切片（含日历）上移到实时页 -->
       <div class="zone">
-        <div class="zonetag fc"><i></i>预测 <span>同星期几基准 × 近 7 天水平因子（日维度 · 可逐日切片）</span>
-          <details class="fold zfold" id="calFoldOnline">
-            <summary>
-              <span class="ft">逐日切片 · 选日期</span>
-              <span class="fh" id="calPickOnline">—</span>
-              <span class="fchev"></span>
-            </summary>
-            <div class="fbody">
-              <div id="onlineSlicer"></div>
-            </div>
-          </details>
-        </div>
+        <div class="zonetag fc"><i></i>月维度预测 <span>同星期几基准 × 近 7 天水平因子 · 每日预估接待量与所需人力（点某一行可切换实时页的逐日切片）</span></div>
         <div class="panels">
           <div class="panel wide">
             <div class="phead"><h3>未来 7 天预估接待量与所需人力</h3><span class="hint" id="noteOnlinefc"></span></div>
-            <div class="dstats" id="onlineDetail"></div>
             <div id="fcOnlinet"></div>
           </div>
         </div>
@@ -647,6 +675,31 @@ svg{display:block;width:100%;overflow:visible}
           </div>
         </div>
       </div>
+
+      <!-- 日维度区（与 400 / 在线同口径）：单日预估新增/处理/积压明细 + 逐日切片日历 -->
+      <div class="zone">
+        <div class="zonetag fc"><i></i>日维度预测 <span>该日预估新增 / 处理 / 期末积压（可逐日切片）</span>
+          <details class="fold zfold" id="calFoldTicket">
+            <summary>
+              <span class="ft">逐日切片 · 选日期</span>
+              <span class="fh" id="calPickTicket">—</span>
+              <span class="fchev"></span>
+            </summary>
+            <div class="fbody">
+              <div id="ticketSlicer"></div>
+            </div>
+          </details>
+        </div>
+        <div class="panels">
+          <div class="panel wide">
+            <div class="phead">
+              <h3>该日工单预测 · 新增 / 处理 / 积压</h3>
+              <span class="hint">按上面的日期切片 · 近 14 天净变化外推</span>
+            </div>
+            <div class="dstats" id="ticketDetail"></div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- 切片 ② 30 天数据及预测 -->
@@ -671,23 +724,12 @@ svg{display:block;width:100%;overflow:visible}
         </div>
       </div>
 
+      <!-- 月维度（多日）预测 —— 与 400 / 在线同口径：多日清单留 30 天切片 -->
       <div class="zone">
-        <div class="zonetag fc"><i></i>预测 <span>近 14 天净变化外推积压（日维度 · 可逐日切片）</span>
-          <details class="fold zfold" id="calFoldTicket">
-            <summary>
-              <span class="ft">逐日切片 · 选日期</span>
-              <span class="fh" id="calPickTicket">—</span>
-              <span class="fchev"></span>
-            </summary>
-            <div class="fbody">
-              <div id="ticketSlicer"></div>
-            </div>
-          </details>
-        </div>
+        <div class="zonetag fc"><i></i>月维度预测 <span>近 14 天净变化外推积压 · 每日预估新增与积压（点某一行可切换实时页的逐日切片）</span></div>
         <div class="panels">
           <div class="panel wide">
             <div class="phead"><h3>未来 7 天预估新增与积压</h3><span class="hint" id="noteTicketfc"></span></div>
-            <div class="dstats" id="ticketDetail"></div>
             <div id="fcTickett"></div>
           </div>
         </div>
@@ -1172,7 +1214,7 @@ function renderHh400() {
 
   if (nAct || pred) {
     drawBar($('#ch400hh'), {
-      labels: keys, h: 200,
+      labels: keys, h: 172,
       data: usePredBars ? pred : act,
       color: 'rgba(251,191,36,.55)',
       colorFn: usePredBars ? null : (v, i) => i === lastI ? '#93c5fd' : 'rgba(96,165,250,.62)',
@@ -1185,7 +1227,7 @@ function renderHh400() {
 
   if (rAct.some(v => v != null) || base.some(v => v != null)) {
     drawLine($('#ch400hhRate'), {
-      labels: keys, h: 158, yFmt: v => Math.round(v) + '%', tipFmt: v => (+v).toFixed(1) + '%',
+      labels: keys, h: 136, yFmt: v => Math.round(v) + '%', tipFmt: v => (+v).toFixed(1) + '%',
       showVals: true, valFmt: v => Math.round(v) + '%',
       series: [
         { name: '实际', data: rAct, color: '#22d3ee', area: false },
