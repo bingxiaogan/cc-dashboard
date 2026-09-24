@@ -627,47 +627,57 @@ svg{display:block;width:100%;overflow:visible}
     <div class="sechead">
       <span class="idx">03</span>
       <h2>工单</h2>
-      <span class="badge">现场</span>
-      <div class="r" id="hTicketr"></div>
+      <div class="bseg" data-seg="ticket" role="tablist" aria-label="工单数据切片">
+        <button class="sg on" data-view="live" role="tab" aria-selected="true">实时数据及预测</button>
+        <button class="sg" data-view="d30" role="tab" aria-selected="false">30 天数据及预测</button>
+      </div>
     </div>
 
-    <div class="zone">
-      <div class="zonetag"><i></i>现场 <span>爱回收工单系统 2 小时 · 预测每日 21:50 标定</span></div>
-      <div class="mergeline">
-        <div class="kpis" id="kTicket"></div>
-        <aside class="strategy">
-          <div class="shead"><h3>工单处置策略建议</h3><span class="hint">工单池 + 积压预测自动生成</span></div>
-          <div id="stratTicket"></div>
-        </aside>
-      </div>
-      <div class="panels">
-        <div class="panel wide">
-          <div class="phead">
-            <h3>近 30 天升级 / 处理 · 现场</h3>
-            <div class="lgd">
-              <span><em style="background:#fbbf24"></em>实际升级</span>
-              <span><em style="background:#a78bfa"></em>实际处理</span>
-              <span><em style="background:#fbbf24;opacity:.4"></em>预测升级</span>
-              <span><em style="background:#a78bfa;opacity:.4"></em>预测处理</span>
-            </div>
+    <!-- 切片 ① 实时数据及预测 -->
+    <div class="view on" data-view="live">
+      <div class="zone">
+        <div class="zonetag"><i></i>现场 <span>爱回收工单系统 2 小时 · 预测每日 21:50 标定</span></div>
+        <div class="mergeline">
+          <div class="kpis" id="kTicket"></div>
+          <aside class="strategy">
+            <div class="shead"><h3>工单处置策略建议</h3><span class="hint">工单池 + 积压预测自动生成</span></div>
+            <div id="stratTicket"></div>
+          </aside>
+        </div>
+        <div class="panels">
+          <div class="panel wide">
+            <div class="phead"><h3>状态 × 工单池</h3><span class="hint" id="noteTicketmx"></span></div>
+            <div class="tblwrap"><table class="tbl" id="tkMatrix"></table></div>
           </div>
-          <div id="chTickettr"></div>
-          <div class="subhead">积压（期末工单池） <span>近 30 天实际 + 未来 7 天预测</span></div>
-          <div id="chTicketStock"></div>
-        </div>
-        <div class="panel wide">
-          <div class="phead"><h3>状态 × 工单池</h3><span class="hint" id="noteTicketmx"></span></div>
-          <div class="tblwrap"><table class="tbl" id="tkMatrix"></table></div>
         </div>
       </div>
     </div>
 
-    <div class="zone">
-      <div class="zonetag fc"><i></i>预测 <span>近 14 天净变化外推积压（日维度 · 可逐日切片）</span></div>
-      <div class="panels">
-        <div class="panel wide">
-          <div class="phead"><h3>未来 7 天预估新增与积压</h3><span class="hint" id="noteTicketfc"></span></div>
-          <details class="fold" id="calFoldTicket">
+    <!-- 切片 ② 30 天数据及预测 -->
+    <div class="view" data-view="d30">
+      <div class="zone">
+        <div class="zonetag"><i></i>现场 <span>近 30 天实际 + 未来 7 天预测</span></div>
+        <div class="panels">
+          <div class="panel wide">
+            <div class="phead">
+              <h3>近 30 天升级 / 处理 · 现场</h3>
+              <div class="lgd">
+                <span><em style="background:#fbbf24"></em>实际升级</span>
+                <span><em style="background:#a78bfa"></em>实际处理</span>
+                <span><em style="background:#fbbf24;opacity:.4"></em>预测升级</span>
+                <span><em style="background:#a78bfa;opacity:.4"></em>预测处理</span>
+              </div>
+            </div>
+            <div id="chTickettr"></div>
+            <div class="subhead">积压（期末工单池） <span>近 30 天实际 + 未来 7 天预测</span></div>
+            <div id="chTicketStock"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="zone">
+        <div class="zonetag fc"><i></i>预测 <span>近 14 天净变化外推积压（日维度 · 可逐日切片）</span>
+          <details class="fold zfold" id="calFoldTicket">
             <summary>
               <span class="ft">逐日切片 · 选日期</span>
               <span class="fh" id="calPickTicket">—</span>
@@ -677,10 +687,13 @@ svg{display:block;width:100%;overflow:visible}
               <div id="ticketSlicer"></div>
             </div>
           </details>
-          <div class="dstats" id="ticketDetail"></div>
-          <div id="fcTickett"></div>
         </div>
-      </div>
+        <div class="panels">
+          <div class="panel wide">
+            <div class="phead"><h3>未来 7 天预估新增与积压</h3><span class="hint" id="noteTicketfc"></span></div>
+            <div class="dstats" id="ticketDetail"></div>
+            <div id="fcTickett"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -910,8 +923,10 @@ function render400() {
   const hist = (cc.history || []).map(h => h.skillRate400);
   const rateWk = cw.rate400;
 
-  $('#h400r').innerHTML =
-    `<span>采集 <b>${esc(cc.collectedAtCn || '–')}</b></span>`;
+  /* 板块头部不再显示「现场 / 采集时间」那一行（2026-09-24 用户定：顶部 metaBar 已有「📞 400 实时」）
+     原先的位置让给了板块顶部的「今日调控策略建议」通栏块 */
+  const h400r = $('#h400r');
+  if (h400r) h400r.innerHTML = `<span>采集 <b>${esc(cc.collectedAtCn || '–')}</b></span>`;
 
   /* —— 实时 vs 预测：按「已出时段」折算同期预测，两个口径同源可直接比 —— */
   const plan = D.plan;
@@ -957,6 +972,11 @@ function render400() {
   const wSlot = lowSlots.slice().sort((a, b) => a.r - b.r)[0] || null;
   const week400 = weekRate400();      // 周维度接通率（近 7 个完整日加权）
 
+  /* 卡片顺序 = 布局位置（2026-09-24 用户定）：
+     左「接通率」放大占两行；右侧两排各 3 张 ——
+     第一排 当前排队量 / 呼入量 / 人工量　第二排 在岗人力 / 运能负荷 / 人力缺口
+     （「人力缺口」从原「在岗人力」的副文案里拆成独立卡） */
+  const gapN = planDay ? (planDay.gap_hc || 0) : null;
   $('#k400').innerHTML = [
     {
       k: '接通率', v: pc(ss.rate), lead: 1, hl: 1, c: (ss.rate || 0) >= 85 ? 'c-green' : 'c-red',
@@ -970,8 +990,14 @@ function render400() {
       sp: spark(hist, '#60a5fa')
     },
     {
-      k: '当前排队', v: n0(ss.queue), c: (ss.queue || 0) > 0 ? 'c-red' : 'c-green',
+      k: '当前排队量', v: n0(ss.queue), c: (ss.queue || 0) > 0 ? 'c-red' : 'c-green',
       d: `${(ss.queue || 0) > 0 ? '<span class="warn">有排队积压</span>' : '<span class="ok">无排队</span>'} · 技能组实时汇总`
+    },
+    { k: '呼入量（实时）', v: n0(sumIn), c: 'c-cyan', d: `${curEnd ? '截至 ' + curEnd : '待采集'} · ${devTxt(devIn)}` },
+    { k: '人工量（实时）', v: n0(sumTurn), c: 'c-cyan', d: `${curEnd ? '截至 ' + curEnd : '待采集'} · ${devTxt(devTurn)}` },
+    {
+      k: '在岗人力（出勤 / 排班）', v: `${on}<small>/${duty}</small>`, c: on >= duty ? 'c-green' : 'c-amber',
+      d: `签入 ${n0(ss.signIn)} 人 · 排班 ${duty} 人`
     },
     {
       k: '运能负荷（实时）', v: pc(cap.load400, 0),
@@ -979,13 +1005,12 @@ function render400() {
       d: `进线 ${n0(cap.in400)} / 应接 ${n0(cap.cap400)}` + (predLoadNow != null ? ` · 预测同期 ${pc(predLoadNow, 0)}` : '')
     },
     {
-      k: '在岗人力（出勤 / 排班）', v: `${on}<small>/${duty}</small>`, c: on >= duty ? 'c-green' : 'c-amber',
+      k: '人力缺口', v: gapN == null ? '–' : hcSign(gapN) + '<small>人</small>',
+      c: gapN == null ? 'c-blue' : gapN < 0 ? 'c-red' : gapN > 0 ? 'c-green' : 'c-blue',
       d: planDay
-        ? `签入 ${n0(ss.signIn)} 人 · 预测需 ${n0(planDay.need_hc)} 人 · <span class="${planDay.gap_hc < 0 ? 'dn' : planDay.gap_hc > 0 ? 'up' : ''}">${hcSign(planDay.gap_hc)}</span>`
-        : `签入 ${n0(ss.signIn)} 人 · 今日排班未生成`
-    },
-    { k: '呼入量（实时）', v: n0(sumIn), c: 'c-cyan', d: `${curEnd ? '截至 ' + curEnd : '待采集'} · ${devTxt(devIn)}` },
-    { k: '人工量（实时）', v: n0(sumTurn), c: 'c-cyan', d: `${curEnd ? '截至 ' + curEnd : '待采集'} · ${devTxt(devTurn)}` }
+        ? `需求 ${n0(planDay.need_hc)} 人 · 在岗 ${n0(planDay.onshift_hc)} 人 · 当日负荷 ${n0(planDay.ratio)}%`
+        : '今日排班未生成'
+    }
   ].map(x => `<div class="kpi ${x.c}${x.lead ? ' lead' : ''}"><div class="kl">${x.k}</div><div class="kv ${x.hl ? 'hl' : ''}">${x.v}</div><div class="kd">${x.d}</div>${x.wk ? `<div class="kw ${x.wk.ok ? 'ok' : 'warn'}"><span>${x.wk.txt}</span><b>${x.wk.v}</b>${x.wk.rng ? `<i>${x.wk.rng}</i>` : ''}</div>` : ''}${x.sp || ''}</div>`).join('');
 
   /* —— 不达标解读（在上）+ 今日调控策略建议（在下） —— */
@@ -1677,7 +1702,9 @@ function renderOnline() {
   const hist = (cc.history || []).map(h => h.onlineSessions);
   const signIn400 = ss.signIn || 0;
 
-  $('#hOnliner').innerHTML =
+  /* 板块头部让位给切片器（2026-09-24），出勤 / 口径信息下沉到 KPI 卡 */
+  const hOnliner = $('#hOnliner');
+  if (hOnliner) hOnliner.innerHTML =
     `<span>坐席 <b>${seats}</b> 人</span>
      <span>出勤 <b>${on}/${duty}</b></span>
      <span>口径 <b>分类在线</b></span>`;
@@ -1893,7 +1920,9 @@ function renderTicket(tk) {
   const in24 = sum(['待处理', '待分配', '处理中'], s => (tb['24h内'] || {})[s] || 0);
   const city = Object.entries(tk.city_totals || {}).sort((a, b) => b[1] - a[1]);
 
-  $('#hTicketr').innerHTML =
+  /* 板块头部让位给切片器（2026-09-24） */
+  const hTicketr = $('#hTicketr');
+  if (hTicketr) hTicketr.innerHTML =
     `<span>生成 <b>${esc(tk.generated_at || '–')}</b></span>
      <span>工单池 <b>${n0(tk.grand_total)}</b></span>`;
 
@@ -2155,6 +2184,22 @@ const PANE_FN = {
 };
 let CUR = '400';
 
+/* ── 板块内切片器：实时数据及预测 / 30 天数据及预测（2026-09-24）──
+   每个业务板块顶部各一个，只切 .view 的显隐；切完重绘当前业务线 ——
+   藏在 display:none 里的 SVG 容器宽为 0（viewBox + preserveAspectRatio:none 会在
+   显示时自动拉伸，但折叠态曾出过画歪的坑），重绘一次最稳。 */
+function showSeg(sec, v) {
+  const root = document.querySelector('.sec[data-pane="' + sec + '"]');
+  if (!root) return;
+  root.querySelectorAll('.view').forEach(el => el.classList.toggle('on', el.dataset.view === v));
+  root.querySelectorAll('.bseg .sg').forEach(b => {
+    const a = b.dataset.view === v;
+    b.classList.toggle('on', a);
+    b.setAttribute('aria-selected', a ? 'true' : 'false');
+  });
+  if (D.ready) PANE_FN[sec]();
+}
+
 function showPane(key, opt) {
   opt = opt || {};
   const k = PANE_ORDER.indexOf(key) >= 0 ? key : '400';
@@ -2245,6 +2290,11 @@ $('#tabs').addEventListener('click', e => {
   const b = e.target.closest('.tab');
   if (b) showPane(b.dataset.pane, { scroll: true });
 });
+/* 板块内切片器：实时数据及预测 / 30 天数据及预测 */
+$$('.bseg').forEach(b => b.addEventListener('click', e => {
+  const sg = e.target.closest('.sg');
+  if (sg) showSeg(b.dataset.seg, sg.dataset.view);
+}));
 /* 日维度切片：点日期 chip 或预测表格行 → 同步高亮 + 明细 */
 $('#daySlicer').addEventListener('click', e => {
   const mt = e.target.closest('.calmt');                 // 切月份：只重画日历，不动表格
