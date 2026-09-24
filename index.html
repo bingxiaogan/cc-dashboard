@@ -254,6 +254,19 @@ h1 em{font-style:normal;font-size:12px;font-weight:500;color:var(--tx3);letter-s
 .mealwin span{display:flex;align-items:baseline;gap:6px}
 .mealwin b{color:var(--tx);font-weight:650}
 .mealwin em{font-style:normal;color:var(--tx3);font-size:12px}
+/* 2026-09-24：直接写「时段 + 人名」，两餐左右分栏 */
+.mealgrid{display:grid;grid-template-columns:1fr 1fr;gap:9px 30px;margin-top:10px}
+@media(max-width:860px){.mealgrid{grid-template-columns:1fr;gap:11px}}
+.mealgrp{min-width:0}
+.mealgh{display:flex;align-items:baseline;gap:8px;font-size:12.5px;line-height:1.5}
+.mealgh b{color:var(--amber);font-weight:650}
+.mealgh em{font-style:normal;color:var(--tx2);font-size:12px;font-variant-numeric:tabular-nums}
+.mealgh i{margin-left:auto;font-style:normal;color:var(--tx3);font-size:11.5px;white-space:nowrap}
+.meallist{list-style:none;margin:7px 0 0;padding:0;display:flex;flex-direction:column;gap:3px}
+.meallist li{display:flex;gap:9px;align-items:baseline;font-size:12.5px;line-height:1.55}
+.meallist li b{flex:0 0 auto;min-width:92px;color:var(--tx);font-weight:600;font-variant-numeric:tabular-nums}
+.meallist li span{min-width:0;color:var(--tx2);word-break:break-word}
+.meallist li span .non{color:var(--tx3)}
 .mealnote{margin-top:8px;font-size:11px;color:var(--tx3);line-height:1.7}
 /* 缺口是「吃出来」的：不扣餐不缺、扣了才缺 */
 .mnote{color:var(--amber);font-style:normal;font-size:10.5px}
@@ -1677,13 +1690,21 @@ function renderDayDetail() {
   if (est) mealBox = '<div class="mealwin"><em>HR 班表未出，餐点待排班确定后再排</em></div>';
   else if (!mp) mealBox = '<div class="mealwin"><em>该日无 400 在班名单，餐点待排</em></div>';
   else {
-    const parts = MEAL_WINS.map(w => {
+    const grp = MEAL_WINS.map(w => {
       const g = mp[w.key];
       const tot = g.slots.reduce((a, s) => a + (g.map[s] || []).length, 0);
       const seg = g.slots.filter(s => (g.map[s] || []).length).length;
-      return `<span><b>${w.name}</b> ${g.from}–${g.to} · <b>${tot}</b> 人 / ${seg} 段</span>`;
-    });
-    mealBox = `<div class="mealwin">${parts.join('')}</div>
+      const items = g.slots.map(s => {
+        const who = g.map[s] || [];
+        if (!who.length) return '';
+        return `<li><b>${s}</b><span>${who.join('、')}</span></li>`;
+      }).filter(Boolean).join('');
+      return `<div class="mealgrp">
+          <div class="mealgh"><b>${w.name}</b><em>${g.from}–${g.to}</em><i>${tot} 人 · ${seg} 段</i></div>
+          <ul class="meallist">${items || '<li><span class="non">该餐未排人</span></li>'}</ul>
+        </div>`;
+    }).join('');
+    mealBox = `<div class="mealgrid">${grp}</div>
       <div class="mealnote">按各时段空闲度错峰 —— 冗余大的时段多排、紧张的少排；各段人数定好后按名单顺序沿时间落位，第一餐吃得早的人第二餐同样早。</div>`;
   }
   const mealCard = `<div class="mealbox">
