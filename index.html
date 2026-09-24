@@ -2686,11 +2686,12 @@ function renderStrategyTicket(o) {
 /* ── 近 30 天：实际升级 / 实际处理 + 未来 7 天预测（同口径可直接比）── */
 function renderTicketTrend() {
   const t = D.tt;
-  if (!t || !t.days || !t.days.length) { $('#chTickettr').innerHTML = '<div class="empty">趋势数据未生成</div>'; $('#chTicketStock').innerHTML = ''; return; }
+  if (!t || !t.days || !t.days.length) { $('#chTickettr').innerHTML = '<div class="empty">趋势数据未生成</div>'; $('#chTicketStock').innerHTML = ''; fcChipsSync(); return; }
   /* 按类切片（2026-09-24）：cs 换成当前类的历史序列 */
   const ty = TK_FC_VIEW.trend || '客诉';
   const last30 = t.days.slice(-30), cs = ((t.types_by || {})[ty]) || ((t.types || {}).cs) || {};
   const fc = ticketForecast(ty);
+  if ($('#tkTrendTy')) $('#tkTrendTy').textContent = ty;
   const lastD = last30[last30.length - 1];
   const fut = (fc ? fc.out : []).map(x => x.date);
   const labels = last30.concat(fut);
