@@ -866,7 +866,7 @@ svg{display:block;width:100%;overflow:visible}
         <div class="panels">
           <div class="panel wide">
             <div class="phead">
-              <h3>近 30 天升级 / 处理 · 现场</h3>
+              <h3>近 30 天升级 / 处理 · <span id="tkTrendTy">客诉</span></h3>
               <div class="lgd">
                 <span><em style="background:#fbbf24"></em>实际升级</span>
                 <span><em style="background:#a78bfa"></em>实际处理</span>
@@ -2400,6 +2400,22 @@ function tkChipsSync() {
   document.querySelectorAll('#sTicket [data-chips]').forEach(box => { box.innerHTML = tkChipsHTML(box.dataset.chips); });
 }
 
+/* ── 工单预测切片（2026-09-24 用户要求：「预测要切片客诉、纠纷、申诉这三个，根据历史的量级预测，
+      包括时间和预测的对比也需要切片这三个」）────────────────────────────────
+   与上面的四类切片器（TK_VIEW）分开：预测只做三类、不含舆情；两块预测各自独立记忆 ——
+     trend = 「现场」里的近 30 天实际 vs 未来 7 天预测图
+     day   = 日维度预测 + 月维度预测（同一份外推，两处展示，共用一个键）
+   数据源：ticket_trend.json 的 types_by（由 build_ticket_trend.py 从日报四类明细生成）。 */
+const TK_FC_TYPES = ['客诉', '纠纷', '申诉'];
+const TK_FC_VIEW = { trend: '客诉', day: '客诉' };
+function fcChipsHTML(key) {
+  const cur = TK_FC_VIEW[key] || TK_FC_TYPES[0];
+  return TK_FC_TYPES.map(t => `<button class="tkchip${cur === t ? ' on' : ''}" data-fcview="${esc(key)}" data-fcv="${esc(t)}">${esc(t)}</button>`).join('');
+}
+function fcChipsSync() {
+  document.querySelectorAll('#sTicket [data-fcchips]').forEach(box => { box.innerHTML = fcChipsHTML(box.dataset.fcchips); });
+}
+
 function renderTicket(tk) {
   if (!tk) return;
   const st = tk.status_totals || {};
@@ -2583,20 +2599,25 @@ function renderTicketBreakdown(tk) {
   }).join('') : '<div class="empty" style="padding:10px">暂无预警类型配置</div>';
 }
 
-/* ── 工单积压预测（近 14 天净变化外推，KPI/趋势图/切片共用）── */
-function ticketForecast() {
+/* ── 工单积压预测（近 14 天净变化外推，KPI/趋势图/切片共用）
+   2026-09-24：支持按类外推 —— 传 ty（客诉 / 纠纷 / 申诉）则取该类自身的历史新增·结案·遗留，
+   数据源是 ticket_trend.json 的 types_by（build_ticket_trend.py 从日报四类明细生成）。
+   不传 ty 时退回**客诉**（= 旧口径 cs），KPI 卡等既有调用行为不变。 ── */
+function ticketForecast(ty) {
   const t = D.tt;
   if (!t || !t.days) return null;
-  const days = t.days.slice(-14), cs = (t.types || {}).cs || {};
-  const news = days.map(d => cs.new && cs.new[d]).filter(v => v != null);
-  const dones = days.map(d => cs.done && cs.done[d]).filter(v => v != null);
+  const key = TK_FC_TYPES.indexOf(ty) >= 0 ? ty : '客诉';
+  const src = ((t.types_by || {})[key]) || ((t.types || {}).cs) || {};
+  const days = t.days.slice(-14);
+  const news = days.map(d => src.new && src.new[d]).filter(v => v != null);
+  const dones = days.map(d => src.done && src.done[d]).filter(v => v != null);
   if (news.length < 7) return null;
   const nAvg14 = sum(news, x => x) / news.length;
   const dAvg = dones.length ? sum(dones.slice(-7), x => x) / Math.min(7, dones.length) : 0;  // 处理能力取近 7 天
   const WD = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
   const byWd = {};
-  days.forEach(d => { const v = cs.new[d]; if (v == null) return; const w = new Date(d + 'T00:00:00').getDay(); (byWd[w] = byWd[w] || []).push(v); });
-  const stockNow = (cs.stock && Object.values(cs.stock).pop()) || 0;
+  days.forEach(d => { const v = src.new[d]; if (v == null) return; const w = new Date(d + 'T00:00:00').getDay(); (byWd[w] = byWd[w] || []).push(v); });
+  const stockNow = (src.stock && Object.values(src.stock).pop()) || 0;
   const out = []; let stk = stockNow;
   const lastD = new Date(t.days[t.days.length - 1] + 'T00:00:00');
   for (let i = 1; i <= 7; i++) {
@@ -2607,7 +2628,7 @@ function ticketForecast() {
     stk = Math.max(0, stk + nv - done);
     out.push({ date: iso, wd: WD[w], nv, done, stk: Math.round(stk) });
   }
-  return { out, nAvg14, dAvg, stockNow, lastDay: t.days[t.days.length - 1] };
+  return { out, nAvg14, dAvg, stockNow, lastDay: t.days[t.days.length - 1], type: key };
 }
 
 /* ── 工单处置策略建议 ── */
@@ -2666,8 +2687,10 @@ function renderStrategyTicket(o) {
 function renderTicketTrend() {
   const t = D.tt;
   if (!t || !t.days || !t.days.length) { $('#chTickettr').innerHTML = '<div class="empty">趋势数据未生成</div>'; $('#chTicketStock').innerHTML = ''; return; }
-  const last30 = t.days.slice(-30), cs = (t.types || {}).cs || {};
-  const fc = ticketForecast();
+  /* 按类切片（2026-09-24）：cs 换成当前类的历史序列 */
+  const ty = TK_FC_VIEW.trend || '客诉';
+  const last30 = t.days.slice(-30), cs = ((t.types_by || {})[ty]) || ((t.types || {}).cs) || {};
+  const fc = ticketForecast(ty);
   const lastD = last30[last30.length - 1];
   const fut = (fc ? fc.out : []).map(x => x.date);
   const labels = last30.concat(fut);
@@ -2682,8 +2705,8 @@ function renderTicketTrend() {
     labels: labels.map(d => d.slice(5)), h: 212, tipFmt: v => `${n0(v)} 单`,
     showVals: true, valFmt: v => n0(v),
     series: [
-      { name: '实际升级', data: act('new'), color: '#fbbf24', areaFill: 'rgba(251,191,36,.10)', label: lastOf(act('new')) },
-      { name: '实际处理', data: act('done'), color: '#a78bfa', area: false, label: lastOf(act('done')) },
+      { name: `实际升级（${ty}）`, data: act('new'), color: '#fbbf24', areaFill: 'rgba(251,191,36,.10)', label: lastOf(act('new')) },
+      { name: `实际处理（${ty}）`, data: act('done'), color: '#a78bfa', area: false, label: lastOf(act('done')) },
       { name: '预测升级', data: fcv('nv'), color: 'rgba(251,191,36,.55)', area: false, dash: '5 4', label: lastOf(fcv('nv')) },
       { name: '预测处理', data: fcv('done'), color: 'rgba(167,139,250,.55)', area: false, dash: '5 4', label: lastOf(fcv('done')) }
     ]
@@ -2697,25 +2720,28 @@ function renderTicketTrend() {
       labels: labels.map(d => d.slice(5)), h: 176, tipFmt: v => `${n0(v)} 单`,
       showVals: true, valFmt: v => n0(v),
       series: [
-        { name: '实际积压', data: stkAct, color: '#93c5fd', areaFill: 'rgba(96,165,250,.12)', label: lastOf(stkAct) },
+        { name: `实际积压（${ty}）`, data: stkAct, color: '#93c5fd', areaFill: 'rgba(96,165,250,.12)', label: lastOf(stkAct) },
         { name: '预测积压', data: stkFc, color: 'rgba(251,191,36,.7)', area: false, dash: '5 4', label: lastOf(stkFc) }
       ]
     });
   } else $('#chTicketStock').innerHTML = '<div class="empty">暂无积压数据</div>';
+  fcChipsSync();
 }
 
 /* 工单预测：近 14 天净变化外推积压 */
 function renderTicketfc() {
   const wrap = $('#fcTickett');
-  const fc = ticketForecast();
+  const ty = TK_FC_VIEW.day || '客诉';
+  const fc = ticketForecast(ty);
   if (!fc) {
     wrap.innerHTML = '<div class="empty">历史样本不足，暂不外推</div>';
-    $('#ticketSlicer').innerHTML = ''; $('#ticketDetail').innerHTML = ''; return;
+    $('#ticketSlicer').innerHTML = ''; $('#ticketDetail').innerHTML = '';
+    fcChipsSync(); return;
   }
   const out = fc.out, net = fc.nAvg14 - fc.dAvg;
   // 先定好选中日，表格才能一次画对高亮行（renderTicketSlicer 里同样的兜底是幂等的）
   if (!PICK_TICKET || !out.some(f => f.date === PICK_TICKET)) PICK_TICKET = out[0].date;
-  $('#noteTicketfc').textContent = `净变化 ${net >= 0 ? '+' : '−'}${n1(Math.abs(net))} 单/天 · 处理量上限取近 7 天实际 · 驱动模型待建`;
+  $('#noteTicketfc').textContent = `${ty} · 净变化 ${net >= 0 ? '+' : '−'}${n1(Math.abs(net))} 单/天 · 近 14 天同类历史外推 · 处理量上限取近 7 天实际`;
   /* 上一日期末积压：跨月也要连续，先按全量算好映射再按月分组 */
   const prevOf = {};
   out.forEach((f, i) => { prevOf[f.date] = i === 0 ? fc.stockNow : out[i - 1].stk; });
@@ -2743,13 +2769,14 @@ function renderTicketfc() {
     </details>`;
   }).join('');
   bindTip(wrap);
+  fcChipsSync();
   renderTicketSlicer();
 }
 
 /* ── 工单逐日切片 ── */
 let PICK_TICKET = null;
 function renderTicketSlicer() {
-  const fc = ticketForecast();
+  const fc = ticketForecast(TK_FC_VIEW.day);
   const box = $('#ticketSlicer'), det = $('#ticketDetail');
   if (!fc || !fc.out.length) { box.innerHTML = ''; det.innerHTML = ''; return; }
   const out = fc.out;
@@ -2768,7 +2795,7 @@ function renderTicketSlicer() {
 }
 
 function renderTicketDetail() {
-  const fc = ticketForecast();
+  const fc = ticketForecast(TK_FC_VIEW.day);
   const box = $('#ticketDetail');
   if (!fc) { box.innerHTML = ''; return; }
   const out = fc.out, i = out.findIndex(x => x.date === PICK_TICKET);
@@ -2786,7 +2813,7 @@ function renderTicketDetail() {
   ];
   box.innerHTML =
     `<div class="dhead"><b>${f.date}</b><span>${f.wd}</span>${f.stk > fc.stockNow ? '<span class="pill y">积压高于当前</span>' : (f.stk === 0 ? '<span class="pill g">可清零</span>' : '')}
-       <span style="margin-left:auto;font-size:11px;color:var(--tx3)">工单积压预测 · 驱动模型待建</span></div>
+       <span style="margin-left:auto;font-size:11px;color:var(--tx3)">${esc(fc.type || '客诉')} · 积压预测（近 14 天同类历史外推）</span></div>
      <div class="dgrid">${stats.map(s => `<div class="dstat"><div class="dk">${s[0]}</div><div class="dv">${s[1]}</div><div class="ds">${s[2]}</div></div>`).join('')}</div>`;
 }
 
@@ -2986,6 +3013,16 @@ $('#sTicket').addEventListener('click', e => {
   if (!b) return;
   TK_VIEW[b.dataset.tkview] = b.dataset.tkv;
   renderTicket(D.tk);
+});
+/* 工单预测切片器（客诉 / 纠纷 / 申诉，不含舆情）——
+   trend = 「现场」里的近 30 天实际 vs 未来 7 天预测对比图；
+   day   = 日维度预测 + 月维度预测（同一份外推，两处展示）。两者各自记忆、互不影响。 */
+$('#sTicket').addEventListener('click', e => {
+  const f = e.target.closest('[data-fcview]');
+  if (!f) return;
+  TK_FC_VIEW[f.dataset.fcview] = f.dataset.fcv;
+  if (f.dataset.fcview === 'trend') renderTicketTrend(); else renderTicketfc();
+  fcChipsSync();
 });
 /* 浮层日历：点外部 / 按 Esc 收起（点 summary 本身走 details 原生 toggle，不拦） */
 document.addEventListener('click', e => {
