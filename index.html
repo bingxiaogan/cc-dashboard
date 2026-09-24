@@ -1240,7 +1240,8 @@ function renderTr400() {
   } else $('#ch400trRate').innerHTML = '<div class="empty">暂无每日接通率</div>';
 }
 
-/* ── 不达标解读：接通率没到 85% 时先说清可能原因（排在调控策略上方） ── */
+/* ── 不达标解读：接通率没到 85% 时先讲原因分析（排在调控策略上方）
+     2026-09-24 用户定措辞：「可能的原因」→「原因分析」、「最吃紧」→「最未达标」 ── */
 function renderDiag400(o) {
   const box = $('#diag400'); if (!box) return;
   const ss = o.ss || {}, rate = ss.rate, low = o.low || [];
@@ -1254,7 +1255,7 @@ function renderDiag400(o) {
     return;
   }
   const rs = [];
-  if (w) rs.push(`<b>${w.k}</b> 时段最吃紧，接通率仅 <b>${w.r.toFixed(0)}%</b>（转人工 ${n0(w.turn)} 通 / 接通 ${n0(w.ans)} 通）`);
+  if (w) rs.push(`<b>${w.k}</b> 时段最未达标，接通率仅 <b>${w.r.toFixed(0)}%</b>（转人工 ${n0(w.turn)} 通 / 接通 ${n0(w.ans)} 通）`);
   if (o.planDay && o.planDay.gap_hc < 0) rs.push(`在岗 <b>${o.planDay.onshift_hc}</b> 人低于需求 <b>${o.planDay.need_hc}</b> 人，人力 <b>${hcSign(o.planDay.gap_hc)}</b> 人`);
   if (o.cap && o.cap.load400 >= 110) rs.push(`运能负荷 <b>${n0(o.cap.load400)}%</b>，产能已被打满`);
   if (o.devIn != null && o.devIn > 5) rs.push(`呼入量高于预测 <b>${o.devIn.toFixed(0)}%</b>，进线集中`);
@@ -1262,7 +1263,7 @@ function renderDiag400(o) {
   if (!rs.length) rs.push('暂未见明显瓶颈，需核查通话时长与技能组分配');
   box.innerHTML = `<div class="diag">
     <div class="dh">接通率 <b>${pc(rate)}</b> 未达 85%</div>
-    <div class="dt">可能的原因：${rs.slice(0, 4).join('；')}。</div>
+    <div class="dt">原因分析：${rs.slice(0, 4).join('；')}。</div>
   </div>`;
 }
 
