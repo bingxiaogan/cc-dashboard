@@ -508,8 +508,6 @@ svg{display:block;width:100%;overflow:visible}
 .tkt .tp{font-size:11px;color:var(--tx3);margin-top:3px}
 .tkt .ts{display:flex;gap:9px;flex-wrap:wrap;font-size:11px;color:var(--tx3);margin-top:6px}
 .tkt .ts b{font-weight:620;font-variant-numeric:tabular-nums}
-/* 「各类型量级」表首列的类别色点（2026-09-24） */
-.tbl td .tydot{display:inline-block;width:7px;height:7px;border-radius:2px;margin-right:6px;vertical-align:1px}
 @media(max-width:1080px){.tktypes{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:720px){.tktypes{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:460px){.tktypes{grid-template-columns:1fr}}
@@ -2453,7 +2451,6 @@ function renderTicket(tk) {
   const overCnt = (k, tb) => sum(['待处理', '待分配', '处理中'], s => (tb[k] || {})[s] || 0);
   const overN = overCnt('24h以上', tbAll);
   const in24 = overCnt('24h内', tbAll);
-  const city = Object.entries(tk.city_totals || {}).sort((a, b) => b[1] - a[1]);
   const TYS = (tk.types && tk.types.length) ? tk.types : TK_TYPES;
   const grand = tk.grand_total || aggAll.total;
 
@@ -2473,29 +2470,8 @@ function renderTicket(tk) {
       <div class="ts">${TK_ORDER.map(s => `${s} <b>${n0(m[s] || 0)}</b>`).join('')}</div></div>`;
   }).join('');
 
-  /* ② 各类型量级 —— 行 = 四类（2026-09-24 用户要求：不要按「当前执行部门」分类，按客诉/纠纷/申诉/舆情）
-     切片器 TK_VIEW.type：全部 → 四行；选某一类 → 只留该行（聚焦）。
-     列：量级 / 占比 / 待分配 / 待处理 / 处理中 / 超时未结 ≥24h（超时未结取该类自身时长桶，互斥相加）。 */
-  const devTy = TK_VIEW.type || 'all';
-  const devCols = (devTy === 'all') ? TYS : [devTy];
-  const tRows = devCols.map(t => {
-    const a = tkAggFor(tk, t);
-    const tb = a.buckets || {};
-    return { t, n: a.total, m: tmx[t] || {}, over: overCnt('24h以上', tb) };
-  });
-  if ($('#tkTypeTbl')) $('#tkTypeTbl').innerHTML =
-    `<thead><tr><th>类型</th><th>量级</th><th>占比</th>${TK_ORDER.map(s => `<th>${s}</th>`).join('')}<th>超时未结 ≥24h</th></tr></thead><tbody>` +
-    (tRows.length ? tRows.map(r =>
-      `<tr><td class="v"><i class="tydot" style="background:${TK_TYPE_COLOR[r.t] || 'var(--tx3)'}"></i>${esc(r.t)}</td>` +
-      `<td class="v">${n0(r.n)}</td><td>${grand ? pc(r.n / grand * 100, 1) : '–'}</td>` +
-      TK_ORDER.map(s => `<td>${n0(r.m[s] || 0)}</td>`).join('') +
-      `<td>${r.over ? n0(r.over) : '0'}</td></tr>`
-    ).join('') +
-      `<tr><td class="v">合计</td><td class="v">${n0(sum(tRows, r => r.n))}</td><td class="v">${pc(100, 1)}</td>` +
-      TK_ORDER.map(s => `<td class="v">${n0(sum(tRows, r => r.m[s] || 0))}</td>`).join('') +
-      `<td class="v">${n0(sum(tRows, r => r.over))}</td></tr>`
-      : `<tr><td colspan="${4 + TK_ORDER.length}" style="text-align:center;color:var(--tx3)">暂无数据</td></tr>`) +
-    `</tbody>`;
+  /* ② 各类型量级表已删除（2026-09-24 用户：「工单里面各类型量级这个板块直接删掉」）。
+     该位置改放「升级时长分布」——见上方 HTML 里的独立 zone，不在此处渲染。 */
 
   /* —— 积压预测（近 14 天净变化外推）—— */
   const fc = ticketForecast();
@@ -2520,18 +2496,7 @@ function renderTicket(tk) {
     }
   ].map(x => `<div class="kpi ${x.c}${x.lead ? ' lead' : ''}"><div class="kl">${x.k}</div><div class="kv ${x.hl ? 'hl' : ''}">${x.v}</div><div class="kd">${x.d}</div></div>`).join('');
 
-  /* ④ 状态 × 类型 矩阵（切片器选某一类时列收窄为该类 + 合计） */
-  const statuses = tk.statuses || [];
-  const mxCols = (TK_VIEW.matrix === 'all') ? TYS : [TK_VIEW.matrix];
-  if ($('#noteTicketmx')) $('#noteTicketmx').textContent =
-    city.length ? `城市升级 TOP：${city.slice(0, 3).map(c => c[0] + ' ' + c[1]).join(' · ')}` : '';
-  if ($('#tkMatrix')) $('#tkMatrix').innerHTML =
-    `<thead><tr><th>状态</th>${mxCols.map(t => `<th>${esc(t)}</th>`).join('')}<th>合计</th></tr></thead><tbody>` +
-    statuses.map(s => {
-      const row = mxCols.map(t => ((tmx[t] || {})[s]) || 0);
-      return `<tr><td class="v">${esc(s)}</td>${row.map(v => `<td>${n0(v)}</td>`).join('')}<td class="v">${n0(sum(row, x => x))}</td></tr>`;
-    }).join('') +
-    `<tr><td class="v">合计</td>${mxCols.map(t => `<td class="v">${n0(tt[t] || 0)}</td>`).join('')}<td class="v">${n0(sum(mxCols, t => tt[t] || 0))}</td></tr></tbody>`;
+  /* ④ 状态 × 类型 矩阵已删除（2026-09-24 用户：「目前库存里面的状态类型也删掉」） */
 
   tkChipsSync();
   renderStrategyTicket({ tk });
