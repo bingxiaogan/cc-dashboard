@@ -210,6 +210,8 @@ h1 em{font-style:normal;font-size:12px;font-weight:500;color:var(--tx3);letter-s
   border:1px solid var(--line);min-width:0;
 }
 .panel.wide{grid-column:1/-1}
+/* 工单明细区：左块（升级时长）内容少，不随右侧拉伸 → 面板贴合内容，避免一大片留白 */
+.panels.tkalign{align-items:start}
 .phead{display:flex;align-items:center;gap:10px;margin-bottom:9px;flex-wrap:wrap}
 .phead h3{font-size:13.5px;font-weight:600;color:var(--tx);letter-spacing:.02em}
 .phead .hint{font-size:11px;color:var(--tx3);margin-left:auto}
@@ -796,8 +798,8 @@ svg{display:block;width:100%;overflow:visible}
 
       <!-- 工单明细（升级时长 / 类型大类 / 完整场景）—— 每个板块都可切四类 -->
       <div class="zone">
-        <div class="zonetag"><i></i>工单明细 <span>升级时长 / 类型大类 / 完整场景 · 各板块独立切片（默认「投诉」= 客诉 + 纠纷，可手动切其他类）· 点时长桶可下钻</span></div>
-        <div class="panels">
+        <div class="zonetag"><i></i>工单明细 <span>升级时长 / 类型大类 / 完整场景 · 各板块独立切片（默认「投诉」= 客诉 + 纠纷，可手动切其他类）· 点时长桶原地下钻</span></div>
+        <div class="panels tkalign">
           <div class="panel">
             <div class="phead">
               <h3>升级时长分布</h3>
