@@ -124,11 +124,22 @@ h1 em{font-style:normal;font-size:12px;font-weight:500;color:var(--tx3);letter-s
 .zonetag span{font-weight:400;color:var(--tx3);font-size:11.5px}
 .zonetag.fc i{background:var(--amber);box-shadow:0 0 8px rgba(251,191,36,.7)}
 .zonetag.fc{color:var(--amber)}
-/* 日期选择直接挂在「预测」zonetag 右侧，不再单独占一行（2026-09-24） */
+/* 日期选择直接挂在「预测」zonetag 右侧，不再单独占一行（2026-09-24）
+   二次调整（09-24 下午）：点开不再把下方内容顶下去，改成贴在 pill 右下角的浮层日历 ── */
 .zonetag{flex-wrap:wrap}
-.zonetag .zfold{margin:0 0 0 auto;border-top:none;padding-top:0}
+.zonetag .zfold{margin:0 0 0 auto;border-top:none;padding-top:0;position:relative}
 .zonetag .zfold>summary{padding:5px 12px}
-.zonetag .zfold[open]{flex:1 0 100%;margin-top:9px}
+.zonetag .zfold .fbody{
+  position:absolute;right:0;top:calc(100% + 8px);z-index:90;
+  padding:12px 13px 11px;border-radius:12px;
+  background:var(--card);border:1px solid var(--line);
+  box-shadow:0 18px 46px rgba(3,8,18,.66),0 0 0 1px rgba(126,166,226,.06);
+  animation:calIn .16s ease both;
+}
+@keyframes calIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){.zonetag .zfold .fbody{animation:none}}
+.zonetag .zfold[open]>summary{background:rgba(var(--accs),.16);border-color:rgba(var(--accs),.44)}
+@media(max-width:640px){.zonetag .zfold .fbody{right:auto;left:0}}
 
 /* ── 切片器：实时数据及预测 / 30 天数据及预测（2026-09-24）
    二次调整：从板块标题行挪到业务线 tab 行最右侧，板块标题整行删掉省空间 ── */
@@ -2342,12 +2353,17 @@ $$('.bseg').forEach(b => b.addEventListener('click', e => {
   if (sg) showSeg(b.dataset.seg, sg.dataset.view);
 }));
 /* 日维度切片：点日期 chip 或预测表格行 → 同步高亮 + 明细 */
+/* 浮层日历：选完就收起；点浮层外任意处也收起（2026-09-24） */
+function closeCals(except) {
+  $$('.zfold[open]').forEach(d => { if (d !== except) d.open = false; });
+}
 $('#daySlicer').addEventListener('click', e => {
   const mt = e.target.closest('.calmt');                 // 切月份：只重画日历，不动表格
   if (mt) { CAL_MON['400'] = mt.dataset.m; renderDaySlicer(); return; }
   const b = e.target.closest('.cald[data-day]');
   if (!b) return;
   PICK_DAY = b.dataset.day;
+  closeCals();                  // 浮层不挡着下面刚刷新的明细
   render400fc(D.plan);          // 内部会重建切片器/明细，并同步表格行高亮
 });
 $('#fc400t').addEventListener('click', e => {
@@ -2363,6 +2379,7 @@ $('#onlineSlicer').addEventListener('click', e => {
   const b = e.target.closest('.cald[data-day]');
   if (!b) return;
   PICK_ONLINE = b.dataset.day;
+  closeCals();
   renderOnlinefc();
 });
 $('#fcOnlinet').addEventListener('click', e => {
@@ -2378,6 +2395,7 @@ $('#ticketSlicer').addEventListener('click', e => {
   const b = e.target.closest('.cald[data-day]');
   if (!b) return;
   PICK_TICKET = b.dataset.day;
+  closeCals();
   renderTicketfc();
 });
 $('#fcTickett').addEventListener('click', e => {
@@ -2386,6 +2404,12 @@ $('#fcTickett').addEventListener('click', e => {
   PICK_TICKET = tr.dataset.day;
   renderTicketfc();
 });
+/* 浮层日历：点外部 / 按 Esc 收起（点 summary 本身走 details 原生 toggle，不拦） */
+document.addEventListener('click', e => {
+  if (e.target.closest('.zfold')) return;
+  closeCals();
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeCals(); });
 window.addEventListener('hashchange', () => showPane((location.hash || '').slice(1), { hash: false }));
 document.addEventListener('keydown', e => {
   if (/^(INPUT|TEXTAREA|SELECT)$/.test(e.target && e.target.tagName || '')) return;
