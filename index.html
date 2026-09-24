@@ -230,11 +230,20 @@ h1 em{font-style:normal;font-size:12px;font-weight:500;color:var(--tx3);letter-s
 .subhead{display:flex;align-items:center;gap:10px;font-size:12px;font-weight:600;color:var(--tx2);margin:15px 2px 9px;letter-spacing:.03em;flex-wrap:wrap}
 .subhead span{font-weight:400;font-size:11px;color:var(--tx3)}
 .subhead .lgd{margin-left:auto}
-/* ── 餐点安排摘要（错峰排餐的一行说明）── */
-.mealsum{margin:-2px 0 10px;font-size:11.5px;color:var(--tx2);line-height:1.75}
-.mealsum b{color:var(--tx);font-weight:640}
-.mealsum .warn{color:var(--amber)}
-.mealsum .dim{color:var(--tx3)}
+/* ── 餐点安排（错峰排餐）──
+   2026-09-24：从「该日分时段预测」折叠块里拉出来，独立成块放在它上面 */
+.mealbox{
+  margin:2px 0 14px;padding:12px 15px 13px;border-radius:12px;
+  background:linear-gradient(90deg,rgba(251,191,36,.09),rgba(251,191,36,.02) 62%,transparent);
+  border:1px solid rgba(251,191,36,.24);border-left:3px solid var(--amber);
+}
+.mealttl{display:flex;align-items:baseline;gap:10px;font-size:12.5px;font-weight:650;color:var(--amber);letter-spacing:.03em}
+.mealttl span{font-weight:400;font-size:11px;color:var(--tx3);letter-spacing:0}
+.mealwin{display:flex;flex-wrap:wrap;gap:6px 26px;margin-top:9px;font-size:13px;color:var(--tx2)}
+.mealwin span{display:flex;align-items:baseline;gap:6px}
+.mealwin b{color:var(--tx);font-weight:650}
+.mealwin em{font-style:normal;color:var(--tx3);font-size:12px}
+.mealnote{margin-top:8px;font-size:11px;color:var(--tx3);line-height:1.7}
 /* 缺口是「吃出来」的：不扣餐不缺、扣了才缺 */
 .mnote{color:var(--amber);font-style:normal;font-size:10.5px}
 
@@ -487,29 +496,8 @@ svg{display:block;width:100%;overflow:visible}
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- 切片 ② 30 天数据及预测 -->
-    <div class="view" data-view="d30">
-      <div class="zone">
-        <div class="zonetag"><i></i>现场 <span>近 30 天实际 + 未来 7 天预测 · 人工量 = 呼入 − IVR</span></div>
-        <div class="panels">
-          <div class="panel wide">
-            <div class="phead">
-              <h3>近 30 天人工量 · 现场</h3>
-              <div class="lgd">
-                <span><em style="background:var(--blue)"></em>实际人工量</span>
-                <span><em style="background:var(--amber)"></em>预测人工量</span>
-              </div>
-              <span class="hint" id="note400tr">人工量 = 呼入 − IVR</span>
-            </div>
-            <div id="ch400tr"></div>
-            <div class="subhead">每日接通率 <span>接通量 ÷ 转人工量</span></div>
-            <div id="ch400trRate"></div>
-          </div>
-        </div>
-      </div>
-
+      <!-- 日维度切片（2026-09-24 从「30 天」切片挪到实时页 —— 逐日切片 / 餐点 / 人力安排是每天的操作用） -->
       <div class="zone">
         <div class="zonetag fc"><i></i>预测 <span>货量 → 进线量 → 转人工 → 所需人力（日维度 · 可逐日切片）</span>
           <details class="fold zfold" id="calFold400">
@@ -536,6 +524,28 @@ svg{display:block;width:100%;overflow:visible}
             </div>
             <div class="dstats" id="dayDetail"></div>
             <div id="fc400t"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 切片 ② 30 天数据及预测 -->
+    <div class="view" data-view="d30">
+      <div class="zone">
+        <div class="zonetag"><i></i>现场 <span>近 30 天实际 + 未来 7 天预测 · 人工量 = 呼入 − IVR</span></div>
+        <div class="panels">
+          <div class="panel wide">
+            <div class="phead">
+              <h3>近 30 天人工量 · 现场</h3>
+              <div class="lgd">
+                <span><em style="background:var(--blue)"></em>实际人工量</span>
+                <span><em style="background:var(--amber)"></em>预测人工量</span>
+              </div>
+              <span class="hint" id="note400tr">人工量 = 呼入 − IVR</span>
+            </div>
+            <div id="ch400tr"></div>
+            <div class="subhead">每日接通率 <span>接通量 ÷ 转人工量</span></div>
+            <div id="ch400trRate"></div>
           </div>
         </div>
       </div>
@@ -1607,26 +1617,31 @@ function renderDayDetail() {
       <td>${cells.length ? cells.join(' · ') : '–'}</td></tr>`;
   }).join('');
 
-  /* 餐点摘要：两餐各排多少人、铺在几段上 */
-  let mealSum;
-  if (est) mealSum = '<span class="dim">HR 班表未出，餐点待排班确定后再排</span>';
-  else if (!mp) mealSum = '<span class="dim">该日无 400 在班名单，餐点待排</span>';
+  /* 餐点安排：从「该日分时段预测」里拉出来、单独成块，放在它上面（2026-09-24 用户要求）——
+     折叠收起时也能一眼看到两餐各排多少人、铺在几段上。 */
+  let mealBox;
+  if (est) mealBox = '<div class="mealwin"><em>HR 班表未出，餐点待排班确定后再排</em></div>';
+  else if (!mp) mealBox = '<div class="mealwin"><em>该日无 400 在班名单，餐点待排</em></div>';
   else {
     const parts = MEAL_WINS.map(w => {
       const g = mp[w.key];
       const tot = g.slots.reduce((a, s) => a + (g.map[s] || []).length, 0);
       const seg = g.slots.filter(s => (g.map[s] || []).length).length;
-      return `<b>${w.name}</b> ${g.from}–${g.to} · ${tot} 人 / ${seg} 段`;
+      return `<span><b>${w.name}</b> ${g.from}–${g.to} · <b>${tot}</b> 人 / ${seg} 段</span>`;
     });
-    mealSum = '餐点安排：' + parts.join('　·　') +
-      '<span class="dim">　按各时段空闲度错峰 —— 冗余大的时段多排、紧张的少排；' +
-      '各段人数定好后按名单顺序沿时间落位，第一餐吃得早的人第二餐同样早</span>';
+    mealBox = `<div class="mealwin">${parts.join('')}</div>
+      <div class="mealnote">按各时段空闲度错峰 —— 冗余大的时段多排、紧张的少排；各段人数定好后按名单顺序沿时间落位，第一餐吃得早的人第二餐同样早。</div>`;
   }
+  const mealCard = `<div class="mealbox">
+      <div class="mealttl">餐点安排<span>错峰排餐 · 尽量不影响接通${est ? ' · 班表未出，暂不可排' : ''}</span></div>
+      ${mealBox}
+    </div>`;
 
   box.innerHTML =
     `<div class="dhead"><b>${d.date}</b><span>${d.wd}</span>${d.date === today ? '<span class="pill b">今天</span>' : ''}
        <span style="margin-left:auto;font-size:11px;color:var(--tx3)">${esc(d.staff_src || '')} · 排班形状 ${esc(d.staff_shape || '–')}${est ? ' · <span style="color:var(--amber)">HR 班表未出，实际人力待排</span>' : ''}</span></div>
      <div class="dgrid">${stats.map(s => `<div class="dstat"><div class="dk">${s[0]}</div><div class="dv">${s[1]}</div><div class="ds">${s[2]}</div></div>`).join('')}</div>
+     ${mealCard}
      <details class="fold" id="dayFold">
        <summary>
          <span class="ft">该日分时段预测</span>
@@ -1637,7 +1652,6 @@ function renderDayDetail() {
          <div class="subhead">该日每半小时预测转人工量 <span>预测转人工量 × 时段形状占比</span></div>
          <div id="chDayHh"></div>
          <div class="subhead">该日分时段人力安排 <span>所需 = 预测转人工 ÷ 产能 ${n1(capH)} 通/人时 × 0.5h · 人力一律向上取整 · 差额 = 实到 − 所需，实到 = 在岗 − 用餐${est ? ' · 班表未出，「排班人数 / 实到 / 差额 / 餐点」留空' : ''}</span></div>
-         <div class="mealsum">${mealSum}</div>
          <div class="tblwrap"><table class="tbl"><thead><tr>
            <th>时段</th><th>预测转人工</th><th>所需人力</th><th>排班人数</th><th>实到</th><th>差额</th><th>餐点安排</th>
          </tr></thead><tbody>${rows}</tbody></table></div>
