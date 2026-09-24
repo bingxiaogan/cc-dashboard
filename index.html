@@ -1335,6 +1335,31 @@ function weekRate400() {
   return null;
 }
 
+/* 近 4 个「同星期几」的现场表均值 —— 只服务于 08:00–09:00 这两段无采集源的时段。
+   08:00 的量级受星期几影响大（周一 vs 周日差别明显），所以取同星期几而不是近 7 日全量。
+   返回 { '08:00': {turn, rate, n}, '08:30': {...} }，键为 slotShortKeys() 的短键。 */
+function refSlotAvg(dateIso) {
+  const days = (D.fill && D.fill.days) || {};
+  const [Y, M, Dd] = dateIso.split('-').map(Number);
+  const wd = new Date(Y, M - 1, Dd).getDay();
+  const ds = Object.keys(days)
+    .filter(k => k < dateIso && new Date(+k.slice(0, 4), +k.slice(5, 7) - 1, +k.slice(8, 10)).getDay() === wd)
+    .sort().slice(-4);
+  const out = {};
+  if (!ds.length) return out;
+  slotShortKeys().forEach(k => {
+    let t = 0, tn = 0, r = 0, rn = 0;
+    ds.forEach(d => {
+      const f = (days[d] || {})[slotFullKey(k)];
+      if (!f) return;
+      if (f.turn != null) { t += f.turn; tn++; }
+      if (f.rate != null) { r += f.rate; rn++; }
+    });
+    if (tn || rn) out[k] = { turn: tn ? t / tn : null, rate: rn ? r / rn : null, n: Math.max(tn, rn) };
+  });
+  return out;
+}
+
 /* ── 每半小时：实际转人工量（柱）+ 预测转人工量（虚线）+ 接通率 ── */
 function renderHh400() {
   const keys = slotShortKeys(), idxMap = {};
@@ -1350,6 +1375,25 @@ function renderHh400() {
     if (turn > 0) rAct[i] = +(((+s.answered || 0) / turn) * 100).toFixed(1);
     if (i > lastI) lastI = i;
   });
+  const nLive = act.filter(v => v != null).length;
+
+  /* 现场表补位（2026-09-24 用户要求「补上 8:00 / 8:30」）
+     7x24cc「呼入时间趋势」只输出**有效工作时间内**的半小时行，本线路配置 09:00–21:00
+     → 08:00 / 08:30 两段采集永远拿不到；飞书《现场调控》分时段表有 26 行（08:00→21:00），口径同为
+     「转人工量 = 呼入 − IVR」「接通率 = 接通量 ÷ 转人工量」，所以可以逐时段补空白。
+     ⚠️ 实时采集优先，现场表只兜底；且现场表**当天行当晚才回填**实际值 → 当天白天这两格仍是空的。
+     ⚠️ 想当天就有 8:00/8:30：只能让系统侧把该线路「有效工作时间」配到 08:00 起（报表页可配）。 */
+  const fillToday = ((D.fill && D.fill.days) || {})[todayCn()] || {};
+  let nFill = 0;
+  keys.forEach((k, i) => {
+    if (act[i] != null) return;
+    const f = fillToday[k];
+    if (!f) return;
+    if (f.turn != null) act[i] = f.turn;
+    if (f.rate != null) rAct[i] = +(f.rate * 100).toFixed(1);
+    if (f.turn != null || f.rate != null) nFill++;
+  });
+
   const pred = hhPredOf(todayCn());
   const base = keys.map(k => {
     const v = D.hrate && D.hrate.slots ? D.hrate.slots[slotFullKey(k)] : null;
@@ -1360,6 +1404,7 @@ function renderHh400() {
   const usePredBars = !nAct && !!pred;
   $('#note400hh').textContent = isToday
     ? `已出 ${nAct}/${keys.length} 时段 · 实际 ${n0(sum(act.filter(v => v != null), v => v))} 通` +
+      (nFill ? `（含现场表补位 ${nFill} 段${fillToday['08:00-08:30'] || fillToday['08:30-09:00'] ? '：08:00–09:00' : ''}）` : '') +
       (pred ? ` · 预测全天 ${n0(sum(pred, x => x))} 通` : '')
     : '今日半小时数据待采集';
 
@@ -2702,7 +2747,7 @@ function renderTicketDetail() {
 }
 
 /* ══════════════════ 切片器 ══════════════════ */
-const D = { cc: null, tk: null, tr: null, plan: null, hh: null, hhon: null, tt: null, shape: null, hrate: null, drate: null, osch: null, ready: false };
+const D = { cc: null, tk: null, tr: null, plan: null, hh: null, hhon: null, tt: null, shape: null, hrate: null, drate: null, osch: null, fill: null, ready: false };
 const PANE_ORDER = ['400', 'online', 'ticket'];
 const PANE_FN = {
   '400': () => { render400(); render400fc(D.plan); },
@@ -2793,7 +2838,7 @@ function applyLiveCorrection() {
 
 async function load() {
   const btn = $('#btnRefresh'); btn.disabled = true; btn.textContent = '刷新中…';
-  const [cc, tk, tr, plan, hh, hhon, tt, shape, hrate, drate, osch] = await Promise.all([
+  const [cc, tk, tr, plan, hh, hhon, tt, shape, hrate, drate, osch, hfill] = await Promise.all([
     jget('stats.json', 'http://127.0.0.1:8601/stats.json'),
     jget('/ticket-stats', 'ticket_stats.json'),
     jget('/daily_trend.json', 'daily_trend.json'),
@@ -2804,10 +2849,11 @@ async function load() {
     jget('forecast/400_shape.json'),
     jget('forecast/hh_rate.json'),
     jget('forecast/daily_rate.json'),
-    jget('online_schedule.json')          // 在线班表（出勤名单 + 工时），供在线分时段预测/排餐
+    jget('online_schedule.json'),         // 在线班表（出勤名单 + 工时），供在线分时段预测/排餐
+    jget('forecast/hh_fill.json')         // 现场表补位（08:00–09:00 等实时报表不覆盖的时段）
   ]);
   D.cc = cc; D.tk = tk; D.tr = tr; D.plan = plan; D.hh = hh; D.hhon = hhon; D.tt = tt;
-  D.shape = shape; D.hrate = hrate; D.drate = drate; D.osch = osch; D.ready = true;
+  D.shape = shape; D.hrate = hrate; D.drate = drate; D.osch = osch; D.fill = hfill; D.ready = true;
   applyLiveCorrection();             // 用看板实测系数把预测拉回实测水平
   updateTabs();
   PANE_FN[CUR]();                    // 只重绘当前切片，切走时再按需绘制
