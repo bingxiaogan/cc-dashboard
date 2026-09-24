@@ -1,16 +1,16 @@
 {
- "ts": 1790245055210,
- "collectedAtCn": "2026/9/24 18:17:35",
+ "ts": 1790245242921,
+ "collectedAtCn": "2026/9/24 18:20:42",
  "overview": {
   "总排队数": "0",
-  "坐席空闲数": "20",
+  "坐席空闲数": "21",
   "坐席忙碌数": "1 (1)",
-  "接通率": "18.28%",
+  "接通率": "18.32%",
   "满意率": "100.00%",
-  "呼入总数": "13872",
-  "当前呼入数": "20",
-  "外呼总数": "5173",
-  "当前外呼数": "36",
+  "呼入总数": "13897",
+  "当前呼入数": "12",
+  "外呼总数": "5184",
+  "当前外呼数": "7",
   "呼入平均通话时长": "00:02:33",
   "AI通话数": "0 (3)"
  },
@@ -27,11 +27,11 @@
  "services": [
   {
    "service": "82359(上门未接转接)",
-   "callIn": 642,
+   "callIn": 644,
    "ivr": 317,
    "ringMissed": 12,
    "queueAbandon": 31,
-   "answered": 308,
+   "answered": 310,
    "other": 0,
    "transferred": 26
   },
@@ -47,21 +47,21 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 1354,
-   "ivr": 655,
+   "callIn": 1357,
+   "ivr": 651,
    "ringMissed": 1,
-   "queueAbandon": 83,
-   "answered": 615,
+   "queueAbandon": 87,
+   "answered": 618,
    "other": 0,
    "transferred": 0
   },
   {
    "service": "02160917278（4001616365）",
-   "callIn": 928,
+   "callIn": 931,
    "ivr": 331,
    "ringMissed": 11,
-   "queueAbandon": 78,
-   "answered": 535,
+   "queueAbandon": 79,
+   "answered": 537,
    "other": 0,
    "transferred": 27
   },
@@ -77,18 +77,18 @@
   },
   {
    "service": "88236602(其他渠道4000166088)",
-   "callIn": 698,
-   "ivr": 281,
-   "ringMissed": 8,
+   "callIn": 700,
+   "ivr": 283,
+   "ringMissed": 7,
    "queueAbandon": 41,
-   "answered": 378,
+   "answered": 379,
    "other": 0,
    "transferred": 10
   },
   {
    "service": "80409(奢侈品商家-门店验货报价)",
-   "callIn": 774,
-   "ivr": 774,
+   "callIn": 780,
+   "ivr": 780,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -117,13 +117,13 @@
   },
   {
    "service": "81198(上门按键转接)",
-   "callIn": 485,
-   "ivr": 274,
+   "callIn": 487,
+   "ivr": 275,
    "ringMissed": 8,
    "queueAbandon": 27,
-   "answered": 195,
+   "answered": 197,
    "other": 0,
-   "transferred": 19
+   "transferred": 20
   },
   {
    "service": "81791(81791)",
@@ -167,11 +167,11 @@
   },
   {
    "service": "81199(门店按键转接)",
-   "callIn": 419,
-   "ivr": 285,
+   "callIn": 425,
+   "ivr": 290,
    "ringMissed": 2,
    "queueAbandon": 26,
-   "answered": 106,
+   "answered": 107,
    "other": 0,
    "transferred": 0
   },
@@ -296,14 +296,24 @@
    "transferred": 0
   },
   {
-   "service": "合计",
-   "callIn": 13661,
-   "ivr": 10853,
-   "ringMissed": 45,
-   "queueAbandon": 338,
-   "answered": 2514,
+   "service": "88236632(帮卖)",
+   "callIn": 5,
+   "ivr": 5,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
    "other": 0,
-   "transferred": 89
+   "transferred": 0
+  },
+  {
+   "service": "合计",
+   "callIn": 13690,
+   "ivr": 10868,
+   "ringMissed": 44,
+   "queueAbandon": 343,
+   "answered": 2525,
+   "other": 0,
+   "transferred": 90
   }
  ],
  "signInAgents400": [],
@@ -311,11 +321,11 @@
   "list": [
    {
     "service": "4001581707(4001581707)",
-    "callIn": 1354,
-    "ivr": 655,
+    "callIn": 1357,
+    "ivr": 651,
     "ringMissed": 1,
-    "queueAbandon": 83,
-    "answered": 615,
+    "queueAbandon": 87,
+    "answered": 618,
     "other": 0,
     "transferred": 0
    },
@@ -330,10 +340,10 @@
     "transferred": 0
    }
   ],
-  "total": 1372,
-  "answered": 621,
-  "ivr": 666,
-  "connectRate": 93.8
+  "total": 1375,
+  "answered": 624,
+  "ivr": 662,
+  "connectRate": 93.53
  },
  "online": {
   "groups": [
@@ -353,14 +363,14 @@
    },
    {
     "name": "官网严选寄卖售后咨询",
-    "sessions": 182,
-    "assigned": 171,
-    "current": 14,
+    "sessions": 183,
+    "assigned": 172,
+    "current": 15,
     "max": 90,
-    "queue": 1,
+    "queue": 0,
     "onlineSeats": "3(陈可,刘梓爱,刘谊鸽)",
     "done": 157,
-    "answerRate": 93.96,
+    "answerRate": 93.99,
     "abandon": 11,
     "voicemail": 0,
     "satisfactionRate": 0
@@ -381,14 +391,14 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1052,
-    "assigned": 1011,
-    "current": 103,
+    "sessions": 1056,
+    "assigned": 1015,
+    "current": 105,
     "max": 90,
     "queue": 6,
     "onlineSeats": "3(陈可,刘梓爱,刘谊鸽)",
-    "done": 884,
-    "answerRate": 96.1,
+    "done": 886,
+    "answerRate": 96.12,
     "abandon": 41,
     "voicemail": 0,
     "satisfactionRate": 0
@@ -465,13 +475,13 @@
    },
    {
     "name": "寄卖商服",
-    "sessions": 299,
-    "assigned": 299,
+    "sessions": 301,
+    "assigned": 301,
     "current": 9,
     "max": 219,
     "queue": 0,
     "onlineSeats": "3( 张露,姬小倩,李昊泽)",
-    "done": 286,
+    "done": 288,
     "answerRate": 100,
     "abandon": 0,
     "voicemail": 0,
@@ -479,14 +489,14 @@
    },
    {
     "name": "官网严选自营售前咨询",
-    "sessions": 319,
-    "assigned": 310,
-    "current": 21,
+    "sessions": 322,
+    "assigned": 313,
+    "current": 23,
     "max": 90,
-    "queue": 4,
+    "queue": 3,
     "onlineSeats": "3(陈可,刘梓爱,刘谊鸽)",
-    "done": 288,
-    "answerRate": 97.18,
+    "done": 289,
+    "answerRate": 97.2,
     "abandon": 9,
     "voicemail": 0,
     "satisfactionRate": 0
@@ -507,17 +517,17 @@
    },
    {
     "name": "爱回收官网接待组",
-    "sessions": 667,
-    "assigned": 667,
-    "current": 21,
+    "sessions": 668,
+    "assigned": 668,
+    "current": 19,
     "max": 60,
     "queue": 0,
     "onlineSeats": "2(杨青,顾新)",
-    "done": 610,
+    "done": 613,
     "answerRate": 100,
     "abandon": 0,
     "voicemail": 0,
-    "satisfactionRate": 89.23
+    "satisfactionRate": 89.39
    }
   ],
   "fenlei": {
@@ -717,15 +727,6 @@
   "rate400": 82.1
  },
  "history": [
-  {
-   "ts": 1790148863669,
-   "skillRate400": 80.76,
-   "skillQueue400": 0,
-   "callIn400": 733,
-   "signIn400": 14,
-   "onlineSessions": 412,
-   "onlineSeat": 3
-  },
   {
    "ts": 1790149006394,
    "skillRate400": 80.71,
@@ -5210,6 +5211,15 @@
   },
   {
    "ts": 1790245055210,
+   "skillRate400": null,
+   "skillQueue400": 0,
+   "callIn400": 0,
+   "signIn400": 0,
+   "onlineSessions": 610,
+   "onlineSeat": 2
+  },
+  {
+   "ts": 1790245242921,
    "skillRate400": null,
    "skillQueue400": 0,
    "callIn400": 0,
