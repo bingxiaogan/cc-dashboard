@@ -1,17 +1,17 @@
 {
- "ts": 1790208931613,
- "collectedAtCn": "2026/9/24 08:15:31",
+ "ts": 1790209178838,
+ "collectedAtCn": "2026/9/24 08:19:38",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "5",
   "坐席忙碌数": "0 (0)",
-  "接通率": "7.25%",
+  "接通率": "8.13%",
   "满意率": "100.00%",
-  "呼入总数": "193",
-  "当前呼入数": "4",
-  "外呼总数": "12",
-  "当前外呼数": "0",
-  "呼入平均通话时长": "00:02:52",
+  "呼入总数": "209",
+  "当前呼入数": "7",
+  "外呼总数": "14",
+  "当前外呼数": "1",
+  "呼入平均通话时长": "00:02:30",
   "AI通话数": "0 (3)"
  },
  "skillGroups": [
@@ -22,12 +22,12 @@
    "members": "王轩,杨敏霞,马艳,张宇骁",
    "ring": 0,
    "queue": 0,
-   "todayAnswered": 7,
-   "missed": 0,
-   "rate": 100,
-   "total": 7,
-   "current": 1,
-   "avgDuration": "00:03:58",
+   "todayAnswered": 9,
+   "missed": 3,
+   "rate": 75,
+   "total": 12,
+   "current": 2,
+   "avgDuration": "00:03:15",
    "transferIn": 0,
    "transferOut": 0
   },
@@ -294,22 +294,22 @@
    "members": "王轩,杨敏霞,马艳,张宇骁",
    "ring": 0,
    "queue": 0,
-   "todayAnswered": 2,
-   "missed": 3,
-   "rate": 40,
+   "todayAnswered": 3,
+   "missed": 2,
+   "rate": 60,
    "total": 5,
    "current": 1,
-   "avgDuration": "00:01:46",
+   "avgDuration": "00:01:31",
    "transferIn": 0,
    "transferOut": 0
   }
  ],
  "skillSummary": {
   "idleSeats": 0,
-  "answered": 14,
-  "missed": 7,
-  "rate": 66.67,
-  "total": 21,
+  "answered": 17,
+  "missed": 9,
+  "rate": 65.38,
+  "total": 26,
   "queue": 0,
   "signIn": 5
  },
@@ -496,11 +496,11 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 95,
-   "ivr": 76,
+   "callIn": 103,
+   "ivr": 80,
    "ringMissed": 0,
-   "queueAbandon": 5,
-   "answered": 14,
+   "queueAbandon": 6,
+   "answered": 17,
    "other": 0,
    "transferred": 0
   },
@@ -736,8 +736,8 @@
   },
   {
    "service": "81198(上门按键转接)",
-   "callIn": 12,
-   "ivr": 12,
+   "callIn": 14,
+   "ivr": 14,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -1146,11 +1146,11 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 95,
-    "ivr": 76,
+    "callIn": 103,
+    "ivr": 80,
     "ringMissed": 0,
-    "queueAbandon": 5,
-    "answered": 14,
+    "queueAbandon": 6,
+    "answered": 17,
     "other": 0,
     "transferred": 0
    },
@@ -1165,10 +1165,10 @@
     "transferred": 0
    }
   ],
-  "total": 96,
-  "answered": 14,
-  "ivr": 77,
-  "connectRate": 94.79
+  "total": 104,
+  "answered": 17,
+  "ivr": 81,
+  "connectRate": 94.23
  },
  "online": {
   "groups": [],
@@ -1353,15 +1353,6 @@
   "rate400": 80.3
  },
  "history": [
-  {
-   "ts": 1790087902166,
-   "skillRate400": 54.55,
-   "skillQueue400": 0,
-   "callIn400": 33,
-   "signIn400": 1,
-   "onlineSessions": 799,
-   "onlineSeat": 0
-  },
   {
    "ts": 1790088014650,
    "skillRate400": 54.55,
@@ -5849,6 +5840,15 @@
    "skillRate400": 66.67,
    "skillQueue400": 0,
    "callIn400": 21,
+   "signIn400": 5,
+   "onlineSessions": null,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1790209178838,
+   "skillRate400": 65.38,
+   "skillQueue400": 0,
+   "callIn400": 26,
    "signIn400": 5,
    "onlineSessions": null,
    "onlineSeat": 0
