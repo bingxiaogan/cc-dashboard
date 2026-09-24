@@ -323,11 +323,8 @@ h1 em{font-style:normal;font-size:12px;font-weight:500;color:var(--tx3);letter-s
 #kOnline{grid-template-columns:minmax(214px,1.34fr) repeat(3,minmax(0,1fr))}
 #kTicket{grid-template-columns:minmax(198px,1.26fr) repeat(5,minmax(0,1fr))}
 @media(max-width:1240px){
-  #kOnline,#kTicket{grid-template-columns:repeat(3,minmax(0,1fr))}
-  .kpis.row .kpi.lead{grid-column:span 1;grid-row:auto;grid-column:1/-1}
-}
-@media(max-width:760px){
   #kOnline,#kTicket{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .kpis.row .kpi.lead{grid-column:auto;grid-row:auto}
 }
 @media(max-width:520px){
   #kOnline,#kTicket{grid-template-columns:1fr}
