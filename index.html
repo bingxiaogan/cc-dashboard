@@ -780,18 +780,28 @@ svg{display:block;width:100%;overflow:visible}
         </aside>
       </div>
 
-      <!-- 工单总量级 + 各类型量级（2026-09-24：板块最上面展示这两块；第二块按四类而非当前执行部门） -->
+      <!-- 工单总量级（2026-09-24：板块最上面，客诉 / 纠纷 / 申诉 / 舆情 四类并列） -->
       <div class="zone">
         <div class="zonetag"><i></i>工单总量级 <span>客诉 / 纠纷 / 申诉 / 舆情 四类并列 · 纠纷 = 投诉 − 客诉 · 快照随工单系统刷新（2 小时）</span></div>
         <div class="tktypes" id="tkTypeCards"></div>
       </div>
+
+      <!-- 升级时长分布（2026-09-24 用户要求：从「目前库存」移到「工单总量级」下方，
+           替代已删除的「各类型量级」板块。5 桶一排 · 点桶原地替换成下钻。） -->
       <div class="zone">
-        <div class="zonetag"><i></i>各类型量级 <span>按客诉 / 纠纷 / 申诉 / 舆情 四类聚合（不按当前执行部门）· 四类互斥，合计 = 工单总量级</span>
-          <span class="tkchips" data-chips="type"></span>
-        </div>
         <div class="panels">
           <div class="panel wide">
-            <div class="tblwrap"><table class="tbl" id="tkTypeTbl"></table></div>
+            <div class="phead">
+              <h3>升级时长分布</h3>
+              <span class="tkchips" data-chips="tb"></span>
+              <div class="lgd2">
+                <span><em class="sg-wait"></em>待分配</span>
+                <span><em class="sg-todo"></em>待处理</span>
+                <span><em class="sg-doing"></em>处理中</span>
+              </div>
+            </div>
+            <div class="tgrid" id="tkTimeBoxes"></div>
+            <div id="tkTimeDrill"></div>
           </div>
         </div>
       </div>
