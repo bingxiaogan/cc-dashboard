@@ -114,22 +114,8 @@ h1 em{font-style:normal;font-size:12px;font-weight:500;color:var(--tx3);letter-s
 .sec{--acc:var(--blue);--accs:96,165,250;margin-bottom:14px;scroll-margin-top:18px}
 .sec.online{--acc:var(--green);--accs:52,211,153}
 .sec.ticket{--acc:var(--purple);--accs:167,139,250}
-.sechead{
-  display:flex;align-items:center;gap:13px;padding:14px 20px;margin-bottom:16px;border-radius:var(--r);
-  background:linear-gradient(90deg,rgba(var(--accs),.13),rgba(var(--accs),.03) 46%,transparent);
-  border:1px solid rgba(var(--accs),.22);border-left:3px solid var(--acc);
-}
-.sechead .idx{
-  font-size:13px;font-weight:800;letter-spacing:.1em;color:var(--acc);
-  padding:3px 9px;border-radius:7px;background:rgba(var(--accs),.14);
-}
-.sechead h2{font-size:18px;font-weight:650;letter-spacing:.02em}
-.sechead .badge{
-  font-size:11px;padding:3px 10px;border-radius:20px;color:var(--acc);
-  background:rgba(var(--accs),.1);border:1px solid rgba(var(--accs),.26);letter-spacing:.04em;
-}
-.sechead .r{margin-left:auto;display:flex;gap:16px;font-size:12px;color:var(--tx2);flex-wrap:wrap}
-.sechead .r b{color:var(--tx);font-weight:600}
+/* 板块标题行（.sechead）已于 2026-09-24 整体删除：业务线标识交给顶部 tab 行，
+   切片器也挪到那一行右侧，省一行高度。 */
 
 /* ── 分区：实时 / 预测 ── */
 .zone{margin-bottom:16px}
@@ -144,9 +130,19 @@ h1 em{font-style:normal;font-size:12px;font-weight:500;color:var(--tx3);letter-s
 .zonetag .zfold>summary{padding:5px 12px}
 .zonetag .zfold[open]{flex:1 0 100%;margin-top:9px}
 
-/* ── 板块内切片器：实时数据及预测 / 30 天数据及预测（2026-09-24）── */
-.sechead .bseg{display:inline-flex;gap:4px;padding:4px;border-radius:12px;margin-left:auto;
+/* ── 切片器：实时数据及预测 / 30 天数据及预测（2026-09-24）
+   二次调整：从板块标题行挪到业务线 tab 行最右侧，板块标题整行删掉省空间 ── */
+.segbox{align-self:center;margin-left:auto;display:flex;align-items:center}
+.segbox .bseg{display:none;gap:4px;padding:4px;border-radius:12px;
   background:rgba(9,15,28,.5);border:1px solid var(--lin2)}
+.segbox[data-active="400"] .bseg[data-seg="400"],
+.segbox[data-active="online"] .bseg[data-seg="online"],
+.segbox[data-active="ticket"] .bseg[data-seg="ticket"]{display:inline-flex}
+@media(max-width:820px){
+  .segbox{width:100%;margin:10px 0 0;align-self:auto}
+  .segbox .bseg{flex:1}
+  .segbox .sg{flex:1;text-align:center}
+}
 .bseg .sg{
   font:inherit;font-size:12.5px;font-weight:600;letter-spacing:.01em;cursor:pointer;white-space:nowrap;
   padding:7px 16px;border-radius:9px;border:1px solid transparent;background:none;color:var(--tx3);transition:.16s;
@@ -438,18 +434,24 @@ svg{display:block;width:100%;overflow:visible}
     <button class="tab ttk" data-pane="ticket" role="tab" aria-selected="false">
       <span class="ti">03</span><span class="tn">工单</span><span class="tm" id="tabTicket">–</span>
     </button>
-  </nav>
-
-  <!-- ═══ 01 400 ═══ -->
-  <section class="sec pane active" id="s400" data-pane="400" role="tabpanel">
-    <div class="sechead">
-      <span class="idx">01</span>
-      <h2>400 电话</h2>
+    <div class="segbox" id="segBox" data-active="400" role="presentation">
       <div class="bseg" data-seg="400" role="tablist" aria-label="400 数据切片">
         <button class="sg on" data-view="live" role="tab" aria-selected="true">实时数据及预测</button>
         <button class="sg" data-view="d30" role="tab" aria-selected="false">30 天数据及预测</button>
       </div>
+      <div class="bseg" data-seg="online" role="tablist" aria-label="在线数据切片">
+        <button class="sg on" data-view="live" role="tab" aria-selected="true">实时数据及预测</button>
+        <button class="sg" data-view="d30" role="tab" aria-selected="false">30 天数据及预测</button>
+      </div>
+      <div class="bseg" data-seg="ticket" role="tablist" aria-label="工单数据切片">
+        <button class="sg on" data-view="live" role="tab" aria-selected="true">实时数据及预测</button>
+        <button class="sg" data-view="d30" role="tab" aria-selected="false">30 天数据及预测</button>
+      </div>
     </div>
+  </nav>
+
+  <!-- ═══ 01 400 ═══ -->
+  <section class="sec pane active" id="s400" data-pane="400" role="tabpanel">
 
     <!-- 切片 ① 实时数据及预测 -->
     <div class="view on" data-view="live">
@@ -542,14 +544,6 @@ svg{display:block;width:100%;overflow:visible}
 
   <!-- ═══ 02 在线 ═══ -->
   <section class="sec online pane" id="sOnline" data-pane="online" role="tabpanel">
-    <div class="sechead">
-      <span class="idx">02</span>
-      <h2>在线客服</h2>
-      <div class="bseg" data-seg="online" role="tablist" aria-label="在线数据切片">
-        <button class="sg on" data-view="live" role="tab" aria-selected="true">实时数据及预测</button>
-        <button class="sg" data-view="d30" role="tab" aria-selected="false">30 天数据及预测</button>
-      </div>
-    </div>
 
     <!-- 切片 ① 实时数据及预测 -->
     <div class="view on" data-view="live">
@@ -624,14 +618,6 @@ svg{display:block;width:100%;overflow:visible}
 
   <!-- ═══ 03 工单 ═══ -->
   <section class="sec ticket pane" id="sTicket" data-pane="ticket" role="tabpanel">
-    <div class="sechead">
-      <span class="idx">03</span>
-      <h2>工单</h2>
-      <div class="bseg" data-seg="ticket" role="tablist" aria-label="工单数据切片">
-        <button class="sg on" data-view="live" role="tab" aria-selected="true">实时数据及预测</button>
-        <button class="sg" data-view="d30" role="tab" aria-selected="false">30 天数据及预测</button>
-      </div>
-    </div>
 
     <!-- 切片 ① 实时数据及预测 -->
     <div class="view on" data-view="live">
@@ -2192,7 +2178,8 @@ function showSeg(sec, v) {
   const root = document.querySelector('.sec[data-pane="' + sec + '"]');
   if (!root) return;
   root.querySelectorAll('.view').forEach(el => el.classList.toggle('on', el.dataset.view === v));
-  root.querySelectorAll('.bseg .sg').forEach(b => {
+  const seg = document.querySelector('.segbox .bseg[data-seg="' + sec + '"]');
+  if (seg) seg.querySelectorAll('.sg').forEach(b => {
     const a = b.dataset.view === v;
     b.classList.toggle('on', a);
     b.setAttribute('aria-selected', a ? 'true' : 'false');
@@ -2205,6 +2192,8 @@ function showPane(key, opt) {
   const k = PANE_ORDER.indexOf(key) >= 0 ? key : '400';
   CUR = k;
   $$('.pane').forEach(p => p.classList.toggle('active', p.dataset.pane === k));
+  const segBox = $('#segBox');            // 切片器跟着业务线走（2026-09-24）
+  if (segBox) segBox.dataset.active = k;
   $$('.tab').forEach(t => {
     const a = t.dataset.pane === k;
     t.classList.toggle('active', a);
