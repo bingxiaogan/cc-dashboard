@@ -2185,6 +2185,12 @@ function onlSlotShape() {
   const tot = {};
   ds.forEach(d => (h[d] || []).forEach(x => {
     const k = String(x.t).slice(0, 5);
+    /* 预测只铺在线工作时间 09:00–21:00（2026-09-24 用户要求「在线的工作时间就是 9-21」）。
+       会话是 7×24 进来的，源数据含 07:00–08:30 与 21:00–23:00 的零星段（实测占全天 5%~11%），
+       这些段不单列 —— 但量不丢：分母改用**窗口内**总量，等于把窗口外的会话按窗口内形状摊入，
+       「该日分时段预测」合计仍 = 预估接待量。 */
+    const m = (+k.slice(0, 2)) * 60 + (+k.slice(3, 5));
+    if (!(m >= ONL_FROM && m < ONL_TO)) return;
     tot[k] = (tot[k] || 0) + (+x.total || 0);
   }));
   const slots = Object.keys(tot).sort();
@@ -2299,11 +2305,11 @@ function renderOnlineDetail() {
   const fold = shp ? `<details class="fold" id="onlDayFold">
        <summary>
          <span class="ft">该日分时段预测</span>
-         <span class="fh">每半小时接待量 + 人力安排（所需 / 在线坐席 / 实到 / 差额 / 餐点）· 共 ${nSlot} 段</span>
+         <span class="fh">每半小时接待量 + 人力安排（所需 / 在线坐席 / 实到 / 差额 / 餐点）· 在线工作时间 09:00–21:00 · 共 ${nSlot} 段</span>
          <span class="fchev"></span>
        </summary>
        <div class="fbody">
-         <div class="subhead">该日每半小时预测接待量 <span>预估接待量 × 时段形状占比（近 ${shp.n} 日同时段）</span></div>
+         <div class="subhead">该日每半小时预测接待量 <span>仅在线工作时间 09:00–21:00 · 预估接待量 × 时段形状占比（近 ${shp.n} 日同时段）</span></div>
          <div id="chOnlDay"></div>
          <div class="subhead">该日分时段人力安排 <span>所需 = 预测接待量 ÷ ${CAP} 会话/人时 × 0.5h · 人力向上取整 · 在线坐席取当日班表出勤 ${seatsFlat == null ? '（未出表）' : seatsFlat + ' 人'} · 差额 = 实到 − 所需${ros ? '' : ' · 班表未出，「在线坐席 / 实到 / 差额 / 餐点」留空'}</span></div>
          <div class="tblwrap"><table class="tbl"><thead><tr>
