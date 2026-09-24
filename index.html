@@ -580,7 +580,7 @@ svg{display:block;width:100%;overflow:visible}
               <span class="hint" id="note400hh"></span>
             </div>
             <div id="ch400hh"></div>
-            <div class="subhead">每半小时接通率 <span>接通量 ÷ 转人工量</span>
+            <div class="subhead">每半小时接通率 <span>接通量 ÷ 转人工量 · 8:00–9:00 为参考值</span>
               <div class="lgd">
                 <span><em style="background:#22d3ee"></em>实际</span>
                 <span><em style="background:#a78bfa"></em>同时段基准（近 7 日）</span>
@@ -1422,7 +1422,7 @@ function renderHh400() {
   const liveSum = act.reduce((s, v, i) => s + (v == null || refBar[i] ? 0 : v), 0);
   const nSeg = [];
   if (nFill) nSeg.push(`现场表补位 ${nFill} 段 ${n0(sFill)} 通`);
-  if (nRef) nSeg.push(`8:00–9:00 参考 ${nRef} 段 ${n0(sRef)} 通（无采集源，取近 4 个同星期几均值）`);
+  if (nRef) nSeg.push(`8:00–9:00 参考 ${nRef} 段（无采集源，转人工 ${n0(sRef)} 通 + 接通率均取近 4 个同星期几均值）`);
   $('#note400hh').textContent = isToday
     ? `实时 ${nLive}/${keys.length} 段 · 转人工 ${n0(liveSum)} 通` +
       (nSeg.length ? ` · ${nSeg.join(' · ')}` : '') +
