@@ -1527,12 +1527,12 @@ function renderStrategyOnline(o) {
   /* ④ 未来 7 天峰值 */
   if (fcAll.length) {
     const mx = fcAll.slice().sort((x, y) => y.v - x.v)[0];
-    const lastReal = ((D.tr && D.tr.days) || []).map(d => (D.tr.online || {})[d]).filter(v => v != null).pop();
+    const lastReal = onlLastFull();
     const hi = lastReal && mx.v > lastReal * 1.15;
     items.push({
       tag: '未来', cls: hi ? 'slot' : 'good',
       html: `未来 7 天峰值在 <b>${mx.date.slice(5)} ${mx.wd}</b>，预估 <b>${n0(mx.v)}</b> 会话（${mx.need} 人日 / 建议单班 ${mx.hc} 人）。` +
-        (hi ? '高于当前水平，建议提前排够在线班次。' : '与当前水平相当，按常规排班即可。')
+        (hi ? '高于上一完整日，建议提前排够在线班次。' : '与上一完整日相当，按常规排班即可。')
     });
   }
 
@@ -1964,6 +1964,15 @@ function onlineForecastPlain() {
   return fc;
 }
 
+/* 在线「当前水平」基线 = 最近一个**完整日**的接待量。
+   ⚠️ daily_trend 里今天的值是服务端用 chat_halfhour 实时注入的**半日**数据（例如 13:00 只有 285），
+      直接拿它跟「整日预测」比会得出「高于现水平 140%」这种失真结论 —— 所以基线退到倒数第二个非空日。 */
+function onlLastFull() {
+  const v = ((D.tr && D.tr.days) || []).map(d => (D.tr.online || {})[d]).filter(x => x != null);
+  if (!v.length) return null;
+  return v.length >= 2 ? v[v.length - 2] : v[v.length - 1];
+}
+
 /* 偏差文案：与基线比，<5% 记作持平；高于用暖色、低于用绿色 */
 function devHtml(actual, base, who) {
   if (actual == null || !base) return '<span style="color:var(--tx3)">待采集</span>';
@@ -2000,7 +2009,7 @@ function renderOnlinefc() {
     wrap.innerHTML = '<div class="empty">历史样本不足，暂不外推</div>';
     $('#onlineSlicer').innerHTML = ''; $('#onlineDetail').innerHTML = ''; return;
   }
-  const lastReal = ((D.tr && D.tr.days) || []).map(d => (D.tr.online || {})[d]).filter(v => v != null).pop();
+  const lastReal = onlLastFull();
   // 先定好选中日，表格才能一次画对高亮行（renderOnlineSlicer 里同样的兜底是幂等的）
   if (!PICK_ONLINE || !fc.some(f => f.date === PICK_ONLINE)) PICK_ONLINE = fc[0].date;
   $('#noteOnlinefc').textContent = '按星期几基准 × 近 7 天水平因子外推 · 驱动模型待建';
@@ -2036,17 +2045,45 @@ function renderOnlineSlicer() {
   const box = $('#onlineSlicer'), det = $('#onlineDetail');
   if (!fc.length) { box.innerHTML = ''; det.innerHTML = ''; return; }
   if (!PICK_ONLINE || !fc.some(f => f.date === PICK_ONLINE)) PICK_ONLINE = fc[0].date;
-  const lastReal = ((D.tr && D.tr.days) || []).map(d => (D.tr.online || {})[d]).filter(v => v != null).pop();
+  const lastReal = onlLastFull();
   // 格内小字：建议单班人数；高于当前水平的日子标红点
   const mk = f => {
     const hi = lastReal && f.v > lastReal * 1.15;
     return `${f.hc ? `<i class="${hi ? 'cg' : 'ch'}">${f.hc}人</i>` : ''}`;
   };
   box.innerHTML = calHtml(fc, PICK_ONLINE, todayCn(), mk,
-    lastReal ? `红线 = 高于当前 ${n0(lastReal)}` : '', 'online');
+    lastReal ? `红线 = 高于上一完整日 ${n0(lastReal)}` : '', 'online');
   const pk = fc.find(x => x.date === PICK_ONLINE) || {};
   if ($('#calPickOnline')) $('#calPickOnline').textContent = `${PICK_ONLINE.slice(5)} ${pk.wd || ''} · 点日期或点下方表格行`;
   renderOnlineDetail();
+}
+
+/* ── 在线产能与在班窗口（须与 fetch_online_schedule.py 的 EFF / 在班时段一致）── */
+const ONL_CAP_HOUR = 30;             // 会话/人时（2026-09-11 由 35 下调为 30）
+const ONL_FROM = 9 * 60, ONL_TO = 21 * 60;   // 在线班表在班窗口 09:00–21:00（12h）
+
+/* 在线分时段形状：近 7 日同时段接待量占比（排除今天）。
+   ⚠️ 会话没有 400 那样的外部形状文件（400_shape.share_turn 是**转人工量**的形状），
+      在线形状只能从 chat_halfhour.history 里现算 —— 两套形状口径不同，不要互相套用。 */
+function onlSlotShape() {
+  const h = (D.hhon && D.hhon.history) || {};
+  const ds = Object.keys(h).sort().filter(d => d !== todayCn()).slice(-7);
+  if (ds.length < 3) return null;
+  const tot = {};
+  ds.forEach(d => (h[d] || []).forEach(x => {
+    const k = String(x.t).slice(0, 5);
+    tot[k] = (tot[k] || 0) + (+x.total || 0);
+  }));
+  const slots = Object.keys(tot).sort();
+  const all = slots.reduce((a, k) => a + tot[k], 0);
+  if (!all) return null;
+  const share = {}; slots.forEach(k => share[k] = tot[k] / all);
+  return { slots, share, n: ds.length };
+}
+/* 该日在线的出勤人员：来自飞书「9月班表」在线区块（online_schedule.json）；没出表就返回 null */
+function onlRoster(dateIso) {
+  const s = (D.osch || {})[dateIso];
+  return (s && Array.isArray(s.people) && s.people.length) ? s.people : null;
 }
 
 function renderOnlineDetail() {
@@ -2054,20 +2091,135 @@ function renderOnlineDetail() {
   const f = fc.find(x => x.date === PICK_ONLINE);
   const box = $('#onlineDetail');
   if (!f) { box.innerHTML = ''; return; }
-  const CAP = 30, HOURS = 12;
-  const lastReal = ((D.tr && D.tr.days) || []).map(d => (D.tr.online || {})[d]).filter(v => v != null).pop();
+  const CAP = ONL_CAP_HOUR, HOURS = 12;
+  const lastReal = onlLastFull();
   const hi = lastReal && f.v > lastReal * 1.15;
   const stats = [
     ['预估接待量', n0(f.v) + '<small>会话</small>', '星期几基准 × 近 7 天因子'],
-    ['对比当前水平', lastReal ? n0(lastReal) : '–', lastReal ? devHtml(f.v, lastReal, '现水平') : '–'],
+    ['对比上一完整日', lastReal ? n0(lastReal) : '–', lastReal ? devHtml(f.v, lastReal, '上一完整日') : '–'],
     ['所需人力', f.need + '<small>人日</small>', `按 ${CAP} 会话/人时 · ${HOURS}h 窗口`],
     ['建议单班人数', f.hc + '<small>人</small>', '按 11h 覆盖窗口折算'],
     ['覆盖窗口', '09:00–21:00', '窗口外预计量极低']
   ];
+
+  /* ── 该日分时段预测（2026-09-24 与 400 同口径：量 × 形状 → 所需人力 → 实到 → 差额 + 餐点）──
+     所需 = 预测接待量 ÷（30 会话/人时 × 0.5h），人力一律向上取整
+     在线坐席 = 该日出勤人数（班表只在班窗口内计在岗，窗口外为 0）
+     实到 = 在线坐席 − 用餐 · 差额 = 实到 − 所需 */
+  const shp = onlSlotShape();
+  const ros = onlRoster(f.date);
+  const seatsFlat = ros ? ros.length : null;
+  let tableRows = '', mealCard = '', chartData = null, nSlot = 0;
+
+  if (!shp) {
+    mealCard = '';
+    tableRows = '';
+  } else {
+    const cells = shp.slots.map(k => {
+      const v = Math.round(f.v * shp.share[k]);
+      const need = hcn(v / (CAP * 0.5));
+      const m = (+k.slice(0, 2)) * 60 + (+k.slice(3, 5));
+      const seats = seatsFlat == null ? null : (m >= ONL_FROM && m < ONL_TO ? seatsFlat : 0);
+      return { k, v, need, seats };
+    });
+    nSlot = cells.length;
+    chartData = cells.map(c => c.v);
+
+    /* 错峰排餐：权重 = 0.4 + max(0, 在岗 − 需求)，与 400 同一套算法 */
+    const baseW = {};
+    cells.forEach(c => { baseW[slotFullKey(c.k)] = MEAL_SLACK_FLOOR + Math.max(0, (c.seats || 0) - (c.need || 0)); });
+    const mp = ros ? mealPlanOfDay(ros.map(p => p.name), baseW) : null;
+    const mealAt = {};
+    if (mp) MEAL_WINS.forEach(w => {
+      const g = mp[w.key];
+      g.slots.forEach(s => {
+        const who = g.map[s] || [];
+        if (who.length) mealAt[s] = { n: who.length, who, win: w.name };
+      });
+    });
+
+    tableRows = cells.map(c => {
+      const mm = mealAt[slotFullKey(c.k)];
+      const mNow = mm ? mm.n : 0;
+      const avail = c.seats == null ? null : Math.max(0, c.seats - mNow);
+      const gap = (c.need != null && avail != null) ? avail - c.need : null;
+      const noMealGap = (c.need != null && c.seats != null) ? c.seats - c.need : null;
+      const gp = gap == null ? '<span class="pill b">–</span>'
+        : gap < 0 ? `<span class="pill r">${gap}</span>`
+          : gap > 0 ? `<span class="pill g">+${gap}</span>` : '<span class="pill b">0</span>';
+      const byMeal = (gap != null && gap < 0 && noMealGap != null && noMealGap >= 0)
+        ? ' <i class="mnote">用餐所致</i>' : '';
+      const note = mm ? `用餐${mm.n}人：${mm.who.join('、')}` : '–';
+      return `<tr><td class="v">${c.k}</td><td>${n0(c.v)}</td><td class="v">${c.need == null ? '–' : c.need}</td>
+        <td>${c.seats == null ? '–' : c.seats}</td><td>${avail == null ? '–' : avail}</td><td>${gp}${byMeal}</td>
+        <td>${note}</td></tr>`;
+    }).join('');
+
+    /* 餐点安排块（与 400 同版式，折叠收起也能看见） */
+    if (!ros) mealCard = `<div class="mealbox">
+        <div class="mealttl">餐点安排<span>错峰排餐 · 尽量不影响接待</span></div>
+        <div class="mealwin"><em>该日在线班表未出（飞书「9月班表」只到 ${esc(Object.keys(D.osch || {}).sort().pop() || '—')}），餐点待排班确定后再排</em></div>
+      </div>`;
+    else {
+      const grp = MEAL_WINS.map(w => {
+        const g = mp[w.key];
+        const tot = g.slots.reduce((a, s) => a + (g.map[s] || []).length, 0);
+        const seg = g.slots.filter(s => (g.map[s] || []).length).length;
+        const items = g.slots.map(s => {
+          const who = g.map[s] || [];
+          if (!who.length) return '';
+          return `<li><b>${s}</b><span>${who.join('、')}</span></li>`;
+        }).filter(Boolean).join('');
+        return `<div class="mealgrp">
+            <div class="mealgh"><b>${w.name}</b><em>${g.from}–${g.to}</em><i>${tot} 人 · ${seg} 段</i></div>
+            <ul class="meallist">${items || '<li><span class="non">该餐未排人</span></li>'}</ul>
+          </div>`;
+      }).join('');
+      mealCard = `<div class="mealbox">
+          <div class="mealttl">餐点安排<span>错峰排餐 · 尽量不影响接待 · 当日在线 ${ros.length} 人</span></div>
+          <div class="mealgrid">${grp}</div>
+          <div class="mealnote">按各时段空闲度错峰 —— 冗余大的时段多排、紧张的少排；各段人数定好后按名单顺序沿时间落位，第一餐吃得早的人第二餐同样早。</div>
+        </div>`;
+    }
+  }
+
+  const fold = shp ? `<details class="fold" id="onlDayFold">
+       <summary>
+         <span class="ft">该日分时段预测</span>
+         <span class="fh">每半小时接待量 + 人力安排（所需 / 在线坐席 / 实到 / 差额 / 餐点）· 共 ${nSlot} 段</span>
+         <span class="fchev"></span>
+       </summary>
+       <div class="fbody">
+         <div class="subhead">该日每半小时预测接待量 <span>预估接待量 × 时段形状占比（近 ${shp.n} 日同时段）</span></div>
+         <div id="chOnlDay"></div>
+         <div class="subhead">该日分时段人力安排 <span>所需 = 预测接待量 ÷ ${CAP} 会话/人时 × 0.5h · 人力向上取整 · 在线坐席取当日班表出勤 ${seatsFlat == null ? '（未出表）' : seatsFlat + ' 人'} · 差额 = 实到 − 所需${ros ? '' : ' · 班表未出，「在线坐席 / 实到 / 差额 / 餐点」留空'}</span></div>
+         <div class="tblwrap"><table class="tbl"><thead><tr>
+           <th>时段</th><th>预测接待量</th><th>所需人力</th><th>在线坐席</th><th>实到</th><th>差额</th><th>餐点安排</th>
+         </tr></thead><tbody>${tableRows}</tbody></table></div>
+       </div>
+     </details>`
+    : `<div class="mealbox" style="border-left-color:var(--tx3)"><em>在线分时段形状样本不足（需近 7 日 ≥3 天历史），暂不出该日分时段预测</em></div>`;
+
   box.innerHTML =
-    `<div class="dhead"><b>${f.date}</b><span>${f.wd}</span>${hi ? '<span class="pill y">高于现水平</span>' : ''}
+    `<div class="dhead"><b>${f.date}</b><span>${f.wd}</span>${hi ? '<span class="pill y">高于上一完整日</span>' : ''}
        <span style="margin-left:auto;font-size:11px;color:var(--tx3)">在线预测 · 驱动模型待建</span></div>
-     <div class="dgrid">${stats.map(s => `<div class="dstat"><div class="dk">${s[0]}</div><div class="dv">${s[1]}</div><div class="ds">${s[2]}</div></div>`).join('')}</div>`;
+     <div class="dgrid">${stats.map(s => `<div class="dstat"><div class="dk">${s[0]}</div><div class="dv">${s[1]}</div><div class="ds">${s[2]}</div></div>`).join('')}</div>
+     ${mealCard}${fold}`;
+
+  /* ⚠️ 折叠态容器宽为 0，SVG 会按 0 宽画歪 —— 展开时才绘制（与 400 dayFold 同一处理） */
+  const fd = $('#onlDayFold');
+  if (fd) {
+    const draw = () => {
+      const el = $('#chOnlDay');
+      if (!el || !chartData) return;
+      drawBar(el, {
+        labels: shp.slots, data: chartData, h: 158, color: 'rgba(52,211,153,.6)',
+        tipFmt: v => n0(v) + ' 会话', showVals: true, valFmt: v => n0(v)
+      });
+    };
+    fd.addEventListener('toggle', () => { if (fd.open) draw(); });
+    if (fd.open) draw();
+  }
 }
 
 /* ══════════════════ 03 工单 ══════════════════ */
@@ -2125,7 +2277,7 @@ function renderTicket(tk) {
     `<tr><td class="v">合计</td>${buckets.map(b => `<td class="v">${n0(bt[b])}</td>`).join('')}<td class="v">${n0(tk.grand_total)}</td></tr></tbody>`;
 
   renderStrategyTicket({ tk, fc, bt, st, overN, over48, over96, in24, city, endStk, diff });
-  renderTicketDetail(tk);
+  renderTicketBreakdown(tk);
 }
 
 /* ── 工单·客诉处理明细：升级时长（可下钻）/ 投诉类型大类 / 完整场景 TOP 10 / 预警 ──
@@ -2162,7 +2314,7 @@ function tkStack(rows) {
   }).join('');
 }
 
-function renderTicketDetail(tk) {
+function renderTicketBreakdown(tk) {
   if (!tk) return;
   const tb = tk.time_buckets || {};
 
@@ -2420,7 +2572,7 @@ function renderTicketDetail() {
 }
 
 /* ══════════════════ 切片器 ══════════════════ */
-const D = { cc: null, tk: null, tr: null, plan: null, hh: null, hhon: null, tt: null, shape: null, hrate: null, drate: null, ready: false };
+const D = { cc: null, tk: null, tr: null, plan: null, hh: null, hhon: null, tt: null, shape: null, hrate: null, drate: null, osch: null, ready: false };
 const PANE_ORDER = ['400', 'online', 'ticket'];
 const PANE_FN = {
   '400': () => { render400(); render400fc(D.plan); },
@@ -2511,7 +2663,7 @@ function applyLiveCorrection() {
 
 async function load() {
   const btn = $('#btnRefresh'); btn.disabled = true; btn.textContent = '刷新中…';
-  const [cc, tk, tr, plan, hh, hhon, tt, shape, hrate, drate] = await Promise.all([
+  const [cc, tk, tr, plan, hh, hhon, tt, shape, hrate, drate, osch] = await Promise.all([
     jget('stats.json', 'http://127.0.0.1:8601/stats.json'),
     jget('/ticket-stats', 'ticket_stats.json'),
     jget('/daily_trend.json', 'daily_trend.json'),
@@ -2521,10 +2673,11 @@ async function load() {
     jget('ticket_trend.json'),
     jget('forecast/400_shape.json'),
     jget('forecast/hh_rate.json'),
-    jget('forecast/daily_rate.json')
+    jget('forecast/daily_rate.json'),
+    jget('online_schedule.json')          // 在线班表（出勤名单 + 工时），供在线分时段预测/排餐
   ]);
   D.cc = cc; D.tk = tk; D.tr = tr; D.plan = plan; D.hh = hh; D.hhon = hhon; D.tt = tt;
-  D.shape = shape; D.hrate = hrate; D.drate = drate; D.ready = true;
+  D.shape = shape; D.hrate = hrate; D.drate = drate; D.osch = osch; D.ready = true;
   applyLiveCorrection();             // 用看板实测系数把预测拉回实测水平
   updateTabs();
   PANE_FN[CUR]();                    // 只重绘当前切片，切走时再按需绘制
@@ -2600,12 +2753,12 @@ $('#tkTimeBoxes').addEventListener('click', e => {
   const b = e.target.closest('[data-tb]');
   if (!b) return;
   TK_TIME_PICK = (TK_TIME_PICK === b.dataset.tb) ? null : b.dataset.tb;
-  renderTicketDetail(D.tk);
+  renderTicketBreakdown(D.tk);
 });
 $('#tkTimeDrill').addEventListener('click', e => {
   if (!e.target.closest('[data-tbclose]')) return;
   TK_TIME_PICK = null;
-  renderTicketDetail(D.tk);
+  renderTicketBreakdown(D.tk);
 });
 /* 浮层日历：点外部 / 按 Esc 收起（点 summary 本身走 details 原生 toggle，不拦） */
 document.addEventListener('click', e => {
