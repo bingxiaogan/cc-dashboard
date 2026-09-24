@@ -438,6 +438,51 @@ svg{display:block;width:100%;overflow:visible}
   .tab .tm{min-width:0}
   .kpi .kv{font-size:31px}
 }
+
+/* ══ 工单·客诉处理明细（2026-09-24 从旧工单看板迁回：升级时长 / 大类 / 场景 / 预警）══ */
+/* 堆叠条颜色沿用旧看板口径：红=待分配 · 黄=待处理 · 绿=处理中 */
+.sg-wait{background:var(--red)} .sg-todo{background:var(--amber)} .sg-doing{background:var(--green)}
+.lgd2{display:flex;gap:12px;font-size:11px;color:var(--tx3);flex-wrap:wrap}
+.lgd2 span{display:flex;align-items:center;gap:5px}
+.lgd2 em{width:9px;height:9px;border-radius:3px;display:block;font-style:normal}
+.tgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(126px,1fr));gap:9px}
+.tbox{
+  padding:10px 12px 9px;border-radius:11px;border:1px solid var(--line);
+  background:rgba(126,166,226,.045);cursor:pointer;transition:.16s;
+}
+.tbox:hover{border-color:rgba(var(--accs),.42);transform:translateY(-2px)}
+.tbox.on{border-color:rgba(var(--accs),.62);background:rgba(var(--accs),.11)}
+.tbox .tl{font-size:11.5px;color:var(--tx3);white-space:nowrap}
+.tbox .tn{font-size:25px;font-weight:640;letter-spacing:-.02em;margin-top:3px;line-height:1.1}
+.tbox .ts{font-size:11px;color:var(--tx3);margin-top:4px;font-variant-numeric:tabular-nums}
+.tbox .ts b{font-weight:600}
+.tbox.t1 .tn{color:var(--green)} .tbox.t2 .tn{color:var(--tx)}
+.tbox.t3 .tn{color:var(--amber)} .tbox.t4 .tn{color:#fb923c} .tbox.t5 .tn{color:var(--red)}
+.stk{display:flex;flex-direction:column;gap:7px}
+.stk .sr{display:grid;grid-template-columns:minmax(0,196px) 1fr 52px 104px;align-items:center;gap:10px}
+.stk .sn{font-size:12px;color:var(--tx2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.stk .sb{height:15px;border-radius:4px;background:var(--lin2);overflow:hidden;display:flex}
+.stk .sb i{display:block;height:100%}
+.stk .sv{text-align:right;font-size:12.5px;font-weight:620;color:var(--tx);font-variant-numeric:tabular-nums}
+.stk .sd{text-align:right;font-size:11px;color:var(--tx3);font-variant-numeric:tabular-nums;white-space:nowrap}
+.stk .sd b{font-weight:600}
+.drill{margin-top:12px;padding:11px 13px 12px;border-radius:11px;border:1px solid var(--line);background:rgba(126,166,226,.035)}
+.drill .dh{display:flex;align-items:center;gap:9px;font-size:12.5px;color:var(--tx2);flex-wrap:wrap}
+.drill .dh b{color:var(--tx);font-weight:640}
+.drill .dh button{margin-left:auto}
+.drill .dsec{font-size:11.5px;color:var(--tx3);letter-spacing:.04em;margin:11px 0 7px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip2{
+  display:inline-flex;align-items:center;gap:9px;padding:6px 11px;border-radius:9px;font-size:11.5px;
+  color:var(--tx2);background:rgba(248,113,113,.07);border:1px solid rgba(248,113,113,.26);
+}
+.chip2 .ct{font-weight:640;color:var(--red);font-size:14px;font-variant-numeric:tabular-nums}
+.chip2.z{background:rgba(126,166,226,.045);border-color:var(--line)}
+.chip2.z .ct{color:var(--tx3)}
+@media(max-width:820px){
+  .stk .sr{grid-template-columns:minmax(0,132px) 1fr 46px 84px;gap:8px}
+  .stk .sn{font-size:11.5px}
+}
 </style>
 </head>
 <body>
@@ -699,6 +744,43 @@ svg{display:block;width:100%;overflow:visible}
           <div class="panel wide">
             <div class="phead"><h3>状态 × 工单池</h3><span class="hint" id="noteTicketmx"></span></div>
             <div class="tblwrap"><table class="tbl" id="tkMatrix"></table></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 客诉处理明细（2026-09-24 从旧工单看板迁回）：升级时长 / 投诉类型大类 / 完整场景 / 预警 -->
+      <div class="zone">
+        <div class="zonetag"><i></i>客诉处理明细 <span>执行部门 = 客诉客服 · 快照随工单系统刷新（2 小时）· 点时长桶可下钻场景</span></div>
+        <div class="panels">
+          <div class="panel">
+            <div class="phead">
+              <h3>升级时长分布</h3>
+              <div class="lgd2">
+                <span><em class="sg-wait"></em>待分配</span>
+                <span><em class="sg-todo"></em>待处理</span>
+                <span><em class="sg-doing"></em>处理中</span>
+              </div>
+            </div>
+            <div class="tgrid" id="tkTimeBoxes"></div>
+            <div id="tkTimeDrill"></div>
+          </div>
+          <div class="panel">
+            <div class="phead">
+              <h3>投诉类型大类</h3>
+              <div class="lgd2">
+                <span><em class="sg-wait"></em>待分配</span>
+                <span><em class="sg-todo"></em>待处理</span>
+                <span><em class="sg-doing"></em>处理中</span>
+              </div>
+              <span class="hint" id="noteTkTop"></span>
+            </div>
+            <div class="stk" id="tkTopChart"></div>
+            <div class="subhead" style="margin-top:14px">完整场景 TOP 10 <span>按量级降序 · 右侧为 待分配/待处理/处理中</span></div>
+            <div class="stk" id="tkLeafList"></div>
+          </div>
+          <div class="panel wide">
+            <div class="phead"><h3>预警场景 · 单量</h3><span class="hint">风控类 &amp; 活动风控 5 类 · 量级归零后删除</span></div>
+            <div class="chips" id="tkAlerts"></div>
           </div>
         </div>
       </div>
@@ -2043,6 +2125,91 @@ function renderTicket(tk) {
     `<tr><td class="v">合计</td>${buckets.map(b => `<td class="v">${n0(bt[b])}</td>`).join('')}<td class="v">${n0(tk.grand_total)}</td></tr></tbody>`;
 
   renderStrategyTicket({ tk, fc, bt, st, overN, over48, over96, in24, city, endStk, diff });
+  renderTicketDetail(tk);
+}
+
+/* ── 工单·客诉处理明细：升级时长（可下钻）/ 投诉类型大类 / 完整场景 TOP 10 / 预警 ──
+   数据全部来自工单系统快照 D.tk（= D:/ticket-monitor/stats.json），口径与旧工单看板一致：
+   · 只统计「客诉处理」量级 = 投诉工单 + 用户申诉工单，当前执行部门 = 客诉客服
+   · 升级时长 = 24h − 剩余倒计时（入库即计时）；倒计时归零后继续累加
+     24h 一组累计包含：24h内 / 24h以上 / 48h以上 / 72h以上 / 96h以上
+   · 堆叠条：红=待分配 · 黄=待处理 · 绿=处理中（沿用旧看板配色，勿改） */
+const TK_ORDER = ['待分配', '待处理', '处理中'];
+const TK_COLOR = { '待分配': 'var(--red)', '待处理': 'var(--amber)', '处理中': 'var(--green)' };
+const TK_TB_ORDER = ['24h内', '24h以上', '48h以上', '72h以上', '96h以上'];
+const TK_TB_NAME = {
+  '24h内': '升级 24h 内', '24h以上': '升级 24h 以上', '48h以上': '升级 48h 以上',
+  '72h以上': '升级 72h 以上', '96h以上': '升级 96h 以上'
+};
+let TK_TIME_PICK = null;
+
+function tkSum(d) { return TK_ORDER.reduce((a, k) => a + ((d || {})[k] || 0), 0); }
+function tkNums(d) {
+  return TK_ORDER.map(k => `<b style="color:${TK_COLOR[k]}">${(d || {})[k] || 0}</b>`)
+    .join('<span style="color:var(--tx3)">/</span>');
+}
+/* 堆叠条：rows = [[名称, {待分配,待处理,处理中}], ...]，按最高量级归一（同名条可比长度） */
+function tkStack(rows) {
+  const max = Math.max(1, ...rows.map(r => tkSum(r[1])));
+  return rows.map(([nm, d]) => {
+    const segs = TK_ORDER.map(k => {
+      const v = (d || {})[k] || 0;
+      if (!v) return '';
+      return `<i style="width:${(v / max * 100).toFixed(2)}%;background:${TK_COLOR[k]}" title="${k} ${v}"></i>`;
+    }).join('');
+    return `<div class="sr"><span class="sn" title="${esc(nm)}">${esc(nm)}</span>
+      <span class="sb">${segs}</span><span class="sv">${tkSum(d)}</span><span class="sd">${tkNums(d)}</span></div>`;
+  }).join('');
+}
+
+function renderTicketDetail(tk) {
+  if (!tk) return;
+  const tb = tk.time_buckets || {};
+
+  /* ① 升级时长 5 桶 */
+  const box = $('#tkTimeBoxes');
+  if (box) box.innerHTML = TK_TB_ORDER.map((k, i) => {
+    const d = tb[k] || {};
+    return `<div class="tbox t${i + 1}${TK_TIME_PICK === k ? ' on' : ''}" data-tb="${esc(k)}" title="点开看「${TK_TB_NAME[k]}」的场景分布">
+      <div class="tl">${TK_TB_NAME[k]}</div><div class="tn">${n0(tkSum(d))}</div>
+      <div class="ts">${tkNums(d)}</div></div>`;
+  }).join('');
+
+  /* ② 时长桶下钻：该桶的大类 + 完整场景 TOP 10 */
+  const drill = $('#tkTimeDrill');
+  if (drill) {
+    if (!TK_TIME_PICK) drill.innerHTML = '';
+    else {
+      const d = tb[TK_TIME_PICK] || {};
+      const tops = Object.entries(d.by_top || {}).sort((a, b) => tkSum(b[1]) - tkSum(a[1]));
+      const leaves = Object.entries(d.by_leaf || {}).sort((a, b) => tkSum(b[1]) - tkSum(a[1])).slice(0, 10);
+      const none = '<div class="empty" style="padding:14px">该桶暂无工单</div>';
+      drill.innerHTML = `<div class="drill">
+        <div class="dh"><b>${TK_TB_NAME[TK_TIME_PICK]}</b>
+          <span>${tkNums(d)}（待分配 / 待处理 / 处理中）</span>
+          <button class="btn" data-tbclose="1">收起</button></div>
+        <div class="dsec">投诉类型大类分布</div>
+        <div class="stk">${tops.length ? tkStack(tops) : none}</div>
+        <div class="dsec">完整场景 TOP 10</div>
+        <div class="stk">${leaves.length ? tkStack(leaves) : none}</div>
+      </div>`;
+    }
+  }
+
+  /* ③ 投诉类型大类 + 完整场景 TOP 10 */
+  const tops = Object.entries(tk.complaint_by_top || {}).sort((a, b) => tkSum(b[1]) - tkSum(a[1]));
+  const leaves = Object.entries(tk.complaint_by_leaf || {}).sort((a, b) => tkSum(b[1]) - tkSum(a[1])).slice(0, 10);
+  if ($('#tkTopChart')) $('#tkTopChart').innerHTML = tops.length ? tkStack(tops) : '<div class="empty">无数据</div>';
+  if ($('#tkLeafList')) $('#tkLeafList').innerHTML = leaves.length ? tkStack(leaves) : '<div class="empty">无数据</div>';
+  if ($('#noteTkTop')) $('#noteTkTop').textContent = `客诉处理 ${n0(tk.complaint_total || tkSum(tk.complaint_by_top))} 单`;
+
+  /* ④ 预警场景（风控类 & 活动风控 5 类） */
+  const al = tk.alert_types || [], ac = tk.alert_counts || {};
+  if ($('#tkAlerts')) $('#tkAlerts').innerHTML = al.length ? al.map(t => {
+    const d = ac[t] || {}, n = tkSum(d);
+    return `<span class="chip2${n ? '' : ' z'}" title="${esc(t)}：待分配 ${d['待分配'] || 0} / 待处理 ${d['待处理'] || 0} / 处理中 ${d['处理中'] || 0}">
+      <span>${esc(t)}</span><span class="ct">${n}</span></span>`;
+  }).join('') : '<div class="empty" style="padding:10px">暂无预警类型配置</div>';
 }
 
 /* ── 工单积压预测（近 14 天净变化外推，KPI/趋势图/切片共用）── */
@@ -2427,6 +2594,18 @@ $('#fcTickett').addEventListener('click', e => {
   if (!tr) return;
   PICK_TICKET = tr.dataset.day;
   renderTicketfc();
+});
+/* 工单升级时长桶：点开下钻场景分布，再点同一个桶收起 */
+$('#tkTimeBoxes').addEventListener('click', e => {
+  const b = e.target.closest('[data-tb]');
+  if (!b) return;
+  TK_TIME_PICK = (TK_TIME_PICK === b.dataset.tb) ? null : b.dataset.tb;
+  renderTicketDetail(D.tk);
+});
+$('#tkTimeDrill').addEventListener('click', e => {
+  if (!e.target.closest('[data-tbclose]')) return;
+  TK_TIME_PICK = null;
+  renderTicketDetail(D.tk);
 });
 /* 浮层日历：点外部 / 按 Esc 收起（点 summary 本身走 details 原生 toggle，不拦） */
 document.addEventListener('click', e => {
