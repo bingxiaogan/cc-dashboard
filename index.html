@@ -196,8 +196,8 @@ h1 em{font-style:normal;font-size:12px;font-weight:500;color:var(--tx3);letter-s
 .kpi .kw i{font-style:normal;font-size:10.5px;opacity:.72}
 .kpi .kw.ok b{color:var(--green)}
 .kpi .kw.warn b{color:var(--amber)}
-.mergeline .kpis .kpi.lead .kw{font-size:12.5px;margin-top:11px}
-.mergeline .kpis .kpi.lead .kw b{font-size:19px}
+.kpis.row .kpi.lead .kw{font-size:12.5px;margin-top:11px}
+.kpis.row .kpi.lead .kw b{font-size:19px}
 .kpi .spark{position:absolute;right:10px;bottom:8px;opacity:.55}
 .kpi.c-blue{--kc:var(--blue)} .kpi.c-green{--kc:var(--green)} .kpi.c-amber{--kc:var(--amber)}
 .kpi.c-purple{--kc:var(--purple)} .kpi.c-red{--kc:var(--red)} .kpi.c-cyan{--kc:var(--cyan)}
@@ -308,26 +308,30 @@ h1 em{font-style:normal;font-size:12px;font-weight:500;color:var(--tx3);letter-s
 .mth{margin-bottom:8px}
 .mth:last-child{margin-bottom:0}
 
-/* ── 现场 KPI 与调控策略建议（一行两栏：重点卡放大居中，次重点环绕在右与下，建议在最右） ── */
-.mergeline{display:grid;grid-template-columns:minmax(0,1fr) 452px;gap:12px;margin-bottom:12px;align-items:stretch}
-.mergeline .kpis{grid-template-columns:repeat(3,minmax(0,1fr));margin-bottom:0}
-/* 重点卡：占左上 2×2，其余卡片自动环绕其右侧一列与下方一行 */
-.mergeline .kpis .kpi.lead{grid-column:span 2;grid-row:span 2;display:flex;flex-direction:column;justify-content:center;
-  padding:13px 16px;border-color:rgba(var(--accs),.32);
+/* ── 现场卡片「一行」版式（2026-09-24：在线 / 工单 顶部与 400 对齐）──
+   调控策略建议上移到板块顶部通栏（`.strategy.wide`），KPI 铺满整行：
+   在线 4 卡 = lead + 3，工单 6 卡 = lead + 5。lead 略宽 + 数值放大，其余等分。
+   （旧的 `.mergeline`「左 KPI + 右策略」两栏版式已废 —— 三板块统一「策略在上、卡片一行在下」） */
+.kpis.row{gap:10px}
+.kpis.row .kpi{display:flex;flex-direction:column;justify-content:center}
+.kpis.row .kpi.lead{
+  border-color:rgba(var(--accs),.32);
   background:linear-gradient(135deg,rgba(var(--accs),.12),transparent 58%),var(--card)}
-.mergeline .kpis .kpi.lead .kl{font-size:12.5px;margin-bottom:7px}
-.mergeline .kpis .kpi.lead .kv{font-size:60px;letter-spacing:-.035em}
-.mergeline .kpis .kpi.lead .kv small{font-size:19px}
-.mergeline .kpis .kpi.lead .kd{font-size:12.5px;margin-top:8px}
-/* 建议条目按两栏高度均分，底边与 KPI 区齐平 */
-.mergeline .strategy>div[id^="strat"]{flex:1;display:flex;flex-direction:column;justify-content:space-between}
-@media(max-width:1180px){.mergeline{grid-template-columns:1fr}}
-@media(max-width:900px){
-  .mergeline .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .mergeline .kpis .kpi.lead{grid-column:span 2;grid-row:span 1}
-  .mergeline .kpis .kpi.lead .kv{font-size:56px}
+.kpis.row .kpi.lead .kv{font-size:46px;letter-spacing:-.033em}
+.kpis.row .kpi.lead .kv small{font-size:17px}
+.kpis.row .kpi:not(.lead) .kv{font-size:26px}
+#kOnline{grid-template-columns:minmax(214px,1.34fr) repeat(3,minmax(0,1fr))}
+#kTicket{grid-template-columns:minmax(198px,1.26fr) repeat(5,minmax(0,1fr))}
+@media(max-width:1240px){
+  #kOnline,#kTicket{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .kpis.row .kpi.lead{grid-column:span 1;grid-row:auto;grid-column:1/-1}
 }
-@media(max-width:620px){.mergeline .kpis{grid-template-columns:1fr}.mergeline .kpis .kpi.lead{grid-column:span 1}}
+@media(max-width:760px){
+  #kOnline,#kTicket{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:520px){
+  #kOnline,#kTicket{grid-template-columns:1fr}
+}
 .strategy{
   display:flex;flex-direction:column;
   padding:12px 15px 11px;border-radius:var(--r);min-width:0;
@@ -595,16 +599,17 @@ svg{display:block;width:100%;overflow:visible}
 
     <!-- 切片 ① 实时数据及预测 -->
     <div class="view on" data-view="live">
+      <!-- 顶部通栏「今日调控策略建议」（2026-09-24 与 400 对齐：原在右侧窄栏，现上移到板块最上面） -->
+      <div class="zone">
+        <aside class="strategy wide">
+          <div class="shead"><h3>今日调控策略建议</h3><span class="hint">现场进度 + 预测自动生成</span></div>
+          <div class="secttl">调控策略</div>
+          <div id="stratOnline"></div>
+        </aside>
+      </div>
       <div class="zone">
         <div class="zonetag"><i></i>现场 <span>7x24cc 采集 90 秒 · 预测每日 21:50 标定</span></div>
-        <div class="mergeline">
-          <div class="kpis" id="kOnline"></div>
-          <aside class="strategy">
-            <div class="shead"><h3>今日调控策略建议</h3><span class="hint">现场进度 + 预测自动生成</span></div>
-            <div class="secttl">调控策略</div>
-            <div id="stratOnline"></div>
-          </aside>
-        </div>
+        <div class="kpis row" id="kOnline"></div>
         <div class="panels">
           <div class="panel wide">
             <div class="phead">
@@ -683,15 +688,16 @@ svg{display:block;width:100%;overflow:visible}
 
     <!-- 切片 ① 实时数据及预测 -->
     <div class="view on" data-view="live">
+      <!-- 顶部通栏「工单处置策略建议」（2026-09-24 与 400 / 在线对齐：原在右侧窄栏，现上移到板块最上面） -->
+      <div class="zone">
+        <aside class="strategy wide">
+          <div class="shead"><h3>工单处置策略建议</h3><span class="hint">工单池 + 积压预测自动生成</span></div>
+          <div id="stratTicket"></div>
+        </aside>
+      </div>
       <div class="zone">
         <div class="zonetag"><i></i>现场 <span>爱回收工单系统 2 小时 · 预测每日 21:50 标定</span></div>
-        <div class="mergeline">
-          <div class="kpis" id="kTicket"></div>
-          <aside class="strategy">
-            <div class="shead"><h3>工单处置策略建议</h3><span class="hint">工单池 + 积压预测自动生成</span></div>
-            <div id="stratTicket"></div>
-          </aside>
-        </div>
+        <div class="kpis row" id="kTicket"></div>
         <div class="panels">
           <div class="panel wide">
             <div class="phead"><h3>状态 × 工单池</h3><span class="hint" id="noteTicketmx"></span></div>
