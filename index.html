@@ -793,7 +793,7 @@ svg{display:block;width:100%;overflow:visible}
 
       <!-- 工单明细（含升级时长 / 类型大类 / 完整场景 / 预警）—— 每个板块都可切四类 -->
       <div class="zone">
-        <div class="zonetag"><i></i>工单明细 <span>升级时长 / 类型大类 / 完整场景 / 预警 · 各板块独立切四类 · 点时长桶可下钻</span></div>
+        <div class="zonetag"><i></i>工单明细 <span>升级时长 / 类型大类 / 完整场景 / 预警 · 各板块独立切片（默认「投诉」= 客诉 + 纠纷，可手动切其他类）· 点时长桶可下钻</span></div>
         <div class="panels">
           <div class="panel">
             <div class="phead">
@@ -2358,16 +2358,25 @@ const TK_TYPES = ['客诉', '纠纷', '申诉', '舆情'];
 const TK_TYPE_COLOR = { 客诉: 'var(--red)', 纠纷: 'var(--amber)', 申诉: 'var(--blue)', 舆情: 'var(--purple)' };
 /* 每个板块各自记住自己的四类选择（用户要求「每个板块都要做这四个问题的切片器」）
    ⚠️ 2026-09-24 用户要求「不要按当前执行部门分类」→ 第二块切片器由 dept 改为 type，
-   该键只决定「各类型量级」表聚焦哪一类，不再影响任何按部门的聚合。 */
-const TK_VIEW = { type: 'all', matrix: 'all', tb: 'all', cat: 'all', alert: 'all' };
+   该键只决定「各类型量级」表聚焦哪一类，不再影响任何按部门的聚合。
+   ⚠️ 2026-09-24 二次调整：「工单明细（升级时长 / 类型大类 / 完整场景 / 预警）里不要总和，
+   直接默认是投诉这个切片，可以手动选择其他切片」→ tb / cat / alert 去掉「全部」、默认「投诉」。
+   用户口径：**投诉 = 客诉 + 纠纷**（互斥相加，不含申诉 / 舆情）。 */
+const TK_TYPE_GROUPS = { 投诉: ['客诉', '纠纷'] };
+const TK_VIEW_MODE = {
+  type: { withAll: true, def: 'all' }, matrix: { withAll: true, def: 'all' },
+  tb: { withAll: false, def: '投诉' }, cat: { withAll: false, def: '投诉' }, alert: { withAll: false, def: '投诉' }
+};
+const TK_VIEW = { type: 'all', matrix: 'all', tb: '投诉', cat: '投诉', alert: '投诉' };
 
 function tkAdd(dst, src) { TK_ORDER.forEach(s => { const v = (src || {})[s] || 0; if (v) dst[s] = (dst[s] || 0) + v; }); return dst; }
 function tkAddNested(dst, src) { Object.keys(src || {}).forEach(k => tkAdd(dst[k] = dst[k] || {}, src[k])); return dst; }
 
-/* 取某个类型视图的聚合；ty='all' 时四类逐项相加（互斥口径，相加不重复计数） */
+/* 取某个类型视图的聚合；ty='all' 时四类逐项相加（互斥口径，相加不重复计数）；
+   ty='投诉' = 客诉 + 纠纷（见 TK_TYPE_GROUPS） */
 function tkAggFor(tk, ty) {
   const tys = (tk.types && tk.types.length) ? tk.types : TK_TYPES;
-  const list = (ty && ty !== 'all') ? [ty] : tys;
+  const list = (!ty || ty === 'all') ? tys : (TK_TYPE_GROUPS[ty] || [ty]).filter(t => tys.indexOf(t) >= 0);
   const o = { total: 0, matrix: {}, byTop: {}, byLeaf: {}, buckets: {}, alerts: {}, dept: {} };
   list.forEach(t => {
     o.total += (tk.type_totals || {})[t] || 0;
@@ -2391,8 +2400,11 @@ function tkAggFor(tk, ty) {
 
 const tkViewName = v => (!v || v === 'all') ? '全部' : v;
 function tkChipsHTML(key) {
-  const cur = TK_VIEW[key] || 'all';
-  return [['all', '全部']].concat(TK_TYPES.map(t => [t, t]))
+  const m = TK_VIEW_MODE[key] || { withAll: true, def: 'all' };
+  const cur = TK_VIEW[key] || m.def;
+  /* 明细板块（tb / cat / alert）不出「全部」，首项直接是「投诉」 */
+  const opts = [].concat(m.withAll ? [['all', '全部']] : [['投诉', '投诉']], TK_TYPES.map(t => [t, t]));
+  return opts
     .map(([v, nm]) => `<button class="tkchip${cur === v ? ' on' : ''}" data-tkview="${esc(key)}" data-tkv="${esc(v)}">${nm}</button>`).join('');
 }
 /* 同步所有切片器按钮的选中态（重绘后不再整体替换 DOM） */
@@ -2506,7 +2518,7 @@ function renderTicket(tk) {
     `<tr><td class="v">合计</td>${mxCols.map(t => `<td class="v">${n0(tt[t] || 0)}</td>`).join('')}<td class="v">${n0(sum(mxCols, t => tt[t] || 0))}</td></tr></tbody>`;
 
   tkChipsSync();
-  renderStrategyTicket({ tk, fc, bt: tk.bucket_totals || {}, st, overN, over48, over96, in24, city, endStk, diff });
+  renderStrategyTicket({ tk, st, overN });
   renderTicketBreakdown(tk);
 }
 
@@ -2547,8 +2559,8 @@ function tkStack(rows) {
 function renderTicketBreakdown(tk) {
   if (!tk) return;
 
-  /* ① 升级时长 5 桶（按所选四类） */
-  const aggTb = tkAggFor(tk, TK_VIEW.tb || 'all');
+  /* ① 升级时长 5 桶（默认「投诉」= 客诉 + 纠纷，可手动切四类） */
+  const aggTb = tkAggFor(tk, TK_VIEW.tb || '投诉');
   const tb = aggTb.buckets || {};
   const box = $('#tkTimeBoxes');
   if (box) box.innerHTML = TK_TB_ORDER.map((k, i) => {
@@ -2579,8 +2591,8 @@ function renderTicketBreakdown(tk) {
     }
   }
 
-  /* ③ 类型大类 + 完整场景 TOP 10（按所选四类） */
-  const aggCat = tkAggFor(tk, TK_VIEW.cat || 'all');
+  /* ③ 类型大类 + 完整场景 TOP 10（默认「投诉」= 客诉 + 纠纷） */
+  const aggCat = tkAggFor(tk, TK_VIEW.cat || '投诉');
   const tops = Object.entries(aggCat.byTop || {}).sort((a, b) => tkSum(b[1]) - tkSum(a[1]));
   const leaves = Object.entries(aggCat.byLeaf || {}).sort((a, b) => tkSum(b[1]) - tkSum(a[1])).slice(0, 10);
   const catN = sum(tops, t => tkSum(t[1]));
@@ -2631,54 +2643,47 @@ function ticketForecast(ty) {
   return { out, nAvg14, dAvg, stockNow, lastDay: t.days[t.days.length - 1], type: key };
 }
 
-/* ── 工单处置策略建议 ── */
+/* ── 工单处置策略建议 ──
+   2026-09-24 用户要求「调整下分析策略，不要写城市了，客诉、纠纷、申诉各分析下，
+   当前的积压量和超时情况」→ 去掉「城市集中度」条目，改为 总览 + 客诉/纠纷/申诉 逐条
+   （每条 = 积压量 + 超时未结分级 + 占比 + 处置建议）。三类均不含舆情。 */
 function renderStrategyTicket(o) {
   const box = $('#stratTicket'); if (!box) return;
+  const tk = o.tk; if (!tk) return;
   const items = [];
-  const fc = o.fc;
-
-  /* ① 积压走向 */
-  if (fc) {
-    const net = fc.nAvg14 - fc.dAvg;
-    const cls = (o.diff > 0 && o.endStk > fc.stockNow * 1.1) ? 'risk' : (o.diff > 0 ? 'slot' : 'good');
-    items.push({
-      tag: '积压', cls,
-      html: `当前积压 <b>${n0(fc.stockNow)}</b> 单，日均新增 <b>${n0(fc.nAvg14)}</b>、日均处理 <b>${n0(fc.dAvg)}</b>（净变化 ${net >= 0 ? '+' : '−'}${n1(Math.abs(net))} 单/天）。` +
-        (o.endStk === 0 ? '按当前处理能力，7 天内可清空。' : o.diff > 0 ? `7 天后预估升到 <b>${n0(o.endStk)}</b>，建议加派人手或延长处理时段。` : `7 天后预估降到 <b>${n0(o.endStk)}</b>，继续按现节奏消化。`)
-    });
-  }
-
-  /* ② 超时优先 */
-  if (o.over96 > 0 || o.over48 > 0) {
-    items.push({
-      tag: '超时', cls: o.over96 > 0 ? 'risk' : 'slot',
-      html: `超时未结 <b>${n0(o.overN)}</b> 单，其中 48h 以上 <b>${n0(o.over48)}</b>、96h 以上 <b>${n0(o.over96)}</b>。建议把 96h 以上的排到最前，按责任人逐单销项。`
-    });
-  } else if (o.overN > 0) {
-    items.push({ tag: '超时', cls: 'slot', html: `超时未结 <b>${n0(o.overN)}</b> 单，均在 48h 以内，当日盯住即可。` });
-  } else {
-    items.push({ tag: '超时', cls: 'good', html: '暂无超时未结工单。' });
-  }
-
-  /* ③ 分配环节 */
+  const OVER = ['24h以上', '48h以上', '72h以上', '96h以上'];
+  const overCnt = (k, tb) => sum(TK_ORDER, s => (tb[k] || {})[s] || 0);
+  const tt = tk.type_totals || {}, grand = tk.grand_total || 0;
+  const TYS = (tk.types && tk.types.length) ? tk.types : TK_TYPES;
   const unassigned = (o.st || {})['待分配'] || 0;
-  if (unassigned > 0) {
-    items.push({
-      tag: '分配', cls: unassigned > 20 ? 'risk' : 'slot',
-      html: `待分配 <b>${n0(unassigned)}</b> 单尚未落到处理人。建议先清分配，否则处理时长会耗在等待环节。`
-    });
-  }
+  const overRate = grand ? o.overN / grand * 100 : 0;
 
-  /* ④ 城市集中度 */
-  const city = o.city || [];
-  if (city.length) {
-    const top3 = sum(city.slice(0, 3), c => c[1]);
-    const tot = sum(city, c => c[1]) || 1;
+  /* ① 总览：积压总量 · 四类分布 · 待分配 · 超时总量 */
+  items.push({
+    tag: '总览', cls: o.overN ? (overRate >= 15 ? 'risk' : 'slot') : 'good',
+    html: `当前积压 <b>${n0(grand)}</b> 单（${TYS.map(t => `${t} ${n0(tt[t] || 0)}`).join(' · ')}），待分配 <b>${n0(unassigned)}</b> 单；超时未结 ≥24h <b>${n0(o.overN)}</b> 单${grand ? `（占 ${pc(overRate, 1)}）` : ''}。`
+  });
+
+  /* ② 客诉 / 纠纷 / 申诉 逐类：积压量 + 超时情况 + 处置建议 */
+  ['客诉', '纠纷', '申诉'].forEach(t => {
+    const a = tkAggFor(tk, t), tb = a.buckets || {};
+    const n = a.total;
+    const ov = sum(OVER, k => overCnt(k, tb));
+    const o48 = overCnt('48h以上', tb), o96 = overCnt('96h以上', tb);
+    const ua = ((tk.type_matrix || {})[t] || {})['待分配'] || 0;
+    const rate = n ? ov / n * 100 : 0;
+    const cls = ov ? (rate >= 30 ? 'risk' : 'slot') : (ua > n * 0.5 ? 'slot' : 'good');
+    const tips = [];
+    if (ov) tips.push(o96 ? `${n0(o96)} 单已超 96h，建议按处理人逐单销项` : `${n0(o48)} 单超 48h，建议列为当日最优先`);
+    if (ua) tips.push(`待分配 ${n0(ua)} 单尚未落到处理人，卡在分配环节会直接推高时长`);
+    if (!tips.length) tips.push('按现节奏保持');
     items.push({
-      tag: '城市', cls: 'all',
-      html: `工单集中在 <b>${city.slice(0, 3).map(c => c[0]).join('、')}</b>，TOP3 合计 <b>${n0(top3)}</b> 单（占 ${pc(top3 / tot * 100, 0)}）。建议按城市端统一催办。`
+      tag: t, cls,
+      html: `积压 <b>${n0(n)}</b> 单（占总量 ${grand ? pc(n / grand * 100, 1) : '–'}），超时未结 ≥24h <b>${n0(ov)}</b> 单` +
+        (ov ? `（占本类 ${pc(rate, 1)}，其中 48h 以上 ${n0(o48)}、96h 以上 ${n0(o96)}）` : '') +
+        `，待分配 ${n0(ua)} 单。${tips.join('；')}。`
     });
-  }
+  });
 
   box.innerHTML = items.map(x => `<div class="st"><span class="tag ${x.cls}">${x.tag}</span><div>${x.html}</div></div>`).join('');
 }
