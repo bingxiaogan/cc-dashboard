@@ -498,6 +498,8 @@ svg{display:block;width:100%;overflow:visible}
 .tkt .tp{font-size:11px;color:var(--tx3);margin-top:3px}
 .tkt .ts{display:flex;gap:9px;flex-wrap:wrap;font-size:11px;color:var(--tx3);margin-top:6px}
 .tkt .ts b{font-weight:620;font-variant-numeric:tabular-nums}
+/* 「各类型量级」表首列的类别色点（2026-09-24） */
+.tbl td .tydot{display:inline-block;width:7px;height:7px;border-radius:2px;margin-right:6px;vertical-align:1px}
 @media(max-width:1080px){.tktypes{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:720px){.tktypes{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:460px){.tktypes{grid-template-columns:1fr}}
@@ -762,18 +764,18 @@ svg{display:block;width:100%;overflow:visible}
         </aside>
       </div>
 
-      <!-- 工单总量级 + 各部门量级（2026-09-24 用户要求：板块最上面就展示这两块） -->
+      <!-- 工单总量级 + 各类型量级（2026-09-24：板块最上面展示这两块；第二块按四类而非当前执行部门） -->
       <div class="zone">
         <div class="zonetag"><i></i>工单总量级 <span>客诉 / 纠纷 / 申诉 / 舆情 四类并列 · 纠纷 = 投诉 − 客诉 · 快照随工单系统刷新（2 小时）</span></div>
         <div class="tktypes" id="tkTypeCards"></div>
       </div>
       <div class="zone">
-        <div class="zonetag"><i></i>各部门量级 <span>按「当前执行部门」聚合 · 可切四类查看</span>
-          <span class="tkchips" data-chips="dept"></span>
+        <div class="zonetag"><i></i>各类型量级 <span>按客诉 / 纠纷 / 申诉 / 舆情 四类聚合（不按当前执行部门）· 四类互斥，合计 = 工单总量级</span>
+          <span class="tkchips" data-chips="type"></span>
         </div>
         <div class="panels">
           <div class="panel wide">
-            <div class="tblwrap"><table class="tbl" id="tkDept"></table></div>
+            <div class="tblwrap"><table class="tbl" id="tkTypeTbl"></table></div>
           </div>
         </div>
       </div>
@@ -2343,8 +2345,10 @@ function renderOnlineDetail() {
       客诉处理 = 客诉 + 申诉(部门=客诉客服)；工单处理 = 纠纷 + 申诉(其余部门) */
 const TK_TYPES = ['客诉', '纠纷', '申诉', '舆情'];
 const TK_TYPE_COLOR = { 客诉: 'var(--red)', 纠纷: 'var(--amber)', 申诉: 'var(--blue)', 舆情: 'var(--purple)' };
-/* 每个板块各自记住自己的四类选择（用户要求「每个板块都要做这四个问题的切片器」） */
-const TK_VIEW = { dept: 'all', matrix: 'all', tb: 'all', cat: 'all', alert: 'all' };
+/* 每个板块各自记住自己的四类选择（用户要求「每个板块都要做这四个问题的切片器」）
+   ⚠️ 2026-09-24 用户要求「不要按当前执行部门分类」→ 第二块切片器由 dept 改为 type，
+   该键只决定「各类型量级」表聚焦哪一类，不再影响任何按部门的聚合。 */
+const TK_VIEW = { type: 'all', matrix: 'all', tb: 'all', cat: 'all', alert: 'all' };
 
 function tkAdd(dst, src) { TK_ORDER.forEach(s => { const v = (src || {})[s] || 0; if (v) dst[s] = (dst[s] || 0) + v; }); return dst; }
 function tkAddNested(dst, src) { Object.keys(src || {}).forEach(k => tkAdd(dst[k] = dst[k] || {}, src[k])); return dst; }
@@ -2414,23 +2418,28 @@ function renderTicket(tk) {
       <div class="ts">${TK_ORDER.map(s => `${s} <b>${n0(m[s] || 0)}</b>`).join('')}</div></div>`;
   }).join('');
 
-  /* ② 各部门量级（按当前执行部门） */
-  const devTy = TK_VIEW.dept || 'all';
+  /* ② 各类型量级 —— 行 = 四类（2026-09-24 用户要求：不要按「当前执行部门」分类，按客诉/纠纷/申诉/舆情）
+     切片器 TK_VIEW.type：全部 → 四行；选某一类 → 只留该行（聚焦）。
+     列：量级 / 占比 / 待分配 / 待处理 / 处理中 / 超时未结 ≥24h（超时未结取该类自身时长桶，互斥相加）。 */
+  const devTy = TK_VIEW.type || 'all';
   const devCols = (devTy === 'all') ? TYS : [devTy];
-  const tDept = tk.type_dept || {};
-  const dmap = {};
-  devCols.forEach(t => Object.keys(tDept[t] || {}).forEach(d => { (dmap[d] = dmap[d] || {})[t] = (tDept[t] || {})[d] || 0; }));
-  const drod = Object.keys(dmap).sort((a, b) => sum(devCols, t => dmap[b][t] || 0) - sum(devCols, t => dmap[a][t] || 0));
-  if ($('#tkDept')) $('#tkDept').innerHTML =
-    `<thead><tr><th>当前执行部门</th>${devCols.map(t => `<th>${esc(t)}</th>`).join('')}<th>合计</th></tr></thead><tbody>` +
-    (drod.length ? drod.map(d => {
-      const tot = sum(devCols, t => dmap[d][t] || 0);
-      return `<tr><td class="v">${esc(d)}</td>` +
-        devCols.map(t => `<td>${n0(dmap[d][t] || 0)}</td>`).join('') +
-        `<td class="v">${n0(tot)}</td></tr>`;
-    }).join('') +
-      `<tr><td class="v">合计</td>${devCols.map(t => `<td class="v">${n0(sum(drod, d => dmap[d][t] || 0))}</td>`).join('')}<td class="v">${n0(tkAggFor(tk, devTy).total)}</td></tr>`
-      : `<tr><td colspan="${devCols.length + 2}" style="text-align:center;color:var(--tx3)">该类型暂无工单</td></tr>`) +
+  const tRows = devCols.map(t => {
+    const a = tkAggFor(tk, t);
+    const tb = a.buckets || {};
+    return { t, n: a.total, m: tmx[t] || {}, over: sum(OVER, k => overCnt(k, tb)) };
+  });
+  if ($('#tkTypeTbl')) $('#tkTypeTbl').innerHTML =
+    `<thead><tr><th>类型</th><th>量级</th><th>占比</th>${TK_ORDER.map(s => `<th>${s}</th>`).join('')}<th>超时未结 ≥24h</th></tr></thead><tbody>` +
+    (tRows.length ? tRows.map(r =>
+      `<tr><td class="v"><i class="tydot" style="background:${TK_TYPE_COLOR[r.t] || 'var(--tx3)'}"></i>${esc(r.t)}</td>` +
+      `<td class="v">${n0(r.n)}</td><td>${grand ? pc(r.n / grand * 100, 1) : '–'}</td>` +
+      TK_ORDER.map(s => `<td>${n0(r.m[s] || 0)}</td>`).join('') +
+      `<td>${r.over ? n0(r.over) : '0'}</td></tr>`
+    ).join('') +
+      `<tr><td class="v">合计</td><td class="v">${n0(sum(tRows, r => r.n))}</td><td class="v">${pc(100, 1)}</td>` +
+      TK_ORDER.map(s => `<td class="v">${n0(sum(tRows, r => r.m[s] || 0))}</td>`).join('') +
+      `<td class="v">${n0(sum(tRows, r => r.over))}</td></tr>`
+      : `<tr><td colspan="${4 + TK_ORDER.length}" style="text-align:center;color:var(--tx3)">暂无数据</td></tr>`) +
     `</tbody>`;
 
   /* —— 积压预测（近 14 天净变化外推）—— */
