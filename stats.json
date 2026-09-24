@@ -1,13 +1,13 @@
 {
- "ts": 1790260298173,
- "collectedAtCn": "2026/9/24 22:31:38",
+ "ts": 1790260561358,
+ "collectedAtCn": "2026/9/24 22:36:01",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "1",
   "坐席忙碌数": "0 (0)",
-  "接通率": "19.23%",
+  "接通率": "19.22%",
   "满意率": "100.00%",
-  "呼入总数": "15762",
+  "呼入总数": "15768",
   "当前呼入数": "1",
   "外呼总数": "5592",
   "当前外呼数": "0",
@@ -240,8 +240,8 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 1695,
-   "ivr": 802,
+   "callIn": 1697,
+   "ivr": 804,
    "ringMissed": 4,
    "queueAbandon": 143,
    "answered": 746,
@@ -480,8 +480,8 @@
   },
   {
    "service": "81198(上门按键转接)",
-   "callIn": 885,
-   "ivr": 554,
+   "callIn": 889,
+   "ivr": 558,
    "ringMissed": 11,
    "queueAbandon": 73,
    "answered": 276,
@@ -886,8 +886,8 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 1695,
-    "ivr": 802,
+    "callIn": 1697,
+    "ivr": 804,
     "ringMissed": 4,
     "queueAbandon": 143,
     "answered": 746,
@@ -905,10 +905,10 @@
     "transferred": 0
    }
   ],
-  "total": 1734,
+  "total": 1736,
   "answered": 766,
-  "ivr": 817,
-  "connectRate": 91.29
+  "ivr": 819,
+  "connectRate": 91.3
  },
  "online": {
   "groups": [
@@ -944,11 +944,11 @@
     "name": "官网严选寄卖售后咨询",
     "sessions": 259,
     "assigned": 244,
-    "current": 15,
+    "current": 14,
     "max": 120,
-    "queue": 1,
+    "queue": 2,
     "onlineSeats": "4(李宜慢,陈可,丁萌萌,刘梓爱)",
-    "done": 229,
+    "done": 230,
     "answerRate": 94.21,
     "abandon": 15,
     "voicemail": 0,
@@ -970,14 +970,14 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1433,
-    "assigned": 1375,
-    "current": 85,
+    "sessions": 1435,
+    "assigned": 1377,
+    "current": 84,
     "max": 120,
     "queue": 3,
     "onlineSeats": "4(李宜慢,陈可,丁萌萌,刘梓爱)",
-    "done": 1252,
-    "answerRate": 95.95,
+    "done": 1255,
+    "answerRate": 95.96,
     "abandon": 58,
     "voicemail": 0,
     "satisfactionRate": 0
@@ -1068,15 +1068,15 @@
    },
    {
     "name": "官网严选自营售前咨询",
-    "sessions": 452,
-    "assigned": 435,
-    "current": 27,
+    "sessions": 454,
+    "assigned": 436,
+    "current": 28,
     "max": 120,
     "queue": 2,
     "onlineSeats": "4(李宜慢,陈可,丁萌萌,刘梓爱)",
     "done": 404,
-    "answerRate": 96.24,
-    "abandon": 17,
+    "answerRate": 96.04,
+    "abandon": 18,
     "voicemail": 0,
     "satisfactionRate": 0
    },
@@ -1302,24 +1302,6 @@
   "rate400": 79.5
  },
  "history": [
-  {
-   "ts": 1790162152030,
-   "skillRate400": 80.94,
-   "skillQueue400": 0,
-   "callIn400": 1044,
-   "signIn400": 9,
-   "onlineSessions": 650,
-   "onlineSeat": 3
-  },
-  {
-   "ts": 1790162257457,
-   "skillRate400": 80.92,
-   "skillQueue400": 0,
-   "callIn400": 1048,
-   "signIn400": 9,
-   "onlineSessions": 652,
-   "onlineSeat": 3
-  },
   {
    "ts": 1790162362401,
    "skillRate400": 81.03,
@@ -5795,6 +5777,24 @@
   },
   {
    "ts": 1790260298173,
+   "skillRate400": 51.28,
+   "skillQueue400": 0,
+   "callIn400": 39,
+   "signIn400": 1,
+   "onlineSessions": 791,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1790260444933,
+   "skillRate400": 51.28,
+   "skillQueue400": 0,
+   "callIn400": 39,
+   "signIn400": 1,
+   "onlineSessions": 791,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1790260561358,
    "skillRate400": 51.28,
    "skillQueue400": 0,
    "callIn400": 39,
