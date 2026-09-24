@@ -2309,7 +2309,7 @@ function renderOnlineDetail() {
          <span class="fchev"></span>
        </summary>
        <div class="fbody">
-         <div class="subhead">该日每半小时预测接待量 <span>仅在线工作时间 09:00–21:00 · 预估接待量 × 时段形状占比（近 ${shp.n} 日同时段）</span></div>
+         <div class="subhead">该日每半小时预测接待量 <span>仅在线工作时间 09:00–21:00 · 预估接待量 × 时段形状占比（近 ${shp.n} 日同时段；窗口外的零星会话量已摊入窗口内，合计仍 = 预估接待量）</span></div>
          <div id="chOnlDay"></div>
          <div class="subhead">该日分时段人力安排 <span>所需 = 预测接待量 ÷ ${CAP} 会话/人时 × 0.5h · 人力向上取整 · 在线坐席取当日班表出勤 ${seatsFlat == null ? '（未出表）' : seatsFlat + ' 人'} · 差额 = 实到 − 所需${ros ? '' : ' · 班表未出，「在线坐席 / 实到 / 差额 / 餐点」留空'}</span></div>
          <div class="tblwrap"><table class="tbl"><thead><tr>
