@@ -2523,7 +2523,7 @@ function renderTicket(tk) {
     `<tr><td class="v">合计</td>${mxCols.map(t => `<td class="v">${n0(tt[t] || 0)}</td>`).join('')}<td class="v">${n0(sum(mxCols, t => tt[t] || 0))}</td></tr></tbody>`;
 
   tkChipsSync();
-  renderStrategyTicket({ tk, st, overN });
+  renderStrategyTicket({ tk });
   renderTicketBreakdown(tk);
 }
 
@@ -2645,26 +2645,18 @@ function ticketForecast(ty) {
 }
 
 /* ── 工单处置策略建议 ──
-   2026-09-24 用户要求「调整下分析策略，不要写城市了，客诉、纠纷、申诉各分析下，
-   当前的积压量和超时情况」→ 去掉「城市集中度」条目，改为 总览 + 客诉/纠纷/申诉 逐条
+   2026-09-24 用户要求「调整下分析策略，不要写城市了，客诉、纠纷、申诉各分析下，当前的积压量和超时情况」，
+   随后又要求「里面总览不要」→ 只保留 客诉 / 纠纷 / 申诉 三条
    （每条 = 积压量 + 超时未结分级 + 占比 + 处置建议）。三类均不含舆情。 */
 function renderStrategyTicket(o) {
   const box = $('#stratTicket'); if (!box) return;
   const tk = o.tk; if (!tk) return;
   const items = [];
   const overCnt = (k, tb) => sum(TK_ORDER, s => (tb[k] || {})[s] || 0);
-  const tt = tk.type_totals || {}, grand = tk.grand_total || 0;
-  const TYS = (tk.types && tk.types.length) ? tk.types : TK_TYPES;
-  const unassigned = (o.st || {})['待分配'] || 0;
-  const overRate = grand ? o.overN / grand * 100 : 0;
+  const grand = tk.grand_total || 0;
 
-  /* ① 总览：积压总量 · 四类分布 · 待分配 · 超时总量 */
-  items.push({
-    tag: '总览', cls: o.overN ? (overRate >= 15 ? 'risk' : 'slot') : 'good',
-    html: `当前积压 <b>${n0(grand)}</b> 单（${TYS.map(t => `${t} ${n0(tt[t] || 0)}`).join(' · ')}），待分配 <b>${n0(unassigned)}</b> 单；超时未结 ≥24h <b>${n0(o.overN)}</b> 单${grand ? `（占 ${pc(overRate, 1)}）` : ''}。`
-  });
-
-  /* ② 客诉 / 纠纷 / 申诉 逐类：积压量 + 超时情况 + 处置建议 */
+  /* 客诉 / 纠纷 / 申诉 逐类：积压量 + 超时情况 + 处置建议
+     （2026-09-24 用户要求去掉「城市」条，随后又要求「总览不要」→ 只留三类） */
   ['客诉', '纠纷', '申诉'].forEach(t => {
     const a = tkAggFor(tk, t), tb = a.buckets || {};
     const n = a.total;
