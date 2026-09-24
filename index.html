@@ -791,9 +791,9 @@ svg{display:block;width:100%;overflow:visible}
         </div>
       </div>
 
-      <!-- 工单明细（含升级时长 / 类型大类 / 完整场景 / 预警）—— 每个板块都可切四类 -->
+      <!-- 工单明细（升级时长 / 类型大类 / 完整场景）—— 每个板块都可切四类 -->
       <div class="zone">
-        <div class="zonetag"><i></i>工单明细 <span>升级时长 / 类型大类 / 完整场景 / 预警 · 各板块独立切片（默认「投诉」= 客诉 + 纠纷，可手动切其他类）· 点时长桶可下钻</span></div>
+        <div class="zonetag"><i></i>工单明细 <span>升级时长 / 类型大类 / 完整场景 · 各板块独立切片（默认「投诉」= 客诉 + 纠纷，可手动切其他类）· 点时长桶可下钻</span></div>
         <div class="panels">
           <div class="panel">
             <div class="phead">
@@ -823,12 +823,8 @@ svg{display:block;width:100%;overflow:visible}
             <div class="subhead" style="margin-top:14px">完整场景 TOP 10 <span>按量级降序 · 右侧为 待分配/待处理/处理中</span></div>
             <div class="stk" id="tkLeafList"></div>
           </div>
-          <div class="panel wide">
-            <div class="phead"><h3>预警场景 · 单量</h3><span class="tkchips" data-chips="alert"></span><span class="hint">风控类 &amp; 活动风控 5 类 · 量级归零后删除</span></div>
-            <div class="chips" id="tkAlerts"></div>
           </div>
         </div>
-      </div>
 
       <!-- 日维度区（与 400 / 在线同口径）：单日预估新增/处理/积压明细 + 逐日切片日历 -->
       <div class="zone">
@@ -2365,9 +2361,10 @@ const TK_TYPE_COLOR = { 客诉: 'var(--red)', 纠纷: 'var(--amber)', 申诉: 'v
 const TK_TYPE_GROUPS = { 投诉: ['客诉', '纠纷'] };
 const TK_VIEW_MODE = {
   type: { withAll: true, def: 'all' }, matrix: { withAll: true, def: 'all' },
-  tb: { withAll: false, def: '投诉' }, cat: { withAll: false, def: '投诉' }, alert: { withAll: false, def: '投诉' }
+  tb: { withAll: false, def: '投诉' }, cat: { withAll: false, def: '投诉' }
 };
-const TK_VIEW = { type: 'all', matrix: 'all', tb: '投诉', cat: '投诉', alert: '投诉' };
+/* 预警板块（#tkAlerts）已于 2026-09-24 应要求删除，故不再有 alert 键 */
+const TK_VIEW = { type: 'all', matrix: 'all', tb: '投诉', cat: '投诉' };
 
 function tkAdd(dst, src) { TK_ORDER.forEach(s => { const v = (src || {})[s] || 0; if (v) dst[s] = (dst[s] || 0) + v; }); return dst; }
 function tkAddNested(dst, src) { Object.keys(src || {}).forEach(k => tkAdd(dst[k] = dst[k] || {}, src[k])); return dst; }
@@ -2433,9 +2430,12 @@ function renderTicket(tk) {
   const st = tk.status_totals || {};
   const aggAll = tkAggFor(tk, 'all');
   const tbAll = aggAll.buckets || {};
-  const OVER = ['24h以上', '48h以上', '72h以上', '96h以上'];
+  /* ⚠️ 时长桶是**累计**口径（采集侧注释：24h以上 ⊇ 48h以上 ⊇ 72h以上 ⊇ 96h以上，
+     且 24h内 + 24h以上 = 该类总量）⇒ 「超时未结 ≥24h」= **只取 `24h以上` 单桶**，
+     绝不能把 4 个桶相加（旧的 sum(OVER) 写法把 48h/72h/96h 重复计了一遍，2026-09-24 修正：
+     全部口径 83 → 78、纠纷 67 → 62）。 */
   const overCnt = (k, tb) => sum(['待处理', '待分配', '处理中'], s => (tb[k] || {})[s] || 0);
-  const overN = sum(OVER, k => overCnt(k, tbAll));
+  const overN = overCnt('24h以上', tbAll);
   const in24 = overCnt('24h内', tbAll);
   const city = Object.entries(tk.city_totals || {}).sort((a, b) => b[1] - a[1]);
   const TYS = (tk.types && tk.types.length) ? tk.types : TK_TYPES;
@@ -2465,7 +2465,7 @@ function renderTicket(tk) {
   const tRows = devCols.map(t => {
     const a = tkAggFor(tk, t);
     const tb = a.buckets || {};
-    return { t, n: a.total, m: tmx[t] || {}, over: sum(OVER, k => overCnt(k, tb)) };
+    return { t, n: a.total, m: tmx[t] || {}, over: overCnt('24h以上', tb) };
   });
   if ($('#tkTypeTbl')) $('#tkTypeTbl').innerHTML =
     `<thead><tr><th>类型</th><th>量级</th><th>占比</th>${TK_ORDER.map(s => `<th>${s}</th>`).join('')}<th>超时未结 ≥24h</th></tr></thead><tbody>` +
@@ -2600,15 +2600,6 @@ function renderTicketBreakdown(tk) {
   if ($('#tkLeafList')) $('#tkLeafList').innerHTML = leaves.length ? tkStack(leaves) : '<div class="empty">无数据</div>';
   if ($('#noteTkTop')) $('#noteTkTop').textContent =
     `${tkViewName(TK_VIEW.cat)} 量级 ${n0(aggCat.total)} 单 · 其中有类型标注 ${n0(catN)} 单`;
-
-  /* ④ 预警场景（风控类 & 活动风控 5 类，按所选四类） */
-  const aggAl = tkAggFor(tk, TK_VIEW.alert || 'all');
-  const al = tk.alert_types || [], ac = aggAl.alerts || {};
-  if ($('#tkAlerts')) $('#tkAlerts').innerHTML = al.length ? al.map(t => {
-    const d = ac[t] || {}, n = tkSum(d);
-    return `<span class="chip2${n ? '' : ' z'}" title="${esc(t)}：待分配 ${d['待分配'] || 0} / 待处理 ${d['待处理'] || 0} / 处理中 ${d['处理中'] || 0}">
-      <span>${esc(t)}</span><span class="ct">${n}</span></span>`;
-  }).join('') : '<div class="empty" style="padding:10px">暂无预警类型配置</div>';
 }
 
 /* ── 工单积压预测（近 14 天净变化外推，KPI/趋势图/切片共用）
@@ -2651,7 +2642,6 @@ function renderStrategyTicket(o) {
   const box = $('#stratTicket'); if (!box) return;
   const tk = o.tk; if (!tk) return;
   const items = [];
-  const OVER = ['24h以上', '48h以上', '72h以上', '96h以上'];
   const overCnt = (k, tb) => sum(TK_ORDER, s => (tb[k] || {})[s] || 0);
   const tt = tk.type_totals || {}, grand = tk.grand_total || 0;
   const TYS = (tk.types && tk.types.length) ? tk.types : TK_TYPES;
@@ -2668,13 +2658,15 @@ function renderStrategyTicket(o) {
   ['客诉', '纠纷', '申诉'].forEach(t => {
     const a = tkAggFor(tk, t), tb = a.buckets || {};
     const n = a.total;
-    const ov = sum(OVER, k => overCnt(k, tb));
+    const ov = overCnt('24h以上', tb);
     const o48 = overCnt('48h以上', tb), o96 = overCnt('96h以上', tb);
     const ua = ((tk.type_matrix || {})[t] || {})['待分配'] || 0;
     const rate = n ? ov / n * 100 : 0;
     const cls = ov ? (rate >= 30 ? 'risk' : 'slot') : (ua > n * 0.5 ? 'slot' : 'good');
     const tips = [];
-    if (ov) tips.push(o96 ? `${n0(o96)} 单已超 96h，建议按处理人逐单销项` : `${n0(o48)} 单超 48h，建议列为当日最优先`);
+    if (ov) tips.push(o96 ? `${n0(o96)} 单已超 96h，建议按处理人逐单销项`
+      : o48 ? `${n0(o48)} 单超 48h，建议列为当日最优先`
+        : '超时均在 24–48h 区间，当日盯住即可');
     if (ua) tips.push(`待分配 ${n0(ua)} 单尚未落到处理人，卡在分配环节会直接推高时长`);
     if (!tips.length) tips.push('按现节奏保持');
     items.push({
