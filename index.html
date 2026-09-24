@@ -210,8 +210,15 @@ h1 em{font-style:normal;font-size:12px;font-weight:500;color:var(--tx3);letter-s
   border:1px solid var(--line);min-width:0;
 }
 .panel.wide{grid-column:1/-1}
-/* 工单明细区：左块（升级时长）内容少，不随右侧拉伸 → 面板贴合内容，避免一大片留白 */
-.panels.tkalign{align-items:start}
+/* 目前库存区（原工单明细）：左栏 = 状态×类型（上）+ 升级时长（下），右栏 = 类型大类/完整场景（跨两行）。
+   两块各自贴合内容、互不拉伸 —— 这样「升级时长」下方不再拖着一大片空白。 */
+.panels.tkstock{align-items:start}
+.panels.tkstock .p-mx{grid-column:1;grid-row:1}
+.panels.tkstock .p-time{grid-column:1;grid-row:2}
+.panels.tkstock .p-cat{grid-column:2;grid-row:1/span 2}
+@media(max-width:1080px){
+  .panels.tkstock .p-mx,.panels.tkstock .p-time,.panels.tkstock .p-cat{grid-column:auto;grid-row:auto}
+}
 .phead{display:flex;align-items:center;gap:10px;margin-bottom:9px;flex-wrap:wrap}
 .phead h3{font-size:13.5px;font-weight:600;color:var(--tx);letter-spacing:.02em}
 .phead .hint{font-size:11px;color:var(--tx3);margin-left:auto}
@@ -785,22 +792,25 @@ svg{display:block;width:100%;overflow:visible}
         </div>
       </div>
 
+      <!-- 处置 KPI（2026-09-24 用户要求删掉「现场 / 爱回收工单系统 2 小时 · 预测每日 21:50 标定」这一行；
+           其中的「状态 × 类型」已移入下方「目前库存」区，作为该区第一个板块） -->
       <div class="zone">
-        <div class="zonetag"><i></i>现场 <span>爱回收工单系统 2 小时 · 预测每日 21:50 标定</span></div>
         <div class="kpis row" id="kTicket"></div>
-        <div class="panels">
-          <div class="panel wide">
+      </div>
+
+      <!-- 目前库存（原「工单明细」，2026-09-24 用户改名）：
+           左栏 = 状态 × 类型 + 升级时长分布（上下），右栏 = 类型大类 / 完整场景（跨两行）
+           —— 这样「升级时长」下方不再是一大片空白。各板块独立切片、点时长桶原地下钻。 -->
+      <div class="zone">
+        <div class="zonetag"><i></i>目前库存 <span>状态 × 类型 / 升级时长 / 类型大类 / 完整场景 · 各板块独立切片（默认「投诉」= 客诉 + 纠纷，可手动切其他类）· 点时长桶原地下钻</span></div>
+        <div class="panels tkstock">
+          <!-- 左栏上：状态 × 类型（原在「现场」区，按用户要求移入） -->
+          <div class="panel p-mx">
             <div class="phead"><h3>状态 × 类型</h3><span class="tkchips" data-chips="matrix"></span><span class="hint" id="noteTicketmx"></span></div>
             <div class="tblwrap"><table class="tbl" id="tkMatrix"></table></div>
           </div>
-        </div>
-      </div>
-
-      <!-- 工单明细（升级时长 / 类型大类 / 完整场景）—— 每个板块都可切四类 -->
-      <div class="zone">
-        <div class="zonetag"><i></i>工单明细 <span>升级时长 / 类型大类 / 完整场景 · 各板块独立切片（默认「投诉」= 客诉 + 纠纷，可手动切其他类）· 点时长桶原地下钻</span></div>
-        <div class="panels tkalign">
-          <div class="panel">
+          <!-- 左栏下：升级时长分布（5 桶一排 · 点桶原地替换成下钻） -->
+          <div class="panel p-time">
             <div class="phead">
               <h3>升级时长分布</h3>
               <span class="tkchips" data-chips="tb"></span>
@@ -813,7 +823,8 @@ svg{display:block;width:100%;overflow:visible}
             <div class="tgrid" id="tkTimeBoxes"></div>
             <div id="tkTimeDrill"></div>
           </div>
-          <div class="panel">
+          <!-- 右栏：类型大类 / 完整场景 -->
+          <div class="panel p-cat">
             <div class="phead">
               <h3>类型大类 / 完整场景</h3>
               <span class="tkchips" data-chips="cat"></span>
