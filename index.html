@@ -832,7 +832,8 @@ svg{display:block;width:100%;overflow:visible}
 
       <!-- 日维度区（与 400 / 在线同口径）：单日预估新增/处理/积压明细 + 逐日切片日历 -->
       <div class="zone">
-        <div class="zonetag fc"><i></i>日维度预测 <span>该日预估新增 / 处理 / 期末积压（可逐日切片）</span>
+        <div class="zonetag fc"><i></i>日维度预测 <span>该日预估新增 / 处理 / 期末积压（可逐日切片）· 按类外推</span>
+          <span class="tkchips" data-fcchips="day"></span>
           <details class="fold zfold" id="calFoldTicket">
             <summary>
               <span class="ft">逐日切片 · 选日期</span>
@@ -859,7 +860,9 @@ svg{display:block;width:100%;overflow:visible}
     <!-- 切片 ② 30 天数据及预测 -->
     <div class="view" data-view="d30">
       <div class="zone">
-        <div class="zonetag"><i></i>现场 <span>近 30 天实际 + 未来 7 天预测</span></div>
+        <div class="zonetag"><i></i>现场 <span>近 30 天实际 + 未来 7 天预测 · 按类切片</span>
+          <span class="tkchips" data-fcchips="trend"></span>
+        </div>
         <div class="panels">
           <div class="panel wide">
             <div class="phead">
@@ -880,7 +883,9 @@ svg{display:block;width:100%;overflow:visible}
 
       <!-- 月维度（多日）预测 —— 与 400 / 在线同口径：多日清单留 30 天切片 -->
       <div class="zone">
-        <div class="zonetag fc"><i></i>月维度预测 <span>近 14 天净变化外推积压 · 每日预估新增与积压（点某一行可切换实时页的逐日切片）</span></div>
+        <div class="zonetag fc"><i></i>月维度预测 <span>近 14 天净变化外推积压 · 每日预估新增与积压（点某一行可切换实时页的逐日切片）</span>
+          <span class="tkchips" data-fcchips="day"></span>
+        </div>
         <div class="panels">
           <div class="panel wide">
             <div class="phead"><h3>未来 7 天预估新增与积压</h3><span class="hint" id="noteTicketfc"></span></div>
