@@ -138,6 +138,30 @@ h1 em{font-style:normal;font-size:12px;font-weight:500;color:var(--tx3);letter-s
 .zonetag span{font-weight:400;color:var(--tx3);font-size:11.5px}
 .zonetag.fc i{background:var(--amber);box-shadow:0 0 8px rgba(251,191,36,.7)}
 .zonetag.fc{color:var(--amber)}
+/* 日期选择直接挂在「预测」zonetag 右侧，不再单独占一行（2026-09-24） */
+.zonetag{flex-wrap:wrap}
+.zonetag .zfold{margin:0 0 0 auto;border-top:none;padding-top:0}
+.zonetag .zfold>summary{padding:5px 12px}
+.zonetag .zfold[open]{flex:1 0 100%;margin-top:9px}
+
+/* ── 板块内切片器：实时数据及预测 / 30 天数据及预测（2026-09-24）── */
+.sechead .bseg{display:inline-flex;gap:4px;padding:4px;border-radius:12px;margin-left:auto;
+  background:rgba(9,15,28,.5);border:1px solid var(--lin2)}
+.bseg .sg{
+  font:inherit;font-size:12.5px;font-weight:600;letter-spacing:.01em;cursor:pointer;white-space:nowrap;
+  padding:7px 16px;border-radius:9px;border:1px solid transparent;background:none;color:var(--tx3);transition:.16s;
+}
+.bseg .sg:hover{color:var(--tx2);background:rgba(126,166,226,.08)}
+.bseg .sg.on{
+  color:var(--tx);border-color:rgba(var(--accs),.5);
+  background:linear-gradient(180deg,rgba(var(--accs),.26),rgba(var(--accs),.1));
+  box-shadow:0 2px 12px rgba(var(--accs),.18);
+}
+.bseg .sg:focus-visible{outline:2px solid rgba(var(--accs),.55);outline-offset:2px}
+.view{display:none}
+.view.on{display:block;animation:viewIn .22s ease both}
+@keyframes viewIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){.view.on{animation:none}}
 
 /* ── KPI ── */
 .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(158px,1fr));gap:12px;margin-bottom:16px}
@@ -307,6 +331,34 @@ h1 em{font-style:normal;font-size:12px;font-weight:500;color:var(--tx3);letter-s
 .kdp .up{color:var(--amber)}
 .kdp .dn{color:var(--green)}
 
+/* ── 通栏「今日调控策略建议」（400 放在板块顶部，替代原右侧窄栏）── */
+.strategy.wide{padding:15px 20px 12px}
+.strategy.wide>div[id^="strat"]{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:6px 26px;align-content:start}
+.strategy.wide .st{border-top:none;padding:2px 0}
+
+/* ── 现场卡片：两行 —— 左「接通率」放大占两行，右 6 卡（3 列 × 2 行）──
+   第一排 当前排队量 / 呼入量 / 人工量
+   第二排 在岗人力（出勤 / 排班）/ 运能负荷（实时）/ 人力缺口            */
+.kpis.hero{grid-template-columns:minmax(236px,1.12fr) repeat(3,minmax(0,1fr));gap:12px}
+.kpis.hero .kpi{display:flex;flex-direction:column;justify-content:center}
+.kpis.hero .kpi.lead{
+  grid-column:1;grid-row:1/span 2;padding:20px 22px;border-color:rgba(var(--accs),.32);
+  background:linear-gradient(135deg,rgba(var(--accs),.12),transparent 58%),var(--card);
+}
+.kpis.hero .kpi.lead .kl{font-size:12.5px;margin-bottom:10px}
+.kpis.hero .kpi.lead .kv{font-size:80px;letter-spacing:-.035em}
+.kpis.hero .kpi.lead .kv small{font-size:25px}
+.kpis.hero .kpi.lead .kd{font-size:12.5px;margin-top:11px}
+.kpis.hero .kpi.lead .kw{font-size:12.5px;margin-top:11px}
+.kpis.hero .kpi.lead .kw b{font-size:19px}
+.kpis.hero .kpi:not(.lead) .kv{font-size:31px}
+@media(max-width:1240px){
+  .kpis.hero{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .kpis.hero .kpi.lead{grid-column:1/-1;grid-row:auto}
+  .kpis.hero .kpi.lead .kv{font-size:58px}
+}
+@media(max-width:640px){.kpis.hero{grid-template-columns:1fr}.kpis.hero .kpi.lead{grid-column:1}}
+
 /* ── 单日详情 ── */
 .dstats{margin-bottom:16px;padding:14px 16px 4px;border-radius:var(--r);background:rgba(19,30,53,.55);border:1px solid var(--lin2)}
 .dhead{display:flex;align-items:center;gap:9px;margin-bottom:11px;font-size:12.5px;color:var(--tx2)}
@@ -393,70 +445,72 @@ svg{display:block;width:100%;overflow:visible}
     <div class="sechead">
       <span class="idx">01</span>
       <h2>400 电话</h2>
-      <span class="badge">现场</span>
-      <div class="r" id="h400r"></div>
+      <div class="bseg" data-seg="400" role="tablist" aria-label="400 数据切片">
+        <button class="sg on" data-view="live" role="tab" aria-selected="true">实时数据及预测</button>
+        <button class="sg" data-view="d30" role="tab" aria-selected="false">30 天数据及预测</button>
+      </div>
     </div>
 
-    <div class="zone">
-      <div class="zonetag"><i></i>现场 <span>7x24cc 采集 90 秒 · 预测每日 21:50 标定</span></div>
-      <div class="mergeline">
-        <div class="kpis" id="k400"></div>
-        <aside class="strategy">
+    <!-- 切片 ① 实时数据及预测 -->
+    <div class="view on" data-view="live">
+      <div class="zone">
+        <aside class="strategy wide">
           <div class="shead"><h3>今日调控策略建议</h3><span class="hint">现场进度 + 预测自动生成</span></div>
           <div id="diag400"></div>
           <div class="secttl">调控策略</div>
           <div id="strat400"></div>
         </aside>
       </div>
-      <div class="panels">
-        <div class="panel wide">
-          <div class="phead">
-            <h3>每半小时人工量 · 现场</h3>
-            <div class="lgd">
-              <span><em style="background:var(--blue)"></em>实际转人工量</span>
-              <span><em style="background:var(--amber)"></em>预测转人工量</span>
+      <div class="zone">
+        <div class="zonetag"><i></i>现场 <span>7x24cc 采集 90 秒 · 预测每日 21:50 标定</span></div>
+        <div class="kpis hero" id="k400"></div>
+        <div class="panels">
+          <div class="panel wide">
+            <div class="phead">
+              <h3>每半小时人工量 · 现场</h3>
+              <div class="lgd">
+                <span><em style="background:var(--blue)"></em>实际转人工量</span>
+                <span><em style="background:var(--amber)"></em>预测转人工量</span>
+              </div>
+              <span class="hint" id="note400hh"></span>
             </div>
-            <span class="hint" id="note400hh"></span>
-          </div>
-          <div id="ch400hh"></div>
-          <div class="subhead">每半小时接通率 <span>接通量 ÷ 转人工量</span>
-            <div class="lgd">
-              <span><em style="background:#22d3ee"></em>实际</span>
-              <span><em style="background:#a78bfa"></em>同时段基准（近 7 日）</span>
+            <div id="ch400hh"></div>
+            <div class="subhead">每半小时接通率 <span>接通量 ÷ 转人工量</span>
+              <div class="lgd">
+                <span><em style="background:#22d3ee"></em>实际</span>
+                <span><em style="background:#a78bfa"></em>同时段基准（近 7 日）</span>
+              </div>
             </div>
+            <div id="ch400hhRate"></div>
           </div>
-          <div id="ch400hhRate"></div>
-        </div>
-        <div class="panel wide">
-          <div class="phead">
-            <h3>近 30 天人工量 · 现场</h3>
-            <div class="lgd">
-              <span><em style="background:var(--blue)"></em>实际人工量</span>
-              <span><em style="background:var(--amber)"></em>预测人工量</span>
-            </div>
-            <span class="hint" id="note400tr">人工量 = 呼入 − IVR</span>
-          </div>
-          <div id="ch400tr"></div>
-          <div class="subhead">每日接通率 <span>接通量 ÷ 转人工量</span></div>
-          <div id="ch400trRate"></div>
         </div>
       </div>
     </div>
 
-    <div class="zone">
-      <div class="zonetag fc"><i></i>预测 <span>货量 → 进线量 → 转人工 → 所需人力（日维度 · 可逐日切片）</span></div>
-      <div class="panels">
-        <div class="panel wide">
-          <div class="phead">
-            <h3>每日进线量与所需人力</h3>
-            <span class="lgd">
-              <span><em style="background:var(--blue)"></em>进线量</span>
-              <span><em style="background:var(--amber)"></em>所需人力</span>
-              <span><em style="background:var(--green)"></em>在岗人力</span>
-            </span>
-            <span class="hint" id="note400fc"></span>
+    <!-- 切片 ② 30 天数据及预测 -->
+    <div class="view" data-view="d30">
+      <div class="zone">
+        <div class="zonetag"><i></i>现场 <span>近 30 天实际 + 未来 7 天预测 · 人工量 = 呼入 − IVR</span></div>
+        <div class="panels">
+          <div class="panel wide">
+            <div class="phead">
+              <h3>近 30 天人工量 · 现场</h3>
+              <div class="lgd">
+                <span><em style="background:var(--blue)"></em>实际人工量</span>
+                <span><em style="background:var(--amber)"></em>预测人工量</span>
+              </div>
+              <span class="hint" id="note400tr">人工量 = 呼入 − IVR</span>
+            </div>
+            <div id="ch400tr"></div>
+            <div class="subhead">每日接通率 <span>接通量 ÷ 转人工量</span></div>
+            <div id="ch400trRate"></div>
           </div>
-          <details class="fold" id="calFold400">
+        </div>
+      </div>
+
+      <div class="zone">
+        <div class="zonetag fc"><i></i>预测 <span>货量 → 进线量 → 转人工 → 所需人力（日维度 · 可逐日切片）</span>
+          <details class="fold zfold" id="calFold400">
             <summary>
               <span class="ft">逐日切片 · 选日期</span>
               <span class="fh" id="calPick400">—</span>
@@ -466,8 +520,21 @@ svg{display:block;width:100%;overflow:visible}
               <div id="daySlicer"></div>
             </div>
           </details>
-          <div class="dstats" id="dayDetail"></div>
-          <div id="fc400t"></div>
+        </div>
+        <div class="panels">
+          <div class="panel wide">
+            <div class="phead">
+              <h3>每日进线量与所需人力</h3>
+              <span class="lgd">
+                <span><em style="background:var(--blue)"></em>进线量</span>
+                <span><em style="background:var(--amber)"></em>所需人力</span>
+                <span><em style="background:var(--green)"></em>在岗人力</span>
+              </span>
+              <span class="hint" id="note400fc"></span>
+            </div>
+            <div class="dstats" id="dayDetail"></div>
+            <div id="fc400t"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -478,52 +545,62 @@ svg{display:block;width:100%;overflow:visible}
     <div class="sechead">
       <span class="idx">02</span>
       <h2>在线客服</h2>
-      <span class="badge">现场</span>
-      <div class="r" id="hOnliner"></div>
+      <div class="bseg" data-seg="online" role="tablist" aria-label="在线数据切片">
+        <button class="sg on" data-view="live" role="tab" aria-selected="true">实时数据及预测</button>
+        <button class="sg" data-view="d30" role="tab" aria-selected="false">30 天数据及预测</button>
+      </div>
     </div>
 
-    <div class="zone">
-      <div class="zonetag"><i></i>现场 <span>7x24cc 采集 90 秒 · 预测每日 21:50 标定</span></div>
-      <div class="mergeline">
-        <div class="kpis" id="kOnline"></div>
-        <aside class="strategy">
-          <div class="shead"><h3>今日调控策略建议</h3><span class="hint">现场进度 + 预测自动生成</span></div>
-          <div class="secttl">调控策略</div>
-          <div id="stratOnline"></div>
-        </aside>
-      </div>
-      <div class="panels">
-        <div class="panel wide">
-          <div class="phead">
-            <h3>今日分时段接待量 · 实时 + 基准</h3>
-            <div class="lgd">
-              <span><em style="background:var(--green)"></em>实际接待量</span>
-              <span><em style="background:#a78bfa"></em>近 7 日同时段基准</span>
-            </div>
-            <span class="hint" id="noteOnlinehh"></span>
-          </div>
-          <div id="chOnlinehh"></div>
+    <!-- 切片 ① 实时数据及预测 -->
+    <div class="view on" data-view="live">
+      <div class="zone">
+        <div class="zonetag"><i></i>现场 <span>7x24cc 采集 90 秒 · 预测每日 21:50 标定</span></div>
+        <div class="mergeline">
+          <div class="kpis" id="kOnline"></div>
+          <aside class="strategy">
+            <div class="shead"><h3>今日调控策略建议</h3><span class="hint">现场进度 + 预测自动生成</span></div>
+            <div class="secttl">调控策略</div>
+            <div id="stratOnline"></div>
+          </aside>
         </div>
-        <div class="panel wide">
-          <div class="phead">
-            <h3>近 30 天接待量 · 现场</h3>
-            <div class="lgd">
-              <span><em style="background:var(--green)"></em>实际</span>
-              <span><em style="background:var(--amber)"></em>预测</span>
+        <div class="panels">
+          <div class="panel wide">
+            <div class="phead">
+              <h3>今日分时段接待量 · 实时 + 基准</h3>
+              <div class="lgd">
+                <span><em style="background:var(--green)"></em>实际接待量</span>
+                <span><em style="background:#a78bfa"></em>近 7 日同时段基准</span>
+              </div>
+              <span class="hint" id="noteOnlinehh"></span>
             </div>
-            <span class="hint">技能组接待量</span>
+            <div id="chOnlinehh"></div>
           </div>
-          <div id="chOnlinetr"></div>
         </div>
       </div>
     </div>
 
-    <div class="zone">
-      <div class="zonetag fc"><i></i>预测 <span>同星期几基准 × 近 7 天水平因子（日维度 · 可逐日切片）</span></div>
-      <div class="panels">
-        <div class="panel wide">
-          <div class="phead"><h3>未来 7 天预估接待量与所需人力</h3><span class="hint" id="noteOnlinefc"></span></div>
-          <details class="fold" id="calFoldOnline">
+    <!-- 切片 ② 30 天数据及预测 -->
+    <div class="view" data-view="d30">
+      <div class="zone">
+        <div class="zonetag"><i></i>现场 <span>近 30 天实际 + 未来 7 天预测 · 技能组接待量口径</span></div>
+        <div class="panels">
+          <div class="panel wide">
+            <div class="phead">
+              <h3>近 30 天接待量 · 现场</h3>
+              <div class="lgd">
+                <span><em style="background:var(--green)"></em>实际</span>
+                <span><em style="background:var(--amber)"></em>预测</span>
+              </div>
+              <span class="hint">技能组接待量</span>
+            </div>
+            <div id="chOnlinetr"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="zone">
+        <div class="zonetag fc"><i></i>预测 <span>同星期几基准 × 近 7 天水平因子（日维度 · 可逐日切片）</span>
+          <details class="fold zfold" id="calFoldOnline">
             <summary>
               <span class="ft">逐日切片 · 选日期</span>
               <span class="fh" id="calPickOnline">—</span>
@@ -533,8 +610,13 @@ svg{display:block;width:100%;overflow:visible}
               <div id="onlineSlicer"></div>
             </div>
           </details>
-          <div class="dstats" id="onlineDetail"></div>
-          <div id="fcOnlinet"></div>
+        </div>
+        <div class="panels">
+          <div class="panel wide">
+            <div class="phead"><h3>未来 7 天预估接待量与所需人力</h3><span class="hint" id="noteOnlinefc"></span></div>
+            <div class="dstats" id="onlineDetail"></div>
+            <div id="fcOnlinet"></div>
+          </div>
         </div>
       </div>
     </div>
