@@ -1,13 +1,13 @@
 {
- "ts": 1790348401786,
- "collectedAtCn": "2026/9/25 23:00:01",
+ "ts": 1790348545042,
+ "collectedAtCn": "2026/9/25 23:02:25",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "1",
   "坐席忙碌数": "0 (0)",
   "接通率": "15.86%",
   "满意率": "100.00%",
-  "呼入总数": "19722",
+  "呼入总数": "19724",
   "当前呼入数": "0",
   "外呼总数": "4674",
   "当前外呼数": "0",
@@ -320,8 +320,8 @@
   },
   {
    "service": "88236636(一键转卖)",
-   "callIn": 27,
-   "ivr": 27,
+   "callIn": 28,
+   "ivr": 28,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -520,8 +520,8 @@
   },
   {
    "service": "88236603(京东渠道4000990166)",
-   "callIn": 359,
-   "ivr": 133,
+   "callIn": 360,
+   "ivr": 134,
    "ringMissed": 4,
    "queueAbandon": 18,
    "answered": 210,
@@ -946,7 +946,7 @@
     "assigned": 222,
     "current": 8,
     "max": 60,
-    "queue": 2,
+    "queue": 4,
     "onlineSeats": "2(刘谊鸽,丁萌萌)",
     "done": 214,
     "answerRate": 89.88,
@@ -972,11 +972,11 @@
     "name": "官网严选自营售后咨询",
     "sessions": 1509,
     "assigned": 1434,
-    "current": 42,
+    "current": 41,
     "max": 60,
     "queue": 3,
     "onlineSeats": "2(刘谊鸽,丁萌萌)",
-    "done": 1356,
+    "done": 1357,
     "answerRate": 95.03,
     "abandon": 75,
     "voicemail": 0,
@@ -1044,7 +1044,7 @@
     "assigned": 519,
     "current": 16,
     "max": 60,
-    "queue": 1,
+    "queue": 3,
     "onlineSeats": "2(刘谊鸽,丁萌萌)",
     "done": 495,
     "answerRate": 93.68,
@@ -1274,15 +1274,6 @@
   "rate400": 78.8
  },
  "history": [
-  {
-   "ts": 1790253199770,
-   "skillRate400": 81.42,
-   "skillQueue400": 2,
-   "callIn400": 969,
-   "signIn400": 6,
-   "onlineSessions": 768,
-   "onlineSeat": 3
-  },
   {
    "ts": 1790253325034,
    "skillRate400": 81.28,
@@ -5767,6 +5758,15 @@
   },
   {
    "ts": 1790348401786,
+   "skillRate400": 53.33,
+   "skillQueue400": 0,
+   "callIn400": 30,
+   "signIn400": 1,
+   "onlineSessions": 747,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1790348545042,
    "skillRate400": 53.33,
    "skillQueue400": 0,
    "callIn400": 30,
