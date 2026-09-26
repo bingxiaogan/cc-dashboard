@@ -1,13 +1,13 @@
 {
- "ts": 1790436060504,
- "collectedAtCn": "2026/9/26 23:21:00",
+ "ts": 1790436176703,
+ "collectedAtCn": "2026/9/26 23:22:56",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "1",
   "坐席忙碌数": "0 (0)",
-  "接通率": "16.36%",
+  "接通率": "16.35%",
   "满意率": "100.00%",
-  "呼入总数": "20160",
+  "呼入总数": "20161",
   "当前呼入数": "1",
   "外呼总数": "4781",
   "当前外呼数": "0",
@@ -480,8 +480,8 @@
   },
   {
    "service": "81198(上门按键转接)",
-   "callIn": 1002,
-   "ivr": 611,
+   "callIn": 1003,
+   "ivr": 612,
    "ringMissed": 9,
    "queueAbandon": 61,
    "answered": 358,
@@ -928,14 +928,14 @@
    },
    {
     "name": "官网严选寄卖售后咨询",
-    "sessions": 295,
-    "assigned": 248,
-    "current": 7,
+    "sessions": 296,
+    "assigned": 249,
+    "current": 8,
     "max": 30,
-    "queue": 2,
+    "queue": 1,
     "onlineSeats": "1(刘谊鸽)",
     "done": 241,
-    "answerRate": 84.07,
+    "answerRate": 84.12,
     "abandon": 47,
     "voicemail": 0,
     "satisfactionRate": 0
@@ -956,14 +956,14 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1652,
-    "assigned": 1494,
-    "current": 47,
+    "sessions": 1654,
+    "assigned": 1496,
+    "current": 48,
     "max": 30,
-    "queue": 12,
+    "queue": 11,
     "onlineSeats": "1(刘谊鸽)",
-    "done": 1390,
-    "answerRate": 90.44,
+    "done": 1391,
+    "answerRate": 90.45,
     "abandon": 158,
     "voicemail": 0,
     "satisfactionRate": 0
@@ -1272,15 +1272,6 @@
   "rate400": 78
  },
  "history": [
-  {
-   "ts": 1790313277854,
-   "skillRate400": 89.88,
-   "skillQueue400": 0,
-   "callIn400": 425,
-   "signIn400": 11,
-   "onlineSessions": 268,
-   "onlineSeat": 2
-  },
   {
    "ts": 1790313387118,
    "skillRate400": 90.12,
@@ -5765,6 +5756,15 @@
   },
   {
    "ts": 1790436060504,
+   "skillRate400": 38.1,
+   "skillQueue400": 0,
+   "callIn400": 21,
+   "signIn400": 1,
+   "onlineSessions": 765,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1790436176703,
    "skillRate400": 38.1,
    "skillQueue400": 0,
    "callIn400": 21,
