@@ -1,16 +1,16 @@
 {
- "ts": 1790429963839,
- "collectedAtCn": "2026/9/26 21:39:23",
+ "ts": 1790430080782,
+ "collectedAtCn": "2026/9/26 21:41:20",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "1",
   "坐席忙碌数": "0 (0)",
-  "接通率": "16.47%",
+  "接通率": "16.46%",
   "满意率": "100.00%",
-  "呼入总数": "20024",
-  "当前呼入数": "1",
+  "呼入总数": "20029",
+  "当前呼入数": "0",
   "外呼总数": "4779",
-  "当前外呼数": "1",
+  "当前外呼数": "0",
   "呼入平均通话时长": "00:02:28",
   "AI通话数": "0 (3)"
  },
@@ -240,8 +240,8 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 2046,
-   "ivr": 884,
+   "callIn": 2047,
+   "ivr": 885,
    "ringMissed": 5,
    "queueAbandon": 238,
    "answered": 919,
@@ -270,8 +270,8 @@
   },
   {
    "service": "88236633(pjt物流收货)",
-   "callIn": 75,
-   "ivr": 75,
+   "callIn": 77,
+   "ivr": 77,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -480,8 +480,8 @@
   },
   {
    "service": "81198(上门按键转接)",
-   "callIn": 950,
-   "ivr": 559,
+   "callIn": 952,
+   "ivr": 561,
    "ringMissed": 9,
    "queueAbandon": 61,
    "answered": 358,
@@ -886,8 +886,8 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 2046,
-    "ivr": 884,
+    "callIn": 2047,
+    "ivr": 885,
     "ringMissed": 5,
     "queueAbandon": 238,
     "answered": 919,
@@ -905,9 +905,9 @@
     "transferred": 0
    }
   ],
-  "total": 2081,
+  "total": 2082,
   "answered": 931,
-  "ivr": 899,
+  "ivr": 900,
   "connectRate": 87.94
  },
  "online": {
@@ -956,14 +956,14 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1546,
-    "assigned": 1396,
-    "current": 106,
+    "sessions": 1548,
+    "assigned": 1398,
+    "current": 107,
     "max": 120,
     "queue": 18,
     "onlineSeats": "4(刘梓爱,刘谊鸽,李宜慢,沈东升)",
-    "done": 1237,
-    "answerRate": 90.3,
+    "done": 1238,
+    "answerRate": 90.31,
     "abandon": 150,
     "voicemail": 0,
     "satisfactionRate": 0
@@ -1040,14 +1040,14 @@
    },
    {
     "name": "官网严选自营售前咨询",
-    "sessions": 566,
-    "assigned": 516,
-    "current": 33,
+    "sessions": 568,
+    "assigned": 518,
+    "current": 34,
     "max": 120,
-    "queue": 8,
+    "queue": 7,
     "onlineSeats": "4(刘梓爱,刘谊鸽,李宜慢,沈东升)",
-    "done": 474,
-    "answerRate": 91.17,
+    "done": 475,
+    "answerRate": 91.2,
     "abandon": 50,
     "voicemail": 0,
     "satisfactionRate": 0
@@ -1272,15 +1272,6 @@
   "rate400": 78
  },
  "history": [
-  {
-   "ts": 1790307647658,
-   "skillRate400": 91.21,
-   "skillQueue400": 0,
-   "callIn400": 307,
-   "signIn400": 11,
-   "onlineSessions": 186,
-   "onlineSeat": 2
-  },
   {
    "ts": 1790307754907,
    "skillRate400": 91.67,
@@ -5765,6 +5756,15 @@
   },
   {
    "ts": 1790429963839,
+   "skillRate400": 38.1,
+   "skillQueue400": 0,
+   "callIn400": 21,
+   "signIn400": 1,
+   "onlineSessions": 765,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1790430080782,
    "skillRate400": 38.1,
    "skillQueue400": 0,
    "callIn400": 21,
