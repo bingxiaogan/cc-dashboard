@@ -1,14 +1,14 @@
 {
- "ts": 1790435303473,
- "collectedAtCn": "2026/9/26 23:08:23",
+ "ts": 1790435534135,
+ "collectedAtCn": "2026/9/26 23:12:14",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "1",
   "坐席忙碌数": "0 (0)",
   "接通率": "16.36%",
   "满意率": "100.00%",
-  "呼入总数": "20150",
-  "当前呼入数": "1",
+  "呼入总数": "20155",
+  "当前呼入数": "0",
   "外呼总数": "4781",
   "当前外呼数": "0",
   "呼入平均通话时长": "00:02:28",
@@ -240,8 +240,8 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 2074,
-   "ivr": 912,
+   "callIn": 2076,
+   "ivr": 914,
    "ringMissed": 5,
    "queueAbandon": 238,
    "answered": 919,
@@ -300,8 +300,8 @@
   },
   {
    "service": "88236634(pjt-卖家)",
-   "callIn": 118,
-   "ivr": 118,
+   "callIn": 119,
+   "ivr": 119,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -480,8 +480,8 @@
   },
   {
    "service": "81198(上门按键转接)",
-   "callIn": 999,
-   "ivr": 608,
+   "callIn": 1000,
+   "ivr": 609,
    "ringMissed": 9,
    "queueAbandon": 61,
    "answered": 358,
@@ -886,8 +886,8 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 2074,
-    "ivr": 912,
+    "callIn": 2076,
+    "ivr": 914,
     "ringMissed": 5,
     "queueAbandon": 238,
     "answered": 919,
@@ -905,10 +905,10 @@
     "transferred": 0
    }
   ],
-  "total": 2109,
+  "total": 2111,
   "answered": 931,
-  "ivr": 927,
-  "connectRate": 88.1
+  "ivr": 929,
+  "connectRate": 88.11
  },
  "online": {
   "groups": [
@@ -928,14 +928,14 @@
    },
    {
     "name": "官网严选寄卖售后咨询",
-    "sessions": 292,
-    "assigned": 245,
-    "current": 5,
+    "sessions": 295,
+    "assigned": 248,
+    "current": 8,
     "max": 30,
-    "queue": 5,
+    "queue": 2,
     "onlineSeats": "1(刘谊鸽)",
     "done": 240,
-    "answerRate": 83.9,
+    "answerRate": 84.07,
     "abandon": 47,
     "voicemail": 0,
     "satisfactionRate": 0
@@ -956,15 +956,15 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1638,
-    "assigned": 1482,
-    "current": 38,
+    "sessions": 1645,
+    "assigned": 1488,
+    "current": 43,
     "max": 30,
-    "queue": 19,
+    "queue": 14,
     "onlineSeats": "1(刘谊鸽)",
-    "done": 1387,
-    "answerRate": 90.48,
-    "abandon": 156,
+    "done": 1388,
+    "answerRate": 90.46,
+    "abandon": 157,
     "voicemail": 0,
     "satisfactionRate": 0
    },
@@ -1040,14 +1040,14 @@
    },
    {
     "name": "官网严选自营售前咨询",
-    "sessions": 599,
-    "assigned": 546,
-    "current": 11,
+    "sessions": 601,
+    "assigned": 548,
+    "current": 13,
     "max": 30,
-    "queue": 6,
+    "queue": 4,
     "onlineSeats": "1(刘谊鸽)",
     "done": 525,
-    "answerRate": 91.15,
+    "answerRate": 91.18,
     "abandon": 53,
     "voicemail": 0,
     "satisfactionRate": 0
@@ -1272,24 +1272,6 @@
   "rate400": 78
  },
  "history": [
-  {
-   "ts": 1790312528694,
-   "skillRate400": 89.78,
-   "skillQueue400": 0,
-   "callIn400": 411,
-   "signIn400": 11,
-   "onlineSessions": 256,
-   "onlineSeat": 2
-  },
-  {
-   "ts": 1790312647874,
-   "skillRate400": 89.83,
-   "skillQueue400": 0,
-   "callIn400": 413,
-   "signIn400": 11,
-   "onlineSessions": 258,
-   "onlineSeat": 2
-  },
   {
    "ts": 1790312761188,
    "skillRate400": 89.86,
@@ -5765,6 +5747,24 @@
   },
   {
    "ts": 1790435303473,
+   "skillRate400": 38.1,
+   "skillQueue400": 0,
+   "callIn400": 21,
+   "signIn400": 1,
+   "onlineSessions": 765,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1790435419175,
+   "skillRate400": 38.1,
+   "skillQueue400": 0,
+   "callIn400": 21,
+   "signIn400": 1,
+   "onlineSessions": 765,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1790435534135,
    "skillRate400": 38.1,
    "skillQueue400": 0,
    "callIn400": 21,
