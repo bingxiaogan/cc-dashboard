@@ -5,40 +5,40 @@
    "levelName": "一级",
    "color": "黄",
    "vals": {
-    "load": 114.3,
+    "load": 113,
     "rate": 81,
     "lv": 2,
     "rv": 2
    },
-   "ts": 1790596740892,
-   "tsCn": "2026/9/28 19:59:00",
+   "ts": 1790596955402,
+   "tsCn": "2026/9/28 20:02:35",
    "lastLevel": 2,
    "muted": false,
    "minLevel": 2,
    "lastAlertTs": 1790595163192
   },
   "c400w": {
-   "level": 2,
-   "levelName": "一级",
-   "color": "黄",
+   "level": 1,
+   "levelName": "正常",
+   "color": "蓝",
    "vals": {
-    "load": 110,
+    "load": 108.9,
     "rate": 81,
-    "lv": 2,
+    "lv": 1,
     "rv": 2,
     "src": "周报口径(今实时)",
     "wDays": 1,
     "sum": {
-     "call": 1113,
-     "ans": 902,
-     "den400": 1011,
-     "on": 824,
+     "call": 1127,
+     "ans": 913,
+     "den400": 1035,
+     "on": 844,
      "denOn": 990
     }
    },
-   "ts": 1790596740892,
-   "tsCn": "2026/9/28 19:59:00",
-   "lastLevel": 2,
+   "ts": 1790596955402,
+   "tsCn": "2026/9/28 20:02:35",
+   "lastLevel": 1,
    "muted": false,
    "minLevel": 2,
    "lastAlertTs": 1790595163192
@@ -50,8 +50,8 @@
    "vals": {
     "load": 85.3
    },
-   "ts": 1790596740892,
-   "tsCn": "2026/9/28 19:59:00",
+   "ts": 1790596955402,
+   "tsCn": "2026/9/28 20:02:35",
    "lastLevel": 0,
    "muted": true,
    "minLevel": 99,
@@ -62,19 +62,19 @@
    "levelName": "低负荷",
    "color": "绿",
    "vals": {
-    "load": 83.2,
+    "load": 85.3,
     "src": "周报口径(今实时)",
     "wDays": 1,
     "sum": {
-     "call": 1113,
-     "ans": 902,
-     "den400": 1011,
-     "on": 824,
+     "call": 1127,
+     "ans": 913,
+     "den400": 1035,
+     "on": 844,
      "denOn": 990
     }
    },
-   "ts": 1790596740892,
-   "tsCn": "2026/9/28 19:59:00",
+   "ts": 1790596955402,
+   "tsCn": "2026/9/28 20:02:35",
    "lastLevel": 0,
    "muted": true,
    "minLevel": 99,
@@ -93,29 +93,29 @@
     "rv": 1,
     "agents": 2
    },
-   "ts": 1790596740892,
-   "tsCn": "2026/9/28 19:59:00",
+   "ts": 1790596955402,
+   "tsCn": "2026/9/28 20:02:35",
    "lastLevel": 1,
    "muted": true,
    "minLevel": 99,
    "lastAlertTs": 1789089575337
   },
   "tkstale": {
-   "level": 1,
-   "levelName": "正常",
-   "color": "蓝",
+   "level": 3,
+   "levelName": "二级",
+   "color": "橙",
    "vals": {
-    "age": 2.9,
+    "age": 3,
     "gen": "2026-09-28 17:02:10"
    },
-   "ts": 1790596740892,
-   "tsCn": "2026/9/28 19:59:00",
+   "ts": 1790596955402,
+   "tsCn": "2026/9/28 20:02:35",
    "lastLevel": 1,
    "muted": true,
    "minLevel": 99,
    "lastAlertTs": 1790326009710
   }
  },
- "updated": "2026/9/28 19:59:00",
- "updatedTs": 1790596740892
+ "updated": "2026/9/28 20:02:35",
+ "updatedTs": 1790596955402
 }
