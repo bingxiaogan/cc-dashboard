@@ -1,58 +1,58 @@
 {
  "objects": {
   "c400d": {
-   "level": 3,
-   "levelName": "二级",
-   "color": "橙",
+   "level": 2,
+   "levelName": "一级",
+   "color": "黄",
    "vals": {
-    "load": 131.2,
-    "rate": 75.8,
-    "lv": 3,
+    "load": 128.5,
+    "rate": 76.2,
+    "lv": 2,
     "rv": 3
    },
-   "ts": 1790576243894,
-   "tsCn": "2026/9/28 14:17:23",
-   "lastLevel": 3,
+   "ts": 1790576573198,
+   "tsCn": "2026/9/28 14:22:53",
+   "lastLevel": 2,
    "muted": false,
    "minLevel": 2,
-   "lastAlertTs": 1790574751352
+   "lastAlertTs": 1790576573198
   },
   "c400w": {
    "level": 2,
    "levelName": "一级",
    "color": "黄",
    "vals": {
-    "load": 126.3,
-    "rate": 75.8,
+    "load": 123.7,
+    "rate": 76.2,
     "lv": 2,
     "rv": 3,
     "src": "周报口径(今实时)",
     "wDays": 1,
     "sum": {
-     "call": 631,
-     "ans": 478,
-     "den400": 500,
-     "on": 399,
+     "call": 650,
+     "ans": 495,
+     "den400": 525,
+     "on": 436,
      "denOn": 990
     }
    },
-   "ts": 1790576243894,
-   "tsCn": "2026/9/28 14:17:23",
+   "ts": 1790576573198,
+   "tsCn": "2026/9/28 14:22:53",
    "lastLevel": 2,
    "muted": false,
    "minLevel": 2,
-   "lastAlertTs": 1790574751352
+   "lastAlertTs": 1790576573198
   },
   "onld": {
-   "level": 0,
-   "levelName": "低负荷",
-   "color": "绿",
+   "level": 1,
+   "levelName": "正常",
+   "color": "蓝",
    "vals": {
-    "load": 87.7
+    "load": 90.8
    },
-   "ts": 1790576243894,
-   "tsCn": "2026/9/28 14:17:23",
-   "lastLevel": 0,
+   "ts": 1790576573198,
+   "tsCn": "2026/9/28 14:22:53",
+   "lastLevel": 1,
    "muted": true,
    "minLevel": 99,
    "lastAlertTs": 1789094040506
@@ -62,19 +62,19 @@
    "levelName": "低负荷",
    "color": "绿",
    "vals": {
-    "load": 40.3,
+    "load": 44,
     "src": "周报口径(今实时)",
     "wDays": 1,
     "sum": {
-     "call": 631,
-     "ans": 478,
-     "den400": 500,
-     "on": 399,
+     "call": 650,
+     "ans": 495,
+     "den400": 525,
+     "on": 436,
      "denOn": 990
     }
    },
-   "ts": 1790576243894,
-   "tsCn": "2026/9/28 14:17:23",
+   "ts": 1790576573198,
+   "tsCn": "2026/9/28 14:22:53",
    "lastLevel": 0,
    "muted": true,
    "minLevel": 99,
@@ -93,8 +93,8 @@
     "rv": 1,
     "agents": 2
    },
-   "ts": 1790576243894,
-   "tsCn": "2026/9/28 14:17:23",
+   "ts": 1790576573198,
+   "tsCn": "2026/9/28 14:22:53",
    "lastLevel": 1,
    "muted": true,
    "minLevel": 99,
@@ -105,17 +105,17 @@
    "levelName": "三级",
    "color": "红",
    "vals": {
-    "age": 5,
+    "age": 5.1,
     "gen": "2026-09-28 09:17:08"
    },
-   "ts": 1790576243894,
-   "tsCn": "2026/9/28 14:17:23",
-   "lastLevel": 3,
+   "ts": 1790576573198,
+   "tsCn": "2026/9/28 14:22:53",
+   "lastLevel": 4,
    "muted": true,
    "minLevel": 99,
    "lastAlertTs": 1790326009710
   }
  },
- "updated": "2026/9/28 14:17:23",
- "updatedTs": 1790576243894
+ "updated": "2026/9/28 14:22:53",
+ "updatedTs": 1790576573198
 }
