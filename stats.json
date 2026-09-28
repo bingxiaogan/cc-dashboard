@@ -1,13 +1,13 @@
 {
- "ts": 1790607768632,
- "collectedAtCn": "2026/9/28 23:02:48",
+ "ts": 1790608028367,
+ "collectedAtCn": "2026/9/28 23:07:08",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "1",
   "坐席忙碌数": "0 (0)",
   "接通率": "18.32%",
   "满意率": "100.00%",
-  "呼入总数": "16573",
+  "呼入总数": "16575",
   "当前呼入数": "0",
   "外呼总数": "5938",
   "当前外呼数": "0",
@@ -240,8 +240,8 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 1959,
-   "ivr": 880,
+   "callIn": 1961,
+   "ivr": 882,
    "ringMissed": 7,
    "queueAbandon": 171,
    "answered": 901,
@@ -886,8 +886,8 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 1959,
-    "ivr": 880,
+    "callIn": 1961,
+    "ivr": 882,
     "ringMissed": 7,
     "queueAbandon": 171,
     "answered": 901,
@@ -905,9 +905,9 @@
     "transferred": 0
    }
   ],
-  "total": 1999,
+  "total": 2001,
   "answered": 918,
-  "ivr": 897,
+  "ivr": 899,
   "connectRate": 90.8
  },
  "online": {
@@ -942,15 +942,15 @@
    },
    {
     "name": "官网严选寄卖售后咨询",
-    "sessions": 301,
+    "sessions": 302,
     "assigned": 234,
     "current": 12,
     "max": 30,
-    "queue": 3,
+    "queue": 2,
     "onlineSeats": "1(王鹏)",
     "done": 222,
-    "answerRate": 77.74,
-    "abandon": 67,
+    "answerRate": 77.48,
+    "abandon": 68,
     "voicemail": 0,
     "satisfactionRate": 0
    },
@@ -970,15 +970,15 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1600,
-    "assigned": 1450,
-    "current": 41,
+    "sessions": 1604,
+    "assigned": 1453,
+    "current": 43,
     "max": 30,
     "queue": 28,
     "onlineSeats": "1(王鹏)",
-    "done": 1372,
-    "answerRate": 90.63,
-    "abandon": 150,
+    "done": 1373,
+    "answerRate": 90.59,
+    "abandon": 151,
     "voicemail": 0,
     "satisfactionRate": 0
    },
@@ -1110,14 +1110,14 @@
    },
    {
     "name": "官网严选自营售前咨询",
-    "sessions": 530,
-    "assigned": 480,
-    "current": 9,
+    "sessions": 531,
+    "assigned": 481,
+    "current": 10,
     "max": 30,
-    "queue": 18,
+    "queue": 19,
     "onlineSeats": "1(王鹏)",
     "done": 463,
-    "answerRate": 90.57,
+    "answerRate": 90.58,
     "abandon": 50,
     "voicemail": 0,
     "satisfactionRate": 0
@@ -1342,24 +1342,6 @@
   "rate400": 54.3
  },
  "history": [
-  {
-   "ts": 1790424099550,
-   "skillRate400": 77.23,
-   "skillQueue400": 0,
-   "callIn400": 1221,
-   "signIn400": 8,
-   "onlineSessions": 719,
-   "onlineSeat": 2
-  },
-  {
-   "ts": 1790424206771,
-   "skillRate400": 77.06,
-   "skillQueue400": 1,
-   "callIn400": 1225,
-   "signIn400": 6,
-   "onlineSessions": 723,
-   "onlineSeat": 2
-  },
   {
    "ts": 1790424314922,
    "skillRate400": 77.18,
@@ -5835,6 +5817,24 @@
   },
   {
    "ts": 1790607768632,
+   "skillRate400": 54.29,
+   "skillQueue400": 0,
+   "callIn400": 35,
+   "signIn400": 1,
+   "onlineSessions": 919,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1790607913181,
+   "skillRate400": 54.29,
+   "skillQueue400": 0,
+   "callIn400": 35,
+   "signIn400": 1,
+   "onlineSessions": 919,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1790608028367,
    "skillRate400": 54.29,
    "skillQueue400": 0,
    "callIn400": 35,
