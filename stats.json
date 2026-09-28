@@ -1,14 +1,14 @@
 {
- "ts": 1790603017640,
- "collectedAtCn": "2026/9/28 21:43:37",
+ "ts": 1790603132738,
+ "collectedAtCn": "2026/9/28 21:45:32",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "1",
   "坐席忙碌数": "0 (0)",
-  "接通率": "18.47%",
+  "接通率": "18.46%",
   "满意率": "100.00%",
-  "呼入总数": "16441",
-  "当前呼入数": "1",
+  "呼入总数": "16450",
+  "当前呼入数": "3",
   "外呼总数": "5938",
   "当前外呼数": "0",
   "呼入平均通话时长": "00:02:39",
@@ -240,8 +240,8 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 1930,
-   "ivr": 851,
+   "callIn": 1933,
+   "ivr": 854,
    "ringMissed": 7,
    "queueAbandon": 171,
    "answered": 901,
@@ -480,8 +480,8 @@
   },
   {
    "service": "81198(上门按键转接)",
-   "callIn": 767,
-   "ivr": 467,
+   "callIn": 769,
+   "ivr": 469,
    "ringMissed": 0,
    "queueAbandon": 60,
    "answered": 268,
@@ -520,8 +520,8 @@
   },
   {
    "service": "88236603(京东渠道4000990166)",
-   "callIn": 381,
-   "ivr": 145,
+   "callIn": 382,
+   "ivr": 146,
    "ringMissed": 4,
    "queueAbandon": 25,
    "answered": 212,
@@ -610,8 +610,8 @@
   },
   {
    "service": "80409(奢侈品商家-门店验货报价)",
-   "callIn": 1087,
-   "ivr": 1087,
+   "callIn": 1090,
+   "ivr": 1090,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -886,8 +886,8 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 1930,
-    "ivr": 851,
+    "callIn": 1933,
+    "ivr": 854,
     "ringMissed": 7,
     "queueAbandon": 171,
     "answered": 901,
@@ -905,10 +905,10 @@
     "transferred": 0
    }
   ],
-  "total": 1970,
+  "total": 1973,
   "answered": 918,
-  "ivr": 868,
-  "connectRate": 90.66
+  "ivr": 871,
+  "connectRate": 90.67
  },
  "online": {
   "groups": [
@@ -942,15 +942,15 @@
    },
    {
     "name": "官网严选寄卖售后咨询",
-    "sessions": 273,
+    "sessions": 274,
     "assigned": 223,
     "current": 3,
     "max": 60,
-    "queue": 16,
+    "queue": 17,
     "onlineSeats": "2(张馨月,李宜慢)",
     "done": 220,
-    "answerRate": 81.68,
-    "abandon": 50,
+    "answerRate": 81.39,
+    "abandon": 51,
     "voicemail": 0,
     "satisfactionRate": 0
    },
@@ -970,15 +970,15 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1501,
+    "sessions": 1502,
     "assigned": 1392,
     "current": 86,
     "max": 60,
     "queue": 30,
     "onlineSeats": "2(张馨月,李宜慢)",
     "done": 1271,
-    "answerRate": 92.74,
-    "abandon": 109,
+    "answerRate": 92.68,
+    "abandon": 110,
     "voicemail": 0,
     "satisfactionRate": 0
    },
@@ -1112,11 +1112,11 @@
     "name": "官网严选自营售前咨询",
     "sessions": 495,
     "assigned": 461,
-    "current": 23,
+    "current": 21,
     "max": 60,
     "queue": 18,
     "onlineSeats": "2(张馨月,李宜慢)",
-    "done": 430,
+    "done": 432,
     "answerRate": 93.13,
     "abandon": 34,
     "voicemail": 0,
@@ -1344,15 +1344,6 @@
   "rate400": 54.3
  },
  "history": [
-  {
-   "ts": 1790419519658,
-   "skillRate400": 77.4,
-   "skillQueue400": 0,
-   "callIn400": 1115,
-   "signIn400": 8,
-   "onlineSessions": 616,
-   "onlineSeat": 2
-  },
   {
    "ts": 1790419627583,
    "skillRate400": 77.42,
@@ -5837,6 +5828,15 @@
   },
   {
    "ts": 1790603017640,
+   "skillRate400": 54.29,
+   "skillQueue400": 0,
+   "callIn400": 35,
+   "signIn400": 1,
+   "onlineSessions": 919,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1790603132738,
    "skillRate400": 54.29,
    "skillQueue400": 0,
    "callIn400": 35,
