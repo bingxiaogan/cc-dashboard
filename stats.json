@@ -1,14 +1,14 @@
 {
- "ts": 1790695475747,
- "collectedAtCn": "2026/9/29 23:24:35",
+ "ts": 1790695705346,
+ "collectedAtCn": "2026/9/29 23:28:25",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "1",
   "坐席忙碌数": "0 (0)",
   "接通率": "19.88%",
   "满意率": "100.00%",
-  "呼入总数": "15136",
-  "当前呼入数": "0",
+  "呼入总数": "15138",
+  "当前呼入数": "2",
   "外呼总数": "6103",
   "当前外呼数": "0",
   "呼入平均通话时长": "00:02:39",
@@ -240,8 +240,8 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 2018,
-   "ivr": 929,
+   "callIn": 2019,
+   "ivr": 930,
    "ringMissed": 9,
    "queueAbandon": 185,
    "answered": 895,
@@ -530,8 +530,8 @@
   },
   {
    "service": "88236606(ahs物流收货)",
-   "callIn": 44,
-   "ivr": 44,
+   "callIn": 45,
+   "ivr": 45,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -886,8 +886,8 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 2018,
-    "ivr": 929,
+    "callIn": 2019,
+    "ivr": 930,
     "ringMissed": 9,
     "queueAbandon": 185,
     "answered": 895,
@@ -905,9 +905,9 @@
     "transferred": 0
    }
   ],
-  "total": 2054,
+  "total": 2055,
   "answered": 913,
-  "ivr": 944,
+  "ivr": 945,
   "connectRate": 90.41
  },
  "online": {
@@ -928,14 +928,14 @@
    },
    {
     "name": "官网严选寄卖售后咨询",
-    "sessions": 290,
-    "assigned": 249,
-    "current": 9,
+    "sessions": 292,
+    "assigned": 251,
+    "current": 11,
     "max": 30,
-    "queue": 6,
+    "queue": 4,
     "onlineSeats": "1(李宜慢)",
     "done": 240,
-    "answerRate": 85.86,
+    "answerRate": 85.96,
     "abandon": 41,
     "voicemail": 0,
     "satisfactionRate": 0
@@ -956,14 +956,14 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1587,
-    "assigned": 1465,
+    "sessions": 1588,
+    "assigned": 1466,
     "current": 35,
     "max": 30,
-    "queue": 28,
+    "queue": 29,
     "onlineSeats": "1(李宜慢)",
-    "done": 1380,
-    "answerRate": 92.31,
+    "done": 1381,
+    "answerRate": 92.32,
     "abandon": 122,
     "voicemail": 0,
     "satisfactionRate": 5
@@ -1054,14 +1054,14 @@
    },
    {
     "name": "官网严选自营售前咨询",
-    "sessions": 570,
-    "assigned": 507,
-    "current": 18,
+    "sessions": 573,
+    "assigned": 510,
+    "current": 20,
     "max": 30,
-    "queue": 10,
+    "queue": 7,
     "onlineSeats": "1(李宜慢)",
-    "done": 453,
-    "answerRate": 88.95,
+    "done": 454,
+    "answerRate": 89.01,
     "abandon": 63,
     "voicemail": 0,
     "satisfactionRate": 25
@@ -1290,24 +1290,6 @@
   "rate400": 61.8
  },
  "history": [
-  {
-   "ts": 1790603017640,
-   "skillRate400": 54.29,
-   "skillQueue400": 0,
-   "callIn400": 35,
-   "signIn400": 1,
-   "onlineSessions": 919,
-   "onlineSeat": 0
-  },
-  {
-   "ts": 1790603132738,
-   "skillRate400": 54.29,
-   "skillQueue400": 0,
-   "callIn400": 35,
-   "signIn400": 1,
-   "onlineSessions": 919,
-   "onlineSeat": 0
-  },
   {
    "ts": 1790603248560,
    "skillRate400": 54.29,
@@ -5783,6 +5765,24 @@
   },
   {
    "ts": 1790695475747,
+   "skillRate400": 75,
+   "skillQueue400": 0,
+   "callIn400": 20,
+   "signIn400": 1,
+   "onlineSessions": 824,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1790695590555,
+   "skillRate400": 75,
+   "skillQueue400": 0,
+   "callIn400": 20,
+   "signIn400": 1,
+   "onlineSessions": 824,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1790695705346,
    "skillRate400": 75,
    "skillQueue400": 0,
    "callIn400": 20,
