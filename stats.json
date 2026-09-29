@@ -1,14 +1,14 @@
 {
- "ts": 1790692835917,
- "collectedAtCn": "2026/9/29 22:40:35",
+ "ts": 1790692950706,
+ "collectedAtCn": "2026/9/29 22:42:30",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "1",
   "坐席忙碌数": "0 (0)",
-  "接通率": "19.91%",
+  "接通率": "19.90%",
   "满意率": "100.00%",
-  "呼入总数": "15113",
-  "当前呼入数": "1",
+  "呼入总数": "15116",
+  "当前呼入数": "0",
   "外呼总数": "6103",
   "当前外呼数": "0",
   "呼入平均通话时长": "00:02:39",
@@ -480,8 +480,8 @@
   },
   {
    "service": "81198(上门按键转接)",
-   "callIn": 820,
-   "ivr": 507,
+   "callIn": 823,
+   "ivr": 510,
    "ringMissed": 6,
    "queueAbandon": 75,
    "answered": 260,
@@ -932,7 +932,7 @@
     "assigned": 245,
     "current": 9,
     "max": 60,
-    "queue": 4,
+    "queue": 5,
     "onlineSeats": "2(王鹏,张馨月)",
     "done": 236,
     "answerRate": 87.5,
@@ -956,9 +956,9 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1548,
-    "assigned": 1443,
-    "current": 72,
+    "sessions": 1549,
+    "assigned": 1444,
+    "current": 73,
     "max": 60,
     "queue": 17,
     "onlineSeats": "2(王鹏,张馨月)",
@@ -1054,14 +1054,14 @@
    },
    {
     "name": "官网严选自营售前咨询",
-    "sessions": 545,
-    "assigned": 493,
-    "current": 24,
+    "sessions": 547,
+    "assigned": 495,
+    "current": 26,
     "max": 60,
-    "queue": 16,
+    "queue": 17,
     "onlineSeats": "2(王鹏,张馨月)",
     "done": 433,
-    "answerRate": 90.46,
+    "answerRate": 90.49,
     "abandon": 52,
     "voicemail": 0,
     "satisfactionRate": 25
@@ -1290,15 +1290,6 @@
   "rate400": 61.8
  },
  "history": [
-  {
-   "ts": 1790600336769,
-   "skillRate400": 80.22,
-   "skillQueue400": 0,
-   "callIn400": 1198,
-   "signIn400": 6,
-   "onlineSessions": 919,
-   "onlineSeat": 0
-  },
   {
    "ts": 1790600453922,
    "skillRate400": 80.22,
@@ -5783,6 +5774,15 @@
   },
   {
    "ts": 1790692835917,
+   "skillRate400": 75,
+   "skillQueue400": 0,
+   "callIn400": 20,
+   "signIn400": 1,
+   "onlineSessions": 824,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1790692950706,
    "skillRate400": 75,
    "skillQueue400": 0,
    "callIn400": 20,
