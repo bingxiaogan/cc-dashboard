@@ -1,14 +1,14 @@
 {
- "ts": 1790693820655,
- "collectedAtCn": "2026/9/29 22:57:00",
+ "ts": 1790694079944,
+ "collectedAtCn": "2026/9/29 23:01:19",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "1",
   "坐席忙碌数": "0 (0)",
   "接通率": "19.89%",
   "满意率": "100.00%",
-  "呼入总数": "15127",
-  "当前呼入数": "0",
+  "呼入总数": "15128",
+  "当前呼入数": "1",
   "外呼总数": "6103",
   "当前外呼数": "0",
   "呼入平均通话时长": "00:02:39",
@@ -240,8 +240,8 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 2015,
-   "ivr": 926,
+   "callIn": 2016,
+   "ivr": 927,
    "ringMissed": 9,
    "queueAbandon": 185,
    "answered": 895,
@@ -886,8 +886,8 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 2015,
-    "ivr": 926,
+    "callIn": 2016,
+    "ivr": 927,
     "ringMissed": 9,
     "queueAbandon": 185,
     "answered": 895,
@@ -905,10 +905,10 @@
     "transferred": 0
    }
   ],
-  "total": 2051,
+  "total": 2052,
   "answered": 913,
-  "ivr": 941,
-  "connectRate": 90.39
+  "ivr": 942,
+  "connectRate": 90.4
  },
  "online": {
   "groups": [
@@ -928,15 +928,15 @@
    },
    {
     "name": "官网严选寄卖售后咨询",
-    "sessions": 282,
-    "assigned": 245,
-    "current": 8,
-    "max": 60,
+    "sessions": 286,
+    "assigned": 247,
+    "current": 7,
+    "max": 30,
     "queue": 7,
-    "onlineSeats": "2(王鹏,李宜慢)",
-    "done": 237,
-    "answerRate": 86.88,
-    "abandon": 37,
+    "onlineSeats": "1(李宜慢)",
+    "done": 240,
+    "answerRate": 86.36,
+    "abandon": 39,
     "voicemail": 0,
     "satisfactionRate": 0
    },
@@ -956,15 +956,15 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1559,
-    "assigned": 1448,
-    "current": 37,
-    "max": 60,
+    "sessions": 1563,
+    "assigned": 1451,
+    "current": 34,
+    "max": 30,
     "queue": 21,
-    "onlineSeats": "2(王鹏,李宜慢)",
-    "done": 1361,
-    "answerRate": 92.88,
-    "abandon": 111,
+    "onlineSeats": "1(李宜慢)",
+    "done": 1367,
+    "answerRate": 92.83,
+    "abandon": 112,
     "voicemail": 0,
     "satisfactionRate": 5
    },
@@ -1054,15 +1054,15 @@
    },
    {
     "name": "官网严选自营售前咨询",
-    "sessions": 553,
-    "assigned": 498,
+    "sessions": 556,
+    "assigned": 500,
     "current": 17,
-    "max": 60,
+    "max": 30,
     "queue": 19,
-    "onlineSeats": "2(王鹏,李宜慢)",
-    "done": 445,
-    "answerRate": 90.05,
-    "abandon": 55,
+    "onlineSeats": "1(李宜慢)",
+    "done": 447,
+    "answerRate": 89.93,
+    "abandon": 56,
     "voicemail": 0,
     "satisfactionRate": 25
    },
@@ -1290,24 +1290,6 @@
   "rate400": 61.8
  },
  "history": [
-  {
-   "ts": 1790601335380,
-   "skillRate400": 54.29,
-   "skillQueue400": 0,
-   "callIn400": 35,
-   "signIn400": 1,
-   "onlineSessions": 919,
-   "onlineSeat": 0
-  },
-  {
-   "ts": 1790601486903,
-   "skillRate400": 54.29,
-   "skillQueue400": 0,
-   "callIn400": 35,
-   "signIn400": 1,
-   "onlineSessions": 919,
-   "onlineSeat": 0
-  },
   {
    "ts": 1790601602396,
    "skillRate400": 54.29,
@@ -5783,6 +5765,24 @@
   },
   {
    "ts": 1790693820655,
+   "skillRate400": 75,
+   "skillQueue400": 0,
+   "callIn400": 20,
+   "signIn400": 1,
+   "onlineSessions": 824,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1790693965122,
+   "skillRate400": 75,
+   "skillQueue400": 0,
+   "callIn400": 20,
+   "signIn400": 1,
+   "onlineSessions": 824,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1790694079944,
    "skillRate400": 75,
    "skillQueue400": 0,
    "callIn400": 20,
