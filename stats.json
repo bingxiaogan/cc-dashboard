@@ -1,16 +1,16 @@
 {
- "ts": 1790859009889,
- "collectedAtCn": "2026/10/1 20:50:09",
+ "ts": 1790859128454,
+ "collectedAtCn": "2026/10/1 20:52:08",
  "overview": {
   "总排队数": "0",
-  "坐席空闲数": "14",
+  "坐席空闲数": "17",
   "坐席忙碌数": "0 (0)",
-  "接通率": "20.74%",
+  "接通率": "20.73%",
   "满意率": "100.00%",
-  "呼入总数": "15219",
-  "当前呼入数": "11",
-  "外呼总数": "5090",
-  "当前外呼数": "6",
+  "呼入总数": "15234",
+  "当前呼入数": "7",
+  "外呼总数": "5095",
+  "当前外呼数": "16",
   "呼入平均通话时长": "00:02:31",
   "AI通话数": "0 (3)"
  },
@@ -496,8 +496,8 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 1940,
-   "ivr": 819,
+   "callIn": 1944,
+   "ivr": 823,
    "ringMissed": 5,
    "queueAbandon": 236,
    "answered": 880,
@@ -696,8 +696,8 @@
   },
   {
    "service": "81199(门店按键转接)",
-   "callIn": 565,
-   "ivr": 389,
+   "callIn": 568,
+   "ivr": 392,
    "ringMissed": 2,
    "queueAbandon": 26,
    "answered": 154,
@@ -736,8 +736,8 @@
   },
   {
    "service": "81198(上门按键转接)",
-   "callIn": 856,
-   "ivr": 463,
+   "callIn": 859,
+   "ivr": 466,
    "ringMissed": 5,
    "queueAbandon": 66,
    "answered": 342,
@@ -866,8 +866,8 @@
   },
   {
    "service": "80409(奢侈品商家-门店验货报价)",
-   "callIn": 1013,
-   "ivr": 1013,
+   "callIn": 1017,
+   "ivr": 1017,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -1147,8 +1147,8 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 1940,
-    "ivr": 819,
+    "callIn": 1944,
+    "ivr": 823,
     "ringMissed": 5,
     "queueAbandon": 236,
     "answered": 880,
@@ -1166,10 +1166,10 @@
     "transferred": 0
    }
   ],
-  "total": 1996,
+  "total": 2000,
   "answered": 899,
-  "ivr": 849,
-  "connectRate": 87.58
+  "ivr": 853,
+  "connectRate": 87.6
  },
  "online": {
   "groups": [
@@ -1207,7 +1207,7 @@
     "assigned": 232,
     "current": 13,
     "max": 60,
-    "queue": 4,
+    "queue": 5,
     "onlineSeats": "2(张慧敏,陈可)",
     "done": 219,
     "answerRate": 87.55,
@@ -1231,17 +1231,17 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1434,
-    "assigned": 1321,
-    "current": 99,
+    "sessions": 1440,
+    "assigned": 1327,
+    "current": 105,
     "max": 60,
-    "queue": 20,
+    "queue": 17,
     "onlineSeats": "2(张慧敏,陈可)",
     "done": 1172,
-    "answerRate": 92.12,
+    "answerRate": 92.15,
     "abandon": 113,
     "voicemail": 0,
-    "satisfactionRate": 7.14
+    "satisfactionRate": 6.67
    },
    {
     "name": "多品奢侈品技能组",
@@ -1389,7 +1389,7 @@
     "assigned": 508,
     "current": 25,
     "max": 60,
-    "queue": 5,
+    "queue": 6,
     "onlineSeats": "2(张慧敏,陈可)",
     "done": 446,
     "answerRate": 91.53,
@@ -1401,11 +1401,11 @@
     "name": "分类在线技能组",
     "sessions": 761,
     "assigned": 761,
-    "current": 20,
+    "current": 14,
     "max": 0,
     "queue": 0,
     "onlineSeats": "0",
-    "done": 741,
+    "done": 747,
     "answerRate": 100,
     "abandon": 0,
     "voicemail": 0,
@@ -1413,13 +1413,13 @@
    },
    {
     "name": "爱回收官网接待组",
-    "sessions": 809,
-    "assigned": 809,
-    "current": 6,
+    "sessions": 812,
+    "assigned": 812,
+    "current": 8,
     "max": 90,
     "queue": 0,
     "onlineSeats": "3(程道旭,徐庆月,俞志雄)",
-    "done": 796,
+    "done": 797,
     "answerRate": 100,
     "abandon": 0,
     "voicemail": 0,
@@ -1430,11 +1430,11 @@
    "name": "分类在线技能组",
    "sessions": 761,
    "assigned": 761,
-   "current": 20,
+   "current": 14,
    "max": 0,
    "queue": 0,
    "onlineSeats": "0",
-   "done": 741,
+   "done": 747,
    "answerRate": 100,
    "abandon": 0,
    "voicemail": 0,
@@ -1620,15 +1620,6 @@
   "rate400": 76.7
  },
  "history": [
-  {
-   "ts": 1790680973462,
-   "skillRate400": 81.42,
-   "skillQueue400": 0,
-   "callIn400": 1055,
-   "signIn400": 10,
-   "onlineSessions": 696,
-   "onlineSeat": 3
-  },
   {
    "ts": 1790681080612,
    "skillRate400": 81.36,
@@ -6113,6 +6104,15 @@
   },
   {
    "ts": 1790859009889,
+   "skillRate400": 74.7,
+   "skillQueue400": 0,
+   "callIn400": 1257,
+   "signIn400": 6,
+   "onlineSessions": 761,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1790859128454,
    "skillRate400": 74.7,
    "skillQueue400": 0,
    "callIn400": 1257,
