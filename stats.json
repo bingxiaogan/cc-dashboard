@@ -1,14 +1,14 @@
 {
- "ts": 1790866397616,
- "collectedAtCn": "2026/10/1 22:53:17",
+ "ts": 1790866513807,
+ "collectedAtCn": "2026/10/1 22:55:13",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "1",
   "坐席忙碌数": "0 (0)",
   "接通率": "20.32%",
   "满意率": "100.00%",
-  "呼入总数": "15642",
-  "当前呼入数": "0",
+  "呼入总数": "15644",
+  "当前呼入数": "1",
   "外呼总数": "5152",
   "当前外呼数": "0",
   "呼入平均通话时长": "00:02:31",
@@ -432,8 +432,8 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 2027,
-   "ivr": 896,
+   "callIn": 2028,
+   "ivr": 897,
    "ringMissed": 5,
    "queueAbandon": 237,
    "answered": 889,
@@ -672,8 +672,8 @@
   },
   {
    "service": "81198(上门按键转接)",
-   "callIn": 966,
-   "ivr": 565,
+   "callIn": 967,
+   "ivr": 566,
    "ringMissed": 5,
    "queueAbandon": 68,
    "answered": 348,
@@ -1079,8 +1079,8 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 2027,
-    "ivr": 896,
+    "callIn": 2028,
+    "ivr": 897,
     "ringMissed": 5,
     "queueAbandon": 237,
     "answered": 889,
@@ -1098,9 +1098,9 @@
     "transferred": 0
    }
   ],
-  "total": 2083,
+  "total": 2084,
   "answered": 908,
-  "ivr": 926,
+  "ivr": 927,
   "connectRate": 88.05
  },
  "online": {
@@ -1165,11 +1165,11 @@
     "name": "官网严选自营售后咨询",
     "sessions": 1583,
     "assigned": 1463,
-    "current": 50,
+    "current": 47,
     "max": 60,
-    "queue": 11,
+    "queue": 12,
     "onlineSeats": "2(张慧敏,陈可)",
-    "done": 1358,
+    "done": 1361,
     "answerRate": 92.42,
     "abandon": 120,
     "voicemail": 0,
@@ -1551,15 +1551,6 @@
   "rate400": 78.5
  },
  "history": [
-  {
-   "ts": 1790687863897,
-   "skillRate400": 75,
-   "skillQueue400": 0,
-   "callIn400": 20,
-   "signIn400": 1,
-   "onlineSessions": 824,
-   "onlineSeat": 0
-  },
   {
    "ts": 1790687978998,
    "skillRate400": 75,
@@ -6044,6 +6035,15 @@
   },
   {
    "ts": 1790866397616,
+   "skillRate400": 73.68,
+   "skillQueue400": 0,
+   "callIn400": 1151,
+   "signIn400": 2,
+   "onlineSessions": 761,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1790866513807,
    "skillRate400": 73.68,
    "skillQueue400": 0,
    "callIn400": 1151,
