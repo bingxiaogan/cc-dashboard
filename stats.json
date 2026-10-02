@@ -1,16 +1,16 @@
 {
- "ts": 1790947192415,
- "collectedAtCn": "2026/10/2 21:19:52",
+ "ts": 1790947310005,
+ "collectedAtCn": "2026/10/2 21:21:50",
  "overview": {
   "总排队数": "0",
-  "坐席空闲数": "1",
+  "坐席空闲数": "3",
   "坐席忙碌数": "0 (0)",
   "接通率": "19.44%",
   "满意率": "100.00%",
-  "呼入总数": "15231",
-  "当前呼入数": "0",
+  "呼入总数": "15235",
+  "当前呼入数": "2",
   "外呼总数": "4488",
-  "当前外呼数": "2",
+  "当前外呼数": "0",
   "呼入平均通话时长": "00:02:28",
   "AI通话数": "0 (3)"
  },
@@ -480,8 +480,8 @@
   },
   {
    "service": "81198(上门按键转接)",
-   "callIn": 828,
-   "ivr": 466,
+   "callIn": 830,
+   "ivr": 468,
    "ringMissed": 2,
    "queueAbandon": 64,
    "answered": 328,
@@ -984,14 +984,14 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1415,
-    "assigned": 1358,
-    "current": 96,
+    "sessions": 1418,
+    "assigned": 1361,
+    "current": 97,
     "max": 120,
-    "queue": 2,
+    "queue": 3,
     "onlineSeats": "4(张慧敏,张馨月,陈可,周鑫)",
-    "done": 1226,
-    "answerRate": 95.97,
+    "done": 1228,
+    "answerRate": 95.98,
     "abandon": 57,
     "voicemail": 0,
     "satisfactionRate": 6.25
@@ -1082,14 +1082,14 @@
    },
    {
     "name": "官网严选自营售前咨询",
-    "sessions": 530,
-    "assigned": 515,
-    "current": 42,
+    "sessions": 531,
+    "assigned": 516,
+    "current": 43,
     "max": 120,
     "queue": 1,
     "onlineSeats": "4(张慧敏,张馨月,陈可,周鑫)",
     "done": 410,
-    "answerRate": 97.17,
+    "answerRate": 97.18,
     "abandon": 15,
     "voicemail": 0,
     "satisfactionRate": 0
@@ -1314,15 +1314,6 @@
   "rate400": 77.6
  },
  "history": [
-  {
-   "ts": 1790854931830,
-   "skillRate400": 75.13,
-   "skillQueue400": 0,
-   "callIn400": 1178,
-   "signIn400": 10,
-   "onlineSessions": 684,
-   "onlineSeat": 2
-  },
   {
    "ts": 1790855073670,
    "skillRate400": 75.13,
@@ -5807,6 +5798,15 @@
   },
   {
    "ts": 1790947192415,
+   "skillRate400": 47.22,
+   "skillQueue400": 0,
+   "callIn400": 36,
+   "signIn400": 1,
+   "onlineSessions": 703,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1790947310005,
    "skillRate400": 47.22,
    "skillQueue400": 0,
    "callIn400": 36,
