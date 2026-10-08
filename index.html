@@ -589,6 +589,7 @@ svg{display:block;width:100%;overflow:visible}
               <h3>每半小时人工进线量 · 现场</h3>
               <div class="lgd">
                 <span><em style="background:var(--blue)"></em>实际人工进线量</span>
+                <span><em style="background:#34d399"></em>实际接听量</span>
                 <span><em style="background:var(--amber)"></em>预测人工进线量</span>
                 <span><em style="background:#94a3b8"></em>参考（8:00–9:00 · 近 4 个同星期几）</span>
               </div>
@@ -1049,7 +1050,7 @@ function drawLine(box, { labels, series, h = 168, yFmt = n0, tipFmt, showVals, v
 }
 
 /* 柱状图（可按阈值着色 + 可选叠加折线） */
-function drawBar(box, { labels, data, color, colorFn, h = 168, yFmt = n0, tipFmt, tipFn, line, lineColor, lineSameScale, lineTipFmt, showVals, valFmt }) {
+function drawBar(box, { labels, data, color, colorFn, h = 168, yFmt = n0, tipFmt, tipFn, line, lineColor, lineSameScale, lineTipFmt, lines, showVals, valFmt }) {
   const W = 1000, H = h, pl = 46, pr = 14, pt = 14, pb = 26;
   const svg = el('svg', { viewBox: `0 0 ${W} ${H}`, preserveAspectRatio: 'none', style: `height:${h}px` });
   const vals = data.filter(v => v != null);
@@ -1073,31 +1074,40 @@ function drawBar(box, { labels, data, color, colorFn, h = 168, yFmt = n0, tipFmt
     svg.appendChild(r);
     if (showVals) vlabels.push({ x: x + bw / 2, y: y - 5, text: (valFmt || yFmt)(v), color: '#93c5fd' });
   });
-  if (line) {
-    const lv = line.filter(x => x != null);
-    if (lv.length) {
-      // lineSameScale：折线与柱共用同一 Y 尺度。「实际 vs 预测」必须同尺度，否则两条线不可比。
-      const lmx = lineSameScale ? mx : (Math.max(...lv) * 1.25 || 1);
-      let d = '', st = false; const pts = [];
-      line.forEach((v, i) => {
-        if (v == null) return;
-        const x = left0 + i * bw + bw / 2, y = pt + (1 - (v / lmx)) * (H - pt - pb);
-        d += (st ? 'L' : 'M') + x.toFixed(1) + ' ' + y.toFixed(1); st = true;
-        pts.push([x, y, v, i]);
+  /* 折线层：兼容单条 `line`（旧调用）与 `lines` 数组（同柱叠多条，如「预测」+「接听量」）。
+     每条 line：{ name, data, color, sameScale, tipFmt, dash, showVals } —— 缺省沿用全局/旧参数。 */
+  const lineArr = (Array.isArray(lines) && lines.length)
+    ? lines
+    : (line ? [{ data: line, color: lineColor, sameScale: lineSameScale, tipFmt: lineTipFmt }] : []);
+  lineArr.forEach(ln => {
+    if (!ln || !ln.data) return;
+    const ld = ln.data, lv = ld.filter(x => x != null);
+    if (!lv.length) return;
+    const lcol = ln.color || lineColor || '#fbbf24';
+    // sameScale：折线与柱共用同一 Y 尺度。「实际 vs 预测」必须同尺度，否则两条线不可比。
+    const lmx = (ln.sameScale || lineSameScale) ? mx : (Math.max(...lv) * 1.25 || 1);
+    let d = '', st = false; const pts = [];
+    ld.forEach((v, i) => {
+      if (v == null) return;
+      const x = left0 + i * bw + bw / 2, y = pt + (1 - (v / lmx)) * (H - pt - pb);
+      d += (st ? 'L' : 'M') + x.toFixed(1) + ' ' + y.toFixed(1); st = true;
+      pts.push([x, y, v, i]);
+    });
+    svg.appendChild(el('path', { d, fill: 'none', stroke: lcol, 'stroke-width': 1.9, 'stroke-dasharray': ln.dash || '4 3', opacity: .95 }));
+    const lShow = ln.showVals !== undefined ? ln.showVals : showVals;
+    if (lShow) pts.forEach(p => vlabels.push({ x: p[0], y: p[1] - 6, text: (valFmt || yFmt)(p[2]), color: lcol }));
+    const ltip = ln.tipFmt !== undefined ? ln.tipFmt : lineTipFmt;
+    if (ltip) {
+      const nm = ln.name !== undefined ? ln.name : '预测';
+      pts.forEach(p => {
+        const c = el('circle', { cx: p[0], cy: p[1], r: 9, fill: 'transparent' });
+        c.style.cursor = 'crosshair';
+        c.dataset.tip = labels[p[3]] + '　' + (nm ? nm + ' ' : '') + ltip(p[2]);
+        svg.appendChild(c);
       });
-      svg.appendChild(el('path', { d, fill: 'none', stroke: lineColor || '#fbbf24', 'stroke-width': 1.9, 'stroke-dasharray': '4 3', opacity: .95 }));
-      if (showVals) pts.forEach(p => vlabels.push({ x: p[0], y: p[1] - 6, text: (valFmt || yFmt)(p[2]), color: lineColor || '#fbbf24' }));
-      if (lineTipFmt) {
-        pts.forEach(p => {
-          const c = el('circle', { cx: p[0], cy: p[1], r: 9, fill: 'transparent' });
-          c.style.cursor = 'crosshair';
-          c.dataset.tip = labels[p[3]] + '　预测 ' + lineTipFmt(p[2]);
-          svg.appendChild(c);
-        });
-        bindTip(svg);
-      }
+      bindTip(svg);
     }
-  }
+  });
   if (showVals && vlabels.length) placeVals(svg, vlabels);
   const step = Math.ceil(labels.length / 10);
   labelIdx(labels.length, step).forEach(i =>
@@ -1390,12 +1400,14 @@ function renderHh400() {
   keys.forEach((k, i) => idxMap[k] = i);
   const hh = D.hh, isToday = !!(hh && hh.date === todayCn() && Array.isArray(hh.slots));
   const act = new Array(keys.length).fill(null), rAct = new Array(keys.length).fill(null);
+  const ansAct = new Array(keys.length).fill(null);   // 实际接听量（= 已接通通数）
   let lastI = -1;
   if (isToday) hh.slots.forEach(s => {
     const i = idxMap[String(s.t).slice(11, 16)];
     if (i == null) return;
     const turn = (+s.total || 0) - (+s.ivr || 0);      // 人工进线量 = 呼入 − IVR
     act[i] = turn;
+    ansAct[i] = +s.answered || 0;                      // 接听量 = 该时段已接通通数
     if (turn > 0) rAct[i] = +(((+s.answered || 0) / turn) * 100).toFixed(1);
     if (i > lastI) lastI = i;
   });
@@ -1425,6 +1437,8 @@ function renderHh400() {
     if (f && (f.turn != null || f.rate != null)) {
       if (f.turn != null) { act[i] = f.turn; sFill += f.turn; }
       if (f.rate != null) rAct[i] = +(f.rate * 100).toFixed(1);
+      // 现场表同时有「人工进线量 + 接通率」→ 反算接听量（参考值段不反算，避免估算混进实际线）
+      if (f.turn != null && f.rate != null) ansAct[i] = Math.round(f.turn * f.rate);
       nFill++; return;
     }
     const a = refAvg[k];                              // ③ 同星期几均值（参考）
@@ -1443,11 +1457,12 @@ function renderHh400() {
   const nAct = act.filter(v => v != null).length;
   const usePredBars = !nLive && !!pred;               // 只在「一段实时都没有」时整条画预测，避免参考柱把预测挤掉
   const liveSum = act.reduce((s, v, i) => s + (v == null || refBar[i] ? 0 : v), 0);
+  const liveAnsSum = ansAct.reduce((s, v) => s + (v == null ? 0 : v), 0);
   const nSeg = [];
   if (nFill) nSeg.push(`现场表补位 ${nFill} 段 ${n0(sFill)} 通`);
-  if (nRef) nSeg.push(`8:00–9:00 参考 ${nRef} 段（无采集源，转人工 ${n0(sRef)} 通 + 接通率均取近 4 个同星期几均值）`);
+  if (nRef) nSeg.push(`8:00–9:00 参考 ${nRef} 段（无采集源，人工进线量 ${n0(sRef)} 通 + 接通率均取近 4 个同星期几均值）`);
   $('#note400hh').textContent = isToday
-    ? `实时 ${nLive}/${keys.length} 段 · 转人工 ${n0(liveSum)} 通` +
+    ? `实时 ${nLive}/${keys.length} 段 · 人工进线量 ${n0(liveSum)} 通 · 接听量 ${n0(liveAnsSum)} 通` +
       (nSeg.length ? ` · ${nSeg.join(' · ')}` : '') +
       (pred ? ` · 预测全天 ${n0(sum(pred, x => x))} 通` : '')
     : '今日半小时数据待采集';
@@ -1462,8 +1477,12 @@ function renderHh400() {
       tipFmt: v => n0(v) + ' 通',
       tipFn: usePredBars ? null : (v, i) => refBar[i]
         ? n0(v) + ' 通（参考值 · 近 4 个同星期几均值，本时段无采集源）' : n0(v) + ' 通',
-      line: usePredBars ? null : pred,
-      lineSameScale: true, lineColor: 'rgba(251,191,36,.9)', lineTipFmt: v => n0(v) + ' 通',
+      lines: [
+        { name: '预测', data: usePredBars ? null : pred, color: 'rgba(251,191,36,.9)',
+          sameScale: true, tipFmt: v => n0(v) + ' 通' },
+        { name: '接听量', data: usePredBars ? null : ansAct, color: '#34d399',
+          sameScale: true, tipFmt: v => n0(v) + ' 通', showVals: false }
+      ],
       showVals: true, valFmt: v => n0(v)
     });
   } else $('#ch400hh').innerHTML = '<div class="empty">今日半小时数据待采集</div>';
