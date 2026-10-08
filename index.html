@@ -588,8 +588,8 @@ svg{display:block;width:100%;overflow:visible}
             <div class="phead">
               <h3>每半小时人工进线量 · 现场</h3>
               <div class="lgd">
-                <span><em style="background:#3b82f6"></em>实际人工进线量</span>
-                <span><em style="background:#93c5fd"></em>实际接听量</span>
+                <span><em style="background:#4a6b9a"></em>实际人工进线量</span>
+                <span><em style="background:#a0c4e6"></em>实际接听量</span>
                 <span><em style="background:var(--amber)"></em>预测人工进线量</span>
                 <span><em style="background:#94a3b8"></em>参考（8:00–9:00 · 近 4 个同星期几）</span>
               </div>
@@ -643,8 +643,8 @@ svg{display:block;width:100%;overflow:visible}
             <div class="phead">
               <h3>近 30 天人工进线量 · 现场</h3>
               <div class="lgd">
-                <span><em style="background:#3b82f6"></em>人工进线量</span>
-                <span><em style="background:#93c5fd"></em>接听量</span>
+                <span><em style="background:#4a6b9a"></em>人工进线量</span>
+                <span><em style="background:#a0c4e6"></em>接听量</span>
                 <span><em style="background:var(--amber)"></em>预测进线量</span>
               </div>
               <span class="hint" id="note400tr">人工进线量 = 呼入 − IVR</span>
@@ -1513,12 +1513,12 @@ function renderHh400() {
         ? [{ data: pred, color: 'rgba(251,191,36,.55)', tipFmt: v => n0(v) + ' 通（预测）' }]
         : [
             { data: act,
-              colorFn: (v, i) => refBar[i] ? 'rgba(148,163,184,.55)'
-                : (i === lastI ? '#60a5fa' : 'rgba(59,130,246,.85)'),
+              colorFn: (v, i) => refBar[i] ? 'rgba(148,163,184,.5)'
+                : (i === lastI ? '#5f84b4' : '#4a6b9a'),
               tipFn: (v, i) => refBar[i]
                 ? n0(v) + ' 通（参考值 · 近 4 个同星期几均值，本时段无采集源）'
                 : n0(v) + ' 通（人工进线量）' },
-            { data: ansAct, overlay: true, width: 0.58, color: '#93c5fd', showVals: false,
+            { data: ansAct, overlay: true, width: 1, color: '#a0c4e6', showVals: false,
               tipFmt: v => n0(v) + ' 通（接听量）' }
           ],
       lines: [{ name: '预测', data: usePredBars ? null : pred, color: 'rgba(251,191,36,.9)',
@@ -1567,8 +1567,8 @@ function renderTr400() {
   drawBar($('#ch400tr'), {
     labels: labels.map(d => d.slice(5)), h: 236,
     bars: [
-      { data: act, color: '#3b82f6', tipFmt: v => n0(v) + ' 通（人工进线量）' },
-      { data: ans, overlay: true, width: 0.58, color: '#93c5fd', showVals: false, tipFmt: v => n0(v) + ' 通（接听量）' }
+      { data: act, color: '#4a6b9a', tipFmt: v => n0(v) + ' 通（人工进线量）' },
+      { data: ans, overlay: true, width: 1, color: '#a0c4e6', showVals: false, tipFmt: v => n0(v) + ' 通（接听量）' }
     ],
     lines: [{ name: '预测', data: fc, color: '#fbbf24', dash: '5 4', sameScale: true, tipFmt: v => n0(v) + ' 通' }],
     showVals: true, valFmt: v => n0(v)
