@@ -379,7 +379,7 @@ h1 em{font-style:normal;font-size:12px;font-weight:500;color:var(--tx3);letter-s
 .strategy.wide .st{border-top:none;padding:2px 0}
 
 /* ── 现场卡片：两行 —— 左「接通率」放大占两行，右 6 卡（3 列 × 2 行）──
-   第一排 当前排队量 / 呼入量 / 人工量
+   第一排 当前排队量 / 呼入量 / 人工进线量
    第二排 在岗人力（出勤 / 排班）/ 运能负荷（实时）/ 人力缺口            */
 .kpis.hero{grid-template-columns:minmax(236px,1.12fr) repeat(3,minmax(0,1fr));gap:10px}
 .kpis.hero .kpi{display:flex;flex-direction:column;justify-content:center}
@@ -586,16 +586,16 @@ svg{display:block;width:100%;overflow:visible}
         <div class="panels">
           <div class="panel wide">
             <div class="phead">
-              <h3>每半小时人工量 · 现场</h3>
+              <h3>每半小时人工进线量 · 现场</h3>
               <div class="lgd">
-                <span><em style="background:var(--blue)"></em>实际转人工量</span>
-                <span><em style="background:var(--amber)"></em>预测转人工量</span>
+                <span><em style="background:var(--blue)"></em>实际人工进线量</span>
+                <span><em style="background:var(--amber)"></em>预测人工进线量</span>
                 <span><em style="background:#94a3b8"></em>参考（8:00–9:00 · 近 4 个同星期几）</span>
               </div>
               <span class="hint" id="note400hh"></span>
             </div>
             <div id="ch400hh"></div>
-            <div class="subhead">每半小时接通率 <span>接通量 ÷ 转人工量 · 8:00–9:00 为参考值</span>
+            <div class="subhead">每半小时接通率 <span>接听量 ÷ 人工进线量 · 8:00–9:00 为参考值</span>
               <div class="lgd">
                 <span><em style="background:#22d3ee"></em>实际</span>
                 <span><em style="background:#a78bfa"></em>同时段基准（近 7 日）</span>
@@ -625,7 +625,7 @@ svg{display:block;width:100%;overflow:visible}
           <div class="panel wide">
             <div class="phead">
               <h3>该日时段预测 · 人力与餐点安排</h3>
-              <span class="hint">每半小时转人工量 · 所需 / 排班 / 实到 / 差额 / 餐点（共 26 段）</span>
+              <span class="hint">每半小时人工进线量 · 所需 / 排班 / 实到 / 差额 / 餐点（共 26 段）</span>
             </div>
             <div class="dstats" id="dayDetail"></div>
           </div>
@@ -636,19 +636,20 @@ svg{display:block;width:100%;overflow:visible}
     <!-- 切片 ② 30 天数据及预测 -->
     <div class="view" data-view="d30">
       <div class="zone">
-        <div class="zonetag"><i></i>现场 <span>近 30 天实际 + 未来 7 天预测 · 人工量 = 呼入 − IVR</span></div>
+        <div class="zonetag"><i></i>现场 <span>近 30 天实际 + 未来 7 天预测 · 人工进线量 = 呼入 − IVR · 接听量 = 已接通量</span></div>
         <div class="panels">
           <div class="panel wide">
             <div class="phead">
-              <h3>近 30 天人工量 · 现场</h3>
+              <h3>近 30 天人工进线量 · 现场</h3>
               <div class="lgd">
-                <span><em style="background:var(--blue)"></em>实际人工量</span>
-                <span><em style="background:var(--amber)"></em>预测人工量</span>
+                <span><em style="background:var(--blue)"></em>人工进线量</span>
+                <span><em style="background:var(--green)"></em>接听量</span>
+                <span><em style="background:var(--amber)"></em>预测进线量</span>
               </div>
-              <span class="hint" id="note400tr">人工量 = 呼入 − IVR</span>
+              <span class="hint" id="note400tr">人工进线量 = 呼入 − IVR</span>
             </div>
             <div id="ch400tr"></div>
-            <div class="subhead">每日接通率 <span>接通量 ÷ 转人工量</span></div>
+            <div class="subhead">每日接通率 <span>接听量 ÷ 人工进线量</span></div>
             <div id="ch400trRate"></div>
           </div>
         </div>
@@ -913,7 +914,7 @@ svg{display:block;width:100%;overflow:visible}
 
   <div class="foot">
     <b>数据源</b>　实时：7x24cc（400 / 在线，90 秒）· 爱回收工单系统（2 小时）　|　趋势：飞书日报（每日 21:50 固化）　|　400 预测：货量 → 进线量 → 转人工 → 所需人力（产能按 85% 人工接通率标定）<br>
-    <b>口径提示</b>　400 实时接通率 = Σ技能组接听 ÷ Σ技能组呼入（含 IVR 与「95分…」溢出组）；400 趋势为人工量（呼入 − IVR），两者统计范围不同，数值不可直接比较。在线<b>不看接通率、也没有排队</b>（会话直连坐席，系统里没有排队队列；唯一缺口来自顾客自行离开），只看接待量、坐席与并发负荷（**口径统一为「分类在线技能组」**，不含抖音售后 / 官网严选自营 / 寄卖商服等其它在线组）。在线与工单预测为趋势外推，非驱动模型。<br>
+    <b>口径提示</b>　400 实时接通率 = Σ技能组接听 ÷ Σ技能组呼入（含 IVR 与「95分…」溢出组）；400 趋势为人工进线量（呼入 − IVR），两者统计范围不同，数值不可直接比较。在线<b>不看接通率、也没有排队</b>（会话直连坐席，系统里没有排队队列；唯一缺口来自顾客自行离开），只看接待量、坐席与并发负荷（**口径统一为「分类在线技能组」**，不含抖音售后 / 官网严选自营 / 寄卖商服等其它在线组）。在线与工单预测为趋势外推，非驱动模型。<br>
     <b>操作</b>　顶部切换业务线（也可按 <b>1</b> / <b>2</b> / <b>3</b> 键），地址栏 <b>#400</b> / <b>#online</b> / <b>#ticket</b> 可直接定位板块。
   </div>
 </div>
@@ -1152,7 +1153,7 @@ function render400() {
     const i = idxMap[String(s.t).slice(11, 16)];
     if (i == null) return;
     actIn[i] = +s.total || 0;
-    act[i] = (+s.total || 0) - (+s.ivr || 0);          // 人工量 = 呼入 − IVR
+    act[i] = (+s.total || 0) - (+s.ivr || 0);          // 人工进线量 = 呼入 − IVR
     if (i > lastI) lastI = i;
   });
   const shp = (D.shape && D.shape.share_turn) ? D.shape : null;
@@ -1186,7 +1187,7 @@ function render400() {
 
   /* 卡片顺序 = 布局位置（2026-09-24 用户定）：
      左「接通率」放大占两行；右侧两排各 3 张 ——
-     第一排 当前排队量 / 呼入量 / 人工量　第二排 在岗人力 / 运能负荷 / 人力缺口
+     第一排 当前排队量 / 呼入量 / 人工进线量　第二排 在岗人力 / 运能负荷 / 人力缺口
      （「人力缺口」从原「在岗人力」的副文案里拆成独立卡） */
   const gapN = planDay ? (planDay.gap_hc || 0) : null;
   $('#k400').innerHTML = [
@@ -1206,7 +1207,7 @@ function render400() {
       d: `${(ss.queue || 0) > 0 ? '<span class="warn">有排队积压</span>' : '<span class="ok">无排队</span>'} · 技能组实时汇总`
     },
     { k: '呼入量（实时）', v: n0(sumIn), c: 'c-cyan', d: `${curEnd ? '截至 ' + curEnd : '待采集'} · ${devTxt(devIn)}` },
-    { k: '人工量（实时）', v: n0(sumTurn), c: 'c-cyan', d: `${curEnd ? '截至 ' + curEnd : '待采集'} · ${devTxt(devTurn)}` },
+    { k: '人工进线量（实时）', v: n0(sumTurn), c: 'c-cyan', d: `${curEnd ? '截至 ' + curEnd : '待采集'} · ${devTxt(devTurn)}` },
     {
       k: '在岗人力（出勤 / 排班）', v: `${on}<small>/${duty}</small>`, c: on >= duty ? 'c-green' : 'c-amber',
       d: `签入 ${n0(ss.signIn)} 人 · 排班 ${duty} 人`
@@ -1229,10 +1230,10 @@ function render400() {
   renderDiag400({ ss, cap, devIn, planDay, low: lowSlots });
   renderStrategy400({ keys, full, act, sumTurn, sumIn, devTurn, devIn, predictTurnNow, doneN, planDay, lastI, low: lowSlots });
 
-  /* 每半小时人工量（现场）与接通率 */
+  /* 每半小时人工进线量（现场）与接通率 */
   renderHh400();
 
-  /* 近 30 天人工量（现场）与每日接通率 */
+  /* 近 30 天人工进线量（现场）与每日接通率 */
   renderTr400();
 }
 
@@ -1302,7 +1303,7 @@ function slotFullKey(hhmm) {
   const p = hhmm.split(':'), t = (+p[0]) * 60 + (+p[1]) + 30;
   return hhmm + '-' + pad2(Math.floor(t / 60)) + ':' + pad2(t % 60);
 }
-/* 该日每半小时预测转人工量 = 该日预测转人工量 × 时段形状占比 */
+/* 该日每半小时预测人工进线量 = 该日预测人工进线量 × 时段形状占比 */
 function hhPredOf(dateIso) {
   const d = ((D.plan && D.plan.days) || []).find(x => x.date === dateIso);
   const sh = D.shape;
@@ -1383,7 +1384,7 @@ function refSlotAvg(dateIso) {
   return out;
 }
 
-/* ── 每半小时：实际转人工量（柱）+ 预测转人工量（虚线）+ 接通率 ── */
+/* ── 每半小时：实际人工进线量（柱）+ 预测人工进线量（虚线）+ 接通率 ── */
 function renderHh400() {
   const keys = slotShortKeys(), idxMap = {};
   keys.forEach((k, i) => idxMap[k] = i);
@@ -1393,7 +1394,7 @@ function renderHh400() {
   if (isToday) hh.slots.forEach(s => {
     const i = idxMap[String(s.t).slice(11, 16)];
     if (i == null) return;
-    const turn = (+s.total || 0) - (+s.ivr || 0);      // 人工量 = 呼入 − IVR
+    const turn = (+s.total || 0) - (+s.ivr || 0);      // 人工进线量 = 呼入 − IVR
     act[i] = turn;
     if (turn > 0) rAct[i] = +(((+s.answered || 0) / turn) * 100).toFixed(1);
     if (i > lastI) lastI = i;
@@ -1407,7 +1408,7 @@ function renderHh400() {
      三级优先级，只补 09:00 之前的时段，**绝不覆盖实时采集**（免得遮住采集故障）：
        ① 实时采集（call_halfhour.json）——最高优先；
        ② 现场表**同日**真实值（forecast/hh_fill.json ← 飞书《现场调控》分时段表，
-          口径同为「转人工量 = 呼入 − IVR」「接通率 = 接通量 ÷ 转人工量」）；
+          口径同为「人工进线量 = 呼入 − IVR」「接通率 = 接通量 ÷ 人工进线量」）；
        ③ 参考值 = 近 4 个**同星期几**的现场表均值（灰色柱，图例/提示里标明「参考」）。
      ⚠️ ②只在当天**当晚回填后**才有值 —— 现场表整个工作簿是「次日补 D-1」，
         所以**当天白天 08:00 / 08:30 一定落到 ③**，这是源侧限制，不是采集故障。
@@ -1479,9 +1480,9 @@ function renderHh400() {
   } else $('#ch400hhRate').innerHTML = '<div class="empty">今日接通率待采集</div>';
 }
 
-/* ── 近 30 天：实际人工量 + 预测人工量 + 每日接通率 ── */
+/* ── 近 30 天：实际人工进线量 + 预测人工进线量 + 每日接通率 ── */
 function renderTr400() {
-  const tr = D.tr || {}, c400 = tr.call400 || {};
+  const tr = D.tr || {}, c400 = tr.call400 || {}, a400 = tr.ans400 || {};
   const last30 = (tr.days || []).slice(-30);
   if (!last30.length) {
     $('#ch400tr').innerHTML = '<div class="empty">趋势数据未生成</div>';
@@ -1493,22 +1494,24 @@ function renderTr400() {
   const planTurn = {}; ((D.plan && D.plan.days) || []).forEach(d => planTurn[d.date] = d.turn);
   const km = (D.drate && D.drate.k_meta) || null;
   if ($('#note400tr')) {
-    $('#note400tr').textContent = '人工量 = 呼入 − IVR'
+    $('#note400tr').textContent = '人工进线量 = 呼入 − IVR · 接听量 = 已接通'
       + (D.k && D.k !== 1 ? ` · 预测已按 7x24cc 实测校正 ×${D.k.toFixed(3)}` +
         (km ? `（近两周 ${km.n} 个完整采集日，平均偏差 ${km.mape_before}% → ${km.mape_after}%）` : '') : '');
   }
   const act = labels.map(d => c400[d] == null ? null : c400[d]);
+  const ans = labels.map(d => a400[d] == null ? null : a400[d]);
   /* 预测线覆盖整个窗口：未来取 plan.days，历史取模型回算值（daily_rate.pred）——
      过去的日子也有预测，才能直接看每天「实际 vs 预测」的偏差 */
   const predTurn = (D.drate && D.drate.pred) || {};
   const fc = labels.map(d => planTurn[d] != null ? planTurn[d] : (predTurn[d] == null ? null : predTurn[d]));
 
   drawLine($('#ch400tr'), {
-    labels: labels.map(d => d.slice(5)), h: 212, tipFmt: v => n0(v) + ' 通',
+    labels: labels.map(d => d.slice(5)), h: 236, tipFmt: v => n0(v) + ' 通',
     showVals: true, valFmt: v => n0(v),
     series: [
-      { name: '实际', data: act, color: '#93c5fd', areaFill: 'rgba(96,165,250,.13)', label: n0(act.filter(v => v != null).pop()) },
-      { name: '预测', data: fc, color: '#fbbf24', area: false, dash: '5 4', label: n0(fc.filter(v => v != null).pop()) }
+      { name: '人工进线量', data: act, color: '#93c5fd', areaFill: 'rgba(96,165,250,.13)', label: n0(act.filter(v => v != null).pop()) },
+      { name: '接听量', data: ans, color: '#34d399', area: false, label: n0(ans.filter(v => v != null).pop()) },
+      { name: '预测进线量', data: fc, color: '#fbbf24', area: false, dash: '5 4', label: n0(fc.filter(v => v != null).pop()) }
     ]
   });
 
@@ -1573,10 +1576,10 @@ function renderStrategy400(o) {
     else adv = '节奏与预测吻合，按计划推进。';
     items.push({
       tag: '整体', cls,
-      html: `截至 <b>${curEnd}</b>，人工量 <b>${n0(o.sumTurn)}</b> 通、呼入 <b>${n0(o.sumIn)}</b> 通（同期预测 ${n0(o.predictTurnNow)} 通），<b>${dir}</b>。${adv}`
+      html: `截至 <b>${curEnd}</b>，人工进线量 <b>${n0(o.sumTurn)}</b> 通、呼入 <b>${n0(o.sumIn)}</b> 通（同期预测 ${n0(o.predictTurnNow)} 通），<b>${dir}</b>。${adv}`
     });
   } else {
-    items.push({ tag: '整体', cls: 'all', html: '今日半小时数据待采集，先按预测执行：以「每半小时人工量」图上的预测线为当日节奏基准。' });
+    items.push({ tag: '整体', cls: 'all', html: '今日半小时数据待采集，先按预测执行：以「每半小时人工进线量」图上的预测线为当日节奏基准。' });
   }
 
   /* ② 全日人力 */
@@ -1589,7 +1592,7 @@ function renderStrategy400(o) {
     });
   }
 
-  /* ③ 未来时段负荷 = 预测转人工量 ÷（分时段在岗 × 产能） */
+  /* ③ 未来时段负荷 = 预测人工进线量 ÷（分时段在岗 × 产能） */
   const sched = (planDay && D.plan && D.plan.staff_slots && D.plan.staff_slots.schedule) ? (D.plan.staff_slots.schedule[today] || {}) : {};
   const capH = (D.plan && D.plan.cap_per_hour) || 11.81;
   const pred = hhPredOf(today);
@@ -1834,13 +1837,13 @@ function renderDayDetail() {
   const stats = [
     ['订单量', (d.orders / 10000).toFixed(1) + '<small>万</small>', '进线比 ' + (d.R * 100).toFixed(2) + '%'],
     ['预测进线量', n0(d.inbound), '呼入量（含 IVR）'],
-    ['预测转人工量', n0(d.turn), '人工量 = 呼入 − IVR'],
+    ['预测人工进线量', n0(d.turn), '人工进线量 = 呼入 − IVR'],
     ['所需人力', (needI == null ? '–' : needI) + '<small>人</small>', d.need_hc_f != null ? '按 ' + n1(d.need_hc_f) + ' 人日进位' : '按 8h 班折算'],
     ['在岗人力', est ? '–' : (onI == null ? '–' : onI) + '<small>人</small>', est ? 'HR 班表未出，待排' : '排班工时 ' + n1(d.staff_h) + ' h'],
     ['人力差额', est ? '–' : gapTxt, est ? '需班表才能算差额' : '当班 ' + n1(d.onshift_ph) + ' 人时 · 需求 ' + n1(d.need_ph) + ' 人时'],
     ['当日负荷', n0(d.ratio) + '%', d.ratio >= 110 ? '超负荷' : (d.ratio < 90 ? '偏松' : '正常')]
   ];
-  /* 该日分时段人力：所需 = 预测转人工量 ÷（产能 × 0.5h）· 排班取班表 · 餐点取现场调控表 */
+  /* 该日分时段人力：所需 = 预测人工进线量 ÷（产能 × 0.5h）· 排班取班表 · 餐点取现场调控表 */
   const keys = slotShortKeys();
   const hh = hhPredOf(d.date);
   const ss = (D.plan && D.plan.staff_slots) || {};
@@ -1939,11 +1942,11 @@ function renderDayDetail() {
      <details class="fold" id="dayFold">
        <summary>
          <span class="ft">该日分时段预测</span>
-         <span class="fh">每半小时转人工量 + 人力安排（所需 / 排班 / 实到 / 差额 / 餐点）· 共 ${keys.length} 段</span>
+         <span class="fh">每半小时人工进线量 + 人力安排（所需 / 排班 / 实到 / 差额 / 餐点）· 共 ${keys.length} 段</span>
          <span class="fchev"></span>
        </summary>
        <div class="fbody">
-         <div class="subhead">该日每半小时预测转人工量 <span>预测转人工量 × 时段形状占比</span></div>
+         <div class="subhead">该日每半小时预测人工进线量 <span>预测人工进线量 × 时段形状占比</span></div>
          <div id="chDayHh"></div>
          <div class="subhead">该日分时段人力安排 <span>所需 = 预测转人工 ÷ 产能 ${n1(capH)} 通/人时 × 0.5h · 人力一律向上取整 · 差额 = 实到 − 所需，实到 = 在岗 − 用餐${est ? ' · 班表未出，「排班人数 / 实到 / 差额 / 餐点」留空' : ''}</span></div>
          <div class="tblwrap"><table class="tbl"><thead><tr>
@@ -2197,7 +2200,7 @@ const ONL_CAP_HOUR = 30;             // 会话/人时（2026-09-11 由 35 下调
 const ONL_FROM = 9 * 60, ONL_TO = 21 * 60;   // 在线班表在班窗口 09:00–21:00（12h）
 
 /* 在线分时段形状：近 7 日同时段接待量占比（排除今天）。
-   ⚠️ 会话没有 400 那样的外部形状文件（400_shape.share_turn 是**转人工量**的形状），
+   ⚠️ 会话没有 400 那样的外部形状文件（400_shape.share_turn 是**人工进线量**的形状），
       在线形状只能从 chat_halfhour.history 里现算 —— 两套形状口径不同，不要互相套用。 */
 function onlSlotShape() {
   const h = (D.hhon && D.hhon.history) || {};
@@ -2864,7 +2867,7 @@ function setMetaBar(cc, tk, plan) {
 /* 预测实测校正（2026-09-23 加）
    预测链（R_base / turn_rate / 时段形状）是从飞书《现场调控》表标定的，那张表与看板
    （7x24cc/合力）实际采集的量级有系统性偏差。forecast/build_daily_rate.py 用最近两周
-   采集完整的日子算出系数 k = Σ实测人工量 ÷ Σ模型回算，这里把 plan 的预测类字段整体
+   采集完整的日子算出系数 k = Σ实测人工进线量 ÷ Σ模型回算，这里把 plan 的预测类字段整体
    缩到实测水平 —— 凡是读 D.plan.days 的地方（KPI 偏差、30 天预测线、逐日切片、
    半小时预测）自动保持同一口径。 */
 function applyLiveCorrection() {
