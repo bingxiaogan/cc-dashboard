@@ -1549,14 +1549,14 @@ function renderTr400() {
   const predTurn = (D.drate && D.drate.pred) || {};
   const fc = labels.map(d => planTurn[d] != null ? planTurn[d] : (predTurn[d] == null ? null : predTurn[d]));
 
-  drawLine($('#ch400tr'), {
-    labels: labels.map(d => d.slice(5)), h: 236, tipFmt: v => n0(v) + ' 通',
-    showVals: true, valFmt: v => n0(v),
-    series: [
-      { name: '人工进线量', data: act, color: '#93c5fd', areaFill: 'rgba(96,165,250,.13)', label: n0(act.filter(v => v != null).pop()) },
-      { name: '接听量', data: ans, color: '#34d399', area: false, label: n0(ans.filter(v => v != null).pop()) },
-      { name: '预测进线量', data: fc, color: '#fbbf24', area: false, dash: '5 4', label: n0(fc.filter(v => v != null).pop()) }
-    ]
+  drawBar($('#ch400tr'), {
+    labels: labels.map(d => d.slice(5)), h: 236,
+    bars: [
+      { data: act, color: '#93c5fd', tipFmt: v => n0(v) + ' 通（人工进线量）' },
+      { data: ans, color: '#34d399', showVals: false, tipFmt: v => n0(v) + ' 通（接听量）' }
+    ],
+    lines: [{ name: '预测', data: fc, color: '#fbbf24', dash: '5 4', sameScale: true, tipFmt: v => n0(v) + ' 通' }],
+    showVals: true, valFmt: v => n0(v)
   });
 
   const dr = (D.drate && D.drate.rate) || {};
