@@ -1097,7 +1097,7 @@ function drawBar(box, { labels, data, color, colorFn, h = 168, yFmt = n0, tipFmt
       }
       const bh = Math.max(1, (v / mx) * (H - pt - pb)), y = H - pb - bh;
       const cfn = s.colorFn || colorFn, cbase = s.color || color;
-      const r = el('rect', { x, y, width: wBar, height: bh, rx: Math.min(isOv ? wBar / 2 : 3, wBar / 2), fill: cfn ? cfn(v, i) : cbase, opacity: s.opacity !== undefined ? s.opacity : .92 });
+      const r = el('rect', { x, y, width: wBar, height: bh, rx: Math.min(2.5, wBar / 2), fill: cfn ? cfn(v, i) : cbase, opacity: s.opacity !== undefined ? s.opacity : .92 });
       const tf = s.tipFn !== undefined ? s.tipFn : tipFn, fm = s.tipFmt !== undefined ? s.tipFmt : tipFmt;
       if (tf || fm) { hasTip = true; r.style.cursor = 'crosshair'; r.dataset.tip = `${labels[i]}　${tf ? tf(v, i) : fm(v)}`; }
       svg.appendChild(r);
@@ -1514,11 +1514,11 @@ function renderHh400() {
         : [
             { data: act,
               colorFn: (v, i) => refBar[i] ? 'rgba(148,163,184,.55)'
-                : (i === lastI ? '#93c5fd' : 'rgba(96,165,250,.62)'),
+                : (i === lastI ? '#a5b4fc' : 'rgba(129,140,248,.72)'),
               tipFn: (v, i) => refBar[i]
                 ? n0(v) + ' 通（参考值 · 近 4 个同星期几均值，本时段无采集源）'
                 : n0(v) + ' 通（人工进线量）' },
-            { data: ansAct, overlay: true, width: 0.58, color: '#34d399', showVals: false,
+            { data: ansAct, overlay: true, width: 0.58, color: '#f472b6', showVals: false,
               tipFmt: v => n0(v) + ' 通（接听量）' }
           ],
       lines: [{ name: '预测', data: usePredBars ? null : pred, color: 'rgba(251,191,36,.9)',
