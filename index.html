@@ -1176,7 +1176,8 @@ function render400() {
   const sumIn = sum(actIn.filter(v => v != null), v => v);
   const sumTurn = sum(act.filter(v => v != null), v => v);
   const doneN = act.filter(v => v != null).length;
-  const curEnd = doneN ? full[doneN - 1].slice(6) : null;     // '10:30-11:00' → '11:00'
+  const curEnd = lastI >= 0 ? full[lastI].slice(6) : null;   // 取「最后有数据的段索引」，不能拿段数当索引
+                                                             // （08:00/08:30 常无采集源 → doneN-1 会整体偏早 1h）
   const predictTurnNow = (planDay && shT) ? planDay.turn * shT : null;
   const predictInNow = (planDay && shI) ? planDay.inbound * shI : null;
   const devTurn = (predictTurnNow && sumTurn) ? (sumTurn / predictTurnNow - 1) * 100 : null;
@@ -1580,7 +1581,7 @@ function renderStrategy400(o) {
   const keys = o.keys, full = o.full, lastI = o.lastI, doneN = o.doneN, planDay = o.planDay;
   const today = todayCn();
   const items = [];
-  const curEnd = doneN ? full[doneN - 1].slice(6) : null;
+  const curEnd = lastI >= 0 ? full[lastI].slice(6) : null;   // 同上：按段索引取，避免 08:00/08:30 缺位导致的偏早
 
   /* ① 整体进度：实测 vs 同期预测 */
   if (doneN && o.predictTurnNow) {
