@@ -1,14 +1,14 @@
 {
- "ts": 1791469146138,
- "collectedAtCn": "2026/10/8 22:19:06",
+ "ts": 1791469260973,
+ "collectedAtCn": "2026/10/8 22:21:00",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "2",
   "坐席忙碌数": "0 (0)",
   "接通率": "21.40%",
   "满意率": "100.00%",
-  "呼入总数": "15045",
-  "当前呼入数": "1",
+  "呼入总数": "15048",
+  "当前呼入数": "0",
   "外呼总数": "6575",
   "当前外呼数": "0",
   "呼入平均通话时长": "00:02:43",
@@ -496,8 +496,8 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 2521,
-   "ivr": 1141,
+   "callIn": 2522,
+   "ivr": 1142,
    "ringMissed": 10,
    "queueAbandon": 370,
    "answered": 1000,
@@ -556,8 +556,8 @@
   },
   {
    "service": "88236634(88236634)",
-   "callIn": 102,
-   "ivr": 102,
+   "callIn": 103,
+   "ivr": 103,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -1143,8 +1143,8 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 2521,
-    "ivr": 1141,
+    "callIn": 2522,
+    "ivr": 1142,
     "ringMissed": 10,
     "queueAbandon": 370,
     "answered": 1000,
@@ -1162,9 +1162,9 @@
     "transferred": 0
    }
   ],
-  "total": 2595,
+  "total": 2596,
   "answered": 1024,
-  "ivr": 1178,
+  "ivr": 1179,
   "connectRate": 84.86
  },
  "online": {
@@ -1194,7 +1194,7 @@
     "done": 50,
     "answerRate": 100,
     "abandon": 0,
-    "voicemail": 8,
+    "voicemail": 9,
     "satisfactionRate": 100
    },
    {
@@ -1213,14 +1213,14 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1570,
-    "assigned": 1435,
-    "current": 88,
+    "sessions": 1575,
+    "assigned": 1440,
+    "current": 90,
     "max": 120,
-    "queue": 21,
+    "queue": 17,
     "onlineSeats": "4(丁萌萌,刘亚森,周鑫,李宜慢)",
-    "done": 1299,
-    "answerRate": 91.4,
+    "done": 1302,
+    "answerRate": 91.43,
     "abandon": 135,
     "voicemail": 0,
     "satisfactionRate": 5
@@ -1341,11 +1341,11 @@
     "name": "官网严选自营售前咨询",
     "sessions": 503,
     "assigned": 472,
-    "current": 21,
+    "current": 20,
     "max": 120,
-    "queue": 10,
+    "queue": 12,
     "onlineSeats": "4(丁萌萌,刘亚森,周鑫,李宜慢)",
-    "done": 419,
+    "done": 420,
     "answerRate": 93.84,
     "abandon": 31,
     "voicemail": 0,
@@ -1573,15 +1573,6 @@
   "rate400": 70
  },
  "history": [
-  {
-   "ts": 1790929340421,
-   "skillRate400": 77.74,
-   "skillQueue400": 1,
-   "callIn400": 822,
-   "signIn400": 10,
-   "onlineSessions": 457,
-   "onlineSeat": 3
-  },
   {
    "ts": 1790929447595,
    "skillRate400": 77.86,
@@ -6066,6 +6057,15 @@
   },
   {
    "ts": 1791469146138,
+   "skillRate400": 70.01,
+   "skillQueue400": 0,
+   "callIn400": 1547,
+   "signIn400": 2,
+   "onlineSessions": 933,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1791469260973,
    "skillRate400": 70.01,
    "skillQueue400": 0,
    "callIn400": 1547,
