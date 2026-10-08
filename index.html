@@ -1050,29 +1050,52 @@ function drawLine(box, { labels, series, h = 168, yFmt = n0, tipFmt, showVals, v
 }
 
 /* 柱状图（可按阈值着色 + 可选叠加折线） */
-function drawBar(box, { labels, data, color, colorFn, h = 168, yFmt = n0, tipFmt, tipFn, line, lineColor, lineSameScale, lineTipFmt, lines, showVals, valFmt }) {
+function drawBar(box, { labels, data, color, colorFn, h = 168, yFmt = n0, tipFmt, tipFn, line, lineColor, lineSameScale, lineTipFmt, lines, bars, showVals, valFmt }) {
   const W = 1000, H = h, pl = 46, pr = 14, pt = 14, pb = 26;
   const svg = el('svg', { viewBox: `0 0 ${W} ${H}`, preserveAspectRatio: 'none', style: `height:${h}px` });
-  const vals = data.filter(v => v != null);
-  if (!vals.length) { box.innerHTML = '<div class="empty">暂无数据</div>'; return; }
-  const mx = Math.max(...vals) * 1.12 || 1;
-  const n = data.length;
+  /* 柱层：兼容单组（`data` + `color`）与**多组并排**（`bars: [{data,color,colorFn,tipFmt,tipFn,showVals,valFmt}]`
+     —— 如「人工进线量 + 实际接听量」双柱）。组数 >1 时组内平分该段的柱区宽度。 */
+  const bser = (Array.isArray(bars) && bars.length) ? bars : [{ data, color, colorFn, tipFmt, tipFn }];
+  const allV = [];
+  bser.forEach(s => (s.data || []).forEach(v => { if (v != null) allV.push(v); }));
+  if (!allV.length) { box.innerHTML = '<div class="empty">暂无数据</div>'; return; }
+  const mx = Math.max(...allV) * 1.12 || 1;
+  const n = labels.length;
   const rawW = (W - pl - pr) / n;
-  const bw = Math.max(3, Math.min(rawW * 0.68, 68));      // 限宽：时段少时不至于撑成大色块
-  const left0 = pl + ((W - pl - pr) - bw * n) / 2;        // 整体居中
+  const slotW = Math.max(3, Math.min(rawW * 0.68, 68));   // 每段的柱区**总**宽（限宽：时段少时不至于撑成大色块）
+  const left0 = pl + ((W - pl - pr) - slotW * n) / 2;     // 整体居中
+  const gN = bser.length;
+  const bw = slotW / gN;                                   // 单根柱宽
   for (let g = 0; g <= 4; g++) {
     const y = pt + g * (H - pt - pb) / 4;
     svg.appendChild(el('line', { x1: pl, x2: W - pr, y1: y, y2: y, stroke: 'rgba(126,166,226,.12)', 'stroke-dasharray': g === 4 ? '0' : '3 4' }));
     svg.appendChild(Object.assign(el('text', { x: pl - 7, y: y + 3.5, fill: '#5c7093', 'font-size': 10.5, 'text-anchor': 'end' }), { textContent: yFmt(mx * (1 - g / 4)) }));
   }
   const vlabels = [];   // 常显数值标签收集（柱 + 折线统一避让）
-  data.forEach((v, i) => {
-    if (v == null) return;
-    const x = left0 + i * bw, bh = Math.max(1, (v / mx) * (H - pt - pb)), y = H - pb - bh;
-    const r = el('rect', { x, y, width: bw, height: bh, rx: Math.min(3, bw / 2), fill: colorFn ? colorFn(v, i) : color, opacity: .92 });
-    if (tipFn || tipFmt) { r.style.cursor = 'crosshair'; r.dataset.tip = `${labels[i]}　${tipFn ? tipFn(v, i) : tipFmt(v)}`; }
-    svg.appendChild(r);
-    if (showVals) vlabels.push({ x: x + bw / 2, y: y - 5, text: (valFmt || yFmt)(v), color: '#93c5fd' });
+  let hasTip = false;
+  /* 每段「有数据的组」清单：缺组的段（如 8:00–9:00 只有参考人工进线量、无接听量）
+     把已有柱在槽内居中，避免出现偏左的空洞 */
+  const validAt = [];
+  for (let i = 0; i < n; i++) {
+    const vv = [];
+    bser.forEach((s, gi) => { if ((s.data || [])[i] != null) vv.push(gi); });
+    validAt.push(vv);
+  }
+  const wBar = gN > 1 ? Math.max(1.5, bw - 1.2) : bw;      // 多组时留 1.2 缝隙
+  bser.forEach((s, gi) => {
+    (s.data || []).forEach((v, i) => {
+      if (v == null) return;
+      const valid = validAt[i], k = valid.length || 1, pos = valid.indexOf(gi);
+      const x = left0 + i * slotW + (slotW - k * bw) / 2 + pos * bw + (bw - wBar) / 2;
+      const bh = Math.max(1, (v / mx) * (H - pt - pb)), y = H - pb - bh;
+      const cfn = s.colorFn || colorFn, cbase = s.color || color;
+      const r = el('rect', { x, y, width: wBar, height: bh, rx: Math.min(3, wBar / 2), fill: cfn ? cfn(v, i) : cbase, opacity: .92 });
+      const tf = s.tipFn !== undefined ? s.tipFn : tipFn, fm = s.tipFmt !== undefined ? s.tipFmt : tipFmt;
+      if (tf || fm) { hasTip = true; r.style.cursor = 'crosshair'; r.dataset.tip = `${labels[i]}　${tf ? tf(v, i) : fm(v)}`; }
+      svg.appendChild(r);
+      const sv = s.showVals !== undefined ? s.showVals : showVals;
+      if (sv) vlabels.push({ x: x + wBar / 2, y: y - 5, text: (s.valFmt || valFmt || yFmt)(v), color: (cfn ? cfn(v, i) : cbase) || '#93c5fd' });
+    });
   });
   /* 折线层：兼容单条 `line`（旧调用）与 `lines` 数组（同柱叠多条，如「预测」+「接听量」）。
      每条 line：{ name, data, color, sameScale, tipFmt, dash, showVals } —— 缺省沿用全局/旧参数。 */
@@ -1089,7 +1112,7 @@ function drawBar(box, { labels, data, color, colorFn, h = 168, yFmt = n0, tipFmt
     let d = '', st = false; const pts = [];
     ld.forEach((v, i) => {
       if (v == null) return;
-      const x = left0 + i * bw + bw / 2, y = pt + (1 - (v / lmx)) * (H - pt - pb);
+      const x = left0 + i * slotW + slotW / 2, y = pt + (1 - (v / lmx)) * (H - pt - pb);
       d += (st ? 'L' : 'M') + x.toFixed(1) + ' ' + y.toFixed(1); st = true;
       pts.push([x, y, v, i]);
     });
@@ -1111,9 +1134,9 @@ function drawBar(box, { labels, data, color, colorFn, h = 168, yFmt = n0, tipFmt
   if (showVals && vlabels.length) placeVals(svg, vlabels);
   const step = Math.ceil(labels.length / 10);
   labelIdx(labels.length, step).forEach(i =>
-    svg.appendChild(el('text', { x: left0 + i * bw + bw / 2, y: H - 7, fill: '#5c7093', 'font-size': 10.5, 'text-anchor': 'middle' }, labels[i])));
+    svg.appendChild(el('text', { x: left0 + i * slotW + slotW / 2, y: H - 7, fill: '#5c7093', 'font-size': 10.5, 'text-anchor': 'middle' }, labels[i])));
   box.innerHTML = ''; box.appendChild(svg);
-  if (tipFmt || tipFn) bindTip(svg);
+  if (hasTip || tipFmt || tipFn) bindTip(svg);
 }
 
 /* 迷你走势（KPI 卡右下角） */
@@ -1395,7 +1418,7 @@ function refSlotAvg(dateIso) {
   return out;
 }
 
-/* ── 每半小时：实际人工进线量（柱）+ 预测人工进线量（虚线）+ 接通率 ── */
+/* ── 每半小时：人工进线量 + 实际接听量（双柱）+ 预测人工进线量（虚线）+ 接通率 ── */
 function renderHh400() {
   const keys = slotShortKeys(), idxMap = {};
   keys.forEach((k, i) => idxMap[k] = i);
@@ -1438,7 +1461,7 @@ function renderHh400() {
     if (f && (f.turn != null || f.rate != null)) {
       if (f.turn != null) { act[i] = f.turn; sFill += f.turn; }
       if (f.rate != null) rAct[i] = +(f.rate * 100).toFixed(1);
-      // 现场表同时有「人工进线量 + 接通率」→ 反算接听量（参考值段不反算，避免估算混进实际线）
+      // 现场表同时有「人工进线量 + 接通率」→ 反算接听量（参考值段不反算，避免估算混进实际柱）
       if (f.turn != null && f.rate != null) ansAct[i] = Math.round(f.turn * f.rate);
       nFill++; return;
     }
@@ -1471,19 +1494,20 @@ function renderHh400() {
   if (nAct || pred) {
     drawBar($('#ch400hh'), {
       labels: keys, h: 172,
-      data: usePredBars ? pred : act,
-      color: 'rgba(251,191,36,.55)',
-      colorFn: usePredBars ? null : (v, i) => refBar[i] ? 'rgba(148,163,184,.55)'
-        : (i === lastI ? '#93c5fd' : 'rgba(96,165,250,.62)'),
-      tipFmt: v => n0(v) + ' 通',
-      tipFn: usePredBars ? null : (v, i) => refBar[i]
-        ? n0(v) + ' 通（参考值 · 近 4 个同星期几均值，本时段无采集源）' : n0(v) + ' 通',
-      lines: [
-        { name: '预测', data: usePredBars ? null : pred, color: 'rgba(251,191,36,.9)',
-          sameScale: true, tipFmt: v => n0(v) + ' 通' },
-        { name: '接听量', data: usePredBars ? null : ansAct, color: '#34d399',
-          sameScale: true, tipFmt: v => n0(v) + ' 通', showVals: false }
-      ],
+      bars: usePredBars
+        ? [{ data: pred, color: 'rgba(251,191,36,.55)', tipFmt: v => n0(v) + ' 通（预测）' }]
+        : [
+            { data: act,
+              colorFn: (v, i) => refBar[i] ? 'rgba(148,163,184,.55)'
+                : (i === lastI ? '#93c5fd' : 'rgba(96,165,250,.62)'),
+              tipFn: (v, i) => refBar[i]
+                ? n0(v) + ' 通（参考值 · 近 4 个同星期几均值，本时段无采集源）'
+                : n0(v) + ' 通（人工进线量）' },
+            { data: ansAct, color: '#34d399', showVals: false,
+              tipFmt: v => n0(v) + ' 通（接听量）' }
+          ],
+      lines: [{ name: '预测', data: usePredBars ? null : pred, color: 'rgba(251,191,36,.9)',
+                sameScale: true, tipFmt: v => n0(v) + ' 通' }],
       showVals: true, valFmt: v => n0(v)
     });
   } else $('#ch400hh').innerHTML = '<div class="empty">今日半小时数据待采集</div>';
