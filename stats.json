@@ -1,15 +1,15 @@
 {
- "ts": 1791464962171,
- "collectedAtCn": "2026/10/8 21:09:22",
+ "ts": 1791465077276,
+ "collectedAtCn": "2026/10/8 21:11:17",
  "overview": {
   "总排队数": "0",
-  "坐席空闲数": "3",
+  "坐席空闲数": "4",
   "坐席忙碌数": "0 (0)",
-  "接通率": "21.76%",
+  "接通率": "21.74%",
   "满意率": "100.00%",
-  "呼入总数": "14798",
-  "当前呼入数": "2",
-  "外呼总数": "6572",
+  "呼入总数": "14809",
+  "当前呼入数": "1",
+  "外呼总数": "6573",
   "当前外呼数": "3",
   "呼入平均通话时长": "00:02:42",
   "AI通话数": "0 (3)"
@@ -496,8 +496,8 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 2476,
-   "ivr": 1096,
+   "callIn": 2480,
+   "ivr": 1100,
    "ringMissed": 10,
    "queueAbandon": 370,
    "answered": 1000,
@@ -736,8 +736,8 @@
   },
   {
    "service": "81198(上门按键转接)",
-   "callIn": 817,
-   "ivr": 473,
+   "callIn": 821,
+   "ivr": 477,
    "ringMissed": 3,
    "queueAbandon": 56,
    "answered": 309,
@@ -1147,8 +1147,8 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 2476,
-    "ivr": 1096,
+    "callIn": 2480,
+    "ivr": 1100,
     "ringMissed": 10,
     "queueAbandon": 370,
     "answered": 1000,
@@ -1166,10 +1166,10 @@
     "transferred": 0
    }
   ],
-  "total": 2549,
+  "total": 2553,
   "answered": 1024,
-  "ivr": 1132,
-  "connectRate": 84.58
+  "ivr": 1136,
+  "connectRate": 84.61
  },
  "online": {
   "groups": [
@@ -1217,15 +1217,15 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1448,
-    "assigned": 1345,
-    "current": 85,
+    "sessions": 1455,
+    "assigned": 1351,
+    "current": 87,
     "max": 90,
-    "queue": 49,
+    "queue": 43,
     "onlineSeats": "3(丁萌萌,周鑫,刘亚森)",
-    "done": 1217,
-    "answerRate": 92.89,
-    "abandon": 103,
+    "done": 1221,
+    "answerRate": 92.85,
+    "abandon": 104,
     "voicemail": 0,
     "satisfactionRate": 5
    },
@@ -1343,14 +1343,14 @@
    },
    {
     "name": "官网严选自营售前咨询",
-    "sessions": 469,
-    "assigned": 446,
-    "current": 26,
+    "sessions": 471,
+    "assigned": 448,
+    "current": 28,
     "max": 90,
-    "queue": 12,
+    "queue": 11,
     "onlineSeats": "3(丁萌萌,周鑫,刘亚森)",
     "done": 393,
-    "answerRate": 95.1,
+    "answerRate": 95.12,
     "abandon": 23,
     "voicemail": 0,
     "satisfactionRate": 0
@@ -1578,15 +1578,6 @@
   "rate400": 70
  },
  "history": [
-  {
-   "ts": 1790925394003,
-   "skillRate400": 76.3,
-   "skillQueue400": 0,
-   "callIn400": 709,
-   "signIn400": 10,
-   "onlineSessions": 388,
-   "onlineSeat": 3
-  },
   {
    "ts": 1790925500742,
    "skillRate400": 76.05,
@@ -6071,6 +6062,15 @@
   },
   {
    "ts": 1791464962171,
+   "skillRate400": 70.01,
+   "skillQueue400": 0,
+   "callIn400": 1547,
+   "signIn400": 6,
+   "onlineSessions": 933,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1791465077276,
    "skillRate400": 70.01,
    "skillQueue400": 0,
    "callIn400": 1547,
