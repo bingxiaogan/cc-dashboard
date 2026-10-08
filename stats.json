@@ -1,16 +1,16 @@
 {
- "ts": 1791468388248,
- "collectedAtCn": "2026/10/8 22:06:28",
+ "ts": 1791468503198,
+ "collectedAtCn": "2026/10/8 22:08:23",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "2",
   "坐席忙碌数": "0 (0)",
-  "接通率": "21.44%",
+  "接通率": "21.43%",
   "满意率": "100.00%",
-  "呼入总数": "15022",
-  "当前呼入数": "1",
+  "呼入总数": "15026",
+  "当前呼入数": "0",
   "外呼总数": "6575",
-  "当前外呼数": "0",
+  "当前外呼数": "18",
   "呼入平均通话时长": "00:02:43",
   "AI通话数": "0 (3)"
  },
@@ -496,8 +496,8 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 2517,
-   "ivr": 1137,
+   "callIn": 2518,
+   "ivr": 1138,
    "ringMissed": 10,
    "queueAbandon": 370,
    "answered": 1000,
@@ -726,8 +726,8 @@
   },
   {
    "service": "88236602(其他渠道4000166088)",
-   "callIn": 657,
-   "ivr": 319,
+   "callIn": 658,
+   "ivr": 320,
    "ringMissed": 3,
    "queueAbandon": 32,
    "answered": 316,
@@ -866,8 +866,8 @@
   },
   {
    "service": "80409(奢侈品商家-门店验货报价)",
-   "callIn": 1135,
-   "ivr": 1135,
+   "callIn": 1136,
+   "ivr": 1136,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -1143,8 +1143,8 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 2517,
-    "ivr": 1137,
+    "callIn": 2518,
+    "ivr": 1138,
     "ringMissed": 10,
     "queueAbandon": 370,
     "answered": 1000,
@@ -1162,10 +1162,10 @@
     "transferred": 0
    }
   ],
-  "total": 2591,
+  "total": 2592,
   "answered": 1024,
-  "ivr": 1174,
-  "connectRate": 84.83
+  "ivr": 1175,
+  "connectRate": 84.84
  },
  "online": {
   "groups": [
@@ -1213,15 +1213,15 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1546,
-    "assigned": 1413,
-    "current": 85,
+    "sessions": 1552,
+    "assigned": 1417,
+    "current": 88,
     "max": 60,
-    "queue": 33,
+    "queue": 29,
     "onlineSeats": "2(丁萌萌,刘亚森)",
     "done": 1282,
-    "answerRate": 91.4,
-    "abandon": 133,
+    "answerRate": 91.3,
+    "abandon": 135,
     "voicemail": 0,
     "satisfactionRate": 5
    },
@@ -1339,15 +1339,15 @@
    },
    {
     "name": "官网严选自营售前咨询",
-    "sessions": 492,
-    "assigned": 464,
-    "current": 17,
+    "sessions": 494,
+    "assigned": 465,
+    "current": 18,
     "max": 60,
-    "queue": 16,
+    "queue": 17,
     "onlineSeats": "2(丁萌萌,刘亚森)",
     "done": 415,
-    "answerRate": 94.31,
-    "abandon": 28,
+    "answerRate": 94.13,
+    "abandon": 29,
     "voicemail": 0,
     "satisfactionRate": 0
    },
@@ -1573,15 +1573,6 @@
   "rate400": 70
  },
  "history": [
-  {
-   "ts": 1790928623173,
-   "skillRate400": 77.92,
-   "skillQueue400": 1,
-   "callIn400": 797,
-   "signIn400": 10,
-   "onlineSessions": 449,
-   "onlineSeat": 3
-  },
   {
    "ts": 1790928731562,
    "skillRate400": 77.93,
@@ -6066,6 +6057,15 @@
   },
   {
    "ts": 1791468388248,
+   "skillRate400": 70.01,
+   "skillQueue400": 0,
+   "callIn400": 1547,
+   "signIn400": 2,
+   "onlineSessions": 933,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1791468503198,
    "skillRate400": 70.01,
    "skillQueue400": 0,
    "callIn400": 1547,
