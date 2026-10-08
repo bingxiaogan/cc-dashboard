@@ -1,112 +1,827 @@
 {
- "source": "中秋&国庆货量预测9.23版.xlsx",
- "source_sheet": "汇总 · 第4行「全国」",
- "source_file": "C:\\Users\\159286\\Downloads\\中秋&国庆货量预测9.23版.xlsx",
- "source_md5": "48755cafc87ef250b5f2da99b71feca3",
+ "source": "风控人效预测 MOD 看板 V19（实际货量）+ 模型偏差修正",
+ "source_file": "D:\\_tmp_cargo\\page_data.json",
  "avg_item_weight_kg": 2.6,
- "generated_at": "2026-09-23T18:35:29",
+ "generated_at": "2026-10-08T14:00:23",
  "range": {
   "from": "2026-09-23",
-  "to": "2026-10-08",
-  "days": 16
+  "to": "2026-12-31",
+  "days": 100
  },
- "note": "运营下发的节假日货量预测；orders_forecast = 全国货量kg ÷ 2.6。权威性高于自动抓取的看板快照。",
+ "calibration": {
+  "window_days": 14,
+  "window_from": "2026-09-24",
+  "window_to": "2026-10-07",
+  "weekday_factor": 1.2297,
+  "weekend_factor": 0.9758,
+  "window_days_far": 28,
+  "window_from_far": "2026-09-10",
+  "window_to_far": "2026-10-07",
+  "weekday_factor_far": 1.1107,
+  "weekend_factor_far": 0.9775,
+  "note": "新货量 = 看板模型预测 × 系数；系数 = 近N天 实际投递量 ÷ 模型预测（工作日/周末分别）。10月用近14天系数，11–12月用近28天系数。"
+ },
+ "note": "过去段=真实货量/订单量；未来段=看板模型预测×偏差系数，修正模型对工作日的系统性低估。orders = 货量kg ÷ 2.6。权威性高于 cargo.json 抓取值。",
  "by_date": {
+  "2026-09-23": {
+   "cargo_actual": 2685642,
+   "orders_actual": 1095494,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "is_forecast": false,
+   "src": "实际（投递量/订单量）"
+  },
   "2026-09-24": {
-   "cargo_forecast": 2665168.88,
-   "orders_forecast": 1025065,
-   "is_forecast": true,
-   "src": "中秋&国庆货量预测9.23版"
+   "cargo_actual": 2696567,
+   "orders_actual": 1106799,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "is_forecast": false,
+   "src": "实际（投递量/订单量）"
   },
   "2026-09-25": {
-   "cargo_forecast": 3460411.69,
-   "orders_forecast": 1330928,
-   "is_forecast": true,
-   "src": "中秋&国庆货量预测9.23版"
+   "cargo_actual": 3022447,
+   "orders_actual": 1140369,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "is_forecast": false,
+   "src": "实际（投递量/订单量）"
   },
   "2026-09-26": {
-   "cargo_forecast": 3288917.41,
-   "orders_forecast": 1264968,
-   "is_forecast": true,
-   "src": "中秋&国庆货量预测9.23版"
+   "cargo_actual": 3228005,
+   "orders_actual": 1147042,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "is_forecast": false,
+   "src": "实际（投递量/订单量）"
   },
   "2026-09-27": {
-   "cargo_forecast": 3533292.87,
-   "orders_forecast": 1358959,
-   "is_forecast": true,
-   "src": "中秋&国庆货量预测9.23版"
+   "cargo_actual": 3467803,
+   "orders_actual": 1242117,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "is_forecast": false,
+   "src": "实际（投递量/订单量）"
   },
   "2026-09-28": {
-   "cargo_forecast": 2907479.71,
-   "orders_forecast": 1118261,
-   "is_forecast": true,
-   "src": "中秋&国庆货量预测9.23版"
+   "cargo_actual": 2672540,
+   "orders_actual": 1014658,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "is_forecast": false,
+   "src": "实际（投递量/订单量）"
   },
   "2026-09-29": {
-   "cargo_forecast": 2854756.21,
-   "orders_forecast": 1097983,
-   "is_forecast": true,
-   "src": "中秋&国庆货量预测9.23版"
+   "cargo_actual": 2705322,
+   "orders_actual": 1042936,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "is_forecast": false,
+   "src": "实际（投递量/订单量）"
   },
   "2026-09-30": {
-   "cargo_forecast": 2908565.61,
-   "orders_forecast": 1118679,
-   "is_forecast": true,
-   "src": "中秋&国庆货量预测9.23版"
+   "cargo_actual": 2753498,
+   "orders_actual": 1047803,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "is_forecast": false,
+   "src": "实际（投递量/订单量）"
   },
   "2026-10-01": {
-   "cargo_forecast": 3518402.35,
-   "orders_forecast": 1353232,
-   "is_forecast": true,
-   "src": "中秋&国庆货量预测9.23版"
+   "cargo_actual": 3392292,
+   "orders_actual": 1182250,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "is_forecast": false,
+   "src": "实际（投递量/订单量）"
   },
   "2026-10-02": {
-   "cargo_forecast": 3381595.05,
-   "orders_forecast": 1300613,
-   "is_forecast": true,
-   "src": "中秋&国庆货量预测9.23版"
+   "cargo_actual": 3124699,
+   "orders_actual": 1049588,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "is_forecast": false,
+   "src": "实际（投递量/订单量）"
   },
   "2026-10-03": {
-   "cargo_forecast": 2902704.18,
-   "orders_forecast": 1116425,
-   "is_forecast": true,
-   "src": "中秋&国庆货量预测9.23版"
+   "cargo_actual": 2624568,
+   "orders_actual": 880742,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "is_forecast": false,
+   "src": "实际（投递量/订单量）"
   },
   "2026-10-04": {
-   "cargo_forecast": 2934171.18,
-   "orders_forecast": 1128527,
-   "is_forecast": true,
-   "src": "中秋&国庆货量预测9.23版"
+   "cargo_actual": 3170432,
+   "orders_actual": 1053769,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "is_forecast": false,
+   "src": "实际（投递量/订单量）"
   },
   "2026-10-05": {
-   "cargo_forecast": 2908370.77,
-   "orders_forecast": 1118604,
-   "is_forecast": true,
-   "src": "中秋&国庆货量预测9.23版"
+   "cargo_actual": 3340911,
+   "orders_actual": 1114922,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "is_forecast": false,
+   "src": "实际（投递量/订单量）"
   },
   "2026-10-06": {
-   "cargo_forecast": 3414302.89,
-   "orders_forecast": 1313193,
-   "is_forecast": true,
-   "src": "中秋&国庆货量预测9.23版"
+   "cargo_actual": 3521010,
+   "orders_actual": 1192023,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "is_forecast": false,
+   "src": "实际（投递量/订单量）"
   },
   "2026-10-07": {
-   "cargo_forecast": 3657163.55,
-   "orders_forecast": 1406601,
-   "is_forecast": true,
-   "src": "中秋&国庆货量预测9.23版"
+   "cargo_actual": 3910881,
+   "orders_actual": 1337817,
+   "cargo_forecast": null,
+   "orders_forecast": null,
+   "is_forecast": false,
+   "src": "实际（投递量/订单量）"
   },
   "2026-10-08": {
-   "cargo_forecast": 2979716.86,
-   "orders_forecast": 1146045,
+   "cargo_forecast": 3053316.19,
+   "orders_forecast": 1174352,
+   "cargo_actual": null,
+   "orders_actual": null,
    "is_forecast": true,
-   "src": "中秋&国庆货量预测9.23版"
+   "src": "风控看板V19模型 × 近14天系数 1.230(工作日)"
   },
-  "2026-09-23": {
-   "cargo_forecast": 2566609.69,
-   "orders_forecast": 987158,
+  "2026-10-09": {
+   "cargo_forecast": 3039012.21,
+   "orders_forecast": 1168851,
+   "cargo_actual": null,
+   "orders_actual": null,
    "is_forecast": true,
-   "src": "中秋&国庆货量预测9.23版.xlsx（新版未覆盖，顺延）"
+   "src": "风控看板V19模型 × 近14天系数 1.230(工作日)"
+  },
+  "2026-10-10": {
+   "cargo_forecast": 3040049.6,
+   "orders_forecast": 1169250,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "is_forecast": true,
+   "src": "风控看板V19模型 × 近14天系数 0.976(周末)"
+  },
+  "2026-10-11": {
+   "cargo_forecast": 3232835.86,
+   "orders_forecast": 1243398,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "is_forecast": true,
+   "src": "风控看板V19模型 × 近14天系数 0.976(周末)"
+  },
+  "2026-10-12": {
+   "cargo_forecast": 3296327.32,
+   "orders_forecast": 1267818,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "is_forecast": true,
+   "src": "风控看板V19模型 × 近14天系数 1.230(工作日)"
+  },
+  "2026-10-13": {
+   "cargo_forecast": 3057625.93,
+   "orders_forecast": 1176010,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "is_forecast": true,
+   "src": "风控看板V19模型 × 近14天系数 1.230(工作日)"
+  },
+  "2026-10-14": {
+   "cargo_forecast": 3057274.25,
+   "orders_forecast": 1175875,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "is_forecast": true,
+   "src": "风控看板V19模型 × 近14天系数 1.230(工作日)"
+  },
+  "2026-10-15": {
+   "cargo_forecast": 3060333.91,
+   "orders_forecast": 1177052,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "is_forecast": true,
+   "src": "风控看板V19模型 × 近14天系数 1.230(工作日)"
+  },
+  "2026-10-16": {
+   "cargo_forecast": 2992778.42,
+   "orders_forecast": 1151069,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "is_forecast": true,
+   "src": "风控看板V19模型 × 近14天系数 1.230(工作日)"
+  },
+  "2026-10-17": {
+   "cargo_forecast": 3050951.35,
+   "orders_forecast": 1173443,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "is_forecast": true,
+   "src": "风控看板V19模型 × 近14天系数 0.976(周末)"
+  },
+  "2026-10-18": {
+   "cargo_forecast": 3269547.14,
+   "orders_forecast": 1257518,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "is_forecast": true,
+   "src": "风控看板V19模型 × 近14天系数 0.976(周末)"
+  },
+  "2026-10-19": {
+   "cargo_forecast": 3278167.58,
+   "orders_forecast": 1260834,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "is_forecast": true,
+   "src": "风控看板V19模型 × 近14天系数 1.230(工作日)"
+  },
+  "2026-10-20": {
+   "cargo_forecast": 3051145.34,
+   "orders_forecast": 1173517,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "is_forecast": true,
+   "src": "风控看板V19模型 × 近14天系数 1.230(工作日)"
+  },
+  "2026-10-21": {
+   "cargo_forecast": 3048491.71,
+   "orders_forecast": 1172497,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "is_forecast": true,
+   "src": "风控看板V19模型 × 近14天系数 1.230(工作日)"
+  },
+  "2026-10-22": {
+   "cargo_forecast": 3017207.74,
+   "orders_forecast": 1160465,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "is_forecast": true,
+   "src": "风控看板V19模型 × 近14天系数 1.230(工作日)"
+  },
+  "2026-10-23": {
+   "cargo_forecast": 2959716.83,
+   "orders_forecast": 1138353,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "is_forecast": true,
+   "src": "风控看板V19模型 × 近14天系数 1.230(工作日)"
+  },
+  "2026-10-24": {
+   "cargo_forecast": 2987436.01,
+   "orders_forecast": 1149014,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "is_forecast": true,
+   "src": "风控看板V19模型 × 近14天系数 0.976(周末)"
+  },
+  "2026-10-25": {
+   "cargo_forecast": 3221982.3,
+   "orders_forecast": 1239224,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "is_forecast": true,
+   "src": "风控看板V19模型 × 近14天系数 0.976(周末)"
+  },
+  "2026-10-26": {
+   "cargo_forecast": 3246240.98,
+   "orders_forecast": 1248554,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "is_forecast": true,
+   "src": "风控看板V19模型 × 近14天系数 1.230(工作日)"
+  },
+  "2026-10-27": {
+   "cargo_forecast": 3036272.26,
+   "orders_forecast": 1167797,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "is_forecast": true,
+   "src": "风控看板V19模型 × 近14天系数 1.230(工作日)"
+  },
+  "2026-10-28": {
+   "cargo_forecast": 3038996.22,
+   "orders_forecast": 1168845,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "is_forecast": true,
+   "src": "风控看板V19模型 × 近14天系数 1.230(工作日)"
+  },
+  "2026-10-29": {
+   "cargo_forecast": 3013025.88,
+   "orders_forecast": 1158856,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "is_forecast": true,
+   "src": "风控看板V19模型 × 近14天系数 1.230(工作日)"
+  },
+  "2026-10-30": {
+   "cargo_forecast": 3012073.14,
+   "orders_forecast": 1158490,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "is_forecast": true,
+   "src": "风控看板V19模型 × 近14天系数 1.230(工作日)"
+  },
+  "2026-10-31": {
+   "cargo_forecast": 3004855.48,
+   "orders_forecast": 1155714,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "is_forecast": true,
+   "src": "风控看板V19模型 × 近14天系数 0.976(周末)"
+  },
+  "2026-11-01": {
+   "cargo_forecast": 3223041.18,
+   "orders_forecast": 1239631,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "is_forecast": true,
+   "src": "风控看板V19模型 × 近28天系数 0.977(周末)"
+  },
+  "2026-11-02": {
+   "cargo_forecast": 2928704.07,
+   "orders_forecast": 1126425,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "is_forecast": true,
+   "src": "风控看板V19模型 × 近28天系数 1.111(工作日)"
+  },
+  "2026-11-03": {
+   "cargo_forecast": 2743497.06,
+   "orders_forecast": 1055191,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "is_forecast": true,
+   "src": "风控看板V19模型 × 近28天系数 1.111(工作日)"
+  },
+  "2026-11-04": {
+   "cargo_forecast": 2748495.95,
+   "orders_forecast": 1057114,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "is_forecast": true,
+   "src": "风控看板V19模型 × 近28天系数 1.111(工作日)"
+  },
+  "2026-11-05": {
+   "cargo_forecast": 2721153.7,
+   "orders_forecast": 1046598,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "is_forecast": true,
+   "src": "风控看板V19模型 × 近28天系数 1.111(工作日)"
+  },
+  "2026-11-06": {
+   "cargo_forecast": 2705888.49,
+   "orders_forecast": 1040726,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "is_forecast": true,
+   "src": "风控看板V19模型 × 近28天系数 1.111(工作日)"
+  },
+  "2026-11-07": {
+   "cargo_forecast": 3041459.82,
+   "orders_forecast": 1169792,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "is_forecast": true,
+   "src": "风控看板V19模型 × 近28天系数 0.977(周末)"
+  },
+  "2026-11-08": {
+   "cargo_forecast": 3243957.3,
+   "orders_forecast": 1247676,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "is_forecast": true,
+   "src": "风控看板V19模型 × 近28天系数 0.977(周末)"
+  },
+  "2026-11-09": {
+   "cargo_forecast": 2945242.84,
+   "orders_forecast": 1132786,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "is_forecast": true,
+   "src": "风控看板V19模型 × 近28天系数 1.111(工作日)"
+  },
+  "2026-11-10": {
+   "cargo_forecast": 2742148.43,
+   "orders_forecast": 1054672,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "is_forecast": true,
+   "src": "风控看板V19模型 × 近28天系数 1.111(工作日)"
+  },
+  "2026-11-11": {
+   "cargo_forecast": 2742775.1,
+   "orders_forecast": 1054913,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "is_forecast": true,
+   "src": "风控看板V19模型 × 近28天系数 1.111(工作日)"
+  },
+  "2026-11-12": {
+   "cargo_forecast": 2735774.93,
+   "orders_forecast": 1052221,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "is_forecast": true,
+   "src": "风控看板V19模型 × 近28天系数 1.111(工作日)"
+  },
+  "2026-11-13": {
+   "cargo_forecast": 2667364.46,
+   "orders_forecast": 1025909,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "is_forecast": true,
+   "src": "风控看板V19模型 × 近28天系数 1.111(工作日)"
+  },
+  "2026-11-14": {
+   "cargo_forecast": 2989820.15,
+   "orders_forecast": 1149931,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "is_forecast": true,
+   "src": "风控看板V19模型 × 近28天系数 0.977(周末)"
+  },
+  "2026-11-15": {
+   "cargo_forecast": 3221544.27,
+   "orders_forecast": 1239055,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "is_forecast": true,
+   "src": "风控看板V19模型 × 近28天系数 0.977(周末)"
+  },
+  "2026-11-16": {
+   "cargo_forecast": 2928868.68,
+   "orders_forecast": 1126488,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "is_forecast": true,
+   "src": "风控看板V19模型 × 近28天系数 1.111(工作日)"
+  },
+  "2026-11-17": {
+   "cargo_forecast": 2747597.82,
+   "orders_forecast": 1056768,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "is_forecast": true,
+   "src": "风控看板V19模型 × 近28天系数 1.111(工作日)"
+  },
+  "2026-11-18": {
+   "cargo_forecast": 2741804.78,
+   "orders_forecast": 1054540,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "is_forecast": true,
+   "src": "风控看板V19模型 × 近28天系数 1.111(工作日)"
+  },
+  "2026-11-19": {
+   "cargo_forecast": 2719643.35,
+   "orders_forecast": 1046017,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "is_forecast": true,
+   "src": "风控看板V19模型 × 近28天系数 1.111(工作日)"
+  },
+  "2026-11-20": {
+   "cargo_forecast": 2666122.68,
+   "orders_forecast": 1025432,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "is_forecast": true,
+   "src": "风控看板V19模型 × 近28天系数 1.111(工作日)"
+  },
+  "2026-11-21": {
+   "cargo_forecast": 2989037.38,
+   "orders_forecast": 1149630,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "is_forecast": true,
+   "src": "风控看板V19模型 × 近28天系数 0.977(周末)"
+  },
+  "2026-11-22": {
+   "cargo_forecast": 3221544.27,
+   "orders_forecast": 1239055,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "is_forecast": true,
+   "src": "风控看板V19模型 × 近28天系数 0.977(周末)"
+  },
+  "2026-11-23": {
+   "cargo_forecast": 2927921.46,
+   "orders_forecast": 1126124,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "is_forecast": true,
+   "src": "风控看板V19模型 × 近28天系数 1.111(工作日)"
+  },
+  "2026-11-24": {
+   "cargo_forecast": 2741016.39,
+   "orders_forecast": 1054237,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "is_forecast": true,
+   "src": "风控看板V19模型 × 近28天系数 1.111(工作日)"
+  },
+  "2026-11-25": {
+   "cargo_forecast": 2739188.38,
+   "orders_forecast": 1053534,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "is_forecast": true,
+   "src": "风控看板V19模型 × 近28天系数 1.111(工作日)"
+  },
+  "2026-11-26": {
+   "cargo_forecast": 2720290.23,
+   "orders_forecast": 1046265,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "is_forecast": true,
+   "src": "风控看板V19模型 × 近28天系数 1.111(工作日)"
+  },
+  "2026-11-27": {
+   "cargo_forecast": 2666284.4,
+   "orders_forecast": 1025494,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "is_forecast": true,
+   "src": "风控看板V19模型 × 近28天系数 1.111(工作日)"
+  },
+  "2026-11-28": {
+   "cargo_forecast": 2989062.8,
+   "orders_forecast": 1149640,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "is_forecast": true,
+   "src": "风控看板V19模型 × 近28天系数 0.977(周末)"
+  },
+  "2026-11-29": {
+   "cargo_forecast": 3221544.27,
+   "orders_forecast": 1239055,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "is_forecast": true,
+   "src": "风控看板V19模型 × 近28天系数 0.977(周末)"
+  },
+  "2026-11-30": {
+   "cargo_forecast": 2928839.8,
+   "orders_forecast": 1126477,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "is_forecast": true,
+   "src": "风控看板V19模型 × 近28天系数 1.111(工作日)"
+  },
+  "2026-12-01": {
+   "cargo_forecast": 2743823.39,
+   "orders_forecast": 1055317,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "is_forecast": true,
+   "src": "风控看板V19模型 × 近28天系数 1.111(工作日)"
+  },
+  "2026-12-02": {
+   "cargo_forecast": 2743476.85,
+   "orders_forecast": 1055183,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "is_forecast": true,
+   "src": "风控看板V19模型 × 近28天系数 1.111(工作日)"
+  },
+  "2026-12-03": {
+   "cargo_forecast": 2720128.51,
+   "orders_forecast": 1046203,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "is_forecast": true,
+   "src": "风控看板V19模型 × 近28天系数 1.111(工作日)"
+  },
+  "2026-12-04": {
+   "cargo_forecast": 2666122.68,
+   "orders_forecast": 1025432,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "is_forecast": true,
+   "src": "风控看板V19模型 × 近28天系数 1.111(工作日)"
+  },
+  "2026-12-05": {
+   "cargo_forecast": 2989466.89,
+   "orders_forecast": 1149795,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "is_forecast": true,
+   "src": "风控看板V19模型 × 近28天系数 0.977(周末)"
+  },
+  "2026-12-06": {
+   "cargo_forecast": 3221544.27,
+   "orders_forecast": 1239055,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "is_forecast": true,
+   "src": "风控看板V19模型 × 近28天系数 0.977(周末)"
+  },
+  "2026-12-07": {
+   "cargo_forecast": 2927762.63,
+   "orders_forecast": 1126063,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "is_forecast": true,
+   "src": "风控看板V19模型 × 近28天系数 1.111(工作日)"
+  },
+  "2026-12-08": {
+   "cargo_forecast": 2740990.4,
+   "orders_forecast": 1054227,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "is_forecast": true,
+   "src": "风控看板V19模型 × 近28天系数 1.111(工作日)"
+  },
+  "2026-12-09": {
+   "cargo_forecast": 2739159.5,
+   "orders_forecast": 1053523,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "is_forecast": true,
+   "src": "风控看板V19模型 × 近28天系数 1.111(工作日)"
+  },
+  "2026-12-10": {
+   "cargo_forecast": 2720345.1,
+   "orders_forecast": 1046287,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "is_forecast": true,
+   "src": "风控看板V19模型 × 近28天系数 1.111(工作日)"
+  },
+  "2026-12-11": {
+   "cargo_forecast": 2666203.54,
+   "orders_forecast": 1025463,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "is_forecast": true,
+   "src": "风控看板V19模型 × 近28天系数 1.111(工作日)"
+  },
+  "2026-12-12": {
+   "cargo_forecast": 3004969.72,
+   "orders_forecast": 1155758,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "is_forecast": true,
+   "src": "风控看板V19模型 × 近28天系数 0.977(周末)"
+  },
+  "2026-12-13": {
+   "cargo_forecast": 3239019.27,
+   "orders_forecast": 1245777,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "is_forecast": true,
+   "src": "风控看板V19模型 × 近28天系数 0.977(周末)"
+  },
+  "2026-12-14": {
+   "cargo_forecast": 2927788.62,
+   "orders_forecast": 1126073,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "is_forecast": true,
+   "src": "风控看板V19模型 × 近28天系数 1.111(工作日)"
+  },
+  "2026-12-15": {
+   "cargo_forecast": 2740990.4,
+   "orders_forecast": 1054227,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "is_forecast": true,
+   "src": "风控看板V19模型 × 近28天系数 1.111(工作日)"
+  },
+  "2026-12-16": {
+   "cargo_forecast": 2739159.5,
+   "orders_forecast": 1053523,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "is_forecast": true,
+   "src": "风控看板V19模型 × 近28天系数 1.111(工作日)"
+  },
+  "2026-12-17": {
+   "cargo_forecast": 2718996.47,
+   "orders_forecast": 1045768,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "is_forecast": true,
+   "src": "风控看板V19模型 × 近28天系数 1.111(工作日)"
+  },
+  "2026-12-18": {
+   "cargo_forecast": 2666122.68,
+   "orders_forecast": 1025432,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "is_forecast": true,
+   "src": "风控看板V19模型 × 近28天系数 1.111(工作日)"
+  },
+  "2026-12-19": {
+   "cargo_forecast": 2999269.25,
+   "orders_forecast": 1153565,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "is_forecast": true,
+   "src": "风控看板V19模型 × 近28天系数 0.977(周末)"
+  },
+  "2026-12-20": {
+   "cargo_forecast": 3228619.66,
+   "orders_forecast": 1241777,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "is_forecast": true,
+   "src": "风控看板V19模型 × 近28天系数 0.977(周末)"
+  },
+  "2026-12-21": {
+   "cargo_forecast": 2934774.35,
+   "orders_forecast": 1128759,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "is_forecast": true,
+   "src": "风控看板V19模型 × 近28天系数 1.111(工作日)"
+  },
+  "2026-12-22": {
+   "cargo_forecast": 2743768.52,
+   "orders_forecast": 1055296,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "is_forecast": true,
+   "src": "风控看板V19模型 × 近28天系数 1.111(工作日)"
+  },
+  "2026-12-23": {
+   "cargo_forecast": 2769698.6,
+   "orders_forecast": 1065269,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "is_forecast": true,
+   "src": "风控看板V19模型 × 近28天系数 1.111(工作日)"
+  },
+  "2026-12-24": {
+   "cargo_forecast": 2735047.19,
+   "orders_forecast": 1051941,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "is_forecast": true,
+   "src": "风控看板V19模型 × 近28天系数 1.111(工作日)"
+  },
+  "2026-12-25": {
+   "cargo_forecast": 2671196.64,
+   "orders_forecast": 1027383,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "is_forecast": true,
+   "src": "风控看板V19模型 × 近28天系数 1.111(工作日)"
+  },
+  "2026-12-26": {
+   "cargo_forecast": 2989037.38,
+   "orders_forecast": 1149630,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "is_forecast": true,
+   "src": "风控看板V19模型 × 近28天系数 0.977(周末)"
+  },
+  "2026-12-27": {
+   "cargo_forecast": 3221544.27,
+   "orders_forecast": 1239055,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "is_forecast": true,
+   "src": "风控看板V19模型 × 近28天系数 0.977(周末)"
+  },
+  "2026-12-28": {
+   "cargo_forecast": 2928002.32,
+   "orders_forecast": 1126155,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "is_forecast": true,
+   "src": "风控看板V19模型 × 近28天系数 1.111(工作日)"
+  },
+  "2026-12-29": {
+   "cargo_forecast": 2741178.11,
+   "orders_forecast": 1054299,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "is_forecast": true,
+   "src": "风控看板V19模型 × 近28天系数 1.111(工作日)"
+  },
+  "2026-12-30": {
+   "cargo_forecast": 2739728.41,
+   "orders_forecast": 1053742,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "is_forecast": true,
+   "src": "风控看板V19模型 × 近28天系数 1.111(工作日)"
+  },
+  "2026-12-31": {
+   "cargo_forecast": 2734507.16,
+   "orders_forecast": 1051734,
+   "cargo_actual": null,
+   "orders_actual": null,
+   "is_forecast": true,
+   "src": "风控看板V19模型 × 近28天系数 1.111(工作日)"
   }
  }
 }
