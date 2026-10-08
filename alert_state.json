@@ -1,44 +1,44 @@
 {
  "objects": {
   "c400d": {
-   "level": 3,
-   "levelName": "二级",
-   "color": "橙",
+   "level": 1,
+   "levelName": "正常",
+   "color": "蓝",
    "vals": {
-    "load": 148.8,
-    "rate": 70,
-    "lv": 3,
+    "load": 3.3,
+    "rate": 47.1,
+    "lv": 0,
     "rv": 4
    },
-   "ts": 1791470916896,
-   "tsCn": "2026/10/8 22:48:36",
-   "lastLevel": 3,
+   "ts": 1791471185264,
+   "tsCn": "2026/10/8 22:53:05",
+   "lastLevel": 1,
    "muted": false,
    "minLevel": 2,
    "lastAlertTs": 1791470157664
   },
   "c400w": {
-   "level": 2,
-   "levelName": "一级",
-   "color": "黄",
+   "level": 1,
+   "levelName": "正常",
+   "color": "蓝",
    "vals": {
-    "load": 129.4,
-    "rate": 73.4,
-    "lv": 2,
+    "load": 93.3,
+    "rate": 74.6,
+    "lv": 1,
     "rv": 4,
     "src": "周报口径(今实时)",
     "wDays": 4,
     "sum": {
-     "call": 5416,
-     "ans": 3977,
+     "call": 3903,
+     "ans": 2910,
      "den400": 4185,
      "on": 3506,
      "denOn": 3960
     }
    },
-   "ts": 1791470916896,
-   "tsCn": "2026/10/8 22:48:36",
-   "lastLevel": 2,
+   "ts": 1791471185264,
+   "tsCn": "2026/10/8 22:53:05",
+   "lastLevel": 1,
    "muted": false,
    "minLevel": 2,
    "lastAlertTs": 1791470157664
@@ -50,8 +50,8 @@
    "vals": {
     "load": 94.2
    },
-   "ts": 1791470916896,
-   "tsCn": "2026/10/8 22:48:36",
+   "ts": 1791471185264,
+   "tsCn": "2026/10/8 22:53:05",
    "lastLevel": 1,
    "muted": true,
    "minLevel": 99,
@@ -66,15 +66,15 @@
     "src": "周报口径(今实时)",
     "wDays": 4,
     "sum": {
-     "call": 5416,
-     "ans": 3977,
+     "call": 3903,
+     "ans": 2910,
      "den400": 4185,
      "on": 3506,
      "denOn": 3960
     }
    },
-   "ts": 1791470916896,
-   "tsCn": "2026/10/8 22:48:36",
+   "ts": 1791471185264,
+   "tsCn": "2026/10/8 22:53:05",
    "lastLevel": 0,
    "muted": true,
    "minLevel": 99,
@@ -93,8 +93,8 @@
     "rv": 1,
     "agents": 2
    },
-   "ts": 1791470916896,
-   "tsCn": "2026/10/8 22:48:36",
+   "ts": 1791471185264,
+   "tsCn": "2026/10/8 22:53:05",
    "lastLevel": 1,
    "muted": true,
    "minLevel": 99,
@@ -116,6 +116,6 @@
    "lastAlertTs": 1790326009710
   }
  },
- "updated": "2026/10/8 22:48:36",
- "updatedTs": 1791470916896
+ "updated": "2026/10/8 22:53:05",
+ "updatedTs": 1791471185264
 }
