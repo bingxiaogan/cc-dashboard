@@ -1064,8 +1064,8 @@ function drawBar(box, { labels, data, color, colorFn, h = 168, yFmt = n0, tipFmt
   const rawW = (W - pl - pr) / n;
   const slotW = Math.max(3, Math.min(rawW * 0.68, 68));   // 每段的柱区**总**宽（限宽：时段少时不至于撑成大色块）
   const left0 = pl + ((W - pl - pr) - slotW * n) / 2;     // 整体居中
-  const gN = bser.length;
-  const bw = slotW / gN;                                   // 单根柱宽
+  const gN = bser.filter(s => !s.overlay).length || 1;     // 「叠加组」不占列位（叠在同一根主柱里）
+  const bw = slotW / gN;                                   // 单根主柱宽
   for (let g = 0; g <= 4; g++) {
     const y = pt + g * (H - pt - pb) / 4;
     svg.appendChild(el('line', { x1: pl, x2: W - pr, y1: y, y2: y, stroke: 'rgba(126,166,226,.12)', 'stroke-dasharray': g === 4 ? '0' : '3 4' }));
@@ -1073,23 +1073,31 @@ function drawBar(box, { labels, data, color, colorFn, h = 168, yFmt = n0, tipFmt
   }
   const vlabels = [];   // 常显数值标签收集（柱 + 折线统一避让）
   let hasTip = false;
-  /* 每段「有数据的组」清单：缺组的段（如 8:00–9:00 只有参考人工进线量、无接听量）
+  /* 每段「有数据的**主**柱组」清单：缺组的段（如 8:00–9:00 只有参考人工进线量、无接听量）
      把已有柱在槽内居中，避免出现偏左的空洞 */
   const validAt = [];
   for (let i = 0; i < n; i++) {
     const vv = [];
-    bser.forEach((s, gi) => { if ((s.data || [])[i] != null) vv.push(gi); });
+    bser.forEach((s, gi) => { if (!s.overlay && (s.data || [])[i] != null) vv.push(gi); });
     validAt.push(vv);
   }
-  const wBar = gN > 1 ? Math.max(1.5, bw - 1.2) : bw;      // 多组时留 1.2 缝隙
   bser.forEach((s, gi) => {
+    const isOv = !!s.overlay;
+    // 主柱：多组时并排（留 1.2 缝）；叠加柱：同槽居中、按 width 收窄，套在主柱里
+    const wBar = isOv ? Math.max(1.5, bw * (s.width || 0.58))
+      : (gN > 1 ? Math.max(1.5, bw - 1.2) : bw);
     (s.data || []).forEach((v, i) => {
       if (v == null) return;
-      const valid = validAt[i], k = valid.length || 1, pos = valid.indexOf(gi);
-      const x = left0 + i * slotW + (slotW - k * bw) / 2 + pos * bw + (bw - wBar) / 2;
+      let x;
+      if (isOv) {
+        x = left0 + i * slotW + (slotW - wBar) / 2;
+      } else {
+        const valid = validAt[i], k = valid.length || 1, pos = valid.indexOf(gi);
+        x = left0 + i * slotW + (slotW - k * bw) / 2 + pos * bw + (bw - wBar) / 2;
+      }
       const bh = Math.max(1, (v / mx) * (H - pt - pb)), y = H - pb - bh;
       const cfn = s.colorFn || colorFn, cbase = s.color || color;
-      const r = el('rect', { x, y, width: wBar, height: bh, rx: Math.min(3, wBar / 2), fill: cfn ? cfn(v, i) : cbase, opacity: .92 });
+      const r = el('rect', { x, y, width: wBar, height: bh, rx: Math.min(isOv ? wBar / 2 : 3, wBar / 2), fill: cfn ? cfn(v, i) : cbase, opacity: s.opacity !== undefined ? s.opacity : .92 });
       const tf = s.tipFn !== undefined ? s.tipFn : tipFn, fm = s.tipFmt !== undefined ? s.tipFmt : tipFmt;
       if (tf || fm) { hasTip = true; r.style.cursor = 'crosshair'; r.dataset.tip = `${labels[i]}　${tf ? tf(v, i) : fm(v)}`; }
       svg.appendChild(r);
@@ -1472,6 +1480,13 @@ function renderHh400() {
     nRef++;
   });
 
+  /* 横轴标签用「段**结束**时刻」（'09:00' → '09:30'）：call_halfhour 的 t 是段起始，
+     直接用会让「最后一段 17:00–17:30」在轴上显示成「17:00」，与 KPI「截至 17:30」对不上
+     （2026-10-08 用户反馈）。改用结束时刻后，最后刻度即数据真正覆盖到的时刻。 */
+  const dispKeys = keys.map(k => {
+    const p = k.split(':'), t = (+p[0]) * 60 + (+p[1]) + 30;
+    return pad2(Math.floor(t / 60) % 24) + ':' + pad2(t % 60);
+  });
   const pred = hhPredOf(todayCn());
   const base = keys.map(k => {
     const v = D.hrate && D.hrate.slots ? D.hrate.slots[slotFullKey(k)] : null;
@@ -1486,14 +1501,14 @@ function renderHh400() {
   if (nFill) nSeg.push(`现场表补位 ${nFill} 段 ${n0(sFill)} 通`);
   if (nRef) nSeg.push(`8:00–9:00 参考 ${nRef} 段（无采集源，人工进线量 ${n0(sRef)} 通 + 接通率均取近 4 个同星期几均值）`);
   $('#note400hh').textContent = isToday
-    ? `实时 ${nLive}/${keys.length} 段 · 人工进线量 ${n0(liveSum)} 通 · 接听量 ${n0(liveAnsSum)} 通` +
+    ? `实时 ${nLive}/${keys.length} 段${lastI >= 0 ? `（最新 ${keys[lastI]}–${dispKeys[lastI]}）` : ''} · 人工进线量 ${n0(liveSum)} 通 · 接听量 ${n0(liveAnsSum)} 通` +
       (nSeg.length ? ` · ${nSeg.join(' · ')}` : '') +
       (pred ? ` · 预测全天 ${n0(sum(pred, x => x))} 通` : '')
     : '今日半小时数据待采集';
 
   if (nAct || pred) {
     drawBar($('#ch400hh'), {
-      labels: keys, h: 172,
+      labels: dispKeys, h: 172,
       bars: usePredBars
         ? [{ data: pred, color: 'rgba(251,191,36,.55)', tipFmt: v => n0(v) + ' 通（预测）' }]
         : [
@@ -1503,7 +1518,7 @@ function renderHh400() {
               tipFn: (v, i) => refBar[i]
                 ? n0(v) + ' 通（参考值 · 近 4 个同星期几均值，本时段无采集源）'
                 : n0(v) + ' 通（人工进线量）' },
-            { data: ansAct, color: '#34d399', showVals: false,
+            { data: ansAct, overlay: true, width: 0.58, color: '#34d399', showVals: false,
               tipFmt: v => n0(v) + ' 通（接听量）' }
           ],
       lines: [{ name: '预测', data: usePredBars ? null : pred, color: 'rgba(251,191,36,.9)',
@@ -1514,7 +1529,7 @@ function renderHh400() {
 
   if (rAct.some(v => v != null) || base.some(v => v != null)) {
     drawLine($('#ch400hhRate'), {
-      labels: keys, h: 136, yFmt: v => Math.round(v) + '%', tipFmt: v => (+v).toFixed(1) + '%',
+      labels: dispKeys, h: 136, yFmt: v => Math.round(v) + '%', tipFmt: v => (+v).toFixed(1) + '%',
       showVals: true, valFmt: v => Math.round(v) + '%',
       series: [
         { name: '实际', data: rAct, color: '#22d3ee', area: false },
@@ -1553,7 +1568,7 @@ function renderTr400() {
     labels: labels.map(d => d.slice(5)), h: 236,
     bars: [
       { data: act, color: '#93c5fd', tipFmt: v => n0(v) + ' 通（人工进线量）' },
-      { data: ans, color: '#34d399', showVals: false, tipFmt: v => n0(v) + ' 通（接听量）' }
+      { data: ans, overlay: true, width: 0.58, color: '#34d399', showVals: false, tipFmt: v => n0(v) + ' 通（接听量）' }
     ],
     lines: [{ name: '预测', data: fc, color: '#fbbf24', dash: '5 4', sameScale: true, tipFmt: v => n0(v) + ' 通' }],
     showVals: true, valFmt: v => n0(v)
