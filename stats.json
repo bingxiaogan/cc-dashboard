@@ -1,13 +1,13 @@
 {
- "ts": 1791556879668,
- "collectedAtCn": "2026/10/9 22:41:19",
+ "ts": 1791557115395,
+ "collectedAtCn": "2026/10/9 22:45:15",
  "overview": {
   "总排队数": "0",
-  "坐席空闲数": "2",
+  "坐席空闲数": "1",
   "坐席忙碌数": "0 (0)",
   "接通率": "22.24%",
   "满意率": "100.00%",
-  "呼入总数": "13584",
+  "呼入总数": "13585",
   "当前呼入数": "0",
   "外呼总数": "6104",
   "当前外呼数": "0",
@@ -207,8 +207,8 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 2025,
-   "ivr": 915,
+   "callIn": 2026,
+   "ivr": 916,
    "ringMissed": 5,
    "queueAbandon": 116,
    "answered": 989,
@@ -851,8 +851,8 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 2025,
-    "ivr": 915,
+    "callIn": 2026,
+    "ivr": 916,
     "ringMissed": 5,
     "queueAbandon": 116,
     "answered": 989,
@@ -870,10 +870,10 @@
     "transferred": 0
    }
   ],
-  "total": 2087,
+  "total": 2088,
   "answered": 1020,
-  "ivr": 945,
-  "connectRate": 94.15
+  "ivr": 946,
+  "connectRate": 94.16
  },
  "online": {
   "groups": [
@@ -907,14 +907,14 @@
    },
    {
     "name": "官网严选寄卖售后咨询",
-    "sessions": 272,
-    "assigned": 237,
-    "current": 18,
+    "sessions": 275,
+    "assigned": 240,
+    "current": 17,
     "max": 90,
     "queue": 5,
     "onlineSeats": "3(陈可,丁萌萌,刘梓爱)",
-    "done": 219,
-    "answerRate": 87.13,
+    "done": 223,
+    "answerRate": 87.27,
     "abandon": 35,
     "voicemail": 0,
     "satisfactionRate": 0
@@ -935,14 +935,14 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1475,
-    "assigned": 1414,
-    "current": 79,
+    "sessions": 1477,
+    "assigned": 1416,
+    "current": 72,
     "max": 90,
-    "queue": 12,
+    "queue": 13,
     "onlineSeats": "3(陈可,丁萌萌,刘梓爱)",
-    "done": 1286,
-    "answerRate": 95.86,
+    "done": 1295,
+    "answerRate": 95.87,
     "abandon": 61,
     "voicemail": 0,
     "satisfactionRate": 0
@@ -1061,15 +1061,15 @@
    },
    {
     "name": "官网严选自营售前咨询",
-    "sessions": 576,
+    "sessions": 577,
     "assigned": 551,
-    "current": 29,
+    "current": 25,
     "max": 90,
     "queue": 3,
     "onlineSeats": "3(陈可,丁萌萌,刘梓爱)",
-    "done": 502,
-    "answerRate": 95.66,
-    "abandon": 25,
+    "done": 506,
+    "answerRate": 95.49,
+    "abandon": 26,
     "voicemail": 0,
     "satisfactionRate": 33.33
    },
@@ -1297,15 +1297,6 @@
   "rate400": 86.5
  },
  "history": [
-  {
-   "ts": 1791458032108,
-   "skillRate400": 69.51,
-   "skillQueue400": 2,
-   "callIn400": 1384,
-   "signIn400": 12,
-   "onlineSessions": 763,
-   "onlineSeat": 2
-  },
   {
    "ts": 1791458139674,
    "skillRate400": 69.67,
@@ -5790,6 +5781,15 @@
   },
   {
    "ts": 1791556879668,
+   "skillRate400": null,
+   "skillQueue400": 0,
+   "callIn400": 0,
+   "signIn400": 0,
+   "onlineSessions": 815,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1791557115395,
    "skillRate400": null,
    "skillQueue400": 0,
    "callIn400": 0,
