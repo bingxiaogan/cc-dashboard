@@ -545,6 +545,11 @@ svg{display:block;width:100%;overflow:visible}
 .hmtbl td.hmc.hmtx input::placeholder{color:var(--tx3);opacity:.6}
 .hmtbl th{white-space:nowrap}
 .hmcalf{margin:0 0 10px}
+.hmbar .hmhint{font-size:11.5px;color:var(--tx3)}
+.hmcalf .dcal{max-width:100%}
+.hmcalf .calbar{flex-wrap:nowrap;overflow-x:auto;max-width:100%;padding-bottom:3px}
+.hmcalf .calbar::-webkit-scrollbar{height:6px}
+.hmcalf .calbar::-webkit-scrollbar-thumb{background:rgba(126,166,226,.30);border-radius:3px}
 </style>
 </head>
 <body>
@@ -2236,13 +2241,14 @@ function paintHalfMon(box, date) {
 
   const avgRate = sumTurn > 0 ? sumAns / sumTurn : null;
   const calDays = (ds.length ? ds : [today]).map(x => ({ date: x }));
+  const calStr = calHtml(calDays, date, today, null, null, 'hm');
   box.innerHTML =
     '<details class="fold zfold hmcalf"' + (HM_CALOPEN ? ' open' : '') + '>'
     + '<summary><span class="ft">切片日期</span><span class="fh">' + date + ' ' + wd + (date === today ? ' · 今天' : '') + '</span><span class="fchev"></span></summary>'
-    + '<div class="fbody"><div id="hmCal"></div></div>'
+    + '<div class="fbody">' + calStr + '</div>'
     + '</details>'
     + '<div class="hmbar">'
-    + '<span class="hmday">' + date + ' ' + wd + (date === today ? ' · 今天' : '') + '</span>'
+    + '<span class="hmhint">点上方日期切换切片 · 人数默认取 400 班表，改后自动保存（仅本地 8601）</span>'
     + '<span class="hmstat" id="hmStat"></span>'
     + '</div>'
     + '<div class="tblwrap"><table class="tbl hmtbl"><thead><tr>'
@@ -2259,9 +2265,6 @@ function paintHalfMon(box, date) {
     + '</div>'
     + (window.location.hostname.indexOf('127.0.0.1') < 0 && window.location.hostname !== 'localhost'
       ? '<div class="hmwarn">当前是公网只读快照 —— 手工填写请在本地 http://127.0.0.1:8601/ 打开看板。</div>' : '');
-
-  const calBox = document.getElementById('hmCal');
-  if (calBox) calBox.innerHTML = calHtml(calDays, date, today, null, null, 'hm');
 }
 
 let HM_SAVING = false;
