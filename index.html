@@ -521,6 +521,25 @@ svg{display:block;width:100%;overflow:visible}
   .stk .sr{grid-template-columns:minmax(0,132px) 1fr 46px 84px;gap:8px}
   .stk .sn{font-size:11.5px}
 }
+/* ── 400 分时段数据监控（可点格填写的登记表，2026-10-09）── */
+.lgd em.sg-au{background:rgba(148,163,184,.40);border:1px solid rgba(126,166,226,.28)}
+.lgd em.sg-mn{background:rgba(74,107,154,.22);border:1px solid rgba(126,166,226,.42)}
+.lgd em.sg-ed{background:#4a6b9a;border:1px solid #5f84b4}
+.hmbar{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin:2px 0 10px}
+.hmbar .hmday{font-size:13px;font-weight:600;color:var(--tx)}
+.hmbar .hmnav{border:1px solid var(--line);background:rgba(126,166,226,.06);color:var(--tx2);border-radius:8px;padding:4px 10px;font-size:12px;cursor:pointer}
+.hmbar .hmnav:hover{background:rgba(126,166,226,.13);color:var(--tx)}
+.hmbar .hmnav:disabled{opacity:.35;cursor:not-allowed}
+.hmbar .hmstat{margin-left:auto;font-size:11px;color:var(--tx3)}
+.hmtbl td.hmc{padding:3px 4px;text-align:center}
+.hmtbl td.hmc input{width:100%;max-width:74px;text-align:center;font:inherit;font-size:12.5px;padding:4px 5px;border-radius:7px;border:1px solid rgba(126,166,226,.30);background:rgba(74,107,154,.10);color:var(--tx);outline:none;font-variant-numeric:tabular-nums}
+.hmtbl td.hmc input:hover{border-color:rgba(147,197,253,.55)}
+.hmtbl td.hmc input:focus{border-color:var(--blue2);background:rgba(96,165,250,.16);box-shadow:0 0 0 2px rgba(96,165,250,.14)}
+.hmtbl td.hmc.on input{background:rgba(74,107,154,.42);border-color:#5f84b4;color:#eaf2ff;font-weight:600}
+.hmtbl td.hma{color:var(--tx3)}
+.hmtbl .hmfoot{display:flex;gap:14px;flex-wrap:wrap;margin-top:10px;font-size:11.5px;color:var(--tx3)}
+.hmtbl .hmfoot b{color:var(--tx2);font-weight:600}
+.hmwarn{margin:8px 0 0;padding:8px 11px;border-radius:9px;font-size:11.5px;background:rgba(251,191,36,.10);border:1px solid rgba(251,191,36,.26);color:var(--amber)}
 </style>
 </head>
 <body>
@@ -629,6 +648,22 @@ svg{display:block;width:100%;overflow:visible}
               <span class="hint">每半小时人工进线量 · 所需 / 排班 / 实到 / 差额 / 餐点（共 26 段）</span>
             </div>
             <div class="dstats" id="dayDetail"></div>
+          </div>
+
+          <!-- 400 分时段数据监控（2026-10-09 加）：对标飞书《【爱分类】现场调控》「2026年客服分时段数据监控」
+               26 段 × 14 列。灰底 = 自动采集，白底 = 可点格手工填写（存本地 manual_halfhour.json）。
+               日期跟随上方「逐日切片」。⚠️ 填写只在本地 8601 生效，公网为只读快照。 -->
+          <div class="panel wide">
+            <div class="phead">
+              <h3>400 分时段数据监控</h3>
+              <div class="lgd">
+                <span><em class="sg-au"></em>自动采集</span>
+                <span><em class="sg-mn"></em>可填写</span>
+                <span><em class="sg-ed"></em>看板已填</span>
+              </div>
+              <span class="hint" id="hmNote"></span>
+            </div>
+            <div id="halfMon"></div>
           </div>
         </div>
       </div>
@@ -1879,6 +1914,7 @@ function renderDaySlicer() {
   const pk = days.find(x => x.date === PICK_DAY) || {};
   if ($('#calPick400')) $('#calPick400').textContent = `${PICK_DAY.slice(5)} ${pk.wd || ''} · 点日期或点下方表格行`;
   renderDayDetail();
+  renderHalfMon();          // 400 分时段数据监控（登记表）跟随重绘
 }
 
 function renderDayDetail() {
@@ -2026,6 +2062,185 @@ function renderDayDetail() {
   };
   fold.addEventListener('toggle', () => { if (fold.open) drawDayHh(); });
   if (fold.open) drawDayHh();
+}
+
+/* ══════════════════ 400 分时段数据监控（本地登记表）══════════════════
+   对标飞书《【爱分类】现场调控》「2026年客服分时段数据监控」：26 段 × 14 列（2026-10-09 加）。
+   · 自动列（呼入 / 接通 / IVR / 转人工 / 接通率）：当日取 7x24cc 实时（call_halfhour.json，
+     与现场表逐格一致），历史取现场表（forecast/400_halfhour.json，日链每日拉取）。
+   · 手工列（长通话数量 / 排班人数 / 实际人数 / 用餐 / 支援辅导 / 放休请假）：本地点格手填，
+     存 manual_halfhour.json（POST /api/manual-halfhour）；有看板值优先，否则回落显示现场表原值。
+   · 运能负荷为公式列，随手工填的人数实时重算 —— 基数由现场表历史反推（10/8、10/9 全表吻合）：
+       排班运能负荷 = 转人工量 ÷（排班人数 × 6.5）
+       实际运能负荷 = 接通量   ÷（实际人数 × 7）
+   ⚠️ 填写只在本地 8601 生效（公网是静态快照，只读）。 */
+const pd2 = n => String(n).padStart(2, '0');
+const HM_LABELS = (() => {
+  const out = [];
+  for (let m = 8 * 60; m < 21 * 60; m += 30)
+    out.push(pd2(Math.floor(m / 60)) + ':' + pd2(m % 60) + '-' + pd2(Math.floor((m + 30) / 60)) + ':' + pd2((m + 30) % 60));
+  return out;
+})();
+const HM_MANCOLS = ['长通话数量', '排班人数', '实际人数', '用餐', '支援辅导', '放休请假'];
+const HM_AUTOCOLS = ['呼入量', '接通量', 'IVR接通量', '转人工量', '接通率'];
+const HM_CAP_SCHED = 6.5;   // 排班口径：每人每半小时运能（=13 通/h）
+const HM_CAP_ACT = 7;       // 实际口径：每人每半小时运能（=14 通/h）
+const hmDOW = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
+let HM_DAY = null, HM_LOADING = false;
+
+function hmSheetDay(date) { const d = D.hhSheet && D.hhSheet[date]; return Array.isArray(d) ? d : null; }
+function hmSiteRow(date, label) { const day = hmSheetDay(date); return day ? (day.find(x => x && x['时段'] === label) || null) : null; }
+function hmLiveRow(date, label) {
+  const h = D.hh;
+  if (!h || h.date !== date || !Array.isArray(h.slots)) return null;
+  const s = h.slots.find(x => String(x.t).slice(11, 16) === label.slice(0, 5));
+  if (!s) return null;
+  const total = +s.total || 0, ivr = +s.ivr || 0, ans = +s.answered || 0;
+  return { total: total, ivr: ivr, ans: ans, turn: Math.max(0, total - ivr) };
+}
+function hmAutoVals(date, label) {
+  const lv = hmLiveRow(date, label), site = hmSiteRow(date, label);
+  const pk = (a, b) => (a != null && a !== '') ? a : (b != null ? b : null);
+  let total = null, ans = null, ivr = null, turn = null;
+  if (lv) { total = lv.total; ans = lv.ans; ivr = lv.ivr; turn = lv.turn; }
+  if (site) {
+    total = pk(total, site['呼入量']); ans = pk(ans, site['接通量']);
+    ivr = pk(ivr, site['IVR接通量']); turn = pk(turn, site['转人工量']);
+  }
+  const rate = (turn != null && +turn > 0 && ans != null) ? (+ans / +turn) : (site ? site['接通率'] : null);
+  return { '呼入量': total, '接通量': ans, 'IVR接通量': ivr, '转人工量': turn, '接通率': rate };
+}
+function hmManVals(date, label) {
+  const site = hmSiteRow(date, label) || {};
+  const own = (D.manual && D.manual[date] && D.manual[date][label]) || {};
+  const out = {};
+  HM_MANCOLS.forEach(k => {
+    const o = own[k];
+    out[k] = (o != null && o !== '') ? { v: o, own: 1 } : ((site[k] != null) ? { v: site[k], own: 0 } : { v: null, own: 0 });
+  });
+  return out;
+}
+function hmFmtPct(v) { return (v == null || v === '' || isNaN(v)) ? '–' : (+v * 100).toFixed(2) + '%'; }
+function hmFmtInt(v) { return (v == null || v === '' || isNaN(v)) ? '–' : (+v).toLocaleString('en-US'); }
+
+function ensureHhSheet(cb) {
+  if (D.hhSheet) { cb && cb(); return; }
+  if (HM_LOADING) return;
+  HM_LOADING = true;
+  jget('forecast/400_halfhour.json').then(j => {
+    D.hhSheet = (j && typeof j === 'object' && !Array.isArray(j)) ? j : {};
+    HM_LOADING = false; cb && cb();
+  });
+}
+function hmDates() { return Object.keys(D.hhSheet || {}).sort(); }   // 升序
+function shiftHmDay(step) {
+  const ds = hmDates();
+  if (!ds.length) return;
+  let i = ds.indexOf(HM_DAY);
+  if (i < 0) { HM_DAY = ds[ds.length - 1]; i = ds.length - 1; }
+  HM_DAY = ds[Math.min(ds.length - 1, Math.max(0, i + step))];
+  renderHalfMon();
+}
+
+function renderHalfMon() {
+  const box = $('#halfMon');
+  if (!box) return;
+  if (!HM_DAY) HM_DAY = (D.hh && D.hh.date) || todayCn();
+  if (D.hhSheet) { paintHalfMon(box, HM_DAY); return; }
+  box.innerHTML = '<div class="empty">加载分时段数据…</div>';
+  ensureHhSheet(() => paintHalfMon(document.getElementById('halfMon'), HM_DAY));
+}
+
+function paintHalfMon(box, date) {
+  if (!box) return;
+  const ds = hmDates();
+  if (ds.length && ds.indexOf(date) < 0) date = HM_DAY = ds[ds.length - 1];
+  const d = new Date(date + 'T00:00:00');
+  const wd = isNaN(d.getTime()) ? '' : hmDOW[d.getDay()];
+  const nt = $('#hmNote');
+  if (nt) nt.textContent = '对齐飞书《现场调控》同表 · 26 段 × 14 列';
+
+  const auto = {}, man = {};
+  HM_LABELS.forEach(l => { auto[l] = hmAutoVals(date, l); man[l] = hmManVals(date, l); });
+  const schLoad = l => { const t = auto[l]['转人工量'], p = man[l]['排班人数'].v; return (t == null || p == null || +p <= 0) ? null : (+t / (+p * HM_CAP_SCHED)); };
+  const actLoad = l => { const a = auto[l]['接通量'], p = man[l]['实际人数'].v; return (a == null || p == null || +p <= 0) ? null : (+a / (+p * HM_CAP_ACT)); };
+
+  let sumTurn = 0, sumAns = 0, nFill = 0, nRow = 0;
+  const trs = HM_LABELS.map(label => {
+    const a = auto[label], m = man[label];
+    sumTurn += (+a['转人工量'] || 0); sumAns += (+a['接通量'] || 0);
+    const filled = HM_MANCOLS.some(k => m[k].own); if (filled) nFill++;
+    if (a['转人工量'] != null || HM_MANCOLS.some(k => m[k].v != null)) nRow++;
+    const tds = ['<td class="v">' + label + '</td>'];
+    HM_AUTOCOLS.forEach(k => {
+      tds.push('<td class="hma' + (k === '接通率' && a[k] != null && a[k] < 0.85 ? ' hmlow' : '') + '">' + (k === '接通率' ? hmFmtPct(a[k]) : hmFmtInt(a[k])) + '</td>');
+    });
+    HM_MANCOLS.forEach(k => {
+      const c = m[k];
+      tds.push('<td class="hmc' + (c.own ? ' on' : '') + '" title="' + (c.own ? '看板已填' : (c.v != null ? '来自现场表，可直接覆盖' : '可填写')) + '">'
+        + '<input class="hmi" type="text" inputmode="numeric" data-d="' + date + '" data-s="' + label + '" data-c="' + k + '"'
+        + ' value="' + (c.v == null ? '' : esc(String(c.v))) + '"></td>');
+    });
+    const sl = schLoad(label), al = actLoad(label);
+    tds.push('<td class="hma' + (sl != null && sl > 1 ? ' hmlow' : '') + '">' + hmFmtPct(sl) + '</td>');
+    tds.push('<td class="hma' + (al != null && al > 1 ? ' hmlow' : '') + '">' + hmFmtPct(al) + '</td>');
+    return '<tr>' + tds.join('') + '</tr>';
+  }).join('');
+
+  const avgRate = sumTurn > 0 ? sumAns / sumTurn : null;
+  const today = todayCn();
+  box.innerHTML =
+    '<div class="hmbar">'
+    + '<button class="hmnav" data-step="-1"' + (ds.length && ds.indexOf(date) <= 0 ? ' disabled' : '') + '>‹ 前一天</button>'
+    + '<span class="hmday">' + date + ' ' + wd + (date === today ? ' · 今天' : '') + '</span>'
+    + '<button class="hmnav" data-step="1"' + (ds.length && ds.indexOf(date) >= ds.length - 1 ? ' disabled' : '') + '>后一天 ›</button>'
+    + '<button class="hmnav" data-today="1">回到今天</button>'
+    + '<span class="hmstat" id="hmStat"></span>'
+    + '</div>'
+    + '<div class="tblwrap"><table class="tbl hmtbl"><thead><tr>'
+    + '<th>时间段</th>' + HM_AUTOCOLS.map(k => '<th>' + k + '</th>').join('')
+    + HM_MANCOLS.map(k => '<th>' + k + '</th>').join('')
+    + '<th>排班运能负荷</th><th>实际运能负荷</th>'
+    + '</tr></thead><tbody>' + trs + '</tbody></table></div>'
+    + '<div class="hmfoot">'
+    + '<span>转人工合计 <b>' + hmFmtInt(sumTurn) + '</b> 通</span>'
+    + '<span>接通合计 <b>' + hmFmtInt(sumAns) + '</b> 通</span>'
+    + '<span>整体接通率 <b>' + hmFmtPct(avgRate) + '</b></span>'
+    + '<span>手工列已填 <b>' + nFill + '</b> 段</span>'
+    + '<span>可填列：长通话 / 排班 / 实际 / 用餐 / 支援辅导 / 放休请假</span>'
+    + '</div>'
+    + (window.location.hostname.indexOf('127.0.0.1') < 0 && window.location.hostname !== 'localhost'
+      ? '<div class="hmwarn">当前是公网只读快照 —— 手工填写请在本地 http://127.0.0.1:8601/ 打开看板。</div>' : '');
+}
+
+let HM_SAVING = false;
+async function hmSave(input) {
+  const date = input.dataset.d, slot = input.dataset.s, col = input.dataset.c;
+  const stat = $('#hmStat');
+  const raw = String(input.value || '').trim();
+  const val = raw === '' ? null : (isNaN(+raw) ? raw : +raw);
+  const prev = (D.manual && D.manual[date] && D.manual[date][slot] && D.manual[date][slot][col] != null)
+    ? D.manual[date][slot][col] : null;
+  if (String(prev == null ? '' : prev) === String(val == null ? '' : val)) return;   // 没变不写
+  if (stat) { stat.textContent = '保存中…'; stat.style.color = 'var(--tx3)'; }
+  try {
+    const r = await fetch('/api/manual-halfhour', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ date: date, slot: slot, col: col, value: val })
+    });
+    const j = await r.json().catch(() => ({}));
+    if (!r.ok || !j.ok) throw new Error((j && j.error) || ('HTTP ' + r.status));
+    D.manual = D.manual || {};
+    D.manual[date] = D.manual[date] || {};
+    D.manual[date][slot] = D.manual[date][slot] || {};
+    if (val == null) delete D.manual[date][slot][col]; else D.manual[date][slot][col] = val;
+    if (stat) { stat.textContent = '✓ 已保存 ' + slot + ' · ' + col; stat.style.color = 'var(--green)'; }
+    paintHalfMon(document.getElementById('halfMon'), date);
+    const again = document.querySelector('#halfMon input[data-s="' + slot + '"][data-c="' + col + '"]');
+    if (again) again.focus();
+  } catch (e) {
+    if (stat) { stat.textContent = '⚠ 未保存（' + e.message + '）—— 公网只读，请在本地 8601 填写'; stat.style.color = 'var(--amber)'; }
+  }
 }
 
 /* ══════════════════ 02 在线 ══════════════════ */
@@ -2857,7 +3072,7 @@ function renderTicketDetail() {
 }
 
 /* ══════════════════ 切片器 ══════════════════ */
-const D = { cc: null, tk: null, tr: null, plan: null, hh: null, hhon: null, tt: null, shape: null, hrate: null, drate: null, osch: null, fill: null, ready: false };
+const D = { cc: null, tk: null, tr: null, plan: null, hh: null, hhon: null, tt: null, shape: null, hrate: null, drate: null, osch: null, fill: null, manual: null, hhSheet: null, ready: false };
 const PANE_ORDER = ['400', 'online', 'ticket'];
 const PANE_FN = {
   '400': () => { render400(); render400fc(D.plan); },
@@ -2960,10 +3175,13 @@ async function load() {
     jget('forecast/hh_rate.json'),
     jget('forecast/daily_rate.json'),
     jget('online_schedule.json'),         // 在线班表（出勤名单 + 工时），供在线分时段预测/排餐
-    jget('forecast/hh_fill.json')         // 现场表补位（08:00–09:00 等实时报表不覆盖的时段）
+    jget('forecast/hh_fill.json'),        // 现场表补位（08:00–09:00 等实时报表不覆盖的时段）
+    jget('manual_halfhour.json')          // 400 分时段手工登记（本地点格填写，POST /api/manual-halfhour）
   ]);
   D.cc = cc; D.tk = tk; D.tr = tr; D.plan = plan; D.hh = hh; D.hhon = hhon; D.tt = tt;
-  D.shape = shape; D.hrate = hrate; D.drate = drate; D.osch = osch; D.fill = hfill; D.ready = true;
+  D.shape = shape; D.hrate = hrate; D.drate = drate; D.osch = osch; D.fill = hfill;
+  D.manual = (manual && typeof manual === 'object' && !Array.isArray(manual)) ? manual : {};
+  D.ready = true;
   applyLiveCorrection();             // 用看板实测系数把预测拉回实测水平
   updateTabs();
   PANE_FN[CUR]();                    // 只重绘当前切片，切走时再按需绘制
@@ -2993,6 +3211,7 @@ $('#daySlicer').addEventListener('click', e => {
   const b = e.target.closest('.cald[data-day]');
   if (!b) return;
   PICK_DAY = b.dataset.day;
+  HM_DAY = PICK_DAY;            // 400 分时段登记表跟随所选日期
   closeCals();                  // 浮层不挡着下面刚刷新的明细
   render400fc(D.plan);          // 内部会重建切片器/明细，并同步表格行高亮
 });
@@ -3000,8 +3219,25 @@ $('#fc400t').addEventListener('click', e => {
   const tr = e.target.closest('tr[data-day]');
   if (!tr) return;
   PICK_DAY = tr.dataset.day;
+  HM_DAY = PICK_DAY;
   render400fc(D.plan);
 });
+/* 400 分时段数据监控：点格填写（失焦 / 回车保存、Esc 清空回退现场表值）+ 翻日 */
+(function () {
+  const root = $('#halfMon');
+  if (!root) return;
+  root.addEventListener('change', e => { const i = e.target.closest('input.hmi'); if (i) hmSave(i); });
+  root.addEventListener('keydown', e => {
+    const i = e.target.closest('input.hmi'); if (!i) return;
+    if (e.key === 'Enter') { e.preventDefault(); i.blur(); }
+    else if (e.key === 'Escape') { i.value = ''; i.blur(); }
+  });
+  root.addEventListener('click', e => {
+    const b = e.target.closest('.hmnav'); if (!b) return;
+    if (b.dataset.today) { HM_DAY = todayCn(); renderHalfMon(); return; }
+    shiftHmDay(+b.dataset.step || 0);
+  });
+})();
 /* 在线逐日切片同款联动 */
 $('#onlineSlicer').addEventListener('click', e => {
   const mt = e.target.closest('.calmt');
