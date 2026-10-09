@@ -2133,7 +2133,7 @@ function ghSetToken(t) { try { if (t) localStorage.setItem(GH_TOKEN_KEY, t); els
 function HM_CANWRITE() { return HM_IS_LOCAL || !!ghToken(); }
 function b64enc(s) { const u = new TextEncoder().encode(s); let b = ''; for (let i = 0; i < u.length; i++) b += String.fromCharCode(u[i]); return btoa(b); }
 function b64dec(s) { const bin = atob(String(s).replace(/\s+/g, '')); const u = new Uint8Array(bin.length); for (let i = 0; i < bin.length; i++) u[i] = bin.charCodeAt(i); return new TextDecoder().decode(u); }
-let HM_DAY = null, HM_LOADING = false, HM_CALOPEN = true;
+let HM_DAY = null, HM_LOADING = false, HM_CALOPEN = false;  // 切片日期条默认收起（2026-10-09 用户定）
 
 function hmSheetDay(date) { const d = D.hhSheet && D.hhSheet[date]; return Array.isArray(d) ? d : null; }
 function hmSiteRow(date, label) { const day = hmSheetDay(date); return day ? (day.find(x => x && x['时段'] === label) || null) : null; }
