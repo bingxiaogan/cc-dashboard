@@ -219,6 +219,8 @@ h1 em{font-style:normal;font-size:12px;font-weight:500;color:var(--tx3);letter-s
 .lgd{display:flex;gap:13px;font-size:11px;color:var(--tx3);flex-wrap:wrap}
 .lgd span{display:flex;align-items:center;gap:5px}
 .lgd em{width:9px;height:9px;border-radius:3px;display:block;font-style:normal}
+.dlbtn{margin-left:2px;font:inherit;font-size:11.5px;line-height:1;padding:4px 11px;border-radius:8px;border:1px solid rgba(126,166,226,.42);background:rgba(74,107,154,.16);color:var(--tx2);cursor:pointer;transition:background .15s,border-color .15s,color .15s;white-space:nowrap}
+.dlbtn:hover{background:rgba(74,107,154,.32);border-color:var(--blue2);color:var(--tx)}
 
 /* ── 表格 ── */
 .tbl{width:100%;border-collapse:collapse;font-size:12.5px}
@@ -3531,6 +3533,67 @@ document.addEventListener('keydown', e => {
 });
 $('#btnRefresh').onclick = load;
 setInterval(() => { const a = $('#autoSw'); if (a && a.checked) load(); }, 90000);
+
+/* ══════════ 板块下载（2026-10-09 用户定）══════════
+   每个含数据表的板块，右上角自动挂一个「下载」按钮：把该板块**当前渲染出来的表格**导出成 CSV
+   （UTF-8 带 BOM，Excel 双击直接打开、中文不乱码）。格子里有输入框的取 input 当前值，
+   所以手工填的人数/餐点/备注都会一起导出。每次重绘后自动补挂（MutationObserver 节流 400ms）。 */
+function dlCsv(filename, rows) {
+  const q = s => { s = String(s == null ? '' : s); return /[",\n\r]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; };
+  const csv = '\uFEFF' + rows.map(r => r.map(q).join(',')).join('\r\n');
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = filename;
+  document.body.appendChild(a); a.click();
+  setTimeout(() => { try { URL.revokeObjectURL(a.href); a.remove(); } catch (e) {} }, 0);
+}
+/* 表格 → 二维数组：优先取单元格里输入框的当前值（手工填的也在内） */
+function tableToRows(table) {
+  const rows = [];
+  table.querySelectorAll('tr').forEach(tr => {
+    const cells = [];
+    tr.querySelectorAll('th,td').forEach(td => {
+      const inp = td.querySelector('input,select,textarea');
+      cells.push(inp ? inp.value : String(td.innerText || td.textContent || '').trim());
+    });
+    if (cells.some(x => String(x).trim() !== '')) rows.push(cells);
+  });
+  return rows;
+}
+function attachDownloadBtns() {
+  try {
+    const panels = document.querySelectorAll('.panel');
+    if (!panels || typeof panels.forEach !== 'function') return;
+    panels.forEach(p => {
+      const head = p.querySelector('.phead');
+      if (!head || head.querySelector('.dlbtn')) return;
+      const table = p.querySelector('table.tbl');
+      if (!table) return;                                   // 没表格的板块（纯建议卡片）不挂
+      const h3 = head.querySelector('h3');
+      const name = ((h3 ? h3.textContent : '板块') || '板块').trim();
+      const b = document.createElement('button');
+      b.className = 'dlbtn';
+      b.textContent = '下载';
+      b.title = '导出本板块表格为 CSV（Excel 可直接打开）';
+      b.addEventListener('click', () => {
+        const rows = tableToRows(table);
+        if (rows.length < 2) { b.textContent = '无数据'; setTimeout(() => { b.textContent = '下载'; }, 1200); return; }
+        const d = new Date(), pad = n => String(n).padStart(2, '0');
+        dlCsv(name + '_' + d.getFullYear() + pad(d.getMonth() + 1) + pad(d.getDate()) + '.csv', rows);
+        b.textContent = '✓ 已导出'; setTimeout(() => { b.textContent = '下载'; }, 1200);
+      });
+      if (h3 && h3.parentNode) h3.parentNode.insertBefore(b, h3.nextSibling);   // 按钮紧跟标题
+      else head.appendChild(b);
+    });
+  } catch (e) { /* 自检桩里没有完整 DOM 时静默跳过 */ }
+}
+if (typeof MutationObserver === 'function') {
+  let dlT = null;
+  new MutationObserver(() => { clearTimeout(dlT); dlT = setTimeout(attachDownloadBtns, 400); })
+    .observe(document.body, { childList: true, subtree: true });
+}
+setTimeout(attachDownloadBtns, 1200);
 
 /* 初始切片：URL hash 优先，默认 400 */
 (function () {
