@@ -221,6 +221,20 @@ h1 em{font-style:normal;font-size:12px;font-weight:500;color:var(--tx3);letter-s
 .lgd em{width:9px;height:9px;border-radius:3px;display:block;font-style:normal}
 .dlbtn{margin-left:2px;font:inherit;font-size:11.5px;line-height:1;padding:4px 11px;border-radius:8px;border:1px solid rgba(126,166,226,.42);background:rgba(74,107,154,.16);color:var(--tx2);cursor:pointer;transition:background .15s,border-color .15s,color .15s;white-space:nowrap}
 .dlbtn:hover{background:rgba(74,107,154,.32);border-color:var(--blue2);color:var(--tx)}
+/* ── 下载按钮 → 下拉选日期（2026-10-09 用户定：日期藏在下载按钮里，选哪天导哪天） ── */
+.dlpick{position:relative;display:inline-block;margin-left:2px;vertical-align:middle}
+.dlpick>summary{list-style:none;margin:0}
+.dlpick>summary::-webkit-details-marker{display:none}
+.dlpick>summary.dlbtn{display:inline-flex;align-items:center;gap:5px;margin-left:0}
+.dlpick>summary.dlbtn::after{content:'▾';font-size:9px;opacity:.8}
+.dlpick[open]>summary.dlbtn{border-color:var(--blue2);background:rgba(74,107,154,.32);color:var(--tx)}
+.dlpick .dlbody{position:absolute;right:0;top:calc(100% + 6px);z-index:70;width:216px;max-height:264px;overflow:auto;padding:8px;border:1px solid var(--line);border-radius:12px;background:var(--card2);box-shadow:0 12px 34px rgba(0,0,0,.45);text-align:left}
+.dlpick .dlhd{font-size:10.5px;color:var(--tx3);padding:0 4px 6px;margin-bottom:4px;border-bottom:1px solid var(--lin2);white-space:nowrap}
+.dlpick .dli{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;padding:5px 7px;border:0;border-radius:7px;background:transparent;color:var(--tx2);font:inherit;font-size:11.5px;line-height:1.4;text-align:left;cursor:pointer;font-variant-numeric:tabular-nums}
+.dlpick .dli:hover{background:rgba(var(--accs),.13);color:var(--tx)}
+.dlpick .dli.cur{background:rgba(74,107,154,.28);color:var(--tx);font-weight:600}
+.dlpick .dli .tag{font-size:9.5px;font-weight:400;color:var(--tx3)}
+.dlpick .dli.fut .tag{color:var(--amber)}
 
 /* ── 表格 ── */
 .tbl{width:100%;border-collapse:collapse;font-size:12.5px}
@@ -2212,7 +2226,16 @@ function ensureHhSheet(cb) {
     HM_LOADING = false; cb && cb();
   });
 }
-function hmDates() { return Object.keys(D.hhSheet || {}).sort(); }   // 升序
+function hmDates() { return Object.keys(D.hhSheet || {}).sort(); }   // 升序（只含已出数据的日期）
+/* 日历可选日期全集 = 已出数据日 ∪ 预测覆盖的未来日（2026-10-09 用户定）
+   未来日实测源（呼入/接通/IVR/转人工/接通率、运能负荷）没有 → 一律留空（–），到那天数据回填后自动显示；
+   预测转人工 / 所需人力 照常给（走 plan.days），排班人数取 400 班表默认 → 未来日也能做现场调控。
+   上限 = plan.days 末日（预测到哪就能排到哪）。 */
+function hmCalDates() {
+  const set = new Set(hmDates());
+  ((D.plan && D.plan.days) || []).forEach(x => { if (x && x.date) set.add(x.date); });
+  return Array.from(set).sort();
+}
 function hmGo(date) { HM_DAY = date; paintHalfMon(document.getElementById('halfMon'), date); }
 
 function renderHalfMon() {
@@ -2226,8 +2249,10 @@ function renderHalfMon() {
 
 function paintHalfMon(box, date) {
   if (!box) return;
-  const ds = hmDates();
-  if (ds.length && ds.indexOf(date) < 0) date = HM_DAY = ds[ds.length - 1];
+  const dataDs = hmDates();                 // 有实测数据的日期
+  const ds = hmCalDates();                  // 日历全集（含未来预测日）
+  const lastData = dataDs.length ? dataDs[dataDs.length - 1] : todayCn();
+  if (!date || ds.indexOf(date) < 0) date = HM_DAY = lastData;   // 兜底落到最近有数据的一天，别跳到最后一天的预测
   const d = new Date(date + 'T00:00:00');
   const wd = isNaN(d.getTime()) ? '' : hmDOW[d.getDay()];
   const today = todayCn();
@@ -2304,7 +2329,7 @@ function paintHalfMon(box, date) {
   const head = document.getElementById('hmHead');
   if (head) head.innerHTML =
     '<details class="hmcal2"' + (HM_CALOPEN ? ' open' : '') + '>'
-    + '<summary><span class="ft">切片日期</span><span class="fh">' + date + ' ' + wd + (date === today ? ' · 今天' : '') + '</span><span class="fchev"></span></summary>'
+    + '<summary><span class="ft">切片日期</span><span class="fh">' + date + ' ' + wd + (date === today ? ' · 今天' : (date > today ? ' · 预测日（实际待回填）' : '')) + '</span><span class="fchev"></span></summary>'
     + '<div class="fbody">' + calStr + '</div>'
     + '</details>';
 
@@ -3555,28 +3580,105 @@ function tableToRows(table) {
   });
   return rows;
 }
+/* 分时段表跟着「切片日期」变 —— 导出时允许选任意日期。
+   做法：把该日期侧渲染到一个离屏容器里取数，不打扰当前可见视图（paintHalfMon 会重写 #hmHead，用完还原）。 */
+function hmRowsOf(date) {
+  const box = document.createElement('div');
+  const headEl = document.getElementById('hmHead');
+  const saveHead = headEl ? headEl.innerHTML : null;
+  const saveDay = HM_DAY;
+  try { paintHalfMon(box, date); } catch (e) { }
+  if (headEl && saveHead != null) headEl.innerHTML = saveHead;
+  HM_DAY = saveDay;
+  const t = box.querySelector('table.tbl');
+  return t ? tableToRows(t) : [];
+}
+function dlFileName(name, date) {
+  if (date) return name + '_' + date + '.csv';
+  const d = new Date(), pad = n => String(n).padStart(2, '0');
+  return name + '_' + d.getFullYear() + pad(d.getMonth() + 1) + pad(d.getDate()) + '.csv';
+}
+function dlFlash(el, txt) {
+  if (!el) return;
+  if (!el.dataset.old) el.dataset.old = el.textContent;
+  el.textContent = txt;
+  clearTimeout(el._dlT);
+  el._dlT = setTimeout(() => { el.textContent = el.dataset.old; }, 1400);
+}
+/* 普通板块：一键导出当前表格 */
+function makeSimpleDl(name, table) {
+  const b = document.createElement('button');
+  b.className = 'dlbtn';
+  b.textContent = '下载';
+  b.title = '导出本板块表格为 CSV（Excel 可直接打开）';
+  b.addEventListener('click', () => {
+    const rows = tableToRows(table);
+    if (rows.length < 2) { dlFlash(b, '无数据'); return; }
+    dlCsv(dlFileName(name), rows);
+    dlFlash(b, '✓ 已导出');
+  });
+  return b;
+}
+/* 分时段板块：下载按钮本身是「选日期」入口（2026-10-09 用户定） */
+function makeDateDl(name) {
+  const wrap = document.createElement('details');
+  wrap.className = 'dlpick';
+  const sm = document.createElement('summary');
+  sm.className = 'dlbtn';
+  sm.textContent = '下载';
+  sm.title = '点开选日期，导出该日表格为 CSV（Excel 可直接打开）';
+  wrap.appendChild(sm);
+  const body = document.createElement('div');
+  body.className = 'dlbody';
+  const hd = document.createElement('div');
+  hd.className = 'dlhd';
+  hd.textContent = '选日期导出';
+  body.appendChild(hd);
+  wrap.appendChild(body);
+  wrap.addEventListener('toggle', () => { if (wrap.open) buildDlDates(body, name, sm); });
+  return wrap;
+}
+function buildDlDates(body, name, sm) {
+  const cur = HM_DAY || todayCn(), today = todayCn();
+  body.querySelectorAll('button.dli').forEach(x => x.remove());
+  const ds = hmCalDates().slice().reverse();          // 新 → 旧
+  body.querySelector('.dlhd').textContent = '选日期导出 · 共 ' + ds.length + ' 天';
+  ds.forEach(d => {
+    const b = document.createElement('button');
+    b.className = 'dli' + (d === cur ? ' cur' : '') + (d > today ? ' fut' : '');
+    const tag = document.createElement('span');
+    tag.className = 'tag';
+    tag.textContent = d === today ? '今天' : (d > today ? '预测日' : '');
+    const dd = document.createElement('span');
+    dd.textContent = d;
+    b.appendChild(dd); b.appendChild(tag);
+    b.addEventListener('click', () => {
+      wrapClose(body);
+      const rows = hmRowsOf(d);
+      if (rows.length < 2) { dlFlash(sm, '无数据'); return; }
+      dlCsv(dlFileName(name, d), rows);
+      dlFlash(sm, '✓ ' + d.slice(5));
+    });
+    body.appendChild(b);
+  });
+}
+function wrapClose(body) {
+  const w = body.closest('details');
+  if (w) w.open = false;
+}
 function attachDownloadBtns() {
   try {
     const panels = document.querySelectorAll('.panel');
     if (!panels || typeof panels.forEach !== 'function') return;
     panels.forEach(p => {
       const head = p.querySelector('.phead');
-      if (!head || head.querySelector('.dlbtn')) return;
+      if (!head || head.querySelector('.dlbtn, .dlpick')) return;
       const table = p.querySelector('table.tbl');
       if (!table) return;                                   // 没表格的板块（纯建议卡片）不挂
       const h3 = head.querySelector('h3');
       const name = ((h3 ? h3.textContent : '板块') || '板块').trim();
-      const b = document.createElement('button');
-      b.className = 'dlbtn';
-      b.textContent = '下载';
-      b.title = '导出本板块表格为 CSV（Excel 可直接打开）';
-      b.addEventListener('click', () => {
-        const rows = tableToRows(table);
-        if (rows.length < 2) { b.textContent = '无数据'; setTimeout(() => { b.textContent = '下载'; }, 1200); return; }
-        const d = new Date(), pad = n => String(n).padStart(2, '0');
-        dlCsv(name + '_' + d.getFullYear() + pad(d.getMonth() + 1) + pad(d.getDate()) + '.csv', rows);
-        b.textContent = '✓ 已导出'; setTimeout(() => { b.textContent = '下载'; }, 1200);
-      });
+      const isDateTable = !!p.querySelector('#halfMon');     // 分时段表：内容随切片日期变
+      const b = isDateTable ? makeDateDl(name) : makeSimpleDl(name, table);
       if (h3 && h3.parentNode) h3.parentNode.insertBefore(b, h3.nextSibling);   // 按钮紧跟标题
       else head.appendChild(b);
     });
