@@ -270,6 +270,13 @@ h1 em{font-style:normal;font-size:12px;font-weight:500;color:var(--tx3);letter-s
 .meallist li b{flex:0 0 auto;min-width:92px;color:var(--tx);font-weight:600;font-variant-numeric:tabular-nums}
 .meallist li span{min-width:0;color:var(--tx2);word-break:break-word}
 .meallist li span .non{color:var(--tx3)}
+.meallist li input.meali{flex:1;min-width:0;font:inherit;font-size:12.5px;color:var(--tx2);padding:3px 7px;border-radius:7px;border:1px solid transparent;background:transparent;outline:none;transition:border-color .15s,background .15s}
+.meallist li input.meali:hover{border-color:rgba(147,197,253,.45);background:rgba(74,107,154,.08)}
+.meallist li input.meali:focus{border-color:var(--blue2);background:rgba(96,165,250,.14);color:var(--tx)}
+.meallist li input.meali.on{color:var(--tx);font-weight:600;background:rgba(74,107,154,.26);border-color:rgba(126,166,226,.5)}
+.meallist li input.meali.hmlock{cursor:not-allowed;opacity:.75}
+.meallist li input.meali::placeholder{color:var(--tx3);opacity:.65}
+.mealstat{font-weight:400;font-size:11px;color:var(--tx3);margin-left:auto}
 .mealnote{margin-top:8px;font-size:11px;color:var(--tx3);line-height:1.7}
 /* 缺口是「吃出来」的：不扣餐不缺、扣了才缺 */
 .mnote{color:var(--amber);font-style:normal;font-size:10.5px}
@@ -1922,6 +1929,28 @@ function mealPlanOfDay(names, weightMap) {
   });
   return out;
 }
+/* 🔴 餐点安排手工覆盖（2026-10-09 用户定）：
+   同一份 manual_halfhour.json 里，date → slot('餐点-<A|B>-<时段>') → col('名单')，存人名文本（、分隔）。
+   有手工值 → 覆盖错峰排餐结果，g._own[s] 标记该段为手工；清空 = 回落算法排餐。 */
+function mealApplyManual(date, mp) {
+  if (!mp) return mp;
+  const own = (D.manual && D.manual[date]) || null;
+  if (!own) return mp;
+  MEAL_WINS.forEach(w => {
+    const g = mp[w.key];
+    if (!g) return;
+    g.slots.forEach(s => {
+      const cell = own['餐点-' + w.key + '-' + s];
+      const v = cell ? cell['名单'] : null;
+      if (v != null && v !== '') {
+        g.map[s] = String(v).split(/[、,，;；\s]+/).filter(Boolean);
+        g._own = g._own || {};
+        g._own[s] = 1;
+      }
+    });
+  });
+  return mp;
+}
 
 /* ── 日维度预测切片：日历选日 + 单日明细 + 该日分时段预测（折叠） ── */
 let PICK_DAY = null;
@@ -1995,7 +2024,7 @@ function renderDayDetail() {
   keys.forEach((k, i) => {
     baseW[fulls[i]] = MEAL_SLACK_FLOOR + Math.max(0, (staffArr[i] || 0) - (needArr[i] || 0));
   });
-  const mp = (est || !roster.length) ? null : mealPlanOfDay(roster, baseW);
+  const mp = mealApplyManual(PICK_DAY, (est || !roster.length) ? null : mealPlanOfDay(roster, baseW));
   const mealAt = {};      // 完整时段键 → { n, who, win }
   if (mp) MEAL_WINS.forEach(w => {
     const g = mp[w.key];
@@ -2034,25 +2063,28 @@ function renderDayDetail() {
   if (est) mealBox = '<div class="mealwin"><em>HR 班表未出，餐点待排班确定后再排</em></div>';
   else if (!mp) mealBox = '<div class="mealwin"><em>该日无 400 在班名单，餐点待排</em></div>';
   else {
+    const MRO = HM_CANWRITE() ? '' : ' readonly';   // 公网未配令牌 → 只读，点格引导启用
     const grp = MEAL_WINS.map(w => {
       const g = mp[w.key];
       const tot = g.slots.reduce((a, s) => a + (g.map[s] || []).length, 0);
       const seg = g.slots.filter(s => (g.map[s] || []).length).length;
       const items = g.slots.map(s => {
         const who = g.map[s] || [];
-        if (!who.length) return '';
-        return `<li><b>${s}</b><span>${who.join('、')}</span></li>`;
-      }).filter(Boolean).join('');
+        const on = (g._own && g._own[s]) ? ' on' : '';
+        return `<li><b>${s}</b>`
+          + `<input class="meali${on}${MRO ? ' hmlock' : ''}" type="text" data-d="${PICK_DAY}" data-s="餐点-${w.key}-${s}"`
+          + ` data-c="名单" data-kind="meal" placeholder="${who.length ? '' : '未排'}"${MRO} value="${esc(who.join('、'))}"></li>`;
+      }).join('');
       return `<div class="mealgrp">
           <div class="mealgh"><b>${w.name}</b><em>${g.from}–${g.to}</em><i>${tot} 人 · ${seg} 段</i></div>
-          <ul class="meallist">${items || '<li><span class="non">该餐未排人</span></li>'}</ul>
+          <ul class="meallist">${items}</ul>
         </div>`;
     }).join('');
     mealBox = `<div class="mealgrid">${grp}</div>
-      <div class="mealnote">按各时段空闲度错峰 —— 冗余大的时段多排、紧张的少排；各段人数定好后按名单顺序沿时间落位，第一餐吃得早的人第二餐同样早。</div>`;
+      <div class="mealnote">按各时段空闲度自动错峰排 —— <b>每段名单可直接点格改</b>（多人用「、」分隔，清空 = 恢复自动排餐），改后自动保存。</div>`;
   }
   const mealCard = `<div class="mealbox">
-      <div class="mealttl">餐点安排<span>错峰排餐 · 尽量不影响接通${est ? ' · 班表未出，暂不可排' : ''}</span></div>
+      <div class="mealttl">餐点安排<span>错峰排餐 · 尽量不影响接通${est ? ' · 班表未出，暂不可排' : ''}</span><span class="mealstat" id="mealStat"></span></div>
       ${mealBox}
     </div>`;
 
@@ -2322,7 +2354,7 @@ let HM_SAVING = false;
 async function hmSave(input) {
   if (HM_SAVING) return;
   const date = input.dataset.d, slot = input.dataset.s, col = input.dataset.c;
-  const stat = $('#hmStat');
+  const stat = (input.dataset.kind === 'meal') ? $('#mealStat') : $('#hmStat');
   const raw = String(input.value || '').trim();
   const val = raw === '' ? null : (isNaN(+raw) ? raw : +raw);
   const prev = (D.manual && D.manual[date] && D.manual[date][slot] && D.manual[date][slot][col] != null)
@@ -2339,9 +2371,13 @@ async function hmSave(input) {
     D.manual[date][slot] = D.manual[date][slot] || {};
     if (val == null) delete D.manual[date][slot][col]; else D.manual[date][slot][col] = val;
     if (stat) { stat.textContent = '✓ 已保存 ' + slot + ' · ' + col + (HM_IS_LOCAL ? '' : '（公网约 1–3 分钟生效）'); stat.style.color = 'var(--green)'; }
-    paintHalfMon(document.getElementById('halfMon'), date);
-    const again = document.querySelector('#halfMon input[data-s="' + slot + '"][data-c="' + col + '"]');
-    if (again) again.focus();
+    if (input.dataset.kind === 'meal') {
+      renderDayDetail();                          // 餐点安排 → 重绘该日明细（含表格「餐点安排」列）
+    } else {
+      paintHalfMon(document.getElementById('halfMon'), date);
+      const again = document.querySelector('#halfMon input[data-s="' + slot + '"][data-c="' + col + '"]');
+      if (again) again.focus();
+    }
   } catch (e) {
     if (stat) { stat.textContent = '⚠ 未保存（' + e.message + '）'; stat.style.color = 'var(--amber)'; }
   } finally { HM_SAVING = false; }
@@ -3403,6 +3439,21 @@ $('#fc400t').addEventListener('click', e => {
     if (mt) { CAL_MON['hm'] = mt.dataset.m; paintHalfMon(document.getElementById('halfMon'), HM_DAY); return; }
     const b = e.target.closest('.cald[data-day]');
     if (b) { CAL_MON['hm'] = b.dataset.day.slice(0, 7); hmGo(b.dataset.day); }
+  });
+})();
+/* 餐点安排：名单点格手填（改后自动保存；手工优先于错峰排餐，清空回自动） */
+(function () {
+  const root = $('#dayDetail');
+  if (!root) return;
+  root.addEventListener('change', e => { const i = e.target.closest('input.meali'); if (i) hmSave(i); });
+  root.addEventListener('keydown', e => {
+    const i = e.target.closest('input.meali'); if (!i) return;
+    if (e.key === 'Enter') { e.preventDefault(); i.blur(); }
+    else if (e.key === 'Escape') { i.value = ''; i.blur(); }
+  });
+  root.addEventListener('click', e => {
+    const li = e.target.closest('input.meali[readonly]');
+    if (li && !HM_CANWRITE()) hmAskToken();   // 公网未启用 → 点格引导启用
   });
 })();
 /* 在线逐日切片同款联动 */
