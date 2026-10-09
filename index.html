@@ -2110,6 +2110,22 @@ const HM_AUTOCOLS = ['呼入量', '接通量', 'IVR接通量', '转人工量', '
 const HM_NOTE = '备注';
 const HM_CAP = 6.14;        // 运能基数：每人每半小时 6.14 通（2026-10-09 用户定，两口径同基数）
 const hmDOW = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
+/* ── 公网填写通道（2026-10-09 加）──────────────────────────────────────────
+   GitHub Pages 是纯静态托管、没有写接口 —— 公网侧改为用「本人 GitHub 令牌」
+   直接调 Contents API 把 manual_halfhour.json 提交回 bingxiaogan/cc-dashboard。
+   🔴 令牌只存在填写者浏览器的 localStorage（键 cc_gh_token），**绝不写进源码/仓库**。
+   建议用 fine-grained PAT：只授权 cc-dashboard 一个仓库、Contents: Read and write。
+   本地（127.0.0.1 / localhost）仍走 8601 的 /api/manual-halfhour，更快、不产生 commit。
+   写入语义与本地接口一致：value 空 = 删该格；写前先拉远端最新再合并本格，避免覆盖别处所填。 */
+const GH_API = 'https://api.github.com/repos/bingxiaogan/cc-dashboard/contents/manual_halfhour.json';
+const GH_BRANCH = 'main';
+const GH_TOKEN_KEY = 'cc_gh_token';
+const HM_IS_LOCAL = /^(127\.0\.0\.1|localhost|\[::1\])$/.test(location.hostname);
+function ghToken() { try { return localStorage.getItem(GH_TOKEN_KEY) || ''; } catch (e) { return ''; } }
+function ghSetToken(t) { try { if (t) localStorage.setItem(GH_TOKEN_KEY, t); else localStorage.removeItem(GH_TOKEN_KEY); } catch (e) {} }
+function HM_CANWRITE() { return HM_IS_LOCAL || !!ghToken(); }
+function b64enc(s) { const u = new TextEncoder().encode(s); let b = ''; for (let i = 0; i < u.length; i++) b += String.fromCharCode(u[i]); return btoa(b); }
+function b64dec(s) { const bin = atob(String(s).replace(/\s+/g, '')); const u = new Uint8Array(bin.length); for (let i = 0; i < bin.length; i++) u[i] = bin.charCodeAt(i); return new TextDecoder().decode(u); }
 let HM_DAY = null, HM_LOADING = false, HM_CALOPEN = true;
 
 function hmSheetDay(date) { const d = D.hhSheet && D.hhSheet[date]; return Array.isArray(d) ? d : null; }
@@ -2195,6 +2211,7 @@ function paintHalfMon(box, date) {
   const wd = isNaN(d.getTime()) ? '' : hmDOW[d.getDay()];
   const today = todayCn();
   const schN = hmSchCount(date);
+  const HMRO = HM_CANWRITE() ? '' : ' readonly';   // 公网未配令牌 → 只读，点格时引导启用
   const nt = $('#hmNote');
   if (nt) nt.textContent = '26 段 × 15 列 · 人数默认取 400 班表'
     + (schN != null ? '（当班 ' + schN + ' 人）' : '（该日无班表，人数留空）')
@@ -2218,16 +2235,16 @@ function paintHalfMon(box, date) {
     HM_MANCOLS.forEach(k => {
       const c = m[k];
       const tip = c.own ? '看板已填' : (c.v != null ? '默认取自' + c.src + '，可直接覆盖' : '可填写');
-      tds.push('<td class="hmc' + (c.own ? ' on' : '') + '" title="' + tip + '">'
-        + '<input class="hmi" type="text" inputmode="numeric" data-d="' + date + '" data-s="' + label + '" data-c="' + k + '"'
+      tds.push('<td class="hmc' + (c.own ? ' on' : '') + (HMRO ? ' hmlock' : '') + '" title="' + tip + '">'
+        + '<input class="hmi" type="text" inputmode="numeric" data-d="' + date + '" data-s="' + label + '" data-c="' + k + '"' + HMRO
         + ' value="' + (c.v == null ? '' : esc(String(c.v))) + '"></td>');
     });
     const sl = schLoad(label), al = actLoad(label);
     tds.push('<td class="hma' + (sl != null && sl > 1 ? ' hmlow' : '') + '">' + hmFmtPct(sl) + '</td>');
     tds.push('<td class="hma' + (al != null && al > 1 ? ' hmlow' : '') + '">' + hmFmtPct(al) + '</td>');
     const nb = m[HM_NOTE];
-    tds.push('<td class="hmc hmtx' + (nb.own ? ' on' : '') + '">'
-      + '<input class="hmi hmtxt" type="text" data-d="' + date + '" data-s="' + label + '" data-c="' + HM_NOTE + '"'
+    tds.push('<td class="hmc hmtx' + (nb.own ? ' on' : '') + (HMRO ? ' hmlock' : '') + '">'
+      + '<input class="hmi hmtxt" type="text" data-d="' + date + '" data-s="' + label + '" data-c="' + HM_NOTE + '"' + HMRO
       + ' placeholder="备注" value="' + (nb.v == null ? '' : esc(String(nb.v))) + '"></td>');
     return '<tr>' + tds.join('') + '</tr>';
   }).join('');
@@ -2241,7 +2258,12 @@ function paintHalfMon(box, date) {
     + '<div class="fbody">' + calStr + '</div>'
     + '</details>'
     + '<div class="hmbar">'
-    + '<span class="hmhint">点上方日期切换切片 · 人数默认取 400 班表，改后自动保存（仅本地 8601）</span>'
+    + '<span class="hmhint">' + (HM_IS_LOCAL
+        ? '点上方日期切换切片 · 人数默认取 400 班表 · 改后自动保存'
+        : (ghToken() ? '公网填写已启用 · 改后自动提交，约 1–3 分钟全站可见'
+                     : '公网只读快照 —— 点右侧「启用公网填写」后即可在网页上直接填')) + '</span>'
+    + (HM_IS_LOCAL ? '' : '<button class="hmgh' + (ghToken() ? ' off' : '') + '" data-act="' + (ghToken() ? 'off' : 'on') + '">'
+        + (ghToken() ? '退出公网填写' : '启用公网填写') + '</button>')
     + '<span class="hmstat" id="hmStat"></span>'
     + '</div>'
     + '<div class="tblwrap"><table class="tbl hmtbl"><thead><tr>'
@@ -2256,8 +2278,9 @@ function paintHalfMon(box, date) {
     + '<span>已填 <b>' + nFill + '</b> 段</span>'
     + '<span>运能基数 ' + HM_CAP + ' 通/人/半小时 · 负荷 &gt;100% 标黄</span>'
     + '</div>'
-    + (window.location.hostname.indexOf('127.0.0.1') < 0 && window.location.hostname !== 'localhost'
-      ? '<div class="hmwarn">当前是公网只读快照 —— 手工填写请在本地 http://127.0.0.1:8601/ 打开看板。</div>' : '');
+    + (HM_IS_LOCAL ? '' : (ghToken()
+        ? '<div class="hmwarn hmon">公网填写已启用 —— 数据写入你自己的 cc-dashboard 仓库，GitHub 重建页面约 1–3 分钟后所有人生效。</div>'
+        : '<div class="hmwarn">公网只读快照 —— 点上方「启用公网填写」粘贴 GitHub 令牌即可在网页上直接填（令牌只存本机浏览器，不上传、不进源码）。</div>'));
 }
 
 let HM_SAVING = false;
