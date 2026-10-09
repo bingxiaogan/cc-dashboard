@@ -2182,7 +2182,9 @@ const HM_MANCOLS = ['长通话数量', '排班人数', '用餐', '支援辅导',
 const HM_DEFCOLS = ['排班人数'];                       // 默认取 400 班表当班人数
 const HM_CALCCOL = '实际人数';                          // 公式列（2026-10-09 用户定）：见 HM_DEDUCT
 const HM_DEDUCT = ['用餐', '支援辅导', '放休请假'];      // 实际人数 = 排班人数 − 上列各项（缺项按 0，负数归 0）
-const HM_COLORDER = ['长通话数量', '排班人数', '实际人数', '用餐', '支援辅导', '放休请假'];   // 表头/展示顺序
+/* 中间段列（2026-10-09 合并表）：人力相关。实际人数 = 公式列；差额 = 实际人数 − 所需人力（计算列）。
+   长通话数量挪到负荷列之后，见 paintHalfMon 渲染顺序。 */
+const HM_MIDCOLS = ['排班人数', '实际人数', '差额', '用餐', '支援辅导', '放休请假'];
 const HM_AUTOCOLS = ['呼入量', '接通量', 'IVR接通量', '转人工量', '接通率'];
 const HM_NOTE = '备注';
 const HM_CAP = 6.14;        // 运能基数：每人每半小时 6.14 通（2026-10-09 用户定，两口径同基数）
@@ -2302,9 +2304,9 @@ function paintHalfMon(box, date) {
   const schN = hmSchCount(date);
   const HMRO = HM_CANWRITE() ? '' : ' readonly';   // 公网未配令牌 → 只读，点格时引导启用
   const nt = $('#hmNote');
-  if (nt) nt.textContent = '26 段 × 15 列 · 排班人数默认取 400 班表'
+  if (nt) nt.textContent = '26 段 × 18 列 · 预测列与「日维度预测」同口径 · 排班人数默认取 400 班表'
     + (schN != null ? '（当班 ' + schN + ' 人）' : '（该日无班表，人数留空）')
-    + ' · 实际人数 = 排班 − 用餐 − 支援 − 放休 · 运能基数 ' + HM_CAP;
+    + ' · 实际人数 = 排班 − 用餐 − 支援 − 放休 · 差额 = 实际 − 所需 · 运能基数 ' + HM_CAP;
 
   const auto = {}, man = {};
   HM_LABELS.forEach(l => { auto[l] = hmAutoVals(date, l); man[l] = hmManVals(date, l); });
@@ -2312,9 +2314,17 @@ function paintHalfMon(box, date) {
   const actCount = l => hmActCount(man[l]);
   const actLoad = l => { const a = auto[l]['接通量'], p = actCount(l); return (a == null || p == null || +p <= 0) ? null : (+a / (+p * HM_CAP)); };
 
+  /* 合并列（2026-10-09 用户定）：预测转人工 / 所需人力 —— 与实时页「该日分时段预测」同口径 */
+  const hh = hhPredOf(date);
+  const capH = (D.plan && D.plan.cap_per_hour) || 11.81;
+
   let sumTurn = 0, sumAns = 0, nFill = 0, nRow = 0;
-  const trs = HM_LABELS.map(label => {
+  const trs = HM_LABELS.map((label, i) => {
     const a = auto[label], m = man[label];
+    const pv = hh ? hh[i] : null;                                      // 预测转人工
+    const need = hcn(pv == null ? null : pv / (capH * 0.5));           // 所需人力（进位）
+    const ac = actCount(label);                                        // 实际人数（公式）
+    const gap = (ac != null && need != null) ? ac - need : null;       // 差额 = 实际人数 − 所需人力
     sumTurn += (+a['转人工量'] || 0); sumAns += (+a['接通量'] || 0);
     if (HM_MANCOLS.some(k => m[k].own) || m[HM_NOTE].own) nFill++;
     if (a['转人工量'] != null || HM_MANCOLS.some(k => m[k].v != null)) nRow++;
@@ -2322,10 +2332,20 @@ function paintHalfMon(box, date) {
     HM_AUTOCOLS.forEach(k => {
       tds.push('<td class="hma' + (k === '接通率' && a[k] != null && a[k] < 0.85 ? ' hmlow' : '') + '">' + (k === '接通率' ? hmFmtPct(a[k]) : hmFmtInt(a[k])) + '</td>');
     });
-    HM_COLORDER.forEach(k => {
+    /* 预测段 */
+    tds.push('<td class="hma">' + (pv == null ? '–' : n0(pv)) + '</td>');
+    tds.push('<td class="hma">' + (need == null ? '–' : need) + '</td>');
+    /* 人力段 */
+    HM_MIDCOLS.forEach(k => {
       if (k === HM_CALCCOL) {              // 实际人数：公式列，自动算、不给填
-        const ac = actCount(label);
         tds.push('<td class="hma hmcalc" title="公式：排班人数 − 用餐 − 支援辅导 − 放休请假">' + hmFmtInt(ac) + '</td>');
+        return;
+      }
+      if (k === '差额') {                  // 差额 = 实际人数 − 所需人力
+        const gp = gap == null ? '<span class="pill b">–</span>'
+          : gap < 0 ? '<span class="pill r">' + gap + '</span>'
+            : gap > 0 ? '<span class="pill g">+' + gap + '</span>' : '<span class="pill b">0</span>';
+        tds.push('<td class="hma">' + gp + '</td>');
         return;
       }
       const c = m[k];
@@ -2337,6 +2357,12 @@ function paintHalfMon(box, date) {
     const sl = schLoad(label), al = actLoad(label);
     tds.push('<td class="hma' + (sl != null && sl > 1 ? ' hmlow' : '') + '">' + hmFmtPct(sl) + '</td>');
     tds.push('<td class="hma' + (al != null && al > 1 ? ' hmlow' : '') + '">' + hmFmtPct(al) + '</td>');
+    /* 长通话数量（手填） */
+    const lc = m['长通话数量'];
+    const ltip = lc.own ? '看板已填' : (lc.v != null ? '默认取自' + lc.src + '，可直接覆盖' : '可填写');
+    tds.push('<td class="hmc' + (lc.own ? ' on' : '') + (HMRO ? ' hmlock' : '') + '" title="' + ltip + '">'
+      + '<input class="hmi" type="text" inputmode="numeric" data-d="' + date + '" data-s="' + label + '" data-c="长通话数量"' + HMRO
+      + ' value="' + (lc.v == null ? '' : esc(String(lc.v))) + '"></td>');
     const nb = m[HM_NOTE];
     tds.push('<td class="hmc hmtx' + (nb.own ? ' on' : '') + (HMRO ? ' hmlock' : '') + '">'
       + '<input class="hmi hmtxt" type="text" data-d="' + date + '" data-s="' + label + '" data-c="' + HM_NOTE + '"' + HMRO
@@ -2363,18 +2389,19 @@ function paintHalfMon(box, date) {
     + '</div>'
     + mealCardHtml(date)
     + '<div class="tblwrap"><table class="tbl hmtbl"><thead><tr>'
-    + '<th>时间段</th>' + HM_AUTOCOLS.map(k => '<th>' + k + '</th>').join('')
-    + HM_COLORDER.map(k => (k === HM_CALCCOL)
+    + '<th>时段</th>' + HM_AUTOCOLS.map(k => '<th>' + k + '</th>').join('')
+    + '<th>预测转人工</th><th>所需人力</th>'
+    + HM_MIDCOLS.map(k => (k === HM_CALCCOL)
         ? '<th class="thfmla" title="公式：排班人数 − 用餐 − 支援辅导 − 放休请假">' + k + ' <em>公式</em></th>'
         : '<th>' + k + '</th>').join('')
-    + '<th>排班运能负荷</th><th>实际运能负荷</th><th>备注</th>'
+    + '<th>排班运能负荷</th><th>实际运能负荷</th><th>长通话数量</th><th>备注</th>'
     + '</tr></thead><tbody>' + trs + '</tbody></table></div>'
     + '<div class="hmfoot">'
     + '<span>转人工合计 <b>' + hmFmtInt(sumTurn) + '</b> 通</span>'
     + '<span>接通合计 <b>' + hmFmtInt(sumAns) + '</b> 通</span>'
     + '<span>整体接通率 <b>' + hmFmtPct(avgRate) + '</b></span>'
     + '<span>已填 <b>' + nFill + '</b> 段</span>'
-    + '<span>实际人数 = 排班 − 用餐 − 支援 − 放休</span>'
+    + '<span>实际人数 = 排班 − 用餐 − 支援 − 放休 · 差额 = 实际 − 所需</span>'
     + '<span>运能基数 ' + HM_CAP + ' 通/人/半小时 · 负荷 &gt;100% 标黄</span>'
     + '</div>'
     + (HM_IS_LOCAL ? '' : (ghToken()
