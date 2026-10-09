@@ -3661,6 +3661,9 @@ function buildDlDates(body, name, sm) {
     });
     body.appendChild(b);
   });
+  /* 打开时把「当前切片日」滚到中间（列表是新→旧，跨度覆盖全年） */
+  const curEl = body.querySelector('button.dli.cur');
+  if (curEl) body.scrollTop = Math.max(0, curEl.offsetTop - (body.clientHeight - curEl.offsetHeight) / 2);
 }
 function wrapClose(body) {
   const w = body.closest('details');
