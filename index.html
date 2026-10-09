@@ -3623,6 +3623,20 @@ if (typeof MutationObserver === 'function') {
 }
 setTimeout(attachDownloadBtns, 1200);
 
+/* 切片顺序（2026-10-09 用户定）：400 页里「400 分时段数据监控」排到「30 天数据及预测」前面。
+   直接交换 DOM 节点 —— 比搬大段 HTML 安全，要改回去删掉这段即可。 */
+(function () {
+  try {
+    const seg = document.querySelector('.bseg[data-seg="400"]');
+    const b30 = seg && seg.querySelector('.sg[data-view="d30"]');
+    const bhm = seg && seg.querySelector('.sg[data-view="hm"]');
+    if (b30 && bhm) seg.insertBefore(bhm, b30);
+    const v30 = document.querySelector('.view[data-view="d30"]');
+    const vhm = document.querySelector('.view[data-view="hm"]');
+    if (v30 && vhm && v30.parentNode === vhm.parentNode) v30.parentNode.insertBefore(vhm, v30);
+  } catch (e) {}
+})();
+
 /* 初始切片：URL hash 优先，默认 400 */
 (function () {
   const h = (location.hash || '').replace('#', '');
