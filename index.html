@@ -540,6 +540,11 @@ svg{display:block;width:100%;overflow:visible}
 .hmtbl .hmfoot{display:flex;gap:14px;flex-wrap:wrap;margin-top:10px;font-size:11.5px;color:var(--tx3)}
 .hmtbl .hmfoot b{color:var(--tx2);font-weight:600}
 .hmwarn{margin:8px 0 0;padding:8px 11px;border-radius:9px;font-size:11.5px;background:rgba(251,191,36,.10);border:1px solid rgba(251,191,36,.26);color:var(--amber)}
+.hmtbl td.hma.hmlow{color:var(--amber);font-weight:600}
+.hmtbl td.hmc.hmtx input{max-width:210px;text-align:left;font-weight:400;font-variant-numeric:normal}
+.hmtbl td.hmc.hmtx input::placeholder{color:var(--tx3);opacity:.6}
+.hmtbl th{white-space:nowrap}
+.hmcalf{margin:0 0 10px}
 </style>
 </head>
 <body>
@@ -3209,7 +3214,7 @@ function applyLiveCorrection() {
 
 async function load() {
   const btn = $('#btnRefresh'); btn.disabled = true; btn.textContent = '刷新中…';
-  const [cc, tk, tr, plan, hh, hhon, tt, shape, hrate, drate, osch, hfill, manual] = await Promise.all([
+  const [cc, tk, tr, plan, hh, hhon, tt, shape, hrate, drate, osch, hfill, manual, sch] = await Promise.all([
     jget('stats.json', 'http://127.0.0.1:8601/stats.json'),
     jget('/ticket-stats', 'ticket_stats.json'),
     jget('/daily_trend.json', 'daily_trend.json'),
@@ -3222,11 +3227,13 @@ async function load() {
     jget('forecast/daily_rate.json'),
     jget('online_schedule.json'),         // 在线班表（出勤名单 + 工时），供在线分时段预测/排餐
     jget('forecast/hh_fill.json'),        // 现场表补位（08:00–09:00 等实时报表不覆盖的时段）
-    jget('manual_halfhour.json')          // 400 分时段手工登记（本地点格填写，POST /api/manual-halfhour）
+    jget('manual_halfhour.json'),         // 400 分时段手工登记（本地点格填写，POST /api/manual-halfhour）
+    jget('schedule.json')                 // 400 班表（daily[date].dutyCount 当班人数）→ 分时段默认人数
   ]);
   D.cc = cc; D.tk = tk; D.tr = tr; D.plan = plan; D.hh = hh; D.hhon = hhon; D.tt = tt;
   D.shape = shape; D.hrate = hrate; D.drate = drate; D.osch = osch; D.fill = hfill;
   D.manual = (manual && typeof manual === 'object' && !Array.isArray(manual)) ? manual : {};
+  D.sch = (sch && typeof sch === 'object' && !Array.isArray(sch)) ? sch : null;   // 400 班表当班人数
   D.ready = true;
   applyLiveCorrection();             // 用看板实测系数把预测拉回实测水平
   updateTabs();
@@ -3265,10 +3272,9 @@ $('#fc400t').addEventListener('click', e => {
   const tr = e.target.closest('tr[data-day]');
   if (!tr) return;
   PICK_DAY = tr.dataset.day;
-  HM_DAY = PICK_DAY;
   render400fc(D.plan);
 });
-/* 400 分时段数据监控：点格填写（失焦 / 回车保存、Esc 清空回退现场表值）+ 翻日 */
+/* 400 分时段数据监控：点格填写（失焦 / 回车保存、Esc 清空回默认）+ 日期式切片 */
 (function () {
   const root = $('#halfMon');
   if (!root) return;
@@ -3278,10 +3284,12 @@ $('#fc400t').addEventListener('click', e => {
     if (e.key === 'Enter') { e.preventDefault(); i.blur(); }
     else if (e.key === 'Escape') { i.value = ''; i.blur(); }
   });
+  root.addEventListener('toggle', e => { if (e.target.classList && e.target.classList.contains('hmcalf')) HM_CALOPEN = !!e.target.open; }, true);
   root.addEventListener('click', e => {
-    const b = e.target.closest('.hmnav'); if (!b) return;
-    if (b.dataset.today) { HM_DAY = todayCn(); renderHalfMon(); return; }
-    shiftHmDay(+b.dataset.step || 0);
+    const mt = e.target.closest('.calmt');
+    if (mt) { CAL_MON['hm'] = mt.dataset.m; paintHalfMon(document.getElementById('halfMon'), HM_DAY); return; }
+    const b = e.target.closest('.cald[data-day]');
+    if (b) { CAL_MON['hm'] = b.dataset.day.slice(0, 7); hmGo(b.dataset.day); }
   });
 })();
 /* 在线逐日切片同款联动 */
