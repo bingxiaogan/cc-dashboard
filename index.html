@@ -601,7 +601,7 @@ svg{display:block;width:100%;overflow:visible}
       <div class="bseg" data-seg="400" role="tablist" aria-label="400 数据切片">
         <button class="sg on" data-view="live" role="tab" aria-selected="true">实时数据及预测</button>
         <button class="sg" data-view="d30" role="tab" aria-selected="false">30 天数据及预测</button>
-        <button class="sg" data-view="hm" role="tab" aria-selected="false">400 分时段数据监控</button>
+        <button class="sg" data-view="hm" role="tab" aria-selected="false">日维度时段预测及现场调控</button>
       </div>
       <div class="bseg" data-seg="online" role="tablist" aria-label="在线数据切片">
         <button class="sg on" data-view="live" role="tab" aria-selected="true">实时数据及预测</button>
@@ -657,7 +657,7 @@ svg{display:block;width:100%;overflow:visible}
       <!-- 日维度区（2026-09-24 定：**日维度」留实时页** —— 逐日切片 + 该日每半小时人力/餐点，是每天的操作用；
            多日（月维度）的「每日进线量与所需人力」表放回 30 天切片，见下方 d30 -->
       <div class="zone">
-        <div class="zonetag fc"><i></i>日维度预测 <span>该日每半小时转人工 → 所需 / 排班 / 实到（可逐日切片）</span>
+        <div class="zonetag fc"><i></i>日维度预测 <span>该日总览（订单 / 进线 / 人力 / 负荷）· 可逐日切片</span>
           <details class="fold zfold" id="calFold400">
             <summary>
               <span class="ft">逐日切片 · 选日期</span>
@@ -672,8 +672,8 @@ svg{display:block;width:100%;overflow:visible}
         <div class="panels">
           <div class="panel wide">
             <div class="phead">
-              <h3>该日时段预测 · 人力安排</h3>
-              <span class="hint">每半小时人工进线量 · 所需 / 排班 / 实到 / 差额 / 餐点（共 26 段）· 餐点安排见「400 分时段数据监控」页</span>
+              <h3>该日总览</h3>
+              <span class="hint">订单 / 进线 / 人力 / 负荷 · 每半小时的预测与现场调控见「日维度时段预测及现场调控」页</span>
             </div>
             <div class="dstats" id="dayDetail"></div>
           </div>
@@ -723,17 +723,18 @@ svg{display:block;width:100%;overflow:visible}
       </div>
     </div>
 
-    <!-- 切片 ③ 400 分时段数据监控（2026-10-09 用户定：从「实时数据及预测」里独立出来，
-         排在 30 天切片之后）。对标飞书《【爱分类】现场调控》「2026年客服分时段数据监控」，
-         26 段 × 15 列：灰底 = 自动采集，白底 = 可点格填写（存本地 manual_halfhour.json）。
-         ⚠️ 填写只在本地 8601 生效，公网为只读快照。 -->
+    <!-- 切片 ③ 日维度时段预测及现场调控（2026-10-09 用户定）：
+         原「400 分时段数据监控」表 + 实时页「该日分时段预测」表**合成一张**——两张表的行
+         都是 26 个半小时时段（08:00–21:00），故按行合并；18 列 = 实况 5 + 预测（转人工/所需）2
+         + 人力 6（排班/实际/差额/用餐/支援/放休）+ 负荷 2 + 长通话 + 备注。
+         灰底 = 自动采集 / 公式计算，白底 = 可点格填写（manual_halfhour.json；本地走 8601，公网走 GitHub 直写）。 -->
     <div class="view" data-view="hm">
       <div class="zone">
-        <div class="zonetag fc"><i></i>分时段数据监控 <span>26 段 × 15 列 · 对齐飞书《现场调控》· 人数默认取 400 班表，可逐段改（本地 8601）</span></div>
+        <div class="zonetag fc"><i></i>日维度时段预测及现场调控 <span>26 段 × 18 列 · 预测（转人工 / 所需）与现场调控（实况 / 人力 / 负荷）合一张表 · 数据可点格填</span></div>
         <div class="panels">
           <div class="panel wide">
             <div class="phead">
-              <h3>400 分时段数据监控</h3>
+              <h3>日维度时段预测及现场调控</h3>
               <div class="lgd">
                 <span><em class="sg-au"></em>自动采集</span>
                 <span><em class="sg-mn"></em>可填写</span>
@@ -2058,100 +2059,14 @@ function renderDayDetail() {
     ['人力差额', est ? '–' : gapTxt, est ? '需班表才能算差额' : '当班 ' + n1(d.onshift_ph) + ' 人时 · 需求 ' + n1(d.need_ph) + ' 人时'],
     ['当日负荷', n0(d.ratio) + '%', d.ratio >= 110 ? '超负荷' : (d.ratio < 90 ? '偏松' : '正常')]
   ];
-  /* 该日分时段人力：所需 = 预测人工进线量 ÷（产能 × 0.5h）· 排班取班表 · 餐点取现场调控表 */
-  const keys = slotShortKeys();
-  const hh = hhPredOf(d.date);
-  const ss = (D.plan && D.plan.staff_slots) || {};
-  const sched = (ss.schedule || {})[d.date] || {};
-  const sheetDay = (ss.sheet || {})[d.date] || {};
-  const sl = ((D.drate || {}).slots || {})[d.date] || {};
-  const capH = (D.plan && D.plan.cap_per_hour) || 11.81;
-  /* ① 先把 26 段的「预测转人工 / 所需人力 / 排班人数」铺平 —— 餐点排餐与表格共用同一份口径 */
-  const fulls = keys.map(slotFullKey);
-  const pvArr = [], needArr = [], staffArr = [];
-  keys.forEach((k, i) => {
-    const pv = hh ? hh[i] : null;
-    pvArr[i] = pv;
-    needArr[i] = hcn(pv == null ? null : pv / (capH * 0.5));   // 所需人力：进位
-    let st = null;
-    if (!est) {                                                // HR 班表未出 → 实际排班留空，不用估算值顶
-      st = sched[fulls[i]] != null ? sched[fulls[i]] : (sheetDay[fulls[i]] != null ? sheetDay[fulls[i]] : null);
-      if (st == null && sl[fulls[i]] && sl[fulls[i]].staff != null) st = sl[fulls[i]].staff;
-      st = hcn(st);                                            // 排班人数：进位
-    }
-    staffArr[i] = st;
-  });
-
-  /* ② 餐点：大卡片已移到「400 分时段数据监控」页（2026-10-09 用户定）；
-     这里只保留表格「餐点安排」列，口径与那边同一份（mealBaseOf）。 */
-  const mp = mealBaseOf(PICK_DAY).mp;
-  const mealAt = {};      // 完整时段键 → { n, who, win }
-  if (mp) MEAL_WINS.forEach(w => {
-    const g = mp[w.key];
-    g.slots.forEach(s => {
-      const who = g.map[s] || [];
-      if (who.length) mealAt[s] = { n: who.length, who, win: w.name };
-    });
-  });
-
-  const rows = keys.map((k, i) => {
-    const full = fulls[i];
-    const pv = pvArr[i], need = needArr[i], staff = staffArr[i];
-    const c = sl[full] || {};
-    const mm = mealAt[full];
-    const mNow = mm ? mm.n : 0;
-    const avail = staff == null ? null : Math.max(0, staff - mNow);      // 实到 = 在岗 − 用餐
-    const gap = (need != null && avail != null) ? avail - need : null;   // 差额 = 实到 − 所需
-    const noMealGap = (need != null && staff != null) ? staff - need : null;
-    const cells = [];
-    if (mm) cells.push('用餐' + mm.n + '人：' + mm.who.join('、'));
-    if (c.off) cells.push('放休 ' + c.off + ' 人');
-    const gp = gap == null ? '<span class="pill b">–</span>'
-      : gap < 0 ? `<span class="pill r">${gap}</span>`
-        : gap > 0 ? `<span class="pill g">+${gap}</span>` : '<span class="pill b">0</span>';
-    /* 不扣餐不缺、扣了才缺 → 缺口是吃出来的，优先错峰 / 时段内抽调，不必增编 */
-    const byMeal = (gap != null && gap < 0 && noMealGap != null && noMealGap >= 0)
-      ? ' <i class="mnote">用餐所致</i>' : '';
-    return `<tr><td class="v">${k}</td><td>${pv == null ? '–' : n0(pv)}</td><td class="v">${need == null ? '–' : need}</td>
-      <td>${staff == null ? '–' : staff}</td><td>${avail == null ? '–' : avail}</td><td>${gp}${byMeal}</td>
-      <td>${cells.length ? cells.join(' · ') : '–'}</td></tr>`;
-  }).join('');
-
-  /* 餐点大卡片已移到「400 分时段数据监控」页（2026-10-09 用户定）——
-     本页只保留下面表格里的「餐点安排」列（数据同一份，由 mealBaseOf 提供）。 */
+  /* 该日每半小时「预测 / 所需 / 排班 / 实到 / 差额 / 餐点」表已并入
+     「日维度时段预测及现场调控」页（2026-10-09 用户定）—— 此处只留日总览卡片。
+     合并口径见 paintHalfMon()：差额 = 实际人数 − 所需人力。 */
 
   box.innerHTML =
     `<div class="dhead"><b>${d.date}</b><span>${d.wd}</span>${d.date === today ? '<span class="pill b">今天</span>' : ''}
        <span style="margin-left:auto;font-size:11px;color:var(--tx3)">${esc(d.staff_src || '')} · 排班形状 ${esc(d.staff_shape || '–')}${est ? ' · <span style="color:var(--amber)">HR 班表未出，实际人力待排</span>' : ''}</span></div>
-     <div class="dgrid">${stats.map(s => `<div class="dstat"><div class="dk">${s[0]}</div><div class="dv">${s[1]}</div><div class="ds">${s[2]}</div></div>`).join('')}</div>
-     <details class="fold" id="dayFold">
-       <summary>
-         <span class="ft">该日分时段预测</span>
-         <span class="fh">每半小时人工进线量 + 人力安排（所需 / 排班 / 实到 / 差额 / 餐点）· 共 ${keys.length} 段</span>
-         <span class="fchev"></span>
-       </summary>
-       <div class="fbody">
-         <div class="subhead">该日每半小时预测人工进线量 <span>预测人工进线量 × 时段形状占比</span></div>
-         <div id="chDayHh"></div>
-         <div class="subhead">该日分时段人力安排 <span>所需 = 预测转人工 ÷ 产能 ${n1(capH)} 通/人时 × 0.5h · 人力一律向上取整 · 差额 = 实到 − 所需，实到 = 在岗 − 用餐${est ? ' · 班表未出，「排班人数 / 实到 / 差额 / 餐点」留空' : ''}</span></div>
-         <div class="tblwrap"><table class="tbl"><thead><tr>
-           <th>时段</th><th>预测转人工</th><th>所需人力</th><th>排班人数</th><th>实到</th><th>差额</th><th>餐点安排</th>
-         </tr></thead><tbody>${rows}</tbody></table></div>
-       </div>
-     </details>`;
-  /* ⚠️ 折叠状态下容器宽度为 0，SVG 会按 0 宽画歪 —— 所以展开时才绘制（2026-09-23 改折叠） */
-  const fold = $('#dayFold');
-  const drawDayHh = () => {
-    const el2 = $('#chDayHh');
-    if (!el2) return;
-    if (!hh) { el2.innerHTML = '<div class="empty">缺时段形状（400_shape.json）或该日预测</div>'; return; }
-    drawBar(el2, {
-      labels: keys, data: hh, h: 158, color: 'rgba(251,191,36,.6)', tipFmt: v => n0(v) + ' 通',
-      showVals: true, valFmt: v => n0(v)
-    });
-  };
-  fold.addEventListener('toggle', () => { if (fold.open) drawDayHh(); });
-  if (fold.open) drawDayHh();
+     <div class="dgrid">${stats.map(s => `<div class="dstat"><div class="dk">${s[0]}</div><div class="dv">${s[1]}</div><div class="ds">${s[2]}</div></div>`).join('')}</div>`;
 }
 
 /* ══════════════════ 400 分时段数据监控（独立切片 · 本地登记表）══════════════════
