@@ -2088,8 +2088,9 @@ function renderDayDetail() {
    2026-10-09 用户定：从「实时数据及预测」里独立成第三个切片，排在「30 天数据及预测」之后。
    · 自动列（呼入 / 接通 / IVR / 转人工 / 接通率）：当日取 7x24cc 实时（call_halfhour.json，
      与现场表逐格一致），历史取现场表（forecast/400_halfhour.json，日链每日拉取）。
-   · 排班人数 / 实际人数：**默认取 400 班表当班人数**（schedule.json → daily[date].dutyCount，
+   · 排班人数 / 实际人数：**默认取 400 班表当班人数**（schedule.json → agents 里 400 组当日有班人数，
      两列默认相等），可逐段手工覆盖；该日无班表时回落现场表原值。
+     ⚠️ 不能用 daily[date].dutyCount —— 那是 400 + 在线 合计（10/9 = 11 人，实际 400 组 8 人）。
    · 长通话数量 / 用餐 / 支援辅导 / 放休请假：本地点格手填，无填写时回落现场表原值。
    · 备注：纯手工自由文本（存同一份 manual_halfhour.json）。
    · 运能负荷为公式列，随人数实时重算 —— 基数 6.14 通/人/半小时（用户 2026-10-09 定）：
@@ -2133,8 +2134,16 @@ function hmAutoVals(date, label) {
   const rate = (turn != null && +turn > 0 && ans != null) ? (+ans / +turn) : (site ? site['接通率'] : null);
   return { '呼入量': total, '接通量': ans, 'IVR接通量': ivr, '转人工量': turn, '接通率': rate };
 }
-/* 400 班表当班人数（schedule.json → daily[date].dutyCount）——分时段默认人数 */
+/* 400 班表当班人数 —— 分时段默认人数
+   🔴 必须按「400 组」筛（agents[].group 含 '400' 且当日非「休」），**不能用 daily[date].dutyCount**：
+   后者是 400 + 在线 的合计（2026-10-09 dutyCount=11 = 400 组 8 人 + 在线 3 人，用户已指出）。 */
 function hmSchCount(date) {
+  const ag = (D.sch && Array.isArray(D.sch.agents)) ? D.sch.agents : null;
+  if (ag) {
+    const n = ag.filter(a => /400/.test(a.group || '')
+      && a.shifts && a.shifts[date] != null && a.shifts[date] !== '' && a.shifts[date] !== '休').length;
+    if (n > 0) return n;
+  }
   const d = (D.sch && D.sch.daily && D.sch.daily[date]) || null;
   const n = d ? +d.dutyCount : NaN;
   return (isFinite(n) && n > 0) ? n : null;
@@ -3215,7 +3224,7 @@ async function load() {
     jget('online_schedule.json'),         // 在线班表（出勤名单 + 工时），供在线分时段预测/排餐
     jget('forecast/hh_fill.json'),        // 现场表补位（08:00–09:00 等实时报表不覆盖的时段）
     jget('manual_halfhour.json'),         // 400 分时段手工登记（本地点格填写，POST /api/manual-halfhour）
-    jget('schedule.json')                 // 400 班表（daily[date].dutyCount 当班人数）→ 分时段默认人数
+    jget('schedule.json')                 // 400 班表（agents 里 400 组当日有班人数）→ 分时段默认人数
   ]);
   D.cc = cc; D.tk = tk; D.tr = tr; D.plan = plan; D.hh = hh; D.hhon = hhon; D.tt = tt;
   D.shape = shape; D.hrate = hrate; D.drate = drate; D.osch = osch; D.fill = hfill;
