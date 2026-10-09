@@ -574,6 +574,7 @@ svg{display:block;width:100%;overflow:visible}
       <div class="bseg" data-seg="400" role="tablist" aria-label="400 数据切片">
         <button class="sg on" data-view="live" role="tab" aria-selected="true">实时数据及预测</button>
         <button class="sg" data-view="d30" role="tab" aria-selected="false">30 天数据及预测</button>
+        <button class="sg" data-view="hm" role="tab" aria-selected="false">400 分时段数据监控</button>
       </div>
       <div class="bseg" data-seg="online" role="tablist" aria-label="在线数据切片">
         <button class="sg on" data-view="live" role="tab" aria-selected="true">实时数据及预测</button>
@@ -706,6 +707,30 @@ svg{display:block;width:100%;overflow:visible}
               <span class="hint" id="note400fc"></span>
             </div>
             <div id="fc400t"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 切片 ③ 400 分时段数据监控（2026-10-09 用户定：从「实时数据及预测」里独立出来，
+         排在 30 天切片之后）。对标飞书《【爱分类】现场调控》「2026年客服分时段数据监控」，
+         26 段 × 15 列：灰底 = 自动采集，白底 = 可点格填写（存本地 manual_halfhour.json）。
+         ⚠️ 填写只在本地 8601 生效，公网为只读快照。 -->
+    <div class="view" data-view="hm">
+      <div class="zone">
+        <div class="zonetag fc"><i></i>分时段数据监控 <span>26 段 × 15 列 · 对齐飞书《现场调控》· 人数默认取 400 班表，可逐段改（本地 8601）</span></div>
+        <div class="panels">
+          <div class="panel wide">
+            <div class="phead">
+              <h3>400 分时段数据监控</h3>
+              <div class="lgd">
+                <span><em class="sg-au"></em>自动采集</span>
+                <span><em class="sg-mn"></em>可填写</span>
+                <span><em class="sg-ed"></em>看板已填</span>
+              </div>
+              <span class="hint" id="hmNote"></span>
+            </div>
+            <div id="halfMon"></div>
           </div>
         </div>
       </div>
@@ -2064,15 +2089,18 @@ function renderDayDetail() {
   if (fold.open) drawDayHh();
 }
 
-/* ══════════════════ 400 分时段数据监控（本地登记表）══════════════════
-   对标飞书《【爱分类】现场调控》「2026年客服分时段数据监控」：26 段 × 14 列（2026-10-09 加）。
+/* ══════════════════ 400 分时段数据监控（独立切片 · 本地登记表）══════════════════
+   对标飞书《【爱分类】现场调控》「2026年客服分时段数据监控」：26 段 × 15 列。
+   2026-10-09 用户定：从「实时数据及预测」里独立成第三个切片，排在「30 天数据及预测」之后。
    · 自动列（呼入 / 接通 / IVR / 转人工 / 接通率）：当日取 7x24cc 实时（call_halfhour.json，
      与现场表逐格一致），历史取现场表（forecast/400_halfhour.json，日链每日拉取）。
-   · 手工列（长通话数量 / 排班人数 / 实际人数 / 用餐 / 支援辅导 / 放休请假）：本地点格手填，
-     存 manual_halfhour.json（POST /api/manual-halfhour）；有看板值优先，否则回落显示现场表原值。
-   · 运能负荷为公式列，随手工填的人数实时重算 —— 基数由现场表历史反推（10/8、10/9 全表吻合）：
-       排班运能负荷 = 转人工量 ÷（排班人数 × 6.5）
-       实际运能负荷 = 接通量   ÷（实际人数 × 7）
+   · 排班人数 / 实际人数：**默认取 400 班表当班人数**（schedule.json → daily[date].dutyCount，
+     两列默认相等），可逐段手工覆盖；该日无班表时回落现场表原值。
+   · 长通话数量 / 用餐 / 支援辅导 / 放休请假：本地点格手填，无填写时回落现场表原值。
+   · 备注：纯手工自由文本（存同一份 manual_halfhour.json）。
+   · 运能负荷为公式列，随人数实时重算 —— 基数 6.14 通/人/半小时（用户 2026-10-09 定）：
+       排班运能负荷 = 转人工量 ÷（排班人数 × 6.14）
+       实际运能负荷 = 接通量   ÷（实际人数 × 6.14）
    ⚠️ 填写只在本地 8601 生效（公网是静态快照，只读）。 */
 const pd2 = n => String(n).padStart(2, '0');
 const HM_LABELS = (() => {
@@ -2082,11 +2110,12 @@ const HM_LABELS = (() => {
   return out;
 })();
 const HM_MANCOLS = ['长通话数量', '排班人数', '实际人数', '用餐', '支援辅导', '放休请假'];
+const HM_DEFCOLS = ['排班人数', '实际人数'];   // 默认人数：取 400 班表当班人数（两列默认相等）
 const HM_AUTOCOLS = ['呼入量', '接通量', 'IVR接通量', '转人工量', '接通率'];
-const HM_CAP_SCHED = 6.5;   // 排班口径：每人每半小时运能（=13 通/h）
-const HM_CAP_ACT = 7;       // 实际口径：每人每半小时运能（=14 通/h）
+const HM_NOTE = '备注';
+const HM_CAP = 6.14;        // 运能基数：每人每半小时 6.14 通（2026-10-09 用户定，两口径同基数）
 const hmDOW = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
-let HM_DAY = null, HM_LOADING = false;
+let HM_DAY = null, HM_LOADING = false, HM_CALOPEN = true;
 
 function hmSheetDay(date) { const d = D.hhSheet && D.hhSheet[date]; return Array.isArray(d) ? d : null; }
 function hmSiteRow(date, label) { const day = hmSheetDay(date); return day ? (day.find(x => x && x['时段'] === label) || null) : null; }
@@ -2110,14 +2139,25 @@ function hmAutoVals(date, label) {
   const rate = (turn != null && +turn > 0 && ans != null) ? (+ans / +turn) : (site ? site['接通率'] : null);
   return { '呼入量': total, '接通量': ans, 'IVR接通量': ivr, '转人工量': turn, '接通率': rate };
 }
+/* 400 班表当班人数（schedule.json → daily[date].dutyCount）——分时段默认人数 */
+function hmSchCount(date) {
+  const d = (D.sch && D.sch.daily && D.sch.daily[date]) || null;
+  const n = d ? +d.dutyCount : NaN;
+  return (isFinite(n) && n > 0) ? n : null;
+}
 function hmManVals(date, label) {
   const site = hmSiteRow(date, label) || {};
   const own = (D.manual && D.manual[date] && D.manual[date][label]) || {};
+  const schN = hmSchCount(date);
   const out = {};
   HM_MANCOLS.forEach(k => {
     const o = own[k];
-    out[k] = (o != null && o !== '') ? { v: o, own: 1 } : ((site[k] != null) ? { v: site[k], own: 0 } : { v: null, own: 0 });
+    if (o != null && o !== '') { out[k] = { v: o, own: 1, src: '看板已填' }; return; }
+    if (HM_DEFCOLS.indexOf(k) >= 0 && schN != null) { out[k] = { v: schN, own: 0, src: '班表默认' }; return; }
+    out[k] = (site[k] != null && site[k] !== '') ? { v: site[k], own: 0, src: '现场表' } : { v: null, own: 0, src: '' };
   });
+  const ob = own[HM_NOTE];
+  out[HM_NOTE] = (ob != null && ob !== '') ? { v: ob, own: 1, src: '看板已填' } : { v: null, own: 0, src: '' };
   return out;
 }
 function hmFmtPct(v) { return (v == null || v === '' || isNaN(v)) ? '–' : (+v * 100).toFixed(2) + '%'; }
@@ -2133,14 +2173,7 @@ function ensureHhSheet(cb) {
   });
 }
 function hmDates() { return Object.keys(D.hhSheet || {}).sort(); }   // 升序
-function shiftHmDay(step) {
-  const ds = hmDates();
-  if (!ds.length) return;
-  let i = ds.indexOf(HM_DAY);
-  if (i < 0) { HM_DAY = ds[ds.length - 1]; i = ds.length - 1; }
-  HM_DAY = ds[Math.min(ds.length - 1, Math.max(0, i + step))];
-  renderHalfMon();
-}
+function hmGo(date) { HM_DAY = date; paintHalfMon(document.getElementById('halfMon'), date); }
 
 function renderHalfMon() {
   const box = $('#halfMon');
@@ -2157,19 +2190,23 @@ function paintHalfMon(box, date) {
   if (ds.length && ds.indexOf(date) < 0) date = HM_DAY = ds[ds.length - 1];
   const d = new Date(date + 'T00:00:00');
   const wd = isNaN(d.getTime()) ? '' : hmDOW[d.getDay()];
+  const today = todayCn();
+  const schN = hmSchCount(date);
   const nt = $('#hmNote');
-  if (nt) nt.textContent = '对齐飞书《现场调控》同表 · 26 段 × 14 列';
+  if (nt) nt.textContent = '26 段 × 15 列 · 人数默认取 400 班表'
+    + (schN != null ? '（当班 ' + schN + ' 人）' : '（该日无班表，人数留空）')
+    + ' · 运能基数 ' + HM_CAP + ' 通/人/半小时';
 
   const auto = {}, man = {};
   HM_LABELS.forEach(l => { auto[l] = hmAutoVals(date, l); man[l] = hmManVals(date, l); });
-  const schLoad = l => { const t = auto[l]['转人工量'], p = man[l]['排班人数'].v; return (t == null || p == null || +p <= 0) ? null : (+t / (+p * HM_CAP_SCHED)); };
-  const actLoad = l => { const a = auto[l]['接通量'], p = man[l]['实际人数'].v; return (a == null || p == null || +p <= 0) ? null : (+a / (+p * HM_CAP_ACT)); };
+  const schLoad = l => { const t = auto[l]['转人工量'], p = man[l]['排班人数'].v; return (t == null || p == null || +p <= 0) ? null : (+t / (+p * HM_CAP)); };
+  const actLoad = l => { const a = auto[l]['接通量'], p = man[l]['实际人数'].v; return (a == null || p == null || +p <= 0) ? null : (+a / (+p * HM_CAP)); };
 
   let sumTurn = 0, sumAns = 0, nFill = 0, nRow = 0;
   const trs = HM_LABELS.map(label => {
     const a = auto[label], m = man[label];
     sumTurn += (+a['转人工量'] || 0); sumAns += (+a['接通量'] || 0);
-    const filled = HM_MANCOLS.some(k => m[k].own); if (filled) nFill++;
+    if (HM_MANCOLS.some(k => m[k].own) || m[HM_NOTE].own) nFill++;
     if (a['转人工量'] != null || HM_MANCOLS.some(k => m[k].v != null)) nRow++;
     const tds = ['<td class="v">' + label + '</td>'];
     HM_AUTOCOLS.forEach(k => {
@@ -2177,40 +2214,49 @@ function paintHalfMon(box, date) {
     });
     HM_MANCOLS.forEach(k => {
       const c = m[k];
-      tds.push('<td class="hmc' + (c.own ? ' on' : '') + '" title="' + (c.own ? '看板已填' : (c.v != null ? '来自现场表，可直接覆盖' : '可填写')) + '">'
+      const tip = c.own ? '看板已填' : (c.v != null ? '默认取自' + c.src + '，可直接覆盖' : '可填写');
+      tds.push('<td class="hmc' + (c.own ? ' on' : '') + '" title="' + tip + '">'
         + '<input class="hmi" type="text" inputmode="numeric" data-d="' + date + '" data-s="' + label + '" data-c="' + k + '"'
         + ' value="' + (c.v == null ? '' : esc(String(c.v))) + '"></td>');
     });
     const sl = schLoad(label), al = actLoad(label);
     tds.push('<td class="hma' + (sl != null && sl > 1 ? ' hmlow' : '') + '">' + hmFmtPct(sl) + '</td>');
     tds.push('<td class="hma' + (al != null && al > 1 ? ' hmlow' : '') + '">' + hmFmtPct(al) + '</td>');
+    const nb = m[HM_NOTE];
+    tds.push('<td class="hmc hmtx' + (nb.own ? ' on' : '') + '">'
+      + '<input class="hmi hmtxt" type="text" data-d="' + date + '" data-s="' + label + '" data-c="' + HM_NOTE + '"'
+      + ' placeholder="备注" value="' + (nb.v == null ? '' : esc(String(nb.v))) + '"></td>');
     return '<tr>' + tds.join('') + '</tr>';
   }).join('');
 
   const avgRate = sumTurn > 0 ? sumAns / sumTurn : null;
-  const today = todayCn();
+  const calDays = (ds.length ? ds : [today]).map(x => ({ date: x }));
   box.innerHTML =
-    '<div class="hmbar">'
-    + '<button class="hmnav" data-step="-1"' + (ds.length && ds.indexOf(date) <= 0 ? ' disabled' : '') + '>‹ 前一天</button>'
+    '<details class="fold zfold hmcalf"' + (HM_CALOPEN ? ' open' : '') + '>'
+    + '<summary><span class="ft">切片日期</span><span class="fh">' + date + ' ' + wd + (date === today ? ' · 今天' : '') + '</span><span class="fchev"></span></summary>'
+    + '<div class="fbody"><div id="hmCal"></div></div>'
+    + '</details>'
+    + '<div class="hmbar">'
     + '<span class="hmday">' + date + ' ' + wd + (date === today ? ' · 今天' : '') + '</span>'
-    + '<button class="hmnav" data-step="1"' + (ds.length && ds.indexOf(date) >= ds.length - 1 ? ' disabled' : '') + '>后一天 ›</button>'
-    + '<button class="hmnav" data-today="1">回到今天</button>'
     + '<span class="hmstat" id="hmStat"></span>'
     + '</div>'
     + '<div class="tblwrap"><table class="tbl hmtbl"><thead><tr>'
     + '<th>时间段</th>' + HM_AUTOCOLS.map(k => '<th>' + k + '</th>').join('')
     + HM_MANCOLS.map(k => '<th>' + k + '</th>').join('')
-    + '<th>排班运能负荷</th><th>实际运能负荷</th>'
+    + '<th>排班运能负荷</th><th>实际运能负荷</th><th>备注</th>'
     + '</tr></thead><tbody>' + trs + '</tbody></table></div>'
     + '<div class="hmfoot">'
     + '<span>转人工合计 <b>' + hmFmtInt(sumTurn) + '</b> 通</span>'
     + '<span>接通合计 <b>' + hmFmtInt(sumAns) + '</b> 通</span>'
     + '<span>整体接通率 <b>' + hmFmtPct(avgRate) + '</b></span>'
-    + '<span>手工列已填 <b>' + nFill + '</b> 段</span>'
-    + '<span>可填列：长通话 / 排班 / 实际 / 用餐 / 支援辅导 / 放休请假</span>'
+    + '<span>已填 <b>' + nFill + '</b> 段</span>'
+    + '<span>运能基数 ' + HM_CAP + ' 通/人/半小时 · 负荷 &gt;100% 标黄</span>'
     + '</div>'
     + (window.location.hostname.indexOf('127.0.0.1') < 0 && window.location.hostname !== 'localhost'
       ? '<div class="hmwarn">当前是公网只读快照 —— 手工填写请在本地 http://127.0.0.1:8601/ 打开看板。</div>' : '');
+
+  const calBox = document.getElementById('hmCal');
+  if (calBox) calBox.innerHTML = calHtml(calDays, date, today, null, null, 'hm');
 }
 
 let HM_SAVING = false;
