@@ -1,6 +1,6 @@
 {
- "ts": 1791560900180,
- "collectedAtCn": "2026/10/9 23:48:20",
+ "ts": 1791561135900,
+ "collectedAtCn": "2026/10/9 23:52:15",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "2",
@@ -8,7 +8,7 @@
   "接通率": "22.18%",
   "满意率": "100.00%",
   "呼入总数": "13621",
-  "当前呼入数": "1",
+  "当前呼入数": "0",
   "外呼总数": "6104",
   "当前外呼数": "0",
   "呼入平均通话时长": "00:02:32",
@@ -911,7 +911,7 @@
     "assigned": 248,
     "current": 11,
     "max": 30,
-    "queue": 0,
+    "queue": 1,
     "onlineSeats": "1(刘梓爱)",
     "done": 237,
     "answerRate": 87.02,
@@ -939,7 +939,7 @@
     "assigned": 1449,
     "current": 32,
     "max": 30,
-    "queue": 5,
+    "queue": 8,
     "onlineSeats": "1(刘梓爱)",
     "done": 1368,
     "answerRate": 95.71,
@@ -1061,13 +1061,13 @@
    },
    {
     "name": "官网严选自营售前咨询",
-    "sessions": 589,
-    "assigned": 563,
+    "sessions": 590,
+    "assigned": 564,
     "current": 10,
     "max": 30,
-    "queue": 4,
+    "queue": 3,
     "onlineSeats": "1(刘梓爱)",
-    "done": 533,
+    "done": 534,
     "answerRate": 95.59,
     "abandon": 26,
     "voicemail": 0,
@@ -1297,15 +1297,6 @@
   "rate400": 86.5
  },
  "history": [
-  {
-   "ts": 1791459835013,
-   "skillRate400": 70.02,
-   "skillQueue400": 4,
-   "callIn400": 1441,
-   "signIn400": 12,
-   "onlineSessions": 817,
-   "onlineSeat": 3
-  },
   {
    "ts": 1791459942539,
    "skillRate400": 70.22,
@@ -5790,6 +5781,15 @@
   },
   {
    "ts": 1791560900180,
+   "skillRate400": null,
+   "skillQueue400": 0,
+   "callIn400": 0,
+   "signIn400": 0,
+   "onlineSessions": 815,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1791561135900,
    "skillRate400": null,
    "skillQueue400": 0,
    "callIn400": 0,
