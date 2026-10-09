@@ -1,11 +1,11 @@
 {
  "date": "2026-10-09",
- "collectedAtCn": "2026/10/9 12:36:08",
- "updatedTs": 1791520568416,
+ "collectedAtCn": "2026/10/9 12:48:13",
+ "updatedTs": 1791521293138,
  "sum": {
-  "total": 608,
-  "answered": 302,
-  "ivr": 275
+  "total": 676,
+  "answered": 341,
+  "ivr": 300
  },
  "slots": [
   {
@@ -71,6 +71,17 @@
    "queueAbandon": 5,
    "ringMissed": 0,
    "ans20": 43,
+   "blacklist": 0,
+   "voicemail": 0
+  },
+  {
+   "t": "2026-10-09 12:00:00",
+   "total": 68,
+   "answered": 39,
+   "ivr": 25,
+   "queueAbandon": 4,
+   "ringMissed": 0,
+   "ans20": 39,
    "blacklist": 0,
    "voicemail": 0
   }
