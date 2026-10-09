@@ -672,8 +672,8 @@ svg{display:block;width:100%;overflow:visible}
         <div class="panels">
           <div class="panel wide">
             <div class="phead">
-              <h3>该日时段预测 · 人力与餐点安排</h3>
-              <span class="hint">每半小时人工进线量 · 所需 / 排班 / 实到 / 差额 / 餐点（共 26 段）</span>
+              <h3>该日时段预测 · 人力安排</h3>
+              <span class="hint">每半小时人工进线量 · 所需 / 排班 / 实到 / 差额 / 餐点（共 26 段）· 餐点安排见「400 分时段数据监控」页</span>
             </div>
             <div class="dstats" id="dayDetail"></div>
           </div>
@@ -1953,6 +1953,68 @@ function mealApplyManual(date, mp) {
   });
   return mp;
 }
+/* 某日的排餐基础盘：班表状态 / 出勤名单 / 各段权重（与「该日明细」同口径，供餐点卡片共用） */
+function mealBaseOf(date) {
+  const d = ((D.plan && D.plan.days) || []).find(x => x.date === date);
+  if (!d) return { est: true, roster: [], mp: null };
+  const est = !!d.staff_est;
+  const keys = slotShortKeys();
+  const hh = hhPredOf(d.date);
+  const ss = (D.plan && D.plan.staff_slots) || {};
+  const sched = (ss.schedule || {})[d.date] || {};
+  const sheetDay = (ss.sheet || {})[d.date] || {};
+  const sl = ((D.drate || {}).slots || {})[d.date] || {};
+  const capH = (D.plan && D.plan.cap_per_hour) || 11.81;
+  const baseW = {};
+  keys.map(slotFullKey).forEach((full, i) => {
+    const pv = hh ? hh[i] : null;
+    const need = hcn(pv == null ? null : pv / (capH * 0.5));
+    let st = null;
+    if (!est) {
+      st = (sched[full] != null) ? sched[full] : (sheetDay[full] != null ? sheetDay[full] : null);
+      if (st == null && sl[full] && sl[full].staff != null) st = sl[full].staff;
+      st = hcn(st);
+    }
+    baseW[full] = MEAL_SLACK_FLOOR + Math.max(0, (st || 0) - (need || 0));
+  });
+  const roster = (d.names || []).filter(Boolean);
+  const mp = mealApplyManual(date, (est || !roster.length) ? null : mealPlanOfDay(roster, baseW));
+  return { est: est, roster: roster, mp: mp };
+}
+/* 餐点安排卡片（2026-10-09 用户定：放在「400 分时段数据监控」页，名单可点格改）
+   实时页表格的「餐点安排」列仍用同一份数据（mealBaseOf）。 */
+function mealCardHtml(date) {
+  const MB = mealBaseOf(date);
+  const est = MB.est, mp = MB.mp;
+  let body;
+  if (est) body = '<div class="mealwin"><em>HR 班表未出，餐点待排班确定后再排</em></div>';
+  else if (!mp) body = '<div class="mealwin"><em>该日无 400 在班名单，餐点待排</em></div>';
+  else {
+    const MRO = HM_CANWRITE() ? '' : ' readonly';
+    const grp = MEAL_WINS.map(w => {
+      const g = mp[w.key];
+      const tot = g.slots.reduce((a, s) => a + (g.map[s] || []).length, 0);
+      const seg = g.slots.filter(s => (g.map[s] || []).length).length;
+      const items = g.slots.map(s => {
+        const who = g.map[s] || [];
+        const on = (g._own && g._own[s]) ? ' on' : '';
+        return `<li><b>${s}</b>`
+          + `<input class="meali${on}${MRO ? ' hmlock' : ''}" type="text" data-d="${date}" data-s="餐点-${w.key}-${s}"`
+          + ` data-c="名单" data-kind="meal" placeholder="${who.length ? '' : '未排'}"${MRO} value="${esc(who.join('、'))}"></li>`;
+      }).join('');
+      return `<div class="mealgrp">
+          <div class="mealgh"><b>${w.name}</b><em>${g.from}–${g.to}</em><i>${tot} 人 · ${seg} 段</i></div>
+          <ul class="meallist">${items}</ul>
+        </div>`;
+    }).join('');
+    body = `<div class="mealgrid">${grp}</div>
+      <div class="mealnote">按各时段空闲度自动错峰排 —— <b>每段名单可直接点格改</b>（多人用「、」分隔，清空 = 恢复自动排餐），改后自动保存。</div>`;
+  }
+  return `<div class="mealbox">
+      <div class="mealttl">餐点安排<span>错峰排餐 · 尽量不影响接通${est ? ' · 班表未出，暂不可排' : ''}</span><span class="mealstat" id="mealStat"></span></div>
+      ${body}
+    </div>`;
+}
 
 /* ── 日维度预测切片：日历选日 + 单日明细 + 该日分时段预测（折叠） ── */
 let PICK_DAY = null;
@@ -2020,13 +2082,9 @@ function renderDayDetail() {
     staffArr[i] = st;
   });
 
-  /* ② 错峰排餐：权重 = 0.4 + max(0, 在岗 − 需求)，取自**不含用餐**的基础盘 */
-  const roster = (d.names || []).filter(Boolean);
-  const baseW = {};
-  keys.forEach((k, i) => {
-    baseW[fulls[i]] = MEAL_SLACK_FLOOR + Math.max(0, (staffArr[i] || 0) - (needArr[i] || 0));
-  });
-  const mp = mealApplyManual(PICK_DAY, (est || !roster.length) ? null : mealPlanOfDay(roster, baseW));
+  /* ② 餐点：大卡片已移到「400 分时段数据监控」页（2026-10-09 用户定）；
+     这里只保留表格「餐点安排」列，口径与那边同一份（mealBaseOf）。 */
+  const mp = mealBaseOf(PICK_DAY).mp;
   const mealAt = {};      // 完整时段键 → { n, who, win }
   if (mp) MEAL_WINS.forEach(w => {
     const g = mp[w.key];
@@ -2059,42 +2117,13 @@ function renderDayDetail() {
       <td>${cells.length ? cells.join(' · ') : '–'}</td></tr>`;
   }).join('');
 
-  /* 餐点安排：从「该日分时段预测」里拉出来、单独成块，放在它上面（2026-09-24 用户要求）——
-     折叠收起时也能一眼看到两餐各排多少人、铺在几段上。 */
-  let mealBox;
-  if (est) mealBox = '<div class="mealwin"><em>HR 班表未出，餐点待排班确定后再排</em></div>';
-  else if (!mp) mealBox = '<div class="mealwin"><em>该日无 400 在班名单，餐点待排</em></div>';
-  else {
-    const MRO = HM_CANWRITE() ? '' : ' readonly';   // 公网未配令牌 → 只读，点格引导启用
-    const grp = MEAL_WINS.map(w => {
-      const g = mp[w.key];
-      const tot = g.slots.reduce((a, s) => a + (g.map[s] || []).length, 0);
-      const seg = g.slots.filter(s => (g.map[s] || []).length).length;
-      const items = g.slots.map(s => {
-        const who = g.map[s] || [];
-        const on = (g._own && g._own[s]) ? ' on' : '';
-        return `<li><b>${s}</b>`
-          + `<input class="meali${on}${MRO ? ' hmlock' : ''}" type="text" data-d="${PICK_DAY}" data-s="餐点-${w.key}-${s}"`
-          + ` data-c="名单" data-kind="meal" placeholder="${who.length ? '' : '未排'}"${MRO} value="${esc(who.join('、'))}"></li>`;
-      }).join('');
-      return `<div class="mealgrp">
-          <div class="mealgh"><b>${w.name}</b><em>${g.from}–${g.to}</em><i>${tot} 人 · ${seg} 段</i></div>
-          <ul class="meallist">${items}</ul>
-        </div>`;
-    }).join('');
-    mealBox = `<div class="mealgrid">${grp}</div>
-      <div class="mealnote">按各时段空闲度自动错峰排 —— <b>每段名单可直接点格改</b>（多人用「、」分隔，清空 = 恢复自动排餐），改后自动保存。</div>`;
-  }
-  const mealCard = `<div class="mealbox">
-      <div class="mealttl">餐点安排<span>错峰排餐 · 尽量不影响接通${est ? ' · 班表未出，暂不可排' : ''}</span><span class="mealstat" id="mealStat"></span></div>
-      ${mealBox}
-    </div>`;
+  /* 餐点大卡片已移到「400 分时段数据监控」页（2026-10-09 用户定）——
+     本页只保留下面表格里的「餐点安排」列（数据同一份，由 mealBaseOf 提供）。 */
 
   box.innerHTML =
     `<div class="dhead"><b>${d.date}</b><span>${d.wd}</span>${d.date === today ? '<span class="pill b">今天</span>' : ''}
        <span style="margin-left:auto;font-size:11px;color:var(--tx3)">${esc(d.staff_src || '')} · 排班形状 ${esc(d.staff_shape || '–')}${est ? ' · <span style="color:var(--amber)">HR 班表未出，实际人力待排</span>' : ''}</span></div>
      <div class="dgrid">${stats.map(s => `<div class="dstat"><div class="dk">${s[0]}</div><div class="dv">${s[1]}</div><div class="ds">${s[2]}</div></div>`).join('')}</div>
-     ${mealCard}
      <details class="fold" id="dayFold">
        <summary>
          <span class="ft">该日分时段预测</span>
@@ -2332,6 +2361,7 @@ function paintHalfMon(box, date) {
         + (ghToken() ? '退出公网填写' : '启用公网填写') + '</button>')
     + '<span class="hmstat" id="hmStat"></span>'
     + '</div>'
+    + mealCardHtml(date)
     + '<div class="tblwrap"><table class="tbl hmtbl"><thead><tr>'
     + '<th>时间段</th>' + HM_AUTOCOLS.map(k => '<th>' + k + '</th>').join('')
     + HM_COLORDER.map(k => (k === HM_CALCCOL)
@@ -2373,10 +2403,8 @@ async function hmSave(input) {
     D.manual[date][slot] = D.manual[date][slot] || {};
     if (val == null) delete D.manual[date][slot][col]; else D.manual[date][slot][col] = val;
     if (stat) { stat.textContent = '✓ 已保存 ' + slot + ' · ' + col + (HM_IS_LOCAL ? '' : '（公网约 1–3 分钟生效）'); stat.style.color = 'var(--green)'; }
-    if (input.dataset.kind === 'meal') {
-      renderDayDetail();                          // 餐点安排 → 重绘该日明细（含表格「餐点安排」列）
-    } else {
-      paintHalfMon(document.getElementById('halfMon'), date);
+    paintHalfMon(document.getElementById('halfMon'), date);   // 餐点名单也在分时段页 → 同一处重绘
+    if (input.dataset.kind !== 'meal') {
       const again = document.querySelector('#halfMon input[data-s="' + slot + '"][data-c="' + col + '"]');
       if (again) again.focus();
     }
@@ -3425,9 +3453,9 @@ $('#fc400t').addEventListener('click', e => {
 (function () {
   const root = $('#halfMon');
   if (!root) return;
-  root.addEventListener('change', e => { const i = e.target.closest('input.hmi'); if (i) hmSave(i); });
+  root.addEventListener('change', e => { const i = e.target.closest('input.hmi,input.meali'); if (i) hmSave(i); });
   root.addEventListener('keydown', e => {
-    const i = e.target.closest('input.hmi'); if (!i) return;
+    const i = e.target.closest('input.hmi,input.meali'); if (!i) return;
     if (e.key === 'Enter') { e.preventDefault(); i.blur(); }
     else if (e.key === 'Escape') { i.value = ''; i.blur(); }
   });
@@ -3435,7 +3463,7 @@ $('#fc400t').addEventListener('click', e => {
   root.addEventListener('click', e => {
     const gb = e.target.closest('.hmgh');
     if (gb) { if (gb.dataset.act === 'off') hmDropToken(); else hmAskToken(); return; }
-    const li = e.target.closest('input.hmi[readonly]');
+    const li = e.target.closest('input.hmi[readonly],input.meali[readonly]');
     if (li && !HM_CANWRITE()) { hmAskToken(); return; }   // 公网未启用 → 点格引导启用
     const mt = e.target.closest('.calmt');
     if (mt) { CAL_MON['hm'] = mt.dataset.m; paintHalfMon(document.getElementById('halfMon'), HM_DAY); return; }
