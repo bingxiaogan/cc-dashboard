@@ -3163,7 +3163,7 @@ function applyLiveCorrection() {
 
 async function load() {
   const btn = $('#btnRefresh'); btn.disabled = true; btn.textContent = '刷新中…';
-  const [cc, tk, tr, plan, hh, hhon, tt, shape, hrate, drate, osch, hfill] = await Promise.all([
+  const [cc, tk, tr, plan, hh, hhon, tt, shape, hrate, drate, osch, hfill, manual] = await Promise.all([
     jget('stats.json', 'http://127.0.0.1:8601/stats.json'),
     jget('/ticket-stats', 'ticket_stats.json'),
     jget('/daily_trend.json', 'daily_trend.json'),
