@@ -3641,7 +3641,11 @@ function makeDateDl(name) {
 function buildDlDates(body, name, sm) {
   const cur = HM_DAY || todayCn(), today = todayCn();
   body.querySelectorAll('button.dli').forEach(x => x.remove());
-  const ds = hmCalDates().slice().reverse();          // 新 → 旧
+  /* 排序（2026-10-09 用户定）：当前切片日置顶 → 其后未来日（近→远）→ 最后历史日（近→远）。
+     这样一打开就先看到「今天 + 后面几天」，历史要往下翻，符合「未来要能选、历史偶尔查」的用法。 */
+  const all = hmCalDates();
+  const ds = [cur].filter(d => all.indexOf(d) >= 0)
+    .concat(all.filter(d => d > cur), all.filter(d => d < cur).reverse());
   body.querySelector('.dlhd').textContent = '选日期导出 · 共 ' + ds.length + ' 天';
   ds.forEach(d => {
     const b = document.createElement('button');
@@ -3661,9 +3665,7 @@ function buildDlDates(body, name, sm) {
     });
     body.appendChild(b);
   });
-  /* 打开时把「当前切片日」滚到中间（列表是新→旧，跨度覆盖全年） */
-  const curEl = body.querySelector('button.dli.cur');
-  if (curEl) body.scrollTop = Math.max(0, curEl.offsetTop - (body.clientHeight - curEl.offsetHeight) / 2);
+  body.scrollTop = 0;   // 当前日已置顶，无需再滚动
 }
 function wrapClose(body) {
   const w = body.closest('details');
