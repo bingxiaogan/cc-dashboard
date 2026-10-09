@@ -540,6 +540,12 @@ svg{display:block;width:100%;overflow:visible}
 .hmtbl .hmfoot{display:flex;gap:14px;flex-wrap:wrap;margin-top:10px;font-size:11.5px;color:var(--tx3)}
 .hmtbl .hmfoot b{color:var(--tx2);font-weight:600}
 .hmwarn{margin:8px 0 0;padding:8px 11px;border-radius:9px;font-size:11.5px;background:rgba(251,191,36,.10);border:1px solid rgba(251,191,36,.26);color:var(--amber)}
+.hmwarn.hmon{background:rgba(52,211,153,.10);border-color:rgba(52,211,153,.28);color:var(--green)}
+.hmgh{margin-left:8px;padding:3px 10px;border-radius:8px;border:1px solid rgba(96,165,250,.45);background:rgba(96,165,250,.12);color:#93c5fd;font-size:11.5px;cursor:pointer}
+.hmgh:hover{background:rgba(96,165,250,.22)}
+.hmgh.off{border-color:var(--line);background:transparent;color:var(--tx3)}
+.hmtbl td.hmc.hmlock{background:rgba(148,163,184,.06)}
+.hmtbl td.hmc.hmlock input{cursor:not-allowed;opacity:.72}
 .hmtbl td.hma.hmlow{color:var(--amber);font-weight:600}
 .hmtbl td.hmc.hmtx input{max-width:210px;text-align:left;font-weight:400;font-variant-numeric:normal}
 .hmtbl td.hmc.hmtx input::placeholder{color:var(--tx3);opacity:.6}
@@ -2096,7 +2102,8 @@ function renderDayDetail() {
    · 运能负荷为公式列，随人数实时重算 —— 基数 6.14 通/人/半小时（用户 2026-10-09 定）：
        排班运能负荷 = 转人工量 ÷（排班人数 × 6.14）
        实际运能负荷 = 接通量   ÷（实际人数 × 6.14）
-   ⚠️ 填写只在本地 8601 生效（公网是静态快照，只读）。 */
+   · 填写通道：本地走 8601 `/api/manual-halfhour`；公网走 GitHub Contents API（需粘贴本人令牌，
+     令牌只存本机 localStorage、不进源码）—— 两端都能填。详见下方 GH_* 常量注释。 */
 const pd2 = n => String(n).padStart(2, '0');
 const HM_LABELS = (() => {
   const out = [];
@@ -2285,6 +2292,7 @@ function paintHalfMon(box, date) {
 
 let HM_SAVING = false;
 async function hmSave(input) {
+  if (HM_SAVING) return;
   const date = input.dataset.d, slot = input.dataset.s, col = input.dataset.c;
   const stat = $('#hmStat');
   const raw = String(input.value || '').trim();
@@ -2292,25 +2300,79 @@ async function hmSave(input) {
   const prev = (D.manual && D.manual[date] && D.manual[date][slot] && D.manual[date][slot][col] != null)
     ? D.manual[date][slot][col] : null;
   if (String(prev == null ? '' : prev) === String(val == null ? '' : val)) return;   // 没变不写
+  if (!HM_IS_LOCAL && !ghToken()) { hmAskToken(); return; }
   if (stat) { stat.textContent = '保存中…'; stat.style.color = 'var(--tx3)'; }
+  HM_SAVING = true;
   try {
-    const r = await fetch('/api/manual-halfhour', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ date: date, slot: slot, col: col, value: val })
-    });
-    const j = await r.json().catch(() => ({}));
-    if (!r.ok || !j.ok) throw new Error((j && j.error) || ('HTTP ' + r.status));
+    if (HM_IS_LOCAL) await hmWriteLocal(date, slot, col, val);
+    else await hmWriteGithub(date, slot, col, val);
     D.manual = D.manual || {};
     D.manual[date] = D.manual[date] || {};
     D.manual[date][slot] = D.manual[date][slot] || {};
     if (val == null) delete D.manual[date][slot][col]; else D.manual[date][slot][col] = val;
-    if (stat) { stat.textContent = '✓ 已保存 ' + slot + ' · ' + col; stat.style.color = 'var(--green)'; }
+    if (stat) { stat.textContent = '✓ 已保存 ' + slot + ' · ' + col + (HM_IS_LOCAL ? '' : '（公网约 1–3 分钟生效）'); stat.style.color = 'var(--green)'; }
     paintHalfMon(document.getElementById('halfMon'), date);
     const again = document.querySelector('#halfMon input[data-s="' + slot + '"][data-c="' + col + '"]');
     if (again) again.focus();
   } catch (e) {
-    if (stat) { stat.textContent = '⚠ 未保存（' + e.message + '）—— 公网只读，请在本地 8601 填写'; stat.style.color = 'var(--amber)'; }
+    if (stat) { stat.textContent = '⚠ 未保存（' + e.message + '）'; stat.style.color = 'var(--amber)'; }
+  } finally { HM_SAVING = false; }
+}
+/* 本地：走 8601 的写接口（快、不产生 commit） */
+async function hmWriteLocal(date, slot, col, val) {
+  const r = await fetch('/api/manual-halfhour', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ date: date, slot: slot, col: col, value: val })
+  });
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok || !j.ok) throw new Error((j && j.error) || ('HTTP ' + r.status));
+}
+/* 公网：GitHub Contents API —— 先拉远端最新 → 合并本格 → PUT 回仓库（浏览器可直连，带 CORS） */
+async function hmWriteGithub(date, slot, col, val, retry) {
+  retry = (retry == null) ? 1 : retry;
+  const tk = ghToken();
+  if (!tk) throw new Error('未配置 GitHub 令牌');
+  const hdr = { Authorization: 'Bearer ' + tk, 'User-Agent': 'cc-dashboard', Accept: 'application/vnd.github+json' };
+  const g = await fetch(GH_API + '?ref=' + GH_BRANCH + '&t=' + Date.now(), { headers: hdr, cache: 'no-store' });
+  let sha = null, all = {};
+  if (g.status === 401 || g.status === 403) throw new Error('令牌无效或无权限（' + g.status + '）');
+  if (g.status === 404) { /* 远端还没有该文件 → 直接新建（不带 sha） */ }
+  else if (!g.ok) throw new Error('读取远端失败 HTTP ' + g.status);
+  else { const meta = await g.json(); sha = meta.sha; try { all = JSON.parse(b64dec(meta.content)) || {}; } catch (e) { all = {}; } }
+  if (!all || typeof all !== 'object' || Array.isArray(all)) all = {};
+  all[date] = all[date] || {};
+  all[date][slot] = all[date][slot] || {};
+  if (val == null) delete all[date][slot][col]; else all[date][slot][col] = val;
+  if (!Object.keys(all[date][slot]).length) delete all[date][slot];
+  if (!Object.keys(all[date]).length) delete all[date];
+  const body = {
+    message: 'manual ' + date + ' ' + slot + ' ' + col + ' = ' + (val == null ? '(清空)' : val),
+    content: b64enc(JSON.stringify(all, null, 1)), branch: GH_BRANCH
+  };
+  if (sha) body.sha = sha;
+  const p = await fetch(GH_API, { method: 'PUT', headers: Object.assign({ 'Content-Type': 'application/json' }, hdr), body: JSON.stringify(body) });
+  if (!p.ok) {
+    const e = await p.json().catch(() => ({}));
+    if ((p.status === 409 || p.status === 422) && retry > 0) { await new Promise(s => setTimeout(s, 500)); return hmWriteGithub(date, slot, col, val, retry - 1); }
+    throw new Error((e && e.message) || ('提交失败 HTTP ' + p.status));
   }
+}
+/* 启用/退出公网填写（令牌只进 localStorage） */
+function hmAskToken() {
+  const stat = $('#hmStat');
+  const t = window.prompt('粘贴你的 GitHub 令牌（fine-grained PAT，权限只勾 cc-dashboard 仓库的 Contents: Read and write）。\n\n令牌只保存在本机浏览器，不会上传、不会进源码。');
+  if (t == null) return;
+  const v = String(t).trim();
+  if (!v) { if (stat) { stat.textContent = '未填写令牌'; stat.style.color = 'var(--tx3)'; } return; }
+  ghSetToken(v);
+  if (stat) { stat.textContent = '公网填写已启用，现在可以点格填了'; stat.style.color = 'var(--green)'; }
+  paintHalfMon(document.getElementById('halfMon'), HM_DAY);
+}
+function hmDropToken() {
+  ghSetToken('');
+  const stat = $('#hmStat');
+  if (stat) { stat.textContent = '已退出公网填写（本机已清除令牌）'; stat.style.color = 'var(--tx3)'; }
+  paintHalfMon(document.getElementById('halfMon'), HM_DAY);
 }
 
 /* ══════════════════ 02 在线 ══════════════════ */
@@ -3305,6 +3367,10 @@ $('#fc400t').addEventListener('click', e => {
   });
   root.addEventListener('toggle', e => { if (e.target.classList && e.target.classList.contains('hmcalf')) HM_CALOPEN = !!e.target.open; }, true);
   root.addEventListener('click', e => {
+    const gb = e.target.closest('.hmgh');
+    if (gb) { if (gb.dataset.act === 'off') hmDropToken(); else hmAskToken(); return; }
+    const li = e.target.closest('input.hmi[readonly]');
+    if (li && !HM_CANWRITE()) { hmAskToken(); return; }   // 公网未启用 → 点格引导启用
     const mt = e.target.closest('.calmt');
     if (mt) { CAL_MON['hm'] = mt.dataset.m; paintHalfMon(document.getElementById('halfMon'), HM_DAY); return; }
     const b = e.target.closest('.cald[data-day]');
