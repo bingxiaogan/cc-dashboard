@@ -1,13 +1,13 @@
 {
- "ts": 1791641229585,
- "collectedAtCn": "2026/10/10 22:07:09",
+ "ts": 1791641460588,
+ "collectedAtCn": "2026/10/10 22:11:00",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "2",
   "坐席忙碌数": "0 (0)",
-  "接通率": "22.11%",
+  "接通率": "22.10%",
   "满意率": "100.00%",
-  "呼入总数": "13469",
+  "呼入总数": "13477",
   "当前呼入数": "1",
   "外呼总数": "6527",
   "当前外呼数": "0",
@@ -240,8 +240,8 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 1954,
-   "ivr": 888,
+   "callIn": 1955,
+   "ivr": 889,
    "ringMissed": 3,
    "queueAbandon": 99,
    "answered": 964,
@@ -470,8 +470,8 @@
   },
   {
    "service": "88236602(其他渠道4000166088)",
-   "callIn": 627,
-   "ivr": 293,
+   "callIn": 628,
+   "ivr": 294,
    "ringMissed": 8,
    "queueAbandon": 41,
    "answered": 300,
@@ -886,8 +886,8 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 1954,
-    "ivr": 888,
+    "callIn": 1955,
+    "ivr": 889,
     "ringMissed": 3,
     "queueAbandon": 99,
     "answered": 964,
@@ -905,9 +905,9 @@
     "transferred": 0
    }
   ],
-  "total": 1996,
+  "total": 1997,
   "answered": 983,
-  "ivr": 910,
+  "ivr": 911,
   "connectRate": 94.84
  },
  "online": {
@@ -930,11 +930,11 @@
     "name": "官网严选寄卖售后咨询",
     "sessions": 275,
     "assigned": 238,
-    "current": 12,
+    "current": 11,
     "max": 90,
     "queue": 3,
     "onlineSeats": "3(刘梓爱,刘亚森,陈可)",
-    "done": 226,
+    "done": 227,
     "answerRate": 86.55,
     "abandon": 37,
     "voicemail": 0,
@@ -956,17 +956,17 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1494,
-    "assigned": 1308,
-    "current": 99,
+    "sessions": 1497,
+    "assigned": 1311,
+    "current": 96,
     "max": 90,
-    "queue": 25,
+    "queue": 29,
     "onlineSeats": "3(刘梓爱,刘亚森,陈可)",
-    "done": 1149,
-    "answerRate": 87.55,
+    "done": 1155,
+    "answerRate": 87.58,
     "abandon": 186,
     "voicemail": 0,
-    "satisfactionRate": 9.09
+    "satisfactionRate": 8.33
    },
    {
     "name": "多品类黄金技能组",
@@ -1070,11 +1070,11 @@
     "name": "官网严选自营售前咨询",
     "sessions": 564,
     "assigned": 506,
-    "current": 31,
+    "current": 27,
     "max": 90,
-    "queue": 8,
+    "queue": 11,
     "onlineSeats": "3(刘梓爱,刘亚森,陈可)",
-    "done": 458,
+    "done": 462,
     "answerRate": 89.72,
     "abandon": 58,
     "voicemail": 0,
@@ -1310,24 +1310,6 @@
   "rate400": 86.3
  },
  "history": [
-  {
-   "ts": 1791542046305,
-   "skillRate400": 87.56,
-   "skillQueue400": 0,
-   "callIn400": 1045,
-   "signIn400": 14,
-   "onlineSessions": 605,
-   "onlineSeat": 2
-  },
-  {
-   "ts": 1791542161213,
-   "skillRate400": 87.57,
-   "skillQueue400": 0,
-   "callIn400": 1046,
-   "signIn400": 14,
-   "onlineSessions": 609,
-   "onlineSeat": 2
-  },
   {
    "ts": 1791542305260,
    "skillRate400": 87.58,
@@ -5803,6 +5785,24 @@
   },
   {
    "ts": 1791641229585,
+   "skillRate400": 78.13,
+   "skillQueue400": 0,
+   "callIn400": 32,
+   "signIn400": 1,
+   "onlineSessions": 836,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1791641344863,
+   "skillRate400": 78.13,
+   "skillQueue400": 0,
+   "callIn400": 32,
+   "signIn400": 1,
+   "onlineSessions": 836,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1791641460588,
    "skillRate400": 78.13,
    "skillQueue400": 0,
    "callIn400": 32,
