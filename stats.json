@@ -1,6 +1,6 @@
 {
- "ts": 1791624114242,
- "collectedAtCn": "2026/10/10 17:21:54",
+ "ts": 1791624379000,
+ "collectedAtCn": "2026/10/10 17:26:19",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "52",
@@ -1187,7 +1187,7 @@
     "assigned": 168,
     "current": 16,
     "max": 30,
-    "queue": 6,
+    "queue": 8,
     "onlineSeats": "1(周悬)",
     "done": 152,
     "answerRate": 93.85,
@@ -1199,11 +1199,11 @@
     "name": "爱回收官网接待组-【会员】",
     "sessions": 20,
     "assigned": 20,
-    "current": 2,
+    "current": 1,
     "max": 60,
     "queue": 0,
     "onlineSeats": "2(顾新,杨青)",
-    "done": 18,
+    "done": 19,
     "answerRate": 100,
     "abandon": 0,
     "voicemail": 0,
@@ -1211,15 +1211,15 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 960,
-    "assigned": 879,
-    "current": 69,
+    "sessions": 962,
+    "assigned": 880,
+    "current": 63,
     "max": 30,
-    "queue": 48,
+    "queue": 57,
     "onlineSeats": "1(周悬)",
-    "done": 776,
-    "answerRate": 91.56,
-    "abandon": 81,
+    "done": 783,
+    "answerRate": 91.48,
+    "abandon": 82,
     "voicemail": 0,
     "satisfactionRate": 12.5
    },
@@ -1281,9 +1281,9 @@
    },
    {
     "name": "多品大家电技能组",
-    "sessions": 41,
-    "assigned": 41,
-    "current": 0,
+    "sessions": 42,
+    "assigned": 42,
+    "current": 1,
     "max": 30,
     "queue": 0,
     "onlineSeats": "1(刘洎琦)",
@@ -1295,13 +1295,13 @@
    },
    {
     "name": "寄卖商服",
-    "sessions": 169,
-    "assigned": 169,
-    "current": 17,
+    "sessions": 172,
+    "assigned": 172,
+    "current": 18,
     "max": 198,
     "queue": 0,
     "onlineSeats": "2(姬小倩,于慧敏)",
-    "done": 152,
+    "done": 154,
     "answerRate": 100,
     "abandon": 0,
     "voicemail": 0,
@@ -1309,13 +1309,13 @@
    },
    {
     "name": "分类在线技能组",
-    "sessions": 521,
-    "assigned": 521,
-    "current": 11,
+    "sessions": 524,
+    "assigned": 524,
+    "current": 9,
     "max": 80,
     "queue": 0,
-    "onlineSeats": "2(侯勤裕,刘丽娜)",
-    "done": 510,
+    "onlineSeats": "2(刘丽娜,陈孝正)",
+    "done": 515,
     "answerRate": 100,
     "abandon": 0,
     "voicemail": 0,
@@ -1323,28 +1323,28 @@
    },
    {
     "name": "爱回收官网接待组",
-    "sessions": 626,
-    "assigned": 626,
-    "current": 28,
+    "sessions": 634,
+    "assigned": 634,
+    "current": 24,
     "max": 60,
     "queue": 0,
     "onlineSeats": "2(顾新,杨青)",
-    "done": 574,
+    "done": 586,
     "answerRate": 100,
     "abandon": 0,
     "voicemail": 0,
-    "satisfactionRate": 96
+    "satisfactionRate": 96.05
    }
   ],
   "fenlei": {
    "name": "分类在线技能组",
-   "sessions": 521,
-   "assigned": 521,
-   "current": 11,
+   "sessions": 524,
+   "assigned": 524,
+   "current": 9,
    "max": 80,
    "queue": 0,
-   "onlineSeats": "2(侯勤裕,刘丽娜)",
-   "done": 510,
+   "onlineSeats": "2(刘丽娜,陈孝正)",
+   "done": 515,
    "answerRate": 100,
    "abandon": 0,
    "voicemail": 0,
@@ -1353,8 +1353,8 @@
   "fenleiNW": null
  },
  "onlineAgents": [
-  "侯勤裕",
-  "刘丽娜"
+  "刘丽娜",
+  "陈孝正"
  ],
  "satisfaction": {
   "ok": true,
@@ -1510,56 +1510,38 @@
   ],
   "onOnline": [
    "刘丽娜",
-   "侯勤裕"
+   "陈孝正"
   ],
   "offOnline": [
-   "陈孝正"
+   "侯勤裕"
   ]
  },
  "capacity": {
   "date": "2026-10-10",
   "p400": 12,
   "pOn": 3,
-  "cap400": 1125,
-  "capOn": 733,
+  "cap400": 1157,
+  "capOn": 756,
   "capOnDay": 990,
   "onHoursDay": 33,
-  "in400": 894,
-  "inOn": 509,
-  "load400": 79.5,
-  "loadOn": 69.4,
-  "rate400": 87
+  "in400": 908,
+  "inOn": 524,
+  "load400": 78.5,
+  "loadOn": 69.3,
+  "rate400": 87.1
  },
  "capacity_week": {
   "wDays": 3,
-  "wIn400": 2082,
-  "wAns400": 1806,
-  "wInOn": 2257,
-  "wExp400": 3205,
+  "wIn400": 2096,
+  "wAns400": 1819,
+  "wInOn": 2272,
+  "wExp400": 3237,
   "wExpOn": 2970,
-  "load400": 65,
-  "loadOn": 76,
-  "rate400": 86.7
+  "load400": 64.8,
+  "loadOn": 76.5,
+  "rate400": 86.8
  },
  "history": [
-  {
-   "ts": 1791525430271,
-   "skillRate400": 84.79,
-   "skillQueue400": 0,
-   "callIn400": 631,
-   "signIn400": 15,
-   "onlineSessions": 297,
-   "onlineSeat": 2
-  },
-  {
-   "ts": 1791525542744,
-   "skillRate400": 84.75,
-   "skillQueue400": 0,
-   "callIn400": 636,
-   "signIn400": 15,
-   "onlineSessions": 298,
-   "onlineSeat": 2
-  },
   {
    "ts": 1791525649927,
    "skillRate400": 85.13,
@@ -6040,6 +6022,24 @@
    "callIn400": 908,
    "signIn400": 14,
    "onlineSessions": 521,
+   "onlineSeat": 2
+  },
+  {
+   "ts": 1791624265419,
+   "skillRate400": 87.11,
+   "skillQueue400": 0,
+   "callIn400": 908,
+   "signIn400": 14,
+   "onlineSessions": 524,
+   "onlineSeat": 2
+  },
+  {
+   "ts": 1791624379000,
+   "skillRate400": 87.11,
+   "skillQueue400": 0,
+   "callIn400": 908,
+   "signIn400": 14,
+   "onlineSessions": 524,
    "onlineSeat": 2
   }
  ]
