@@ -1,13 +1,13 @@
 {
- "ts": 1791644161041,
- "collectedAtCn": "2026/10/10 22:56:01",
+ "ts": 1791644313702,
+ "collectedAtCn": "2026/10/10 22:58:33",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "2",
   "坐席忙碌数": "0 (0)",
   "接通率": "22.00%",
   "满意率": "100.00%",
-  "呼入总数": "13535",
+  "呼入总数": "13539",
   "当前呼入数": "0",
   "外呼总数": "6527",
   "当前外呼数": "0",
@@ -520,8 +520,8 @@
   },
   {
    "service": "88236603(京东渠道4000990166)",
-   "callIn": 366,
-   "ivr": 129,
+   "callIn": 368,
+   "ivr": 131,
    "ringMissed": 4,
    "queueAbandon": 36,
    "answered": 205,
@@ -928,15 +928,15 @@
    },
    {
     "name": "官网严选寄卖售后咨询",
-    "sessions": 281,
+    "sessions": 282,
     "assigned": 244,
     "current": 8,
     "max": 60,
-    "queue": 6,
+    "queue": 5,
     "onlineSeats": "2(刘梓爱,李宜慢)",
     "done": 236,
-    "answerRate": 86.83,
-    "abandon": 37,
+    "answerRate": 86.52,
+    "abandon": 38,
     "voicemail": 0,
     "satisfactionRate": 0
    },
@@ -958,11 +958,11 @@
     "name": "官网严选自营售后咨询",
     "sessions": 1549,
     "assigned": 1361,
-    "current": 49,
+    "current": 48,
     "max": 60,
-    "queue": 30,
+    "queue": 33,
     "onlineSeats": "2(刘梓爱,李宜慢)",
-    "done": 1252,
+    "done": 1253,
     "answerRate": 87.86,
     "abandon": 188,
     "voicemail": 0,
@@ -1310,15 +1310,6 @@
   "rate400": 86.3
  },
  "history": [
-  {
-   "ts": 1791544933885,
-   "skillRate400": 87.88,
-   "skillQueue400": 0,
-   "callIn400": 1114,
-   "signIn400": 11,
-   "onlineSessions": 676,
-   "onlineSeat": 3
-  },
   {
    "ts": 1791545056145,
    "skillRate400": 87.89,
@@ -5803,6 +5794,15 @@
   },
   {
    "ts": 1791644161041,
+   "skillRate400": 78.13,
+   "skillQueue400": 0,
+   "callIn400": 32,
+   "signIn400": 1,
+   "onlineSessions": 836,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1791644313702,
    "skillRate400": 78.13,
    "skillQueue400": 0,
    "callIn400": 32,
