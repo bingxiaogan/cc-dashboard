@@ -1,13 +1,13 @@
 {
- "ts": 1791816420502,
- "collectedAtCn": "2026/10/12 22:47:00",
+ "ts": 1791816535961,
+ "collectedAtCn": "2026/10/12 22:48:55",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "4",
   "坐席忙碌数": "0 (0)",
-  "接通率": "22.26%",
+  "接通率": "22.25%",
   "满意率": "100.00%",
-  "呼入总数": "12926",
+  "呼入总数": "12928",
   "当前呼入数": "0",
   "外呼总数": "6560",
   "当前外呼数": "0",
@@ -480,8 +480,8 @@
   },
   {
    "service": "81198(上门按键转接)",
-   "callIn": 693,
-   "ivr": 419,
+   "callIn": 694,
+   "ivr": 420,
    "ringMissed": 2,
    "queueAbandon": 46,
    "answered": 241,
@@ -956,13 +956,13 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1491,
-    "assigned": 1421,
-    "current": 62,
+    "sessions": 1492,
+    "assigned": 1422,
+    "current": 58,
     "max": 60,
-    "queue": 21,
+    "queue": 26,
     "onlineSeats": "2(李宜慢,王鹏)",
-    "done": 1288,
+    "done": 1293,
     "answerRate": 95.31,
     "abandon": 70,
     "voicemail": 0,
@@ -1304,15 +1304,6 @@
   "rate400": 48.4
  },
  "history": [
-  {
-   "ts": 1791629111768,
-   "skillRate400": 88.14,
-   "skillQueue400": 0,
-   "callIn400": 1003,
-   "signIn400": 12,
-   "onlineSessions": 631,
-   "onlineSeat": 2
-  },
   {
    "ts": 1791629219278,
    "skillRate400": 88.16,
@@ -5797,6 +5788,15 @@
   },
   {
    "ts": 1791816420502,
+   "skillRate400": 48.39,
+   "skillQueue400": 0,
+   "callIn400": 31,
+   "signIn400": 1,
+   "onlineSessions": 867,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1791816535961,
    "skillRate400": 48.39,
    "skillQueue400": 0,
    "callIn400": 31,
