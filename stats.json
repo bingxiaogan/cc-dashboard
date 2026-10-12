@@ -1,14 +1,14 @@
 {
- "ts": 1791815652578,
- "collectedAtCn": "2026/10/12 22:34:12",
+ "ts": 1791815767725,
+ "collectedAtCn": "2026/10/12 22:36:07",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "4",
   "坐席忙碌数": "0 (0)",
-  "接通率": "22.29%",
+  "接通率": "22.28%",
   "满意率": "100.00%",
-  "呼入总数": "12908",
-  "当前呼入数": "0",
+  "呼入总数": "12910",
+  "当前呼入数": "1",
   "外呼总数": "6560",
   "当前外呼数": "0",
   "呼入平均通话时长": "00:02:51",
@@ -240,8 +240,8 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 1850,
-   "ivr": 834,
+   "callIn": 1851,
+   "ivr": 835,
    "ringMissed": 6,
    "queueAbandon": 152,
    "answered": 858,
@@ -520,8 +520,8 @@
   },
   {
    "service": "88236603(京东渠道4000990166)",
-   "callIn": 439,
-   "ivr": 157,
+   "callIn": 440,
+   "ivr": 158,
    "ringMissed": 2,
    "queueAbandon": 36,
    "answered": 252,
@@ -886,8 +886,8 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 1850,
-    "ivr": 834,
+    "callIn": 1851,
+    "ivr": 835,
     "ringMissed": 6,
     "queueAbandon": 152,
     "answered": 858,
@@ -905,9 +905,9 @@
     "transferred": 0
    }
   ],
-  "total": 1881,
+  "total": 1882,
   "answered": 874,
-  "ivr": 845,
+  "ivr": 846,
   "connectRate": 91.39
  },
  "online": {
@@ -958,11 +958,11 @@
     "name": "官网严选自营售后咨询",
     "sessions": 1489,
     "assigned": 1419,
-    "current": 73,
+    "current": 72,
     "max": 60,
-    "queue": 4,
+    "queue": 7,
     "onlineSeats": "2(李宜慢,王鹏)",
-    "done": 1275,
+    "done": 1276,
     "answerRate": 95.3,
     "abandon": 70,
     "voicemail": 0,
@@ -1304,15 +1304,6 @@
   "rate400": 48.4
  },
  "history": [
-  {
-   "ts": 1791628395785,
-   "skillRate400": 88.08,
-   "skillQueue400": 0,
-   "callIn400": 990,
-   "signIn400": 14,
-   "onlineSessions": 614,
-   "onlineSeat": 2
-  },
   {
    "ts": 1791628503813,
    "skillRate400": 87.99,
@@ -5797,6 +5788,15 @@
   },
   {
    "ts": 1791815652578,
+   "skillRate400": 48.39,
+   "skillQueue400": 0,
+   "callIn400": 31,
+   "signIn400": 1,
+   "onlineSessions": 867,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1791815767725,
    "skillRate400": 48.39,
    "skillQueue400": 0,
    "callIn400": 31,
