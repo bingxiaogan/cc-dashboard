@@ -1,14 +1,14 @@
 {
- "ts": 1791814022338,
- "collectedAtCn": "2026/10/12 22:07:02",
+ "ts": 1791814252856,
+ "collectedAtCn": "2026/10/12 22:10:52",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "4",
   "坐席忙碌数": "0 (0)",
-  "接通率": "22.34%",
+  "接通率": "22.33%",
   "满意率": "100.00%",
-  "呼入总数": "12876",
-  "当前呼入数": "2",
+  "呼入总数": "12883",
+  "当前呼入数": "0",
   "外呼总数": "6560",
   "当前外呼数": "0",
   "呼入平均通话时长": "00:02:51",
@@ -240,8 +240,8 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 1842,
-   "ivr": 826,
+   "callIn": 1843,
+   "ivr": 827,
    "ringMissed": 6,
    "queueAbandon": 152,
    "answered": 858,
@@ -270,8 +270,8 @@
   },
   {
    "service": "88236633(88236633)",
-   "callIn": 96,
-   "ivr": 96,
+   "callIn": 97,
+   "ivr": 97,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -300,8 +300,8 @@
   },
   {
    "service": "88236634(88236634)",
-   "callIn": 310,
-   "ivr": 310,
+   "callIn": 312,
+   "ivr": 312,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -520,8 +520,8 @@
   },
   {
    "service": "88236603(京东渠道4000990166)",
-   "callIn": 438,
-   "ivr": 156,
+   "callIn": 439,
+   "ivr": 157,
    "ringMissed": 2,
    "queueAbandon": 36,
    "answered": 252,
@@ -886,8 +886,8 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 1842,
-    "ivr": 826,
+    "callIn": 1843,
+    "ivr": 827,
     "ringMissed": 6,
     "queueAbandon": 152,
     "answered": 858,
@@ -905,10 +905,10 @@
     "transferred": 0
    }
   ],
-  "total": 1873,
+  "total": 1874,
   "answered": 874,
-  "ivr": 837,
-  "connectRate": 91.35
+  "ivr": 838,
+  "connectRate": 91.36
  },
  "online": {
   "groups": [
@@ -923,19 +923,19 @@
     "done": 41,
     "answerRate": 100,
     "abandon": 0,
-    "voicemail": 7,
+    "voicemail": 8,
     "satisfactionRate": 100
    },
    {
     "name": "官网严选寄卖售后咨询",
-    "sessions": 267,
-    "assigned": 251,
+    "sessions": 268,
+    "assigned": 252,
     "current": 11,
     "max": 120,
-    "queue": 2,
+    "queue": 1,
     "onlineSeats": "4(刘亚森,黄益群,李宜慢,王鹏)",
-    "done": 240,
-    "answerRate": 94.01,
+    "done": 241,
+    "answerRate": 94.03,
     "abandon": 16,
     "voicemail": 0,
     "satisfactionRate": 0
@@ -956,15 +956,15 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1453,
-    "assigned": 1385,
+    "sessions": 1456,
+    "assigned": 1387,
     "current": 91,
     "max": 120,
-    "queue": 15,
+    "queue": 14,
     "onlineSeats": "4(刘亚森,黄益群,李宜慢,王鹏)",
-    "done": 1224,
-    "answerRate": 95.32,
-    "abandon": 68,
+    "done": 1226,
+    "answerRate": 95.26,
+    "abandon": 69,
     "voicemail": 0,
     "satisfactionRate": 0
    },
@@ -1304,24 +1304,6 @@
   "rate400": 48.4
  },
  "history": [
-  {
-   "ts": 1791626856982,
-   "skillRate400": 87.67,
-   "skillQueue400": 0,
-   "callIn400": 957,
-   "signIn400": 14,
-   "onlineSessions": 585,
-   "onlineSeat": 1
-  },
-  {
-   "ts": 1791626964232,
-   "skillRate400": 87.59,
-   "skillQueue400": 0,
-   "callIn400": 959,
-   "signIn400": 14,
-   "onlineSessions": 587,
-   "onlineSeat": 1
-  },
   {
    "ts": 1791627072174,
    "skillRate400": 87.75,
@@ -5797,6 +5779,24 @@
   },
   {
    "ts": 1791814022338,
+   "skillRate400": 48.39,
+   "skillQueue400": 0,
+   "callIn400": 31,
+   "signIn400": 1,
+   "onlineSessions": 867,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1791814137261,
+   "skillRate400": 48.39,
+   "skillQueue400": 0,
+   "callIn400": 31,
+   "signIn400": 1,
+   "onlineSessions": 867,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1791814252856,
    "skillRate400": 48.39,
    "skillQueue400": 0,
    "callIn400": 31,
