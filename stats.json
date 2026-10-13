@@ -1,14 +1,14 @@
 {
- "ts": 1791900530574,
- "collectedAtCn": "2026/10/13 22:08:50",
+ "ts": 1791900645385,
+ "collectedAtCn": "2026/10/13 22:10:45",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "2",
   "坐席忙碌数": "0 (0)",
-  "接通率": "21.67%",
+  "接通率": "21.66%",
   "满意率": "100.00%",
-  "呼入总数": "13416",
-  "当前呼入数": "1",
+  "呼入总数": "13422",
+  "当前呼入数": "0",
   "外呼总数": "5401",
   "当前外呼数": "0",
   "呼入平均通话时长": "00:02:57",
@@ -240,8 +240,8 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 1861,
-   "ivr": 862,
+   "callIn": 1863,
+   "ivr": 864,
    "ringMissed": 0,
    "queueAbandon": 112,
    "answered": 887,
@@ -470,8 +470,8 @@
   },
   {
    "service": "88236602(其他渠道4000166088)",
-   "callIn": 542,
-   "ivr": 274,
+   "callIn": 543,
+   "ivr": 275,
    "ringMissed": 4,
    "queueAbandon": 26,
    "answered": 251,
@@ -480,8 +480,8 @@
   },
   {
    "service": "81198(上门按键转接)",
-   "callIn": 748,
-   "ivr": 461,
+   "callIn": 750,
+   "ivr": 463,
    "ringMissed": 5,
    "queueAbandon": 43,
    "answered": 263,
@@ -886,8 +886,8 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 1861,
-    "ivr": 862,
+    "callIn": 1863,
+    "ivr": 864,
     "ringMissed": 0,
     "queueAbandon": 112,
     "answered": 887,
@@ -905,9 +905,9 @@
     "transferred": 0
    }
   ],
-  "total": 1887,
+  "total": 1889,
   "answered": 900,
-  "ivr": 872,
+  "ivr": 874,
   "connectRate": 93.91
  },
  "online": {
@@ -970,14 +970,14 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1501,
-    "assigned": 1444,
+    "sessions": 1506,
+    "assigned": 1449,
     "current": 88,
     "max": 120,
     "queue": 0,
     "onlineSeats": "4(王鹏,李宜慢,朱博宇,沈东升)",
-    "done": 1287,
-    "answerRate": 96.2,
+    "done": 1292,
+    "answerRate": 96.22,
     "abandon": 57,
     "voicemail": 0,
     "satisfactionRate": 5.88
@@ -1082,13 +1082,13 @@
    },
    {
     "name": "官网严选自营售前咨询",
-    "sessions": 466,
-    "assigned": 459,
+    "sessions": 467,
+    "assigned": 460,
     "current": 24,
     "max": 120,
     "queue": 0,
     "onlineSeats": "4(王鹏,李宜慢,朱博宇,沈东升)",
-    "done": 427,
+    "done": 428,
     "answerRate": 98.5,
     "abandon": 7,
     "voicemail": 0,
@@ -1318,15 +1318,6 @@
   "rate400": 53.4
  },
  "history": [
-  {
-   "ts": 1791808335042,
-   "skillRate400": 81.63,
-   "skillQueue400": 0,
-   "callIn400": 1127,
-   "signIn400": 8,
-   "onlineSessions": 835,
-   "onlineSeat": 2
-  },
   {
    "ts": 1791808443727,
    "skillRate400": 81.65,
@@ -5811,6 +5802,15 @@
   },
   {
    "ts": 1791900530574,
+   "skillRate400": 59.26,
+   "skillQueue400": 0,
+   "callIn400": 27,
+   "signIn400": 1,
+   "onlineSessions": 707,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1791900645385,
    "skillRate400": 59.26,
    "skillQueue400": 0,
    "callIn400": 27,
