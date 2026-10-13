@@ -1,13 +1,13 @@
 {
- "ts": 1791908357709,
- "collectedAtCn": "2026/10/14 00:19:17",
+ "ts": 1791908588305,
+ "collectedAtCn": "2026/10/14 00:23:08",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "2",
   "坐席忙碌数": "0 (0)",
   "接通率": "0%",
   "满意率": "100.00%",
-  "呼入总数": "2",
+  "呼入总数": "3",
   "当前呼入数": "0",
   "外呼总数": "0",
   "当前外呼数": "0",
@@ -300,8 +300,8 @@
   },
   {
    "service": "88236634(88236634)",
-   "callIn": 1,
-   "ivr": 1,
+   "callIn": 2,
+   "ivr": 2,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -1262,24 +1262,6 @@
   "rate400": 53.4
  },
  "history": [
-  {
-   "ts": 1791816160979,
-   "skillRate400": 48.39,
-   "skillQueue400": 0,
-   "callIn400": 31,
-   "signIn400": 1,
-   "onlineSessions": 867,
-   "onlineSeat": 0
-  },
-  {
-   "ts": 1791816305644,
-   "skillRate400": 48.39,
-   "skillQueue400": 0,
-   "callIn400": 31,
-   "signIn400": 1,
-   "onlineSessions": 867,
-   "onlineSeat": 0
-  },
   {
    "ts": 1791816420502,
    "skillRate400": 48.39,
@@ -5755,6 +5737,24 @@
   },
   {
    "ts": 1791908357709,
+   "skillRate400": null,
+   "skillQueue400": 0,
+   "callIn400": 0,
+   "signIn400": 1,
+   "onlineSessions": 707,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1791908472770,
+   "skillRate400": null,
+   "skillQueue400": 0,
+   "callIn400": 0,
+   "signIn400": 1,
+   "onlineSessions": 707,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1791908588305,
    "skillRate400": null,
    "skillQueue400": 0,
    "callIn400": 0,
