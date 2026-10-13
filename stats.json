@@ -1,13 +1,13 @@
 {
- "ts": 1791901784081,
- "collectedAtCn": "2026/10/13 22:29:44",
+ "ts": 1791901929838,
+ "collectedAtCn": "2026/10/13 22:32:09",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "2",
   "坐席忙碌数": "0 (0)",
-  "接通率": "21.61%",
+  "接通率": "21.60%",
   "满意率": "100.00%",
-  "呼入总数": "13453",
+  "呼入总数": "13457",
   "当前呼入数": "0",
   "外呼总数": "5401",
   "当前外呼数": "0",
@@ -240,8 +240,8 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 1873,
-   "ivr": 874,
+   "callIn": 1874,
+   "ivr": 875,
    "ringMissed": 0,
    "queueAbandon": 112,
    "answered": 887,
@@ -320,8 +320,8 @@
   },
   {
    "service": "88236636(一键转卖)",
-   "callIn": 36,
-   "ivr": 36,
+   "callIn": 37,
+   "ivr": 37,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -480,8 +480,8 @@
   },
   {
    "service": "81198(上门按键转接)",
-   "callIn": 762,
-   "ivr": 475,
+   "callIn": 763,
+   "ivr": 476,
    "ringMissed": 5,
    "queueAbandon": 43,
    "answered": 263,
@@ -540,8 +540,8 @@
   },
   {
    "service": "88236605(违法信息不良举报)",
-   "callIn": 23,
-   "ivr": 14,
+   "callIn": 24,
+   "ivr": 15,
    "ringMissed": 0,
    "queueAbandon": 1,
    "answered": 8,
@@ -886,8 +886,8 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 1873,
-    "ivr": 874,
+    "callIn": 1874,
+    "ivr": 875,
     "ringMissed": 0,
     "queueAbandon": 112,
     "answered": 887,
@@ -905,10 +905,10 @@
     "transferred": 0
    }
   ],
-  "total": 1899,
+  "total": 1900,
   "answered": 900,
-  "ivr": 884,
-  "connectRate": 93.94
+  "ivr": 885,
+  "connectRate": 93.95
  },
  "online": {
   "groups": [
@@ -947,7 +947,7 @@
     "current": 14,
     "max": 60,
     "queue": 0,
-    "onlineSeats": "2(朱博宇,沈东升)",
+    "onlineSeats": "2(朱博宇,王鹏)",
     "done": 228,
     "answerRate": 95.65,
     "abandon": 11,
@@ -970,13 +970,13 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1527,
-    "assigned": 1470,
-    "current": 69,
+    "sessions": 1528,
+    "assigned": 1471,
+    "current": 68,
     "max": 60,
     "queue": 0,
-    "onlineSeats": "2(朱博宇,沈东升)",
-    "done": 1331,
+    "onlineSeats": "2(朱博宇,王鹏)",
+    "done": 1333,
     "answerRate": 96.27,
     "abandon": 57,
     "voicemail": 0,
@@ -1082,12 +1082,12 @@
    },
    {
     "name": "官网严选自营售前咨询",
-    "sessions": 476,
-    "assigned": 469,
-    "current": 25,
+    "sessions": 477,
+    "assigned": 470,
+    "current": 26,
     "max": 60,
     "queue": 0,
-    "onlineSeats": "2(朱博宇,沈东升)",
+    "onlineSeats": "2(朱博宇,王鹏)",
     "done": 436,
     "answerRate": 98.53,
     "abandon": 7,
@@ -1318,15 +1318,6 @@
   "rate400": 53.4
  },
  "history": [
-  {
-   "ts": 1791809539564,
-   "skillRate400": 81.6,
-   "skillQueue400": 0,
-   "callIn400": 1141,
-   "signIn400": 7,
-   "onlineSessions": 867,
-   "onlineSeat": 0
-  },
   {
    "ts": 1791809656876,
    "skillRate400": 81.6,
@@ -5811,6 +5802,15 @@
   },
   {
    "ts": 1791901784081,
+   "skillRate400": 59.26,
+   "skillQueue400": 0,
+   "callIn400": 27,
+   "signIn400": 1,
+   "onlineSessions": 707,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1791901929838,
    "skillRate400": 59.26,
    "skillQueue400": 0,
    "callIn400": 27,
