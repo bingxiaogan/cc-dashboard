@@ -1,16 +1,16 @@
 {
- "ts": 1791898373168,
- "collectedAtCn": "2026/10/13 21:32:53",
+ "ts": 1791898525875,
+ "collectedAtCn": "2026/10/13 21:35:25",
  "overview": {
   "总排队数": "0",
-  "坐席空闲数": "3",
+  "坐席空闲数": "2",
   "坐席忙碌数": "0 (0)",
-  "接通率": "21.79%",
+  "接通率": "21.78%",
   "满意率": "100.00%",
-  "呼入总数": "13340",
+  "呼入总数": "13347",
   "当前呼入数": "0",
   "外呼总数": "5401",
-  "当前外呼数": "1",
+  "当前外呼数": "0",
   "呼入平均通话时长": "00:02:57",
   "AI通话数": "0 (3)"
  },
@@ -432,8 +432,8 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 1850,
-   "ivr": 851,
+   "callIn": 1852,
+   "ivr": 853,
    "ringMissed": 0,
    "queueAbandon": 112,
    "answered": 887,
@@ -662,8 +662,8 @@
   },
   {
    "service": "88236602(其他渠道4000166088)",
-   "callIn": 535,
-   "ivr": 267,
+   "callIn": 536,
+   "ivr": 268,
    "ringMissed": 4,
    "queueAbandon": 26,
    "answered": 251,
@@ -1079,8 +1079,8 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 1850,
-    "ivr": 851,
+    "callIn": 1852,
+    "ivr": 853,
     "ringMissed": 0,
     "queueAbandon": 112,
     "answered": 887,
@@ -1098,10 +1098,10 @@
     "transferred": 0
    }
   ],
-  "total": 1876,
+  "total": 1878,
   "answered": 900,
-  "ivr": 861,
-  "connectRate": 93.87
+  "ivr": 863,
+  "connectRate": 93.88
  },
  "online": {
   "groups": [
@@ -1137,11 +1137,11 @@
     "name": "官网严选寄卖售后咨询",
     "sessions": 241,
     "assigned": 230,
-    "current": 13,
+    "current": 11,
     "max": 120,
     "queue": 0,
     "onlineSeats": "4(沈东升,黄益群,王鹏,李宜慢)",
-    "done": 217,
+    "done": 219,
     "answerRate": 95.44,
     "abandon": 11,
     "voicemail": 0,
@@ -1163,14 +1163,14 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1470,
-    "assigned": 1413,
-    "current": 109,
+    "sessions": 1474,
+    "assigned": 1417,
+    "current": 105,
     "max": 120,
     "queue": 4,
     "onlineSeats": "4(沈东升,黄益群,王鹏,李宜慢)",
-    "done": 1239,
-    "answerRate": 96.12,
+    "done": 1247,
+    "answerRate": 96.13,
     "abandon": 57,
     "voicemail": 0,
     "satisfactionRate": 6.25
@@ -1275,13 +1275,13 @@
    },
    {
     "name": "官网严选自营售前咨询",
-    "sessions": 454,
-    "assigned": 447,
-    "current": 31,
+    "sessions": 455,
+    "assigned": 448,
+    "current": 30,
     "max": 120,
-    "queue": 1,
+    "queue": 0,
     "onlineSeats": "4(沈东升,黄益群,王鹏,李宜慢)",
-    "done": 409,
+    "done": 411,
     "answerRate": 98.46,
     "abandon": 7,
     "voicemail": 0,
@@ -1511,15 +1511,6 @@
   "rate400": 83.3
  },
  "history": [
-  {
-   "ts": 1791806286675,
-   "skillRate400": 81.66,
-   "skillQueue400": 0,
-   "callIn400": 1096,
-   "signIn400": 11,
-   "onlineSessions": 786,
-   "onlineSeat": 2
-  },
   {
    "ts": 1791806394346,
    "skillRate400": 81.69,
@@ -6004,6 +5995,15 @@
   },
   {
    "ts": 1791898373168,
+   "skillRate400": 84.42,
+   "skillQueue400": 0,
+   "callIn400": 1008,
+   "signIn400": 2,
+   "onlineSessions": 707,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1791898525875,
    "skillRate400": 84.42,
    "skillQueue400": 0,
    "callIn400": 1008,
