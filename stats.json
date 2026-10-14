@@ -1,17 +1,17 @@
 {
- "ts": 1791936332662,
- "collectedAtCn": "2026/10/14 08:05:32",
+ "ts": 1791936650185,
+ "collectedAtCn": "2026/10/14 08:10:50",
  "overview": {
-  "总排队数": "1",
+  "总排队数": "3",
   "坐席空闲数": "4",
   "坐席忙碌数": "0 (0)",
-  "接通率": "5.00%",
-  "满意率": "0%",
-  "呼入总数": "120",
+  "接通率": "5.71%",
+  "满意率": "100.00%",
+  "呼入总数": "140",
   "当前呼入数": "5",
   "外呼总数": "0",
   "当前外呼数": "0",
-  "呼入平均通话时长": "00:00:33",
+  "呼入平均通话时长": "00:03:01",
   "AI通话数": "0 (3)"
  },
  "skillGroups": [
@@ -21,13 +21,13 @@
    "signIn": 4,
    "members": "王轩,王雅雯,杨敏霞,朱静珏",
    "ring": 0,
-   "queue": 1,
-   "todayAnswered": 3,
-   "missed": 0,
-   "rate": 75,
-   "total": 4,
-   "current": 2,
-   "avgDuration": "00:01:07",
+   "queue": 0,
+   "todayAnswered": 4,
+   "missed": 1,
+   "rate": 80,
+   "total": 5,
+   "current": 1,
+   "avgDuration": "00:02:08",
    "transferIn": 0,
    "transferOut": 0
   },
@@ -58,8 +58,8 @@
    "missed": 0,
    "rate": 100,
    "total": 1,
-   "current": 1,
-   "avgDuration": "00:00:00",
+   "current": 0,
+   "avgDuration": "00:05:39",
    "transferIn": 0,
    "transferOut": 0
   },
@@ -69,13 +69,13 @@
    "signIn": 4,
    "members": "王轩,王雅雯,杨敏霞,朱静珏",
    "ring": 0,
-   "queue": 0,
+   "queue": 1,
    "todayAnswered": 1,
    "missed": 0,
    "rate": 100,
-   "total": 1,
+   "total": 2,
    "current": 1,
-   "avgDuration": "00:00:00",
+   "avgDuration": "00:04:25",
    "transferIn": 0,
    "transferOut": 0
   },
@@ -181,12 +181,12 @@
    "signIn": 4,
    "members": "王轩,王雅雯,杨敏霞,朱静珏",
    "ring": 0,
-   "queue": 0,
+   "queue": 2,
    "todayAnswered": 0,
-   "missed": 0,
+   "missed": 1,
    "rate": 0,
-   "total": 0,
-   "current": 0,
+   "total": 3,
+   "current": 2,
    "avgDuration": "00:00:00",
    "transferIn": 0,
    "transferOut": 0
@@ -294,23 +294,23 @@
    "members": "王轩,王雅雯,杨敏霞,朱静珏",
    "ring": 0,
    "queue": 0,
-   "todayAnswered": 1,
+   "todayAnswered": 2,
    "missed": 0,
    "rate": 100,
-   "total": 1,
-   "current": 1,
-   "avgDuration": "00:00:00",
+   "total": 2,
+   "current": 0,
+   "avgDuration": "00:02:47",
    "transferIn": 0,
    "transferOut": 0
   }
  ],
  "skillSummary": {
   "idleSeats": 0,
-  "answered": 6,
-  "missed": 0,
-  "rate": 85.71,
-  "total": 7,
-  "queue": 1,
+  "answered": 8,
+  "missed": 2,
+  "rate": 61.54,
+  "total": 13,
+  "queue": 3,
   "signIn": 5
  },
  "services": [
@@ -496,11 +496,11 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 58,
-   "ivr": 52,
+   "callIn": 67,
+   "ivr": 57,
    "ringMissed": 0,
-   "queueAbandon": 0,
-   "answered": 6,
+   "queueAbandon": 2,
+   "answered": 8,
    "other": 0,
    "transferred": 0
   },
@@ -1146,11 +1146,11 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 58,
-    "ivr": 52,
+    "callIn": 67,
+    "ivr": 57,
     "ringMissed": 0,
-    "queueAbandon": 0,
-    "answered": 6,
+    "queueAbandon": 2,
+    "answered": 8,
     "other": 0,
     "transferred": 0
    },
@@ -1165,10 +1165,10 @@
     "transferred": 0
    }
   ],
-  "total": 60,
-  "answered": 6,
-  "ivr": 54,
-  "connectRate": 100
+  "total": 69,
+  "answered": 8,
+  "ivr": 59,
+  "connectRate": 97.1
  },
  "online": {
   "groups": [],
@@ -1353,24 +1353,6 @@
   "rate400": 54.2
  },
  "history": [
-  {
-   "ts": 1791818200784,
-   "skillRate400": 48.39,
-   "skillQueue400": 0,
-   "callIn400": 31,
-   "signIn400": 1,
-   "onlineSessions": 867,
-   "onlineSeat": 0
-  },
-  {
-   "ts": 1791818315735,
-   "skillRate400": 48.39,
-   "skillQueue400": 0,
-   "callIn400": 31,
-   "signIn400": 1,
-   "onlineSessions": 867,
-   "onlineSeat": 0
-  },
   {
    "ts": 1791818430576,
    "skillRate400": 48.39,
@@ -5849,6 +5831,24 @@
    "skillRate400": 85.71,
    "skillQueue400": 1,
    "callIn400": 7,
+   "signIn400": 5,
+   "onlineSessions": null,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1791936491463,
+   "skillRate400": 100,
+   "skillQueue400": 0,
+   "callIn400": 7,
+   "signIn400": 5,
+   "onlineSessions": null,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1791936650185,
+   "skillRate400": 61.54,
+   "skillQueue400": 3,
+   "callIn400": 13,
    "signIn400": 5,
    "onlineSessions": null,
    "onlineSeat": 0
