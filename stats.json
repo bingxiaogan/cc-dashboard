@@ -1,13 +1,13 @@
 {
- "ts": 1792080510831,
- "collectedAtCn": "2026/10/16 00:08:30",
+ "ts": 1792080628470,
+ "collectedAtCn": "2026/10/16 00:10:28",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "2",
   "坐席忙碌数": "0 (0)",
-  "接通率": "21.97%",
+  "接通率": "0%",
   "满意率": "100.00%",
-  "呼入总数": "0",
+  "呼入总数": "1",
   "当前呼入数": "0",
   "外呼总数": "0",
   "当前外呼数": "0",
@@ -240,8 +240,8 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 0,
-   "ivr": 0,
+   "callIn": 1,
+   "ivr": 1,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -886,8 +886,8 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 0,
-    "ivr": 0,
+    "callIn": 1,
+    "ivr": 1,
     "ringMissed": 0,
     "queueAbandon": 0,
     "answered": 0,
@@ -905,10 +905,10 @@
     "transferred": 0
    }
   ],
-  "total": 0,
+  "total": 1,
   "answered": 0,
-  "ivr": 0,
-  "connectRate": null
+  "ivr": 1,
+  "connectRate": 100
  },
  "online": {
   "groups": [
@@ -1572,31 +1572,31 @@
    },
    {
     "name": "官网严选自营售前咨询",
+    "sessions": 1,
+    "assigned": 0,
+    "current": 0,
+    "max": 0,
+    "queue": 5,
+    "onlineSeats": "0",
+    "done": 0,
+    "answerRate": 0,
+    "abandon": 1,
+    "voicemail": 0,
+    "satisfactionRate": 0
+   },
+   {
+    "name": "分类在线技能组",
     "sessions": 0,
     "assigned": 0,
     "current": 0,
     "max": 0,
-    "queue": 6,
+    "queue": 0,
     "onlineSeats": "0",
     "done": 0,
     "answerRate": 0,
     "abandon": 0,
     "voicemail": 0,
     "satisfactionRate": 0
-   },
-   {
-    "name": "分类在线技能组",
-    "sessions": 739,
-    "assigned": 739,
-    "current": 0,
-    "max": 0,
-    "queue": 0,
-    "onlineSeats": "0",
-    "done": 739,
-    "answerRate": 100,
-    "abandon": 0,
-    "voicemail": 0,
-    "satisfactionRate": 90.91
    },
    {
     "name": "废弃勿用",
@@ -2105,17 +2105,17 @@
   ],
   "fenlei": {
    "name": "分类在线技能组",
-   "sessions": 739,
-   "assigned": 739,
+   "sessions": 0,
+   "assigned": 0,
    "current": 0,
    "max": 0,
    "queue": 0,
    "onlineSeats": "0",
-   "done": 739,
-   "answerRate": 100,
+   "done": 0,
+   "answerRate": 0,
    "abandon": 0,
    "voicemail": 0,
-   "satisfactionRate": 90.91
+   "satisfactionRate": 0
   },
   "fenleiNW": {
    "name": "分类在线技能组非工作",
@@ -5118,6 +5118,15 @@
    "callIn400": 0,
    "signIn400": 1,
    "onlineSessions": 739,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1792080628470,
+   "skillRate400": null,
+   "skillQueue400": 0,
+   "callIn400": 0,
+   "signIn400": 1,
+   "onlineSessions": 0,
    "onlineSeat": 0
   }
  ]
