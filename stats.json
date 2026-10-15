@@ -1,14 +1,14 @@
 {
- "ts": 1792078186520,
- "collectedAtCn": "2026/10/15 23:29:46",
+ "ts": 1792078304708,
+ "collectedAtCn": "2026/10/15 23:31:44",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "2",
   "坐席忙碌数": "0 (0)",
-  "接通率": "21.98%",
+  "接通率": "21.97%",
   "满意率": "100.00%",
-  "呼入总数": "14249",
-  "当前呼入数": "0",
+  "呼入总数": "14251",
+  "当前呼入数": "1",
   "外呼总数": "5398",
   "当前外呼数": "0",
   "呼入平均通话时长": "00:02:43",
@@ -240,8 +240,8 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 1687,
-   "ivr": 753,
+   "callIn": 1688,
+   "ivr": 754,
    "ringMissed": 7,
    "queueAbandon": 97,
    "answered": 830,
@@ -300,8 +300,8 @@
   },
   {
    "service": "88236634(88236634)",
-   "callIn": 1050,
-   "ivr": 1050,
+   "callIn": 1051,
+   "ivr": 1051,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -886,8 +886,8 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 1687,
-    "ivr": 753,
+    "callIn": 1688,
+    "ivr": 754,
     "ringMissed": 7,
     "queueAbandon": 97,
     "answered": 830,
@@ -905,9 +905,9 @@
     "transferred": 0
    }
   ],
-  "total": 1708,
+  "total": 1709,
   "answered": 844,
-  "ivr": 756,
+  "ivr": 757,
   "connectRate": 93.68
  },
  "online": {
@@ -1124,15 +1124,15 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1674,
+    "sessions": 1675,
     "assigned": 1504,
     "current": 47,
     "max": 60,
-    "queue": 20,
+    "queue": 21,
     "onlineSeats": "2(李宜慢,沈东升)",
     "done": 1407,
-    "answerRate": 89.84,
-    "abandon": 170,
+    "answerRate": 89.79,
+    "abandon": 171,
     "voicemail": 0,
     "satisfactionRate": 10
    },
@@ -4951,6 +4951,15 @@
   },
   {
    "ts": 1792078186520,
+   "skillRate400": 63.33,
+   "skillQueue400": 0,
+   "callIn400": 30,
+   "signIn400": 1,
+   "onlineSessions": 739,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1792078304708,
    "skillRate400": 63.33,
    "skillQueue400": 0,
    "callIn400": 30,
