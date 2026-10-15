@@ -1,17 +1,17 @@
 {
  "objects": {
   "c400d": {
-   "level": 3,
-   "levelName": "二级",
-   "color": "橙",
+   "level": 2,
+   "levelName": "一级",
+   "color": "黄",
    "vals": {
-    "load": 154.1,
-    "rate": 78.9,
-    "lv": 4,
-    "rv": 3
+    "load": 144.2,
+    "rate": 81.3,
+    "lv": 3,
+    "rv": 2
    },
-   "ts": 1792026228478,
-   "tsCn": "2026/10/15 09:03:48",
+   "ts": 1792026388800,
+   "tsCn": "2026/10/15 09:06:28",
    "lastLevel": 3,
    "muted": false,
    "minLevel": 2,
@@ -22,36 +22,36 @@
    "levelName": "正常",
    "color": "蓝",
    "vals": {
-    "load": 96.9,
+    "load": 97,
     "rate": 84,
     "lv": 1,
     "rv": 2,
     "src": "周报口径(今实时)",
     "wDays": 4,
     "sum": {
-     "call": 3178,
-     "ans": 2670,
-     "den400": 3278,
-     "on": 2349,
+     "call": 3196,
+     "ans": 2686,
+     "den400": 3294,
+     "on": 2358,
      "denOn": 3960
     }
    },
-   "ts": 1792026228478,
-   "tsCn": "2026/10/15 09:03:48",
+   "ts": 1792026388800,
+   "tsCn": "2026/10/15 09:06:28",
    "lastLevel": 1,
    "muted": false,
    "minLevel": 2,
    "lastAlertTs": 1791984370303
   },
   "onld": {
-   "level": 0,
-   "levelName": "低负荷",
-   "color": "绿",
+   "level": 2,
+   "levelName": "一级",
+   "color": "黄",
    "vals": {
-    "load": 78.6
+    "load": 111.1
    },
-   "ts": 1791987972322,
-   "tsCn": "2026/10/14 22:26:12",
+   "ts": 1792026388800,
+   "tsCn": "2026/10/15 09:06:28",
    "lastLevel": 0,
    "muted": true,
    "minLevel": 99,
@@ -62,19 +62,19 @@
    "levelName": "低负荷",
    "color": "绿",
    "vals": {
-    "load": 59.3,
+    "load": 59.5,
     "src": "周报口径(今实时)",
     "wDays": 4,
     "sum": {
-     "call": 3178,
-     "ans": 2670,
-     "den400": 3278,
-     "on": 2349,
+     "call": 3196,
+     "ans": 2686,
+     "den400": 3294,
+     "on": 2358,
      "denOn": 3960
     }
    },
-   "ts": 1792026228478,
-   "tsCn": "2026/10/15 09:03:48",
+   "ts": 1792026388800,
+   "tsCn": "2026/10/15 09:06:28",
    "lastLevel": 0,
    "muted": true,
    "minLevel": 99,
@@ -85,16 +85,16 @@
    "levelName": "正常",
    "color": "蓝",
    "vals": {
-    "stock": 43,
-    "un": 14,
+    "stock": 45,
+    "un": 11,
     "cap": 57.1,
-    "load": 75.3,
+    "load": 78.8,
     "lv": 0,
     "rv": 1,
     "agents": 2
    },
-   "ts": 1792026228478,
-   "tsCn": "2026/10/15 09:03:48",
+   "ts": 1792026388800,
+   "tsCn": "2026/10/15 09:06:28",
    "lastLevel": 1,
    "muted": true,
    "minLevel": 99,
@@ -116,6 +116,6 @@
    "lastAlertTs": 1790326009710
   }
  },
- "updated": "2026/10/15 09:03:48",
- "updatedTs": 1792026228478
+ "updated": "2026/10/15 09:06:28",
+ "updatedTs": 1792026388800
 }
