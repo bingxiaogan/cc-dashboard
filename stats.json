@@ -1,13 +1,13 @@
 {
- "ts": 1792077914970,
- "collectedAtCn": "2026/10/15 23:25:14",
+ "ts": 1792078186520,
+ "collectedAtCn": "2026/10/15 23:29:46",
  "overview": {
   "总排队数": "0",
-  "坐席空闲数": "1",
+  "坐席空闲数": "2",
   "坐席忙碌数": "0 (0)",
   "接通率": "21.98%",
   "满意率": "100.00%",
-  "呼入总数": "14245",
+  "呼入总数": "14249",
   "当前呼入数": "0",
   "外呼总数": "5398",
   "当前外呼数": "0",
@@ -240,8 +240,8 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 1686,
-   "ivr": 752,
+   "callIn": 1687,
+   "ivr": 753,
    "ringMissed": 7,
    "queueAbandon": 97,
    "answered": 830,
@@ -300,8 +300,8 @@
   },
   {
    "service": "88236634(88236634)",
-   "callIn": 1049,
-   "ivr": 1049,
+   "callIn": 1050,
+   "ivr": 1050,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -886,8 +886,8 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 1686,
-    "ivr": 752,
+    "callIn": 1687,
+    "ivr": 753,
     "ringMissed": 7,
     "queueAbandon": 97,
     "answered": 830,
@@ -905,10 +905,10 @@
     "transferred": 0
    }
   ],
-  "total": 1707,
+  "total": 1708,
   "answered": 844,
-  "ivr": 755,
-  "connectRate": 93.67
+  "ivr": 756,
+  "connectRate": 93.68
  },
  "online": {
   "groups": [
@@ -965,7 +965,7 @@
     "done": 37,
     "answerRate": 100,
     "abandon": 0,
-    "voicemail": 7,
+    "voicemail": 8,
     "satisfactionRate": 100
    },
    {
@@ -1068,15 +1068,15 @@
    },
    {
     "name": "官网严选寄卖售后咨询",
-    "sessions": 278,
+    "sessions": 279,
     "assigned": 225,
     "current": 9,
     "max": 60,
-    "queue": 6,
+    "queue": 5,
     "onlineSeats": "2(李宜慢,沈东升)",
     "done": 216,
-    "answerRate": 80.94,
-    "abandon": 53,
+    "answerRate": 80.65,
+    "abandon": 54,
     "voicemail": 0,
     "satisfactionRate": 0
    },
@@ -1124,17 +1124,17 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1672,
+    "sessions": 1674,
     "assigned": 1504,
-    "current": 50,
+    "current": 47,
     "max": 60,
-    "queue": 17,
+    "queue": 20,
     "onlineSeats": "2(李宜慢,沈东升)",
-    "done": 1404,
-    "answerRate": 89.95,
-    "abandon": 168,
+    "done": 1407,
+    "answerRate": 89.84,
+    "abandon": 170,
     "voicemail": 0,
-    "satisfactionRate": 11.11
+    "satisfactionRate": 10
    },
    {
     "name": "寄卖商服理赔",
@@ -1572,14 +1572,14 @@
    },
    {
     "name": "官网严选自营售前咨询",
-    "sessions": 523,
-    "assigned": 491,
-    "current": 8,
+    "sessions": 524,
+    "assigned": 492,
+    "current": 9,
     "max": 60,
-    "queue": 6,
+    "queue": 8,
     "onlineSeats": "2(李宜慢,沈东升)",
     "done": 478,
-    "answerRate": 93.88,
+    "answerRate": 93.89,
     "abandon": 32,
     "voicemail": 1,
     "satisfactionRate": 0
@@ -4933,6 +4933,24 @@
   },
   {
    "ts": 1792077914970,
+   "skillRate400": 63.33,
+   "skillQueue400": 0,
+   "callIn400": 30,
+   "signIn400": 1,
+   "onlineSessions": 739,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1792078068935,
+   "skillRate400": 63.33,
+   "skillQueue400": 0,
+   "callIn400": 30,
+   "signIn400": 1,
+   "onlineSessions": 739,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1792078186520,
    "skillRate400": 63.33,
    "skillQueue400": 0,
    "callIn400": 30,
