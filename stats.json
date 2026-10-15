@@ -1,14 +1,14 @@
 {
- "ts": 1792072376212,
- "collectedAtCn": "2026/10/15 21:52:56",
+ "ts": 1792072493823,
+ "collectedAtCn": "2026/10/15 21:54:53",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "2",
   "坐席忙碌数": "0 (0)",
-  "接通率": "22.24%",
+  "接通率": "22.22%",
   "满意率": "100.00%",
-  "呼入总数": "14080",
-  "当前呼入数": "0",
+  "呼入总数": "14090",
+  "当前呼入数": "2",
   "外呼总数": "5398",
   "当前外呼数": "0",
   "呼入平均通话时长": "00:02:43",
@@ -240,8 +240,8 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 1659,
-   "ivr": 725,
+   "callIn": 1660,
+   "ivr": 726,
    "ringMissed": 7,
    "queueAbandon": 97,
    "answered": 830,
@@ -300,8 +300,8 @@
   },
   {
    "service": "88236634(88236634)",
-   "callIn": 995,
-   "ivr": 995,
+   "callIn": 997,
+   "ivr": 997,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -480,8 +480,8 @@
   },
   {
    "service": "81198(上门按键转接)",
-   "callIn": 927,
-   "ivr": 577,
+   "callIn": 932,
+   "ivr": 582,
    "ringMissed": 9,
    "queueAbandon": 53,
    "answered": 323,
@@ -520,8 +520,8 @@
   },
   {
    "service": "88236603(京东渠道4000990166)",
-   "callIn": 479,
-   "ivr": 159,
+   "callIn": 480,
+   "ivr": 160,
    "ringMissed": 2,
    "queueAbandon": 30,
    "answered": 297,
@@ -886,8 +886,8 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 1659,
-    "ivr": 725,
+    "callIn": 1660,
+    "ivr": 726,
     "ringMissed": 7,
     "queueAbandon": 97,
     "answered": 830,
@@ -905,10 +905,10 @@
     "transferred": 0
    }
   ],
-  "total": 1680,
+  "total": 1681,
   "answered": 844,
-  "ivr": 728,
-  "connectRate": 93.57
+  "ivr": 729,
+  "connectRate": 93.58
  },
  "online": {
   "groups": [
@@ -1124,14 +1124,14 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1560,
-    "assigned": 1429,
-    "current": 94,
+    "sessions": 1562,
+    "assigned": 1431,
+    "current": 95,
     "max": 90,
-    "queue": 34,
+    "queue": 35,
     "onlineSeats": "3(黄益群,沈东升,李宜慢)",
-    "done": 1285,
-    "answerRate": 91.6,
+    "done": 1286,
+    "answerRate": 91.61,
     "abandon": 131,
     "voicemail": 0,
     "satisfactionRate": 11.11
@@ -1450,7 +1450,7 @@
     "assigned": 46,
     "current": 1,
     "max": 90,
-    "queue": 1,
+    "queue": 2,
     "onlineSeats": "3(黄益群,沈东升,李宜慢)",
     "done": 45,
     "answerRate": 92,
@@ -1574,11 +1574,11 @@
     "name": "官网严选自营售前咨询",
     "sessions": 487,
     "assigned": 461,
-    "current": 33,
+    "current": 31,
     "max": 90,
     "queue": 1,
     "onlineSeats": "3(黄益群,沈东升,李宜慢)",
-    "done": 423,
+    "done": 425,
     "answerRate": 94.66,
     "abandon": 26,
     "voicemail": 0,
@@ -4546,6 +4546,15 @@
   },
   {
    "ts": 1792072376212,
+   "skillRate400": 63.33,
+   "skillQueue400": 0,
+   "callIn400": 30,
+   "signIn400": 1,
+   "onlineSessions": 739,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1792072493823,
    "skillRate400": 63.33,
    "skillQueue400": 0,
    "callIn400": 30,
