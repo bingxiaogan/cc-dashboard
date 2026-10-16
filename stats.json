@@ -1,14 +1,14 @@
 {
- "ts": 1792108567208,
- "collectedAtCn": "2026/10/16 07:56:07",
+ "ts": 1792108718218,
+ "collectedAtCn": "2026/10/16 07:58:38",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "2",
   "坐席忙碌数": "0 (0)",
   "接通率": "0%",
   "满意率": "100.00%",
-  "呼入总数": "72",
-  "当前呼入数": "2",
+  "呼入总数": "74",
+  "当前呼入数": "0",
   "外呼总数": "0",
   "当前外呼数": "0",
   "呼入平均通话时长": "00:00:00",
@@ -50,8 +50,8 @@
   {
    "name": "分类回收400-3收益到账咨询（爱分类）",
    "idleSeats": 0,
-   "signIn": 1,
-   "members": "赵晓晓",
+   "signIn": 2,
+   "members": "赵锦超,赵晓晓",
    "ring": 0,
    "queue": 0,
    "todayAnswered": 0,
@@ -258,8 +258,8 @@
   {
    "name": "95分分类回收400-3收益到账咨询",
    "idleSeats": 0,
-   "signIn": 1,
-   "members": "赵晓晓",
+   "signIn": 2,
+   "members": "赵锦超,赵晓晓",
    "ring": 0,
    "queue": 0,
    "todayAnswered": 0,
@@ -311,7 +311,7 @@
   "rate": null,
   "total": 0,
   "queue": 0,
-  "signIn": 1
+  "signIn": 2
  },
  "services": [
   {
@@ -496,8 +496,8 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 29,
-   "ivr": 29,
+   "callIn": 30,
+   "ivr": 30,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -696,8 +696,8 @@
   },
   {
    "service": "81199(门店按键转接)",
-   "callIn": 1,
-   "ivr": 1,
+   "callIn": 2,
+   "ivr": 2,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -1116,7 +1116,8 @@
   }
  ],
  "signInAgents400": [
-  "赵晓晓"
+  "赵晓晓",
+  "赵锦超"
  ],
  "keyServices": {
   "list": [
@@ -1142,8 +1143,8 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 29,
-    "ivr": 29,
+    "callIn": 30,
+    "ivr": 30,
     "ringMissed": 0,
     "queueAbandon": 0,
     "answered": 0,
@@ -1161,9 +1162,9 @@
     "transferred": 0
    }
   ],
-  "total": 29,
+  "total": 30,
   "answered": 0,
-  "ivr": 29,
+  "ivr": 30,
   "connectRate": 100
  },
  "online": {
@@ -2451,15 +2452,6 @@
   "rate400": 77.8
  },
  "history": [
-  {
-   "ts": 1792026594438,
-   "skillRate400": 81.61,
-   "skillQueue400": 0,
-   "callIn400": 87,
-   "signIn400": 21,
-   "onlineSessions": null,
-   "onlineSeat": 0
-  },
   {
    "ts": 1792026849074,
    "skillRate400": 79.59,
@@ -6948,6 +6940,15 @@
    "skillQueue400": 0,
    "callIn400": 0,
    "signIn400": 1,
+   "onlineSessions": 0,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1792108718218,
+   "skillRate400": null,
+   "skillQueue400": 0,
+   "callIn400": 0,
+   "signIn400": 2,
    "onlineSessions": 0,
    "onlineSeat": 0
   }
