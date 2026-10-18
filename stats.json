@@ -1,13 +1,13 @@
 {
- "ts": 1792335514495,
- "collectedAtCn": "2026/10/18 22:58:34",
+ "ts": 1792335668512,
+ "collectedAtCn": "2026/10/18 23:01:08",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "2",
   "坐席忙碌数": "0 (0)",
   "接通率": "25.38%",
   "满意率": "100.00%",
-  "呼入总数": "15060",
+  "呼入总数": "15064",
   "当前呼入数": "0",
   "外呼总数": "4795",
   "当前外呼数": "0",
@@ -240,8 +240,8 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 2200,
-   "ivr": 933,
+   "callIn": 2202,
+   "ivr": 935,
    "ringMissed": 8,
    "queueAbandon": 339,
    "answered": 920,
@@ -330,8 +330,8 @@
   },
   {
    "service": "88236639(88236639)",
-   "callIn": 23,
-   "ivr": 23,
+   "callIn": 24,
+   "ivr": 24,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -520,8 +520,8 @@
   },
   {
    "service": "88236603(京东渠道4000990166)",
-   "callIn": 454,
-   "ivr": 140,
+   "callIn": 455,
+   "ivr": 141,
    "ringMissed": 2,
    "queueAbandon": 31,
    "answered": 290,
@@ -886,8 +886,8 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 2200,
-    "ivr": 933,
+    "callIn": 2202,
+    "ivr": 935,
     "ringMissed": 8,
     "queueAbandon": 339,
     "answered": 920,
@@ -905,10 +905,10 @@
     "transferred": 0
    }
   ],
-  "total": 2269,
+  "total": 2271,
   "answered": 949,
-  "ivr": 967,
-  "connectRate": 84.44
+  "ivr": 969,
+  "connectRate": 84.46
  },
  "online": {
   "groups": [
@@ -1070,11 +1070,11 @@
     "name": "官网严选寄卖售后咨询",
     "sessions": 265,
     "assigned": 193,
-    "current": 10,
+    "current": 9,
     "max": 0,
     "queue": 1,
     "onlineSeats": "0",
-    "done": 183,
+    "done": 184,
     "answerRate": 72.83,
     "abandon": 72,
     "voicemail": 0,
@@ -1124,14 +1124,14 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1732,
-    "assigned": 1481,
-    "current": 41,
+    "sessions": 1734,
+    "assigned": 1483,
+    "current": 38,
     "max": 0,
     "queue": 14,
     "onlineSeats": "0",
-    "done": 1368,
-    "answerRate": 85.51,
+    "done": 1373,
+    "answerRate": 85.52,
     "abandon": 251,
     "voicemail": 0,
     "satisfactionRate": 0
@@ -1581,7 +1581,7 @@
     "done": 504,
     "answerRate": 90.14,
     "abandon": 56,
-    "voicemail": 7,
+    "voicemail": 8,
     "satisfactionRate": 0
    },
    {
@@ -2191,15 +2191,6 @@
   "rate400": 86.5
  },
  "history": [
-  {
-   "ts": 1792220049502,
-   "skillRate400": 91.27,
-   "skillQueue400": 0,
-   "callIn400": 424,
-   "signIn400": 13,
-   "onlineSessions": 382,
-   "onlineSeat": 3
-  },
   {
    "ts": 1792220173917,
    "skillRate400": 91.53,
@@ -6684,6 +6675,15 @@
   },
   {
    "ts": 1792335514495,
+   "skillRate400": 46.34,
+   "skillQueue400": 0,
+   "callIn400": 41,
+   "signIn400": 1,
+   "onlineSessions": 1013,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1792335668512,
    "skillRate400": 46.34,
    "skillQueue400": 0,
    "callIn400": 41,
