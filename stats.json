@@ -1,13 +1,13 @@
 {
- "ts": 1792333203664,
- "collectedAtCn": "2026/10/18 22:20:03",
+ "ts": 1792333357183,
+ "collectedAtCn": "2026/10/18 22:22:37",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "2",
   "坐席忙碌数": "0 (0)",
-  "接通率": "25.45%",
+  "接通率": "25.44%",
   "满意率": "100.00%",
-  "呼入总数": "15021",
+  "呼入总数": "15025",
   "当前呼入数": "1",
   "外呼总数": "4795",
   "当前外呼数": "0",
@@ -240,8 +240,8 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 2184,
-   "ivr": 917,
+   "callIn": 2185,
+   "ivr": 918,
    "ringMissed": 8,
    "queueAbandon": 339,
    "answered": 920,
@@ -440,8 +440,8 @@
   },
   {
    "service": "81199(门店按键转接)",
-   "callIn": 544,
-   "ivr": 389,
+   "callIn": 545,
+   "ivr": 390,
    "ringMissed": 5,
    "queueAbandon": 21,
    "answered": 136,
@@ -480,8 +480,8 @@
   },
   {
    "service": "81198(上门按键转接)",
-   "callIn": 1437,
-   "ivr": 826,
+   "callIn": 1438,
+   "ivr": 827,
    "ringMissed": 12,
    "queueAbandon": 125,
    "answered": 529,
@@ -886,8 +886,8 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 2184,
-    "ivr": 917,
+    "callIn": 2185,
+    "ivr": 918,
     "ringMissed": 8,
     "queueAbandon": 339,
     "answered": 920,
@@ -905,10 +905,10 @@
     "transferred": 0
    }
   ],
-  "total": 2253,
+  "total": 2254,
   "answered": 949,
-  "ivr": 951,
-  "connectRate": 84.33
+  "ivr": 952,
+  "connectRate": 84.34
  },
  "online": {
   "groups": [
@@ -1124,14 +1124,14 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1688,
-    "assigned": 1448,
-    "current": 72,
+    "sessions": 1690,
+    "assigned": 1450,
+    "current": 66,
     "max": 30,
-    "queue": 25,
+    "queue": 23,
     "onlineSeats": "1(沈东升)",
-    "done": 1304,
-    "answerRate": 85.78,
+    "done": 1312,
+    "answerRate": 85.8,
     "abandon": 240,
     "voicemail": 0,
     "satisfactionRate": 0
@@ -1572,14 +1572,14 @@
    },
    {
     "name": "官网严选自营售前咨询",
-    "sessions": 567,
-    "assigned": 511,
-    "current": 22,
+    "sessions": 568,
+    "assigned": 512,
+    "current": 20,
     "max": 30,
-    "queue": 1,
+    "queue": 0,
     "onlineSeats": "1(沈东升)",
-    "done": 485,
-    "answerRate": 90.12,
+    "done": 487,
+    "answerRate": 90.14,
     "abandon": 56,
     "voicemail": 0,
     "satisfactionRate": 0
@@ -2191,15 +2191,6 @@
   "rate400": 86.5
  },
  "history": [
-  {
-   "ts": 1792217525353,
-   "skillRate400": 92.6,
-   "skillQueue400": 0,
-   "callIn400": 365,
-   "signIn400": 13,
-   "onlineSessions": 336,
-   "onlineSeat": 3
-  },
   {
    "ts": 1792217633835,
    "skillRate400": 92.64,
@@ -6684,6 +6675,15 @@
   },
   {
    "ts": 1792333203664,
+   "skillRate400": 46.34,
+   "skillQueue400": 0,
+   "callIn400": 41,
+   "signIn400": 1,
+   "onlineSessions": 1013,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1792333357183,
    "skillRate400": 46.34,
    "skillQueue400": 0,
    "callIn400": 41,
