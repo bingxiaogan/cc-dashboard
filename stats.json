@@ -1,13 +1,13 @@
 {
- "ts": 1792365961777,
- "collectedAtCn": "2026/10/19 07:26:01",
+ "ts": 1792366081081,
+ "collectedAtCn": "2026/10/19 07:28:01",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "2",
   "坐席忙碌数": "0 (0)",
   "接通率": "0%",
   "满意率": "100.00%",
-  "呼入总数": "66",
+  "呼入总数": "68",
   "当前呼入数": "0",
   "外呼总数": "0",
   "当前外呼数": "0",
@@ -240,8 +240,8 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 30,
-   "ivr": 30,
+   "callIn": 31,
+   "ivr": 31,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -660,8 +660,8 @@
   },
   {
    "service": "051983074462(9523622)",
-   "callIn": 0,
-   "ivr": 0,
+   "callIn": 1,
+   "ivr": 1,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -886,8 +886,8 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 30,
-    "ivr": 30,
+    "callIn": 31,
+    "ivr": 31,
     "ringMissed": 0,
     "queueAbandon": 0,
     "answered": 0,
@@ -896,8 +896,8 @@
    },
    {
     "service": "051983074462(9523622)",
-    "callIn": 0,
-    "ivr": 0,
+    "callIn": 1,
+    "ivr": 1,
     "ringMissed": 0,
     "queueAbandon": 0,
     "answered": 0,
@@ -905,9 +905,9 @@
     "transferred": 0
    }
   ],
-  "total": 30,
+  "total": 32,
   "answered": 0,
-  "ivr": 30,
+  "ivr": 32,
   "connectRate": 100
  },
  "online": {
@@ -2169,15 +2169,6 @@
   "rate400": 86.5
  },
  "history": [
-  {
-   "ts": 1792301114507,
-   "skillRate400": 75,
-   "skillQueue400": 0,
-   "callIn400": 640,
-   "signIn400": 13,
-   "onlineSessions": 378,
-   "onlineSeat": 2
-  },
   {
    "ts": 1792301224454,
    "skillRate400": 75.04,
@@ -6662,6 +6653,15 @@
   },
   {
    "ts": 1792365961777,
+   "skillRate400": null,
+   "skillQueue400": 0,
+   "callIn400": 0,
+   "signIn400": 1,
+   "onlineSessions": 0,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1792366081081,
    "skillRate400": null,
    "skillQueue400": 0,
    "callIn400": 0,
