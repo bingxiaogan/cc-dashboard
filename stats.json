@@ -1,13 +1,13 @@
 {
- "ts": 1792338596686,
- "collectedAtCn": "2026/10/18 23:49:56",
+ "ts": 1792338750207,
+ "collectedAtCn": "2026/10/18 23:52:30",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "2",
   "坐席忙碌数": "0 (0)",
   "接通率": "25.35%",
   "满意率": "100.00%",
-  "呼入总数": "15081",
+  "呼入总数": "15082",
   "当前呼入数": "0",
   "外呼总数": "4795",
   "当前外呼数": "0",
@@ -240,8 +240,8 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 2208,
-   "ivr": 941,
+   "callIn": 2209,
+   "ivr": 942,
    "ringMissed": 8,
    "queueAbandon": 339,
    "answered": 920,
@@ -886,8 +886,8 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 2208,
-    "ivr": 941,
+    "callIn": 2209,
+    "ivr": 942,
     "ringMissed": 8,
     "queueAbandon": 339,
     "answered": 920,
@@ -905,9 +905,9 @@
     "transferred": 0
    }
   ],
-  "total": 2277,
+  "total": 2278,
   "answered": 949,
-  "ivr": 975,
+  "ivr": 976,
   "connectRate": 84.5
  },
  "online": {
@@ -1126,11 +1126,11 @@
     "name": "官网严选自营售后咨询",
     "sessions": 1771,
     "assigned": 1516,
-    "current": 39,
+    "current": 37,
     "max": 0,
-    "queue": 13,
+    "queue": 16,
     "onlineSeats": "0",
-    "done": 1405,
+    "done": 1407,
     "answerRate": 85.6,
     "abandon": 255,
     "voicemail": 0,
@@ -2191,15 +2191,6 @@
   "rate400": 86.5
  },
  "history": [
-  {
-   "ts": 1792223041946,
-   "skillRate400": 89.86,
-   "skillQueue400": 3,
-   "callIn400": 483,
-   "signIn400": 12,
-   "onlineSessions": 443,
-   "onlineSeat": 3
-  },
   {
    "ts": 1792223153843,
    "skillRate400": 89.51,
@@ -6684,6 +6675,15 @@
   },
   {
    "ts": 1792338596686,
+   "skillRate400": 46.34,
+   "skillQueue400": 0,
+   "callIn400": 41,
+   "signIn400": 1,
+   "onlineSessions": 1013,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1792338750207,
    "skillRate400": 46.34,
    "skillQueue400": 0,
    "callIn400": 41,
