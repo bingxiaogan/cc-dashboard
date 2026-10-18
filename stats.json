@@ -1,14 +1,14 @@
 {
- "ts": 1792332821134,
- "collectedAtCn": "2026/10/18 22:13:41",
+ "ts": 1792332968290,
+ "collectedAtCn": "2026/10/18 22:16:08",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "2",
   "坐席忙碌数": "0 (0)",
   "接通率": "25.46%",
   "满意率": "100.00%",
-  "呼入总数": "15011",
-  "当前呼入数": "0",
+  "呼入总数": "15014",
+  "当前呼入数": "2",
   "外呼总数": "4795",
   "当前外呼数": "0",
   "呼入平均通话时长": "00:02:29",
@@ -240,8 +240,8 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 2177,
-   "ivr": 910,
+   "callIn": 2180,
+   "ivr": 913,
    "ringMissed": 8,
    "queueAbandon": 339,
    "answered": 920,
@@ -886,8 +886,8 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 2177,
-    "ivr": 910,
+    "callIn": 2180,
+    "ivr": 913,
     "ringMissed": 8,
     "queueAbandon": 339,
     "answered": 920,
@@ -905,10 +905,10 @@
     "transferred": 0
    }
   ],
-  "total": 2246,
+  "total": 2249,
   "answered": 949,
-  "ivr": 944,
-  "connectRate": 84.28
+  "ivr": 947,
+  "connectRate": 84.3
  },
  "online": {
   "groups": [
@@ -1068,15 +1068,15 @@
    },
    {
     "name": "官网严选寄卖售后咨询",
-    "sessions": 253,
+    "sessions": 254,
     "assigned": 187,
-    "current": 8,
+    "current": 7,
     "max": 30,
-    "queue": 9,
+    "queue": 11,
     "onlineSeats": "1(沈东升)",
-    "done": 179,
-    "answerRate": 73.91,
-    "abandon": 66,
+    "done": 180,
+    "answerRate": 73.62,
+    "abandon": 67,
     "voicemail": 0,
     "satisfactionRate": 0
    },
@@ -1124,15 +1124,15 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1681,
-    "assigned": 1446,
-    "current": 77,
+    "sessions": 1684,
+    "assigned": 1448,
+    "current": 76,
     "max": 30,
     "queue": 26,
     "onlineSeats": "1(沈东升)",
-    "done": 1297,
-    "answerRate": 86.02,
-    "abandon": 235,
+    "done": 1300,
+    "answerRate": 85.99,
+    "abandon": 236,
     "voicemail": 0,
     "satisfactionRate": 0
    },
@@ -1446,15 +1446,15 @@
    },
    {
     "name": "官网严选寄卖售前咨询",
-    "sessions": 58,
+    "sessions": 59,
     "assigned": 50,
     "current": 1,
     "max": 30,
-    "queue": 3,
+    "queue": 2,
     "onlineSeats": "1(沈东升)",
     "done": 49,
-    "answerRate": 86.21,
-    "abandon": 8,
+    "answerRate": 84.75,
+    "abandon": 9,
     "voicemail": 0,
     "satisfactionRate": 0
    },
@@ -1572,14 +1572,14 @@
    },
    {
     "name": "官网严选自营售前咨询",
-    "sessions": 565,
-    "assigned": 509,
+    "sessions": 566,
+    "assigned": 510,
     "current": 22,
     "max": 30,
     "queue": 1,
     "onlineSeats": "1(沈东升)",
-    "done": 483,
-    "answerRate": 90.09,
+    "done": 484,
+    "answerRate": 90.11,
     "abandon": 56,
     "voicemail": 0,
     "satisfactionRate": 0
@@ -6666,6 +6666,15 @@
   },
   {
    "ts": 1792332821134,
+   "skillRate400": 46.34,
+   "skillQueue400": 0,
+   "callIn400": 41,
+   "signIn400": 1,
+   "onlineSessions": 1013,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1792332968290,
    "skillRate400": 46.34,
    "skillQueue400": 0,
    "callIn400": 41,
