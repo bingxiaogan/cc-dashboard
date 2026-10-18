@@ -1,13 +1,13 @@
 {
- "ts": 1792338750207,
- "collectedAtCn": "2026/10/18 23:52:30",
+ "ts": 1792338867653,
+ "collectedAtCn": "2026/10/18 23:54:27",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "2",
   "坐席忙碌数": "0 (0)",
-  "接通率": "25.35%",
+  "接通率": "25.34%",
   "满意率": "100.00%",
-  "呼入总数": "15082",
+  "呼入总数": "15083",
   "当前呼入数": "0",
   "外呼总数": "4795",
   "当前外呼数": "0",
@@ -470,8 +470,8 @@
   },
   {
    "service": "88236602(其他渠道4000166088)",
-   "callIn": 741,
-   "ivr": 344,
+   "callIn": 742,
+   "ivr": 345,
    "ringMissed": 12,
    "queueAbandon": 38,
    "answered": 368,
@@ -1126,11 +1126,11 @@
     "name": "官网严选自营售后咨询",
     "sessions": 1771,
     "assigned": 1516,
-    "current": 37,
+    "current": 36,
     "max": 0,
-    "queue": 16,
+    "queue": 17,
     "onlineSeats": "0",
-    "done": 1407,
+    "done": 1408,
     "answerRate": 85.6,
     "abandon": 255,
     "voicemail": 0,
@@ -2191,15 +2191,6 @@
   "rate400": 86.5
  },
  "history": [
-  {
-   "ts": 1792223153843,
-   "skillRate400": 89.51,
-   "skillQueue400": 4,
-   "callIn400": 486,
-   "signIn400": 12,
-   "onlineSessions": 446,
-   "onlineSeat": 3
-  },
   {
    "ts": 1792223266016,
    "skillRate400": 89.75,
@@ -6684,6 +6675,15 @@
   },
   {
    "ts": 1792338750207,
+   "skillRate400": 46.34,
+   "skillQueue400": 0,
+   "callIn400": 41,
+   "signIn400": 1,
+   "onlineSessions": 1013,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1792338867653,
    "skillRate400": 46.34,
    "skillQueue400": 0,
    "callIn400": 41,
