@@ -1,14 +1,14 @@
 {
- "ts": 1792331042119,
- "collectedAtCn": "2026/10/18 21:44:02",
+ "ts": 1792331160233,
+ "collectedAtCn": "2026/10/18 21:46:00",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "2",
   "坐席忙碌数": "0 (0)",
-  "接通率": "25.57%",
+  "接通率": "25.56%",
   "满意率": "100.00%",
-  "呼入总数": "14948",
-  "当前呼入数": "2",
+  "呼入总数": "14952",
+  "当前呼入数": "1",
   "外呼总数": "4792",
   "当前外呼数": "0",
   "呼入平均通话时长": "00:02:29",
@@ -240,8 +240,8 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 2170,
-   "ivr": 903,
+   "callIn": 2171,
+   "ivr": 904,
    "ringMissed": 8,
    "queueAbandon": 339,
    "answered": 920,
@@ -480,8 +480,8 @@
   },
   {
    "service": "81198(上门按键转接)",
-   "callIn": 1412,
-   "ivr": 801,
+   "callIn": 1415,
+   "ivr": 804,
    "ringMissed": 12,
    "queueAbandon": 125,
    "answered": 529,
@@ -886,8 +886,8 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 2170,
-    "ivr": 903,
+    "callIn": 2171,
+    "ivr": 904,
     "ringMissed": 8,
     "queueAbandon": 339,
     "answered": 920,
@@ -905,10 +905,10 @@
     "transferred": 0
    }
   ],
-  "total": 2239,
+  "total": 2240,
   "answered": 949,
-  "ivr": 937,
-  "connectRate": 84.23
+  "ivr": 938,
+  "connectRate": 84.24
  },
  "online": {
   "groups": [
@@ -1124,15 +1124,15 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1633,
-    "assigned": 1415,
-    "current": 84,
+    "sessions": 1639,
+    "assigned": 1419,
+    "current": 87,
     "max": 30,
-    "queue": 43,
+    "queue": 37,
     "onlineSeats": "1(王鹏)",
-    "done": 1262,
-    "answerRate": 86.65,
-    "abandon": 218,
+    "done": 1263,
+    "answerRate": 86.58,
+    "abandon": 220,
     "voicemail": 0,
     "satisfactionRate": 0
    },
@@ -1315,7 +1315,7 @@
     "done": 18,
     "answerRate": 100,
     "abandon": 0,
-    "voicemail": 1,
+    "voicemail": 2,
     "satisfactionRate": 0
    },
    {
@@ -1450,7 +1450,7 @@
     "assigned": 49,
     "current": 0,
     "max": 30,
-    "queue": 1,
+    "queue": 2,
     "onlineSeats": "1(王鹏)",
     "done": 49,
     "answerRate": 85.96,
@@ -6540,6 +6540,15 @@
   },
   {
    "ts": 1792331042119,
+   "skillRate400": 46.34,
+   "skillQueue400": 0,
+   "callIn400": 41,
+   "signIn400": 1,
+   "onlineSessions": 1013,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1792331160233,
    "skillRate400": 46.34,
    "skillQueue400": 0,
    "callIn400": 41,
