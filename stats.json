@@ -1,16 +1,16 @@
 {
- "ts": 1792416668688,
- "collectedAtCn": "2026/10/19 21:31:08",
+ "ts": 1792416787093,
+ "collectedAtCn": "2026/10/19 21:33:07",
  "overview": {
   "总排队数": "0",
-  "坐席空闲数": "6",
+  "坐席空闲数": "4",
   "坐席忙碌数": "0 (0)",
-  "接通率": "25.54%",
+  "接通率": "25.51%",
   "满意率": "100.00%",
-  "呼入总数": "13639",
-  "当前呼入数": "0",
+  "呼入总数": "13653",
+  "当前呼入数": "2",
   "外呼总数": "5774",
-  "当前外呼数": "6",
+  "当前外呼数": "1",
   "呼入平均通话时长": "00:02:41",
   "AI通话数": "0 (3)"
  },
@@ -240,8 +240,8 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 2186,
-   "ivr": 928,
+   "callIn": 2188,
+   "ivr": 930,
    "ringMissed": 9,
    "queueAbandon": 384,
    "answered": 866,
@@ -270,8 +270,8 @@
   },
   {
    "service": "88236633(88236633)",
-   "callIn": 99,
-   "ivr": 99,
+   "callIn": 100,
+   "ivr": 100,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -480,8 +480,8 @@
   },
   {
    "service": "81198(上门按键转接)",
-   "callIn": 1072,
-   "ivr": 622,
+   "callIn": 1076,
+   "ivr": 626,
    "ringMissed": 13,
    "queueAbandon": 78,
    "answered": 434,
@@ -520,8 +520,8 @@
   },
   {
    "service": "88236603(京东渠道4000990166)",
-   "callIn": 471,
-   "ivr": 155,
+   "callIn": 473,
+   "ivr": 157,
    "ringMissed": 3,
    "queueAbandon": 42,
    "answered": 278,
@@ -610,8 +610,8 @@
   },
   {
    "service": "80409(奢侈品商家-门店验货报价)",
-   "callIn": 1252,
-   "ivr": 1252,
+   "callIn": 1255,
+   "ivr": 1255,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -660,8 +660,8 @@
   },
   {
    "service": "051983074462(9523622)",
-   "callIn": 48,
-   "ivr": 19,
+   "callIn": 49,
+   "ivr": 20,
    "ringMissed": 0,
    "queueAbandon": 13,
    "answered": 16,
@@ -886,8 +886,8 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 2186,
-    "ivr": 928,
+    "callIn": 2188,
+    "ivr": 930,
     "ringMissed": 9,
     "queueAbandon": 384,
     "answered": 866,
@@ -896,8 +896,8 @@
    },
    {
     "service": "051983074462(9523622)",
-    "callIn": 48,
-    "ivr": 19,
+    "callIn": 49,
+    "ivr": 20,
     "ringMissed": 0,
     "queueAbandon": 13,
     "answered": 16,
@@ -905,10 +905,10 @@
     "transferred": 0
    }
   ],
-  "total": 2263,
+  "total": 2266,
   "answered": 890,
-  "ivr": 963,
-  "connectRate": 81.88
+  "ivr": 966,
+  "connectRate": 81.91
  },
  "online": {
   "groups": [
@@ -979,7 +979,7 @@
     "done": 40,
     "answerRate": 100,
     "abandon": 0,
-    "voicemail": 5,
+    "voicemail": 6,
     "satisfactionRate": 100
    },
    {
@@ -1138,15 +1138,15 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1466,
+    "sessions": 1468,
     "assigned": 1312,
     "current": 61,
     "max": 60,
-    "queue": 42,
+    "queue": 43,
     "onlineSeats": "2(王鹏,沈东升)",
     "done": 1184,
-    "answerRate": 89.5,
-    "abandon": 154,
+    "answerRate": 89.37,
+    "abandon": 156,
     "voicemail": 0,
     "satisfactionRate": 0
    },
@@ -1329,7 +1329,7 @@
     "done": 15,
     "answerRate": 100,
     "abandon": 0,
-    "voicemail": 2,
+    "voicemail": 4,
     "satisfactionRate": 0
    },
    {
@@ -1586,14 +1586,14 @@
    },
    {
     "name": "官网严选自营售前咨询",
-    "sessions": 463,
-    "assigned": 420,
-    "current": 24,
+    "sessions": 467,
+    "assigned": 424,
+    "current": 27,
     "max": 60,
-    "queue": 11,
+    "queue": 7,
     "onlineSeats": "2(王鹏,沈东升)",
-    "done": 392,
-    "answerRate": 90.71,
+    "done": 393,
+    "answerRate": 90.79,
     "abandon": 43,
     "voicemail": 0,
     "satisfactionRate": 0
@@ -2205,15 +2205,6 @@
   "rate400": 68.2
  },
  "history": [
-  {
-   "ts": 1792344140134,
-   "skillRate400": null,
-   "skillQueue400": 0,
-   "callIn400": 0,
-   "signIn400": 1,
-   "onlineSessions": 0,
-   "onlineSeat": 0
-  },
   {
    "ts": 1792344258100,
    "skillRate400": null,
@@ -6698,6 +6689,15 @@
   },
   {
    "ts": 1792416668688,
+   "skillRate400": 57.14,
+   "skillQueue400": 0,
+   "callIn400": 21,
+   "signIn400": 1,
+   "onlineSessions": 938,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1792416787093,
    "skillRate400": 57.14,
    "skillQueue400": 0,
    "callIn400": 21,
