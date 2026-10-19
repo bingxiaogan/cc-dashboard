@@ -1,13 +1,13 @@
 {
- "ts": 1792449347017,
- "collectedAtCn": "2026/10/20 06:35:47",
+ "ts": 1792449581845,
+ "collectedAtCn": "2026/10/20 06:39:41",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "4",
   "坐席忙碌数": "0 (0)",
   "接通率": "0%",
   "满意率": "100.00%",
-  "呼入总数": "39",
+  "呼入总数": "41",
   "当前呼入数": "0",
   "外呼总数": "0",
   "当前外呼数": "0",
@@ -240,8 +240,8 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 21,
-   "ivr": 21,
+   "callIn": 22,
+   "ivr": 22,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -470,8 +470,8 @@
   },
   {
    "service": "88236602(其他渠道4000166088)",
-   "callIn": 0,
-   "ivr": 0,
+   "callIn": 1,
+   "ivr": 1,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -886,8 +886,8 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 21,
-    "ivr": 21,
+    "callIn": 22,
+    "ivr": 22,
     "ringMissed": 0,
     "queueAbandon": 0,
     "answered": 0,
@@ -905,9 +905,9 @@
     "transferred": 0
    }
   ],
-  "total": 21,
+  "total": 22,
   "answered": 0,
-  "ivr": 21,
+  "ivr": 22,
   "connectRate": 100
  },
  "online": {
@@ -2183,24 +2183,6 @@
   "rate400": 68.2
  },
  "history": [
-  {
-   "ts": 1792380660899,
-   "skillRate400": 57.7,
-   "skillQueue400": 0,
-   "callIn400": 513,
-   "signIn400": 18,
-   "onlineSessions": 229,
-   "onlineSeat": 2
-  },
-  {
-   "ts": 1792380771654,
-   "skillRate400": 58.03,
-   "skillQueue400": 0,
-   "callIn400": 517,
-   "signIn400": 18,
-   "onlineSessions": 233,
-   "onlineSeat": 2
-  },
   {
    "ts": 1792380919866,
    "skillRate400": 58.19,
@@ -6676,6 +6658,24 @@
   },
   {
    "ts": 1792449347017,
+   "skillRate400": null,
+   "skillQueue400": 0,
+   "callIn400": 0,
+   "signIn400": 1,
+   "onlineSessions": 0,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1792449464475,
+   "skillRate400": null,
+   "skillQueue400": 0,
+   "callIn400": 0,
+   "signIn400": 1,
+   "onlineSessions": 0,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1792449581845,
    "skillRate400": null,
    "skillQueue400": 0,
    "callIn400": 0,
