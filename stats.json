@@ -1,6 +1,6 @@
 {
- "ts": 1792367924587,
- "collectedAtCn": "2026/10/19 07:58:44",
+ "ts": 1792368082550,
+ "collectedAtCn": "2026/10/19 08:01:22",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "3",
@@ -2393,13 +2393,36 @@
  "onlineAgents": [],
  "satisfaction": null,
  "attendance": {
-  "today": "2026-10-18",
-  "duty400": [],
-  "dutyOnline": [],
-  "on400": [],
-  "off400": [],
+  "today": "2026-10-19",
+  "duty400": [
+   "马艳",
+   "朱静珏",
+   "王雅雯",
+   "胡洁",
+   "王轩",
+   "彭静"
+  ],
+  "dutyOnline": [
+   "刘丽娜",
+   "侯勤裕",
+   "陈孝正"
+  ],
+  "on400": [
+   "王轩"
+  ],
+  "off400": [
+   "马艳",
+   "朱静珏",
+   "王雅雯",
+   "胡洁",
+   "彭静"
+  ],
   "onOnline": [],
-  "offOnline": []
+  "offOnline": [
+   "刘丽娜",
+   "侯勤裕",
+   "陈孝正"
+  ]
  },
  "capacity": {
   "date": "2026-10-18",
@@ -2427,15 +2450,6 @@
   "rate400": 86.5
  },
  "history": [
-  {
-   "ts": 1792302824842,
-   "skillRate400": 75.18,
-   "skillQueue400": 2,
-   "callIn400": 693,
-   "signIn400": 12,
-   "onlineSessions": 407,
-   "onlineSeat": 2
-  },
   {
    "ts": 1792302936157,
    "skillRate400": 75.11,
@@ -6920,6 +6934,15 @@
   },
   {
    "ts": 1792367924587,
+   "skillRate400": null,
+   "skillQueue400": 0,
+   "callIn400": 0,
+   "signIn400": 3,
+   "onlineSessions": 0,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1792368082550,
    "skillRate400": null,
    "skillQueue400": 0,
    "callIn400": 0,
