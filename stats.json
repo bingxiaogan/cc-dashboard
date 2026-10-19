@@ -1,13 +1,13 @@
 {
- "ts": 1792427381727,
- "collectedAtCn": "2026/10/20 00:29:41",
+ "ts": 1792427589080,
+ "collectedAtCn": "2026/10/20 00:33:09",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "4",
   "坐席忙碌数": "0 (0)",
   "接通率": "0%",
   "满意率": "100.00%",
-  "呼入总数": "14",
+  "呼入总数": "15",
   "当前呼入数": "0",
   "外呼总数": "0",
   "当前外呼数": "0",
@@ -970,17 +970,17 @@
    },
    {
     "name": "抖音售后",
-    "sessions": 40,
-    "assigned": 40,
+    "sessions": 0,
+    "assigned": 0,
     "current": 0,
     "max": 0,
     "queue": 0,
     "onlineSeats": "0",
-    "done": 40,
-    "answerRate": 100,
+    "done": 0,
+    "answerRate": 0,
     "abandon": 0,
-    "voicemail": 11,
-    "satisfactionRate": 100
+    "voicemail": 1,
+    "satisfactionRate": 0
    },
    {
     "name": "严选腕表-夜间留言",
@@ -1600,17 +1600,17 @@
    },
    {
     "name": "分类在线技能组",
-    "sessions": 938,
-    "assigned": 938,
+    "sessions": 0,
+    "assigned": 0,
     "current": 0,
     "max": 0,
     "queue": 0,
     "onlineSeats": "0",
-    "done": 937,
-    "answerRate": 100,
+    "done": 0,
+    "answerRate": 0,
     "abandon": 0,
     "voicemail": 0,
-    "satisfactionRate": 100
+    "satisfactionRate": 0
    },
    {
     "name": "废弃勿用",
@@ -2119,17 +2119,17 @@
   ],
   "fenlei": {
    "name": "分类在线技能组",
-   "sessions": 938,
-   "assigned": 938,
+   "sessions": 0,
+   "assigned": 0,
    "current": 0,
    "max": 0,
    "queue": 0,
    "onlineSeats": "0",
-   "done": 937,
-   "answerRate": 100,
+   "done": 0,
+   "answerRate": 0,
    "abandon": 0,
    "voicemail": 0,
-   "satisfactionRate": 100
+   "satisfactionRate": 0
   },
   "fenleiNW": {
    "name": "分类在线技能组非工作",
@@ -2207,15 +2207,6 @@
   "rate400": 68.2
  },
  "history": [
-  {
-   "ts": 1792355525605,
-   "skillRate400": null,
-   "skillQueue400": 0,
-   "callIn400": 0,
-   "signIn400": 1,
-   "onlineSessions": 0,
-   "onlineSeat": 0
-  },
   {
    "ts": 1792355643779,
    "skillRate400": null,
@@ -6705,6 +6696,15 @@
    "callIn400": 0,
    "signIn400": 1,
    "onlineSessions": 938,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1792427589080,
+   "skillRate400": null,
+   "skillQueue400": 0,
+   "callIn400": 0,
+   "signIn400": 1,
+   "onlineSessions": 0,
    "onlineSeat": 0
   }
  ]
