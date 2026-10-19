@@ -1,13 +1,13 @@
 {
- "ts": 1792426986639,
- "collectedAtCn": "2026/10/20 00:23:06",
+ "ts": 1792427264308,
+ "collectedAtCn": "2026/10/20 00:27:44",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "4",
   "坐席忙碌数": "0 (0)",
   "接通率": "0%",
   "满意率": "100.00%",
-  "呼入总数": "8",
+  "呼入总数": "13",
   "当前呼入数": "0",
   "外呼总数": "0",
   "当前外呼数": "0",
@@ -240,8 +240,8 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 4,
-   "ivr": 4,
+   "callIn": 8,
+   "ivr": 8,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -300,8 +300,8 @@
   },
   {
    "service": "88236634(88236634)",
-   "callIn": 0,
-   "ivr": 0,
+   "callIn": 1,
+   "ivr": 1,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -886,8 +886,8 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 4,
-    "ivr": 4,
+    "callIn": 8,
+    "ivr": 8,
     "ringMissed": 0,
     "queueAbandon": 0,
     "answered": 0,
@@ -905,9 +905,9 @@
     "transferred": 0
    }
   ],
-  "total": 4,
+  "total": 8,
   "answered": 0,
-  "ivr": 4,
+  "ivr": 8,
   "connectRate": 100
  },
  "online": {
@@ -1138,15 +1138,15 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 18,
+    "sessions": 22,
     "assigned": 0,
     "current": 0,
     "max": 0,
-    "queue": 14,
+    "queue": 10,
     "onlineSeats": "0",
     "done": 0,
     "answerRate": 0,
-    "abandon": 18,
+    "abandon": 22,
     "voicemail": 0,
     "satisfactionRate": 0
    },
@@ -1754,17 +1754,17 @@
    },
    {
     "name": "爱回收官网接待组",
-    "sessions": 868,
-    "assigned": 868,
+    "sessions": 0,
+    "assigned": 0,
     "current": 0,
     "max": 0,
     "queue": 0,
     "onlineSeats": "0",
-    "done": 846,
-    "answerRate": 100,
+    "done": 0,
+    "answerRate": 0,
     "abandon": 0,
     "voicemail": 0,
-    "satisfactionRate": 97.8
+    "satisfactionRate": 0
    },
    {
     "name": "基础服务部-黑龙江、天津省地区",
@@ -2207,24 +2207,6 @@
   "rate400": 68.2
  },
  "history": [
-  {
-   "ts": 1792355134285,
-   "skillRate400": null,
-   "skillQueue400": 0,
-   "callIn400": 0,
-   "signIn400": 1,
-   "onlineSessions": 0,
-   "onlineSeat": 0
-  },
-  {
-   "ts": 1792355252452,
-   "skillRate400": null,
-   "skillQueue400": 0,
-   "callIn400": 0,
-   "signIn400": 1,
-   "onlineSessions": 0,
-   "onlineSeat": 0
-  },
   {
    "ts": 1792355407368,
    "skillRate400": null,
@@ -6700,6 +6682,24 @@
   },
   {
    "ts": 1792426986639,
+   "skillRate400": null,
+   "skillQueue400": 0,
+   "callIn400": 0,
+   "signIn400": 1,
+   "onlineSessions": 938,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1792427146867,
+   "skillRate400": null,
+   "skillQueue400": 0,
+   "callIn400": 0,
+   "signIn400": 1,
+   "onlineSessions": 938,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1792427264308,
    "skillRate400": null,
    "skillQueue400": 0,
    "callIn400": 0,
