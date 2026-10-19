@@ -1,13 +1,13 @@
 {
- "ts": 1792422608080,
- "collectedAtCn": "2026/10/19 23:10:08",
+ "ts": 1792422755660,
+ "collectedAtCn": "2026/10/19 23:12:35",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "4",
   "坐席忙碌数": "0 (0)",
-  "接通率": "25.27%",
+  "接通率": "25.26%",
   "满意率": "100.00%",
-  "呼入总数": "13789",
+  "呼入总数": "13792",
   "当前呼入数": "0",
   "外呼总数": "5775",
   "当前外呼数": "0",
@@ -300,8 +300,8 @@
   },
   {
    "service": "88236634(88236634)",
-   "callIn": 189,
-   "ivr": 189,
+   "callIn": 190,
+   "ivr": 190,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -480,8 +480,8 @@
   },
   {
    "service": "81198(上门按键转接)",
-   "callIn": 1113,
-   "ivr": 663,
+   "callIn": 1114,
+   "ivr": 664,
    "ringMissed": 13,
    "queueAbandon": 78,
    "answered": 434,
@@ -1138,15 +1138,15 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1622,
+    "sessions": 1625,
     "assigned": 1389,
-    "current": 45,
+    "current": 44,
     "max": 60,
-    "queue": 39,
+    "queue": 38,
     "onlineSeats": "2(王鹏,沈东升)",
-    "done": 1276,
-    "answerRate": 85.64,
-    "abandon": 233,
+    "done": 1277,
+    "answerRate": 85.48,
+    "abandon": 236,
     "voicemail": 0,
     "satisfactionRate": 0
    },
@@ -1590,7 +1590,7 @@
     "assigned": 446,
     "current": 11,
     "max": 60,
-    "queue": 13,
+    "queue": 14,
     "onlineSeats": "2(王鹏,沈东升)",
     "done": 431,
     "answerRate": 89.02,
@@ -2207,15 +2207,6 @@
   "rate400": 68.2
  },
  "history": [
-  {
-   "ts": 1792350503193,
-   "skillRate400": null,
-   "skillQueue400": 0,
-   "callIn400": 0,
-   "signIn400": 1,
-   "onlineSessions": 0,
-   "onlineSeat": 0
-  },
   {
    "ts": 1792350621206,
    "skillRate400": null,
@@ -6700,6 +6691,15 @@
   },
   {
    "ts": 1792422608080,
+   "skillRate400": 57.14,
+   "skillQueue400": 0,
+   "callIn400": 21,
+   "signIn400": 1,
+   "onlineSessions": 938,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1792422755660,
    "skillRate400": 57.14,
    "skillQueue400": 0,
    "callIn400": 21,
