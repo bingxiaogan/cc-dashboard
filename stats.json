@@ -1,13 +1,13 @@
 {
- "ts": 1792424035625,
- "collectedAtCn": "2026/10/19 23:33:55",
+ "ts": 1792424153739,
+ "collectedAtCn": "2026/10/19 23:35:53",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "4",
   "坐席忙碌数": "0 (0)",
-  "接通率": "25.25%",
+  "接通率": "25.24%",
   "满意率": "100.00%",
-  "呼入总数": "13799",
+  "呼入总数": "13801",
   "当前呼入数": "0",
   "外呼总数": "5775",
   "当前外呼数": "0",
@@ -1082,15 +1082,15 @@
    },
    {
     "name": "官网严选寄卖售后咨询",
-    "sessions": 304,
+    "sessions": 305,
     "assigned": 255,
     "current": 5,
     "max": 30,
-    "queue": 5,
+    "queue": 4,
     "onlineSeats": "1(沈东升)",
     "done": 250,
-    "answerRate": 83.88,
-    "abandon": 49,
+    "answerRate": 83.61,
+    "abandon": 50,
     "voicemail": 0,
     "satisfactionRate": 0
    },
@@ -1140,11 +1140,11 @@
     "name": "官网严选自营售后咨询",
     "sessions": 1652,
     "assigned": 1398,
-    "current": 42,
+    "current": 40,
     "max": 30,
-    "queue": 29,
+    "queue": 32,
     "onlineSeats": "1(沈东升)",
-    "done": 1288,
+    "done": 1290,
     "answerRate": 84.62,
     "abandon": 254,
     "voicemail": 0,
@@ -1586,15 +1586,15 @@
    },
    {
     "name": "官网严选自营售前咨询",
-    "sessions": 512,
+    "sessions": 513,
     "assigned": 454,
     "current": 10,
     "max": 30,
     "queue": 8,
     "onlineSeats": "1(沈东升)",
     "done": 440,
-    "answerRate": 88.67,
-    "abandon": 58,
+    "answerRate": 88.5,
+    "abandon": 59,
     "voicemail": 0,
     "satisfactionRate": 0
    },
@@ -2207,15 +2207,6 @@
   "rate400": 68.2
  },
  "history": [
-  {
-   "ts": 1792352059973,
-   "skillRate400": null,
-   "skillQueue400": 0,
-   "callIn400": 0,
-   "signIn400": 1,
-   "onlineSessions": 0,
-   "onlineSeat": 0
-  },
   {
    "ts": 1792352177986,
    "skillRate400": null,
@@ -6700,6 +6691,15 @@
   },
   {
    "ts": 1792424035625,
+   "skillRate400": 57.14,
+   "skillQueue400": 0,
+   "callIn400": 21,
+   "signIn400": 1,
+   "onlineSessions": 938,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1792424153739,
    "skillRate400": 57.14,
    "skillQueue400": 0,
    "callIn400": 21,
