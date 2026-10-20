@@ -1,16 +1,16 @@
 {
- "ts": 1792504490470,
- "collectedAtCn": "2026/10/20 21:54:50",
+ "ts": 1792504643488,
+ "collectedAtCn": "2026/10/20 21:57:23",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "4",
   "坐席忙碌数": "0 (0)",
-  "接通率": "22.86%",
+  "接通率": "22.84%",
   "满意率": "100.00%",
-  "呼入总数": "14344",
-  "当前呼入数": "0",
+  "呼入总数": "14355",
+  "当前呼入数": "2",
   "外呼总数": "6283",
-  "当前外呼数": "2",
+  "当前外呼数": "0",
   "呼入平均通话时长": "00:02:44",
   "AI通话数": "0 (3)"
  },
@@ -440,8 +440,8 @@
   },
   {
    "service": "81199(门店按键转接)",
-   "callIn": 751,
-   "ivr": 511,
+   "callIn": 756,
+   "ivr": 516,
    "ringMissed": 5,
    "queueAbandon": 74,
    "answered": 166,
@@ -470,8 +470,8 @@
   },
   {
    "service": "88236602(其他渠道4000166088)",
-   "callIn": 716,
-   "ivr": 369,
+   "callIn": 717,
+   "ivr": 370,
    "ringMissed": 2,
    "queueAbandon": 40,
    "answered": 319,
@@ -480,8 +480,8 @@
   },
   {
    "service": "81198(上门按键转接)",
-   "callIn": 858,
-   "ivr": 548,
+   "callIn": 860,
+   "ivr": 550,
    "ringMissed": 5,
    "queueAbandon": 52,
    "answered": 278,
@@ -520,8 +520,8 @@
   },
   {
    "service": "88236603(京东渠道4000990166)",
-   "callIn": 656,
-   "ivr": 250,
+   "callIn": 657,
+   "ivr": 251,
    "ringMissed": 5,
    "queueAbandon": 68,
    "answered": 339,
@@ -1138,15 +1138,15 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1607,
-    "assigned": 1383,
-    "current": 66,
+    "sessions": 1611,
+    "assigned": 1386,
+    "current": 63,
     "max": 90,
-    "queue": 53,
+    "queue": 52,
     "onlineSeats": "3(丁萌萌,刘谊鸽,王鹏)",
-    "done": 1247,
-    "answerRate": 86.06,
-    "abandon": 224,
+    "done": 1253,
+    "answerRate": 86.03,
+    "abandon": 225,
     "voicemail": 0,
     "satisfactionRate": 0
    },
@@ -1586,15 +1586,15 @@
    },
    {
     "name": "官网严选自营售前咨询",
-    "sessions": 492,
+    "sessions": 493,
     "assigned": 424,
     "current": 21,
     "max": 90,
-    "queue": 14,
+    "queue": 17,
     "onlineSeats": "3(丁萌萌,刘谊鸽,王鹏)",
     "done": 394,
-    "answerRate": 86.18,
-    "abandon": 68,
+    "answerRate": 86,
+    "abandon": 69,
     "voicemail": 0,
     "satisfactionRate": 0
    },
@@ -2209,15 +2209,6 @@
   "rate400": 74
  },
  "history": [
-  {
-   "ts": 1792419513663,
-   "skillRate400": 57.14,
-   "skillQueue400": 0,
-   "callIn400": 21,
-   "signIn400": 1,
-   "onlineSessions": 938,
-   "onlineSeat": 0
-  },
   {
    "ts": 1792419660890,
    "skillRate400": 57.14,
@@ -6702,6 +6693,15 @@
   },
   {
    "ts": 1792504490470,
+   "skillRate400": 60.47,
+   "skillQueue400": 0,
+   "callIn400": 43,
+   "signIn400": 1,
+   "onlineSessions": 832,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1792504643488,
    "skillRate400": 60.47,
    "skillQueue400": 0,
    "callIn400": 43,
