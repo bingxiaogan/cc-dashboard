@@ -1,13 +1,13 @@
 {
- "ts": 1792512347734,
- "collectedAtCn": "2026/10/21 00:05:47",
+ "ts": 1792512567153,
+ "collectedAtCn": "2026/10/21 00:09:27",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "4",
   "坐席忙碌数": "0 (0)",
   "接通率": "0%",
   "满意率": "100.00%",
-  "呼入总数": "2",
+  "呼入总数": "4",
   "当前呼入数": "0",
   "外呼总数": "0",
   "当前外呼数": "0",
@@ -300,8 +300,8 @@
   },
   {
    "service": "88236634(88236634)",
-   "callIn": 0,
-   "ivr": 0,
+   "callIn": 1,
+   "ivr": 1,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -1082,15 +1082,15 @@
    },
    {
     "name": "官网严选寄卖售后咨询",
-    "sessions": 2,
+    "sessions": 4,
     "assigned": 0,
     "current": 0,
     "max": 0,
-    "queue": 5,
+    "queue": 3,
     "onlineSeats": "0",
     "done": 0,
     "answerRate": 0,
-    "abandon": 2,
+    "abandon": 4,
     "voicemail": 0,
     "satisfactionRate": 0
    },
@@ -1138,15 +1138,15 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 4,
+    "sessions": 7,
     "assigned": 0,
     "current": 0,
     "max": 0,
-    "queue": 18,
+    "queue": 15,
     "onlineSeats": "0",
     "done": 0,
     "answerRate": 0,
-    "abandon": 4,
+    "abandon": 7,
     "voicemail": 0,
     "satisfactionRate": 0
    },
@@ -1600,17 +1600,17 @@
    },
    {
     "name": "分类在线技能组",
-    "sessions": 832,
-    "assigned": 832,
+    "sessions": 0,
+    "assigned": 0,
     "current": 0,
     "max": 0,
     "queue": 0,
     "onlineSeats": "0",
-    "done": 832,
-    "answerRate": 100,
+    "done": 0,
+    "answerRate": 0,
     "abandon": 0,
     "voicemail": 0,
-    "satisfactionRate": 100
+    "satisfactionRate": 0
    },
    {
     "name": "废弃勿用",
@@ -2119,17 +2119,17 @@
   ],
   "fenlei": {
    "name": "分类在线技能组",
-   "sessions": 832,
-   "assigned": 832,
+   "sessions": 0,
+   "assigned": 0,
    "current": 0,
    "max": 0,
    "queue": 0,
    "onlineSeats": "0",
-   "done": 832,
-   "answerRate": 100,
+   "done": 0,
+   "answerRate": 0,
    "abandon": 0,
    "voicemail": 0,
-   "satisfactionRate": 100
+   "satisfactionRate": 0
   },
   "fenleiNW": {
    "name": "分类在线技能组非工作",
@@ -2209,15 +2209,6 @@
   "rate400": 74
  },
  "history": [
-  {
-   "ts": 1792427381727,
-   "skillRate400": null,
-   "skillQueue400": 0,
-   "callIn400": 0,
-   "signIn400": 1,
-   "onlineSessions": 938,
-   "onlineSeat": 0
-  },
   {
    "ts": 1792427589080,
    "skillRate400": null,
@@ -6707,6 +6698,15 @@
    "callIn400": 0,
    "signIn400": 1,
    "onlineSessions": 832,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1792512567153,
+   "skillRate400": null,
+   "skillQueue400": 0,
+   "callIn400": 0,
+   "signIn400": 1,
+   "onlineSessions": 0,
    "onlineSeat": 0
   }
  ]
