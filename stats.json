@@ -1,14 +1,14 @@
 {
- "ts": 1792595111327,
- "collectedAtCn": "2026/10/21 23:05:11",
+ "ts": 1792595342343,
+ "collectedAtCn": "2026/10/21 23:09:02",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "2",
   "坐席忙碌数": "0 (0)",
   "接通率": "31.69%",
   "满意率": "100.00%",
-  "呼入总数": "17272",
-  "当前呼入数": "0",
+  "呼入总数": "17275",
+  "当前呼入数": "1",
   "外呼总数": "6272",
   "当前外呼数": "0",
   "呼入平均通话时长": "00:02:42",
@@ -207,8 +207,8 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 1976,
-   "ivr": 921,
+   "callIn": 1977,
+   "ivr": 922,
    "ringMissed": 1,
    "queueAbandon": 95,
    "answered": 956,
@@ -447,8 +447,8 @@
   },
   {
    "service": "81198(上门按键转接)",
-   "callIn": 1428,
-   "ivr": 849,
+   "callIn": 1429,
+   "ivr": 850,
    "ringMissed": 13,
    "queueAbandon": 144,
    "answered": 470,
@@ -851,8 +851,8 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 1976,
-    "ivr": 921,
+    "callIn": 1977,
+    "ivr": 922,
     "ringMissed": 1,
     "queueAbandon": 95,
     "answered": 956,
@@ -870,9 +870,9 @@
     "transferred": 0
    }
   ],
-  "total": 2069,
+  "total": 2070,
   "answered": 995,
-  "ivr": 974,
+  "ivr": 975,
   "connectRate": 95.17
  },
  "online": {
@@ -1103,15 +1103,15 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1671,
-    "assigned": 1572,
-    "current": 54,
+    "sessions": 1673,
+    "assigned": 1573,
+    "current": 55,
     "max": 60,
     "queue": 23,
     "onlineSeats": "2(黄益群,王鹏)",
     "done": 1443,
-    "answerRate": 94.08,
-    "abandon": 99,
+    "answerRate": 94.02,
+    "abandon": 100,
     "voicemail": 0,
     "satisfactionRate": 9.52
    },
@@ -1425,15 +1425,15 @@
    },
    {
     "name": "官网严选寄卖售前咨询",
-    "sessions": 47,
+    "sessions": 48,
     "assigned": 42,
     "current": 3,
     "max": 60,
     "queue": 2,
     "onlineSeats": "2(黄益群,王鹏)",
     "done": 39,
-    "answerRate": 89.36,
-    "abandon": 5,
+    "answerRate": 87.5,
+    "abandon": 6,
     "voicemail": 0,
     "satisfactionRate": 0
    },
@@ -1555,7 +1555,7 @@
     "assigned": 444,
     "current": 7,
     "max": 60,
-    "queue": 13,
+    "queue": 14,
     "onlineSeats": "2(黄益群,王鹏)",
     "done": 429,
     "answerRate": 93.28,
@@ -2174,15 +2174,6 @@
   "rate400": 77.6
  },
  "history": [
-  {
-   "ts": 1792497491130,
-   "skillRate400": 88.97,
-   "skillQueue400": 0,
-   "callIn400": 1015,
-   "signIn400": 11,
-   "onlineSessions": 762,
-   "onlineSeat": 3
-  },
   {
    "ts": 1792497600960,
    "skillRate400": 88.97,
@@ -6667,6 +6658,15 @@
   },
   {
    "ts": 1792595111327,
+   "skillRate400": null,
+   "skillQueue400": 0,
+   "callIn400": 0,
+   "signIn400": 0,
+   "onlineSessions": 767,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1792595342343,
    "skillRate400": null,
    "skillQueue400": 0,
    "callIn400": 0,
