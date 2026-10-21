@@ -1,6 +1,6 @@
 {
- "ts": 1792603574347,
- "collectedAtCn": "2026/10/22 01:26:14",
+ "ts": 1792603775801,
+ "collectedAtCn": "2026/10/22 01:29:35",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "2",
@@ -8,7 +8,7 @@
   "接通率": "0%",
   "满意率": "0%",
   "呼入总数": "14",
-  "当前呼入数": "1",
+  "当前呼入数": "0",
   "外呼总数": "0",
   "当前外呼数": "0",
   "呼入平均通话时长": "00:00:00",
@@ -1103,15 +1103,15 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 21,
+    "sessions": 22,
     "assigned": 0,
     "current": 0,
     "max": 0,
-    "queue": 1,
+    "queue": 0,
     "onlineSeats": "0",
     "done": 0,
     "answerRate": 0,
-    "abandon": 21,
+    "abandon": 22,
     "voicemail": 0,
     "satisfactionRate": 0
    },
@@ -2148,15 +2148,6 @@
   "rate400": 77.6
  },
  "history": [
-  {
-   "ts": 1792502580537,
-   "skillRate400": 60.47,
-   "skillQueue400": 0,
-   "callIn400": 43,
-   "signIn400": 1,
-   "onlineSessions": 832,
-   "onlineSeat": 0
-  },
   {
    "ts": 1792502701659,
    "skillRate400": 60.47,
@@ -6641,6 +6632,15 @@
   },
   {
    "ts": 1792603574347,
+   "skillRate400": null,
+   "skillQueue400": 0,
+   "callIn400": 0,
+   "signIn400": 0,
+   "onlineSessions": 0,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1792603775801,
    "skillRate400": null,
    "skillQueue400": 0,
    "callIn400": 0,
