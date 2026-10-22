@@ -1,13 +1,13 @@
 {
- "ts": 1792709490981,
- "collectedAtCn": "2026/10/23 06:51:30",
+ "ts": 1792709765797,
+ "collectedAtCn": "2026/10/23 06:56:05",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "4",
   "坐席忙碌数": "0 (0)",
   "接通率": "0%",
   "满意率": "100.00%",
-  "呼入总数": "48",
+  "呼入总数": "50",
   "当前呼入数": "0",
   "外呼总数": "0",
   "当前外呼数": "0",
@@ -240,8 +240,8 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 21,
-   "ivr": 21,
+   "callIn": 22,
+   "ivr": 22,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -340,8 +340,8 @@
   },
   {
    "service": "88236638(奢侈品业务)",
-   "callIn": 0,
-   "ivr": 0,
+   "callIn": 1,
+   "ivr": 1,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -886,8 +886,8 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 21,
-    "ivr": 21,
+    "callIn": 22,
+    "ivr": 22,
     "ringMissed": 0,
     "queueAbandon": 0,
     "answered": 0,
@@ -905,9 +905,9 @@
     "transferred": 0
    }
   ],
-  "total": 21,
+  "total": 22,
   "answered": 0,
-  "ivr": 21,
+  "ivr": 22,
   "connectRate": 100
  },
  "online": {
@@ -2183,24 +2183,6 @@
   "rate400": 77.6
  },
  "history": [
-  {
-   "ts": 1792643574313,
-   "skillRate400": 81.32,
-   "skillQueue400": 0,
-   "callIn400": 530,
-   "signIn400": 18,
-   "onlineSessions": 248,
-   "onlineSeat": 2
-  },
-  {
-   "ts": 1792643722087,
-   "skillRate400": 81.27,
-   "skillQueue400": 1,
-   "callIn400": 534,
-   "signIn400": 17,
-   "onlineSessions": 250,
-   "onlineSeat": 2
-  },
   {
    "ts": 1792643834560,
    "skillRate400": 80.93,
@@ -6676,6 +6658,24 @@
   },
   {
    "ts": 1792709490981,
+   "skillRate400": null,
+   "skillQueue400": 0,
+   "callIn400": 0,
+   "signIn400": 1,
+   "onlineSessions": 0,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1792709646498,
+   "skillRate400": null,
+   "skillQueue400": 0,
+   "callIn400": 0,
+   "signIn400": 1,
+   "onlineSessions": 0,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1792709765797,
    "skillRate400": null,
    "skillQueue400": 0,
    "callIn400": 0,
