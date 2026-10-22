@@ -1,16 +1,16 @@
 {
- "ts": 1792671737392,
- "collectedAtCn": "2026/10/22 20:22:17",
+ "ts": 1792671852335,
+ "collectedAtCn": "2026/10/22 20:24:12",
  "overview": {
-  "总排队数": "4",
+  "总排队数": "6",
   "坐席空闲数": "20",
   "坐席忙碌数": "1 (1)",
-  "接通率": "27.62%",
+  "接通率": "27.61%",
   "满意率": "100.00%",
-  "呼入总数": "16140",
-  "当前呼入数": "33",
-  "外呼总数": "6108",
-  "当前外呼数": "37",
+  "呼入总数": "16183",
+  "当前呼入数": "36",
+  "外呼总数": "6117",
+  "当前外呼数": "44",
   "呼入平均通话时长": "00:02:41",
   "AI通话数": "0 (3)"
  },
@@ -53,12 +53,12 @@
    "signIn": 5,
    "members": "彭静,李华,蔡凌天,胡洁,马艳",
    "ring": 0,
-   "queue": 0,
-   "todayAnswered": 579,
+   "queue": 2,
+   "todayAnswered": 580,
    "missed": 104,
-   "rate": 84.77,
-   "total": 659,
-   "current": 3,
+   "rate": 84.55,
+   "total": 662,
+   "current": 5,
    "avgDuration": "00:03:37",
    "transferIn": 32,
    "transferOut": 1
@@ -165,13 +165,13 @@
    "signIn": 4,
    "members": "李华,蔡凌天,胡洁,马艳",
    "ring": 0,
-   "queue": 0,
+   "queue": 1,
    "todayAnswered": 184,
    "missed": 86,
-   "rate": 68.15,
-   "total": 260,
+   "rate": 67.9,
+   "total": 261,
    "current": 1,
-   "avgDuration": "00:03:57",
+   "avgDuration": "00:03:58",
    "transferIn": 2,
    "transferOut": 0
   },
@@ -294,23 +294,23 @@
    "members": "彭静,李华,蔡凌天,赵锦超,胡洁,马艳",
    "ring": 0,
    "queue": 0,
-   "todayAnswered": 21,
+   "todayAnswered": 22,
    "missed": 20,
-   "rate": 51.22,
-   "total": 41,
-   "current": 0,
-   "avgDuration": "00:04:30",
+   "rate": 52.38,
+   "total": 42,
+   "current": 1,
+   "avgDuration": "00:04:18",
    "transferIn": 0,
    "transferOut": 0
   }
  ],
  "skillSummary": {
   "idleSeats": 0,
-  "answered": 1017,
+  "answered": 1019,
   "missed": 302,
-  "rate": 79.45,
-  "total": 1280,
-  "queue": 0,
+  "rate": 79.3,
+  "total": 1285,
+  "queue": 3,
   "signIn": 6
  },
  "services": [
@@ -496,11 +496,11 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 2027,
-   "ivr": 895,
+   "callIn": 2034,
+   "ivr": 900,
    "ringMissed": 7,
    "queueAbandon": 222,
-   "answered": 904,
+   "answered": 906,
    "other": 0,
    "transferred": 2
   },
@@ -696,8 +696,8 @@
   },
   {
    "service": "81199(门店按键转接)",
-   "callIn": 850,
-   "ivr": 531,
+   "callIn": 851,
+   "ivr": 532,
    "ringMissed": 16,
    "queueAbandon": 51,
    "answered": 256,
@@ -726,21 +726,21 @@
   },
   {
    "service": "88236602(其他渠道4000166088)",
-   "callIn": 808,
-   "ivr": 364,
+   "callIn": 811,
+   "ivr": 366,
    "ringMissed": 3,
    "queueAbandon": 67,
-   "answered": 401,
+   "answered": 402,
    "other": 0,
    "transferred": 27
   },
   {
    "service": "81198(上门按键转接)",
-   "callIn": 1283,
-   "ivr": 740,
+   "callIn": 1307,
+   "ivr": 756,
    "ringMissed": 10,
-   "queueAbandon": 97,
-   "answered": 491,
+   "queueAbandon": 103,
+   "answered": 493,
    "other": 0,
    "transferred": 55
   },
@@ -776,11 +776,11 @@
   },
   {
    "service": "88236603(京东渠道4000990166)",
-   "callIn": 903,
-   "ivr": 259,
+   "callIn": 905,
+   "ivr": 258,
    "ringMissed": 6,
    "queueAbandon": 83,
-   "answered": 564,
+   "answered": 567,
    "other": 0,
    "transferred": 9
   },
@@ -866,8 +866,8 @@
   },
   {
    "service": "80409(奢侈品商家-门店验货报价)",
-   "callIn": 1109,
-   "ivr": 1109,
+   "callIn": 1111,
+   "ivr": 1111,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -1147,11 +1147,11 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 2027,
-    "ivr": 895,
+    "callIn": 2034,
+    "ivr": 900,
     "ringMissed": 7,
     "queueAbandon": 222,
-    "answered": 904,
+    "answered": 906,
     "other": 0,
     "transferred": 2
    },
@@ -1166,10 +1166,10 @@
     "transferred": 0
    }
   ],
-  "total": 2098,
-  "answered": 937,
-  "ivr": 930,
-  "connectRate": 88.99
+  "total": 2105,
+  "answered": 939,
+  "ivr": 935,
+  "connectRate": 89.03
  },
  "online": {
   "groups": [
@@ -1178,9 +1178,9 @@
     "sessions": 0,
     "assigned": 0,
     "current": 0,
-    "max": 0,
+    "max": 50,
     "queue": 0,
-    "onlineSeats": "0",
+    "onlineSeats": "1(刘丽娜)",
     "done": 0,
     "answerRate": 0,
     "abandon": 0,
@@ -1205,11 +1205,11 @@
     "name": "多品类奢侈品销售技能组",
     "sessions": 15,
     "assigned": 15,
-    "current": 1,
+    "current": 0,
     "max": 30,
     "queue": 0,
     "onlineSeats": "1(张栋)",
-    "done": 14,
+    "done": 15,
     "answerRate": 100,
     "abandon": 0,
     "voicemail": 0,
@@ -1231,9 +1231,9 @@
    },
    {
     "name": "抖音售后",
-    "sessions": 42,
-    "assigned": 42,
-    "current": 3,
+    "sessions": 43,
+    "assigned": 43,
+    "current": 4,
     "max": 99,
     "queue": 0,
     "onlineSeats": "1(售后管家-拍拍)",
@@ -1374,9 +1374,9 @@
     "sessions": 0,
     "assigned": 0,
     "current": 0,
-    "max": 60,
+    "max": 110,
     "queue": 0,
-    "onlineSeats": "2(陈孝正,侯勤裕)",
+    "onlineSeats": "3(陈孝正,侯勤裕,刘丽娜)",
     "done": 0,
     "answerRate": 0,
     "abandon": 0,
@@ -1399,14 +1399,14 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1274,
-    "assigned": 1209,
-    "current": 68,
+    "sessions": 1278,
+    "assigned": 1213,
+    "current": 70,
     "max": 90,
-    "queue": 38,
+    "queue": 37,
     "onlineSeats": "3(刘谊鸽,丁萌萌,王鹏)",
-    "done": 1088,
-    "answerRate": 94.9,
+    "done": 1090,
+    "answerRate": 94.91,
     "abandon": 65,
     "voicemail": 0,
     "satisfactionRate": 7.14
@@ -1847,26 +1847,26 @@
    },
    {
     "name": "官网严选自营售前咨询",
-    "sessions": 418,
-    "assigned": 412,
-    "current": 18,
+    "sessions": 420,
+    "assigned": 414,
+    "current": 20,
     "max": 90,
     "queue": 17,
     "onlineSeats": "3(刘谊鸽,丁萌萌,王鹏)",
     "done": 390,
-    "answerRate": 98.56,
+    "answerRate": 98.57,
     "abandon": 6,
     "voicemail": 0,
     "satisfactionRate": 0
    },
    {
     "name": "分类在线技能组",
-    "sessions": 866,
-    "assigned": 866,
-    "current": 15,
-    "max": 60,
+    "sessions": 870,
+    "assigned": 870,
+    "current": 19,
+    "max": 110,
     "queue": 0,
-    "onlineSeats": "2(陈孝正,侯勤裕)",
+    "onlineSeats": "3(陈孝正,侯勤裕,刘丽娜)",
     "done": 851,
     "answerRate": 100,
     "abandon": 0,
@@ -2017,11 +2017,11 @@
     "name": "爱回收官网接待组",
     "sessions": 742,
     "assigned": 742,
-    "current": 14,
+    "current": 12,
     "max": 90,
     "queue": 0,
     "onlineSeats": "3(齐猛,杨青,顾新)",
-    "done": 711,
+    "done": 713,
     "answerRate": 100,
     "abandon": 0,
     "voicemail": 0,
@@ -2380,12 +2380,12 @@
   ],
   "fenlei": {
    "name": "分类在线技能组",
-   "sessions": 866,
-   "assigned": 866,
-   "current": 15,
-   "max": 60,
+   "sessions": 870,
+   "assigned": 870,
+   "current": 19,
+   "max": 110,
    "queue": 0,
-   "onlineSeats": "2(陈孝正,侯勤裕)",
+   "onlineSeats": "3(陈孝正,侯勤裕,刘丽娜)",
    "done": 851,
    "answerRate": 100,
    "abandon": 0,
@@ -2397,9 +2397,9 @@
    "sessions": 0,
    "assigned": 0,
    "current": 0,
-   "max": 60,
+   "max": 110,
    "queue": 0,
-   "onlineSeats": "2(陈孝正,侯勤裕)",
+   "onlineSeats": "3(陈孝正,侯勤裕,刘丽娜)",
    "done": 0,
    "answerRate": 0,
    "abandon": 0,
@@ -2409,7 +2409,8 @@
  },
  "onlineAgents": [
   "陈孝正",
-  "侯勤裕"
+  "侯勤裕",
+  "刘丽娜"
  ],
  "satisfaction": null,
  "attendance": {
@@ -2438,12 +2439,11 @@
    "王轩"
   ],
   "onOnline": [
+   "刘丽娜",
    "侯勤裕",
    "陈孝正"
   ],
-  "offOnline": [
-   "刘丽娜"
-  ]
+  "offOnline": []
  },
  "capacity": {
   "date": "2026-10-22",
@@ -2471,15 +2471,6 @@
   "rate400": 78
  },
  "history": [
-  {
-   "ts": 1792585441518,
-   "skillRate400": 89.89,
-   "skillQueue400": 0,
-   "callIn400": 1167,
-   "signIn400": 6,
-   "onlineSessions": 733,
-   "onlineSeat": 2
-  },
   {
    "ts": 1792585942142,
    "skillRate400": 89.72,
@@ -6970,6 +6961,15 @@
    "signIn400": 6,
    "onlineSessions": 866,
    "onlineSeat": 2
+  },
+  {
+   "ts": 1792671852335,
+   "skillRate400": 79.3,
+   "skillQueue400": 3,
+   "callIn400": 1285,
+   "signIn400": 6,
+   "onlineSessions": 870,
+   "onlineSeat": 3
   }
  ]
 }
