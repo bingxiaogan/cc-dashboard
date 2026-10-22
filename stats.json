@@ -1,14 +1,14 @@
 {
- "ts": 1792701764098,
- "collectedAtCn": "2026/10/23 04:42:44",
+ "ts": 1792702002654,
+ "collectedAtCn": "2026/10/23 04:46:42",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "4",
   "坐席忙碌数": "0 (0)",
   "接通率": "0%",
   "满意率": "100.00%",
-  "呼入总数": "26",
-  "当前呼入数": "0",
+  "呼入总数": "28",
+  "当前呼入数": "1",
   "外呼总数": "0",
   "当前外呼数": "0",
   "呼入平均通话时长": "00:00:00",
@@ -540,8 +540,8 @@
   },
   {
    "service": "88236605(违法信息不良举报)",
-   "callIn": 0,
-   "ivr": 0,
+   "callIn": 1,
+   "ivr": 1,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -2183,24 +2183,6 @@
   "rate400": 77.6
  },
  "history": [
-  {
-   "ts": 1792634038280,
-   "skillRate400": 91.81,
-   "skillQueue400": 0,
-   "callIn400": 171,
-   "signIn400": 19,
-   "onlineSessions": 78,
-   "onlineSeat": 2
-  },
-  {
-   "ts": 1792634149933,
-   "skillRate400": 91.53,
-   "skillQueue400": 0,
-   "callIn400": 177,
-   "signIn400": 19,
-   "onlineSessions": 78,
-   "onlineSeat": 2
-  },
   {
    "ts": 1792634261144,
    "skillRate400": 91.76,
@@ -6676,6 +6658,24 @@
   },
   {
    "ts": 1792701764098,
+   "skillRate400": null,
+   "skillQueue400": 0,
+   "callIn400": 0,
+   "signIn400": 1,
+   "onlineSessions": 0,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1792701883444,
+   "skillRate400": null,
+   "skillQueue400": 0,
+   "callIn400": 0,
+   "signIn400": 1,
+   "onlineSessions": 0,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1792702002654,
    "skillRate400": null,
    "skillQueue400": 0,
    "callIn400": 0,
