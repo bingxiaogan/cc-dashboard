@@ -1,14 +1,14 @@
 {
- "ts": 1792679457026,
- "collectedAtCn": "2026/10/22 22:30:57",
+ "ts": 1792679612758,
+ "collectedAtCn": "2026/10/22 22:33:32",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "4",
   "坐席忙碌数": "0 (0)",
-  "接通率": "26.87%",
+  "接通率": "26.86%",
   "满意率": "100.00%",
-  "呼入总数": "17349",
-  "当前呼入数": "0",
+  "呼入总数": "17354",
+  "当前呼入数": "1",
   "外呼总数": "6314",
   "当前外呼数": "0",
   "呼入平均通话时长": "00:02:42",
@@ -240,8 +240,8 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 2188,
-   "ivr": 990,
+   "callIn": 2189,
+   "ivr": 991,
    "ringMissed": 7,
    "queueAbandon": 257,
    "answered": 935,
@@ -270,8 +270,8 @@
   },
   {
    "service": "88236633(88236633)",
-   "callIn": 135,
-   "ivr": 135,
+   "callIn": 136,
+   "ivr": 136,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -480,8 +480,8 @@
   },
   {
    "service": "81198(上门按键转接)",
-   "callIn": 1805,
-   "ivr": 1157,
+   "callIn": 1807,
+   "ivr": 1159,
    "ringMissed": 15,
    "queueAbandon": 136,
    "answered": 557,
@@ -886,8 +886,8 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 2188,
-    "ivr": 990,
+    "callIn": 2189,
+    "ivr": 991,
     "ringMissed": 7,
     "queueAbandon": 257,
     "answered": 935,
@@ -905,10 +905,10 @@
     "transferred": 0
    }
   ],
-  "total": 2261,
+  "total": 2262,
   "answered": 968,
-  "ivr": 1026,
-  "connectRate": 88.19
+  "ivr": 1027,
+  "connectRate": 88.2
  },
  "online": {
   "groups": [
@@ -1084,11 +1084,11 @@
     "name": "官网严选寄卖售后咨询",
     "sessions": 225,
     "assigned": 205,
-    "current": 7,
+    "current": 5,
     "max": 60,
     "queue": 9,
     "onlineSeats": "2(王鹏,刘谊鸽)",
-    "done": 198,
+    "done": 200,
     "answerRate": 91.11,
     "abandon": 20,
     "voicemail": 0,
@@ -1138,14 +1138,14 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1456,
-    "assigned": 1336,
-    "current": 67,
+    "sessions": 1461,
+    "assigned": 1341,
+    "current": 69,
     "max": 60,
-    "queue": 23,
+    "queue": 21,
     "onlineSeats": "2(王鹏,刘谊鸽)",
-    "done": 1210,
-    "answerRate": 91.76,
+    "done": 1213,
+    "answerRate": 91.79,
     "abandon": 120,
     "voicemail": 0,
     "satisfactionRate": 7.14
@@ -1588,11 +1588,11 @@
     "name": "官网严选自营售前咨询",
     "sessions": 501,
     "assigned": 459,
-    "current": 22,
+    "current": 19,
     "max": 60,
     "queue": 17,
     "onlineSeats": "2(王鹏,刘谊鸽)",
-    "done": 431,
+    "done": 434,
     "answerRate": 91.62,
     "abandon": 42,
     "voicemail": 0,
@@ -2205,15 +2205,6 @@
   "rate400": 77.6
  },
  "history": [
-  {
-   "ts": 1792596379575,
-   "skillRate400": null,
-   "skillQueue400": 0,
-   "callIn400": 0,
-   "signIn400": 0,
-   "onlineSessions": 767,
-   "onlineSeat": 0
-  },
   {
    "ts": 1792596610132,
    "skillRate400": null,
@@ -6698,6 +6689,15 @@
   },
   {
    "ts": 1792679457026,
+   "skillRate400": 47.83,
+   "skillQueue400": 0,
+   "callIn400": 46,
+   "signIn400": 1,
+   "onlineSessions": 911,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1792679612758,
    "skillRate400": 47.83,
    "skillQueue400": 0,
    "callIn400": 46,
