@@ -1,13 +1,13 @@
 {
- "ts": 1792680520843,
- "collectedAtCn": "2026/10/22 22:48:40",
+ "ts": 1792680790061,
+ "collectedAtCn": "2026/10/22 22:53:10",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "4",
   "坐席忙碌数": "0 (0)",
   "接通率": "26.83%",
   "满意率": "100.00%",
-  "呼入总数": "17372",
+  "呼入总数": "17375",
   "当前呼入数": "1",
   "外呼总数": "6314",
   "当前外呼数": "0",
@@ -480,8 +480,8 @@
   },
   {
    "service": "81198(上门按键转接)",
-   "callIn": 1820,
-   "ivr": 1172,
+   "callIn": 1821,
+   "ivr": 1173,
    "ringMissed": 15,
    "queueAbandon": 136,
    "answered": 557,
@@ -520,8 +520,8 @@
   },
   {
    "service": "88236603(京东渠道4000990166)",
-   "callIn": 984,
-   "ivr": 305,
+   "callIn": 986,
+   "ivr": 307,
    "ringMissed": 6,
    "queueAbandon": 92,
    "answered": 590,
@@ -979,7 +979,7 @@
     "done": 45,
     "answerRate": 100,
     "abandon": 0,
-    "voicemail": 9,
+    "voicemail": 10,
     "satisfactionRate": 100
    },
    {
@@ -1082,15 +1082,15 @@
    },
    {
     "name": "官网严选寄卖售后咨询",
-    "sessions": 227,
+    "sessions": 229,
     "assigned": 205,
     "current": 5,
     "max": 60,
-    "queue": 8,
+    "queue": 7,
     "onlineSeats": "2(王鹏,刘谊鸽)",
     "done": 200,
-    "answerRate": 90.31,
-    "abandon": 22,
+    "answerRate": 89.52,
+    "abandon": 24,
     "voicemail": 0,
     "satisfactionRate": 0
    },
@@ -1138,15 +1138,15 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1474,
-    "assigned": 1349,
-    "current": 61,
+    "sessions": 1476,
+    "assigned": 1350,
+    "current": 58,
     "max": 60,
-    "queue": 26,
+    "queue": 27,
     "onlineSeats": "2(王鹏,刘谊鸽)",
-    "done": 1229,
-    "answerRate": 91.52,
-    "abandon": 125,
+    "done": 1233,
+    "answerRate": 91.46,
+    "abandon": 126,
     "voicemail": 0,
     "satisfactionRate": 7.14
    },
@@ -1586,15 +1586,15 @@
    },
    {
     "name": "官网严选自营售前咨询",
-    "sessions": 511,
+    "sessions": 513,
     "assigned": 463,
     "current": 18,
     "max": 60,
-    "queue": 17,
+    "queue": 16,
     "onlineSeats": "2(王鹏,刘谊鸽)",
     "done": 439,
-    "answerRate": 90.61,
-    "abandon": 48,
+    "answerRate": 90.25,
+    "abandon": 50,
     "voicemail": 0,
     "satisfactionRate": 0
    },
@@ -2205,24 +2205,6 @@
   "rate400": 77.6
  },
  "history": [
-  {
-   "ts": 1792598080079,
-   "skillRate400": null,
-   "skillQueue400": 0,
-   "callIn400": 0,
-   "signIn400": 0,
-   "onlineSessions": 767,
-   "onlineSeat": 0
-  },
-  {
-   "ts": 1792598280589,
-   "skillRate400": null,
-   "skillQueue400": 0,
-   "callIn400": 0,
-   "signIn400": 0,
-   "onlineSessions": 767,
-   "onlineSeat": 0
-  },
   {
    "ts": 1792598586244,
    "skillRate400": null,
@@ -6698,6 +6680,24 @@
   },
   {
    "ts": 1792680520843,
+   "skillRate400": 47.83,
+   "skillQueue400": 0,
+   "callIn400": 46,
+   "signIn400": 1,
+   "onlineSessions": 911,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1792680640708,
+   "skillRate400": 47.83,
+   "skillQueue400": 0,
+   "callIn400": 46,
+   "signIn400": 1,
+   "onlineSessions": 911,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1792680790061,
    "skillRate400": 47.83,
    "skillQueue400": 0,
    "callIn400": 46,
