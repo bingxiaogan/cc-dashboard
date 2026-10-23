@@ -1,37 +1,37 @@
 {
  "objects": {
   "c400d": {
-   "level": 2,
-   "levelName": "一级",
-   "color": "黄",
+   "level": 3,
+   "levelName": "二级",
+   "color": "橙",
    "vals": {
-    "load": 231.4,
-    "rate": 81.8,
+    "load": 229,
+    "rate": 79.4,
     "lv": 4,
-    "rv": 2
+    "rv": 3
    },
-   "ts": 1792722894335,
-   "tsCn": "2026/10/23 10:34:54",
+   "ts": 1792723074923,
+   "tsCn": "2026/10/23 10:37:54",
    "lastLevel": 2,
    "muted": false,
    "minLevel": 2,
-   "lastAlertTs": 1792722172242
+   "lastAlertTs": 1792723074923
   },
   "c400w": {
    "level": 2,
    "levelName": "一级",
    "color": "黄",
    "vals": {
-    "load": 129.7,
-    "rate": 79,
+    "load": 129.9,
+    "rate": 78.9,
     "lv": 2,
     "rv": 3,
     "src": "周报口径(今实时)",
     "wDays": 6,
     "sum": {
-     "call": 6465,
-     "ans": 5108,
-     "den400": 4986,
+     "call": 6501,
+     "ans": 5130,
+     "den400": 5003,
      "on": 4503,
      "denOn": 5760
     },
@@ -48,15 +48,15 @@
      "targets": [
       {
        "tgt": 80,
-       "rate": 85.1,
+       "rate": 85.6,
        "perDay": [
-        1070
+        1076
        ],
        "status": "ok"
       },
       {
        "tgt": 85,
-       "rate": 115.8,
+       "rate": 116.5,
        "perDay": [
         1257
        ],
@@ -69,22 +69,22 @@
      "weekEnd": "2026-10-24"
     }
    },
-   "ts": 1792722894335,
-   "tsCn": "2026/10/23 10:34:54",
+   "ts": 1792723074923,
+   "tsCn": "2026/10/23 10:37:54",
    "lastLevel": 2,
    "muted": false,
    "minLevel": 2,
-   "lastAlertTs": 1792721240042
+   "lastAlertTs": 1792723074923
   },
   "onld": {
    "level": 0,
    "levelName": "低负荷",
    "color": "绿",
    "vals": {
-    "load": 44.7
+    "load": 37.7
    },
-   "ts": 1792722894335,
-   "tsCn": "2026/10/23 10:34:54",
+   "ts": 1792723074923,
+   "tsCn": "2026/10/23 10:37:54",
    "lastLevel": 0,
    "muted": true,
    "minLevel": 99
@@ -98,15 +98,15 @@
     "src": "周报口径(今实时)",
     "wDays": 6,
     "sum": {
-     "call": 6465,
-     "ans": 5108,
-     "den400": 4986,
+     "call": 6501,
+     "ans": 5130,
+     "den400": 5003,
      "on": 4503,
      "denOn": 5760
     }
    },
-   "ts": 1792722894335,
-   "tsCn": "2026/10/23 10:34:54",
+   "ts": 1792723074923,
+   "tsCn": "2026/10/23 10:37:54",
    "lastLevel": 0,
    "muted": true,
    "minLevel": 99
@@ -124,8 +124,8 @@
     "rv": 1,
     "agents": 2
    },
-   "ts": 1792722894335,
-   "tsCn": "2026/10/23 10:34:54",
+   "ts": 1792723074923,
+   "tsCn": "2026/10/23 10:37:54",
    "lastLevel": 1,
    "muted": true,
    "minLevel": 99
@@ -145,6 +145,6 @@
    "minLevel": 99
   }
  },
- "updated": "2026/10/23 10:34:54",
- "updatedTs": 1792722894335
+ "updated": "2026/10/23 10:37:54",
+ "updatedTs": 1792723074923
 }
