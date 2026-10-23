@@ -1,14 +1,14 @@
 {
- "ts": 1792770884670,
- "collectedAtCn": "2026/10/23 23:54:44",
+ "ts": 1792771003889,
+ "collectedAtCn": "2026/10/23 23:56:43",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "2",
   "坐席忙碌数": "0 (0)",
   "接通率": "25.19%",
   "满意率": "100.00%",
-  "呼入总数": "17745",
-  "当前呼入数": "1",
+  "呼入总数": "17746",
+  "当前呼入数": "0",
   "外呼总数": "6891",
   "当前外呼数": "0",
   "呼入平均通话时长": "00:02:38",
@@ -470,8 +470,8 @@
   },
   {
    "service": "88236602(其他渠道4000166088)",
-   "callIn": 737,
-   "ivr": 380,
+   "callIn": 738,
+   "ivr": 381,
    "ringMissed": 5,
    "queueAbandon": 43,
    "answered": 319,
@@ -1138,15 +1138,15 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1702,
+    "sessions": 1703,
     "assigned": 1448,
-    "current": 4,
+    "current": 2,
     "max": 0,
-    "queue": 32,
+    "queue": 31,
     "onlineSeats": "0",
-    "done": 1389,
-    "answerRate": 85.08,
-    "abandon": 254,
+    "done": 1391,
+    "answerRate": 85.03,
+    "abandon": 255,
     "voicemail": 0,
     "satisfactionRate": 0
    },
@@ -1586,16 +1586,16 @@
    },
    {
     "name": "官网严选自营售前咨询",
-    "sessions": 543,
+    "sessions": 544,
     "assigned": 449,
     "current": 0,
     "max": 0,
-    "queue": 1,
+    "queue": 0,
     "onlineSeats": "0",
     "done": 442,
-    "answerRate": 82.69,
-    "abandon": 94,
-    "voicemail": 11,
+    "answerRate": 82.54,
+    "abandon": 95,
+    "voicemail": 12,
     "satisfactionRate": 0
    },
    {
@@ -2205,15 +2205,6 @@
   "rate400": 78.1
  },
  "history": [
-  {
-   "ts": 1792680124049,
-   "skillRate400": 47.83,
-   "skillQueue400": 0,
-   "callIn400": 46,
-   "signIn400": 1,
-   "onlineSessions": 911,
-   "onlineSeat": 0
-  },
   {
    "ts": 1792680243381,
    "skillRate400": 47.83,
@@ -6698,6 +6689,15 @@
   },
   {
    "ts": 1792770884670,
+   "skillRate400": 58.82,
+   "skillQueue400": 0,
+   "callIn400": 34,
+   "signIn400": 1,
+   "onlineSessions": 891,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1792771003889,
    "skillRate400": 58.82,
    "skillQueue400": 0,
    "callIn400": 34,
