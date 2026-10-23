@@ -1,14 +1,14 @@
 {
- "ts": 1792768028085,
- "collectedAtCn": "2026/10/23 23:07:08",
+ "ts": 1792768147540,
+ "collectedAtCn": "2026/10/23 23:09:07",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "2",
   "坐席忙碌数": "0 (0)",
   "接通率": "25.21%",
   "满意率": "100.00%",
-  "呼入总数": "17730",
-  "当前呼入数": "1",
+  "呼入总数": "17731",
+  "当前呼入数": "0",
   "外呼总数": "6891",
   "当前外呼数": "0",
   "呼入平均通话时长": "00:02:38",
@@ -1082,15 +1082,15 @@
    },
    {
     "name": "官网严选寄卖售后咨询",
-    "sessions": 291,
+    "sessions": 292,
     "assigned": 218,
     "current": 2,
     "max": 60,
-    "queue": 13,
+    "queue": 12,
     "onlineSeats": "2(王鹏,周鑫)",
     "done": 216,
-    "answerRate": 74.91,
-    "abandon": 73,
+    "answerRate": 74.66,
+    "abandon": 74,
     "voicemail": 0,
     "satisfactionRate": 0
    },
@@ -1140,11 +1140,11 @@
     "name": "官网严选自营售后咨询",
     "sessions": 1668,
     "assigned": 1437,
-    "current": 46,
+    "current": 42,
     "max": 60,
     "queue": 21,
     "onlineSeats": "2(王鹏,周鑫)",
-    "done": 1336,
+    "done": 1340,
     "answerRate": 86.15,
     "abandon": 231,
     "voicemail": 0,
@@ -1590,7 +1590,7 @@
     "assigned": 444,
     "current": 17,
     "max": 60,
-    "queue": 12,
+    "queue": 13,
     "onlineSeats": "2(王鹏,周鑫)",
     "done": 420,
     "answerRate": 84.57,
@@ -2205,15 +2205,6 @@
   "rate400": 78.1
  },
  "history": [
-  {
-   "ts": 1792677185562,
-   "skillRate400": 47.83,
-   "skillQueue400": 0,
-   "callIn400": 46,
-   "signIn400": 1,
-   "onlineSessions": 911,
-   "onlineSeat": 0
-  },
   {
    "ts": 1792677306075,
    "skillRate400": 47.83,
@@ -6698,6 +6689,15 @@
   },
   {
    "ts": 1792768028085,
+   "skillRate400": 58.82,
+   "skillQueue400": 0,
+   "callIn400": 34,
+   "signIn400": 1,
+   "onlineSessions": 891,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1792768147540,
    "skillRate400": 58.82,
    "skillQueue400": 0,
    "callIn400": 34,
