@@ -1,6 +1,6 @@
 {
- "ts": 1792725935674,
- "collectedAtCn": "2026/10/23 11:25:35",
+ "ts": 1792735182374,
+ "collectedAtCn": "2026/10/23 13:59:42",
  "overview": {
   "接通率": "20.46%"
  },
@@ -1216,14 +1216,14 @@
   "date": "2026-10-23",
   "p400": 6,
   "pOn": 3,
-  "cap400": 194,
-  "capOn": 223,
+  "cap400": 366,
+  "capOn": 462,
   "capOnDay": 990,
   "onHoursDay": 33,
   "in400": 421,
   "inOn": 110,
-  "load400": 217,
-  "loadOn": 49.3,
+  "load400": 115,
+  "loadOn": 23.8,
   "rate400": 79.1
  },
  "capacity_week": {
@@ -1231,22 +1231,13 @@
   "wIn400": 6778,
   "wAns400": 5264,
   "wInOn": 4672,
-  "wExp400": 4744,
+  "wExp400": 4916,
   "wExpOn": 5760,
-  "load400": 142.9,
+  "load400": 137.9,
   "loadOn": 81.1,
   "rate400": 77.7
  },
  "history": [
-  {
-   "ts": 1792657293484,
-   "skillRate400": 80.46,
-   "skillQueue400": 2,
-   "callIn400": 911,
-   "signIn400": 18,
-   "onlineSessions": 503,
-   "onlineSeat": 2
-  },
   {
    "ts": 1792657411931,
    "skillRate400": 80.53,
@@ -5731,6 +5722,15 @@
   },
   {
    "ts": 1792725935674,
+   "skillRate400": 79.1,
+   "skillQueue400": 0,
+   "callIn400": 421,
+   "signIn400": 19,
+   "onlineSessions": null,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1792735182374,
    "skillRate400": 79.1,
    "skillQueue400": 0,
    "callIn400": 421,
