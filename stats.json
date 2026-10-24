@@ -1,14 +1,14 @@
 {
- "ts": 1792884731343,
- "collectedAtCn": "2026/10/25 07:32:11",
+ "ts": 1792885005820,
+ "collectedAtCn": "2026/10/25 07:36:45",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "5",
   "坐席忙碌数": "0 (0)",
   "接通率": "0%",
   "满意率": "100.00%",
-  "呼入总数": "72",
-  "当前呼入数": "2",
+  "呼入总数": "81",
+  "当前呼入数": "0",
   "外呼总数": "0",
   "当前外呼数": "0",
   "呼入平均通话时长": "00:00:00",
@@ -240,8 +240,8 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 26,
-   "ivr": 26,
+   "callIn": 30,
+   "ivr": 30,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -470,8 +470,8 @@
   },
   {
    "service": "88236602(其他渠道4000166088)",
-   "callIn": 3,
-   "ivr": 3,
+   "callIn": 4,
+   "ivr": 4,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -886,8 +886,8 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 26,
-    "ivr": 26,
+    "callIn": 30,
+    "ivr": 30,
     "ringMissed": 0,
     "queueAbandon": 0,
     "answered": 0,
@@ -905,9 +905,9 @@
     "transferred": 0
    }
   ],
-  "total": 27,
+  "total": 31,
   "answered": 0,
-  "ivr": 27,
+  "ivr": 31,
   "connectRate": 100
  },
  "online": {
@@ -2207,24 +2207,6 @@
   "rate400": 77.5
  },
  "history": [
-  {
-   "ts": 1792818348088,
-   "skillRate400": 68.74,
-   "skillQueue400": 0,
-   "callIn400": 691,
-   "signIn400": 11,
-   "onlineSessions": 393,
-   "onlineSeat": 2
-  },
-  {
-   "ts": 1792818462998,
-   "skillRate400": 68.78,
-   "skillQueue400": 0,
-   "callIn400": 695,
-   "signIn400": 11,
-   "onlineSessions": 395,
-   "onlineSeat": 2
-  },
   {
    "ts": 1792818578906,
    "skillRate400": 68.62,
@@ -6700,6 +6682,24 @@
   },
   {
    "ts": 1792884731343,
+   "skillRate400": null,
+   "skillQueue400": 0,
+   "callIn400": 0,
+   "signIn400": 1,
+   "onlineSessions": 0,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1792884886708,
+   "skillRate400": null,
+   "skillQueue400": 0,
+   "callIn400": 0,
+   "signIn400": 1,
+   "onlineSessions": 0,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1792885005820,
    "skillRate400": null,
    "skillQueue400": 0,
    "callIn400": 0,
