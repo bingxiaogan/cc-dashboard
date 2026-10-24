@@ -1,17 +1,17 @@
 {
- "ts": 1792857582229,
- "collectedAtCn": "2026/10/24 23:59:42",
+ "ts": 1792857820478,
+ "collectedAtCn": "2026/10/25 00:03:40",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "5",
   "坐席忙碌数": "0 (0)",
-  "接通率": "28.29%",
+  "接通率": "0%",
   "满意率": "100.00%",
-  "呼入总数": "18649",
+  "呼入总数": "5",
   "当前呼入数": "0",
-  "外呼总数": "6723",
+  "外呼总数": "0",
   "当前外呼数": "0",
-  "呼入平均通话时长": "00:02:31",
+  "呼入平均通话时长": "00:00:00",
   "AI通话数": "0 (3)"
  },
  "skillGroups": [
@@ -22,13 +22,13 @@
    "members": "赵锦超",
    "ring": 0,
    "queue": 0,
-   "todayAnswered": 1,
-   "missed": 4,
-   "rate": 20,
-   "total": 4,
+   "todayAnswered": 0,
+   "missed": 0,
+   "rate": 0,
+   "total": 0,
    "current": 0,
-   "avgDuration": "00:02:46",
-   "transferIn": 1,
+   "avgDuration": "00:00:00",
+   "transferIn": 0,
    "transferOut": 0
   },
   {
@@ -38,22 +38,22 @@
    "members": "赵锦超",
    "ring": 0,
    "queue": 0,
-   "todayAnswered": 16,
-   "missed": 20,
-   "rate": 44.44,
-   "total": 36,
+   "todayAnswered": 0,
+   "missed": 0,
+   "rate": 0,
+   "total": 0,
    "current": 0,
-   "avgDuration": "00:04:10",
+   "avgDuration": "00:00:00",
    "transferIn": 0,
    "transferOut": 0
   }
  ],
  "skillSummary": {
   "idleSeats": 0,
-  "answered": 17,
-  "missed": 24,
-  "rate": 42.5,
-  "total": 40,
+  "answered": 0,
+  "missed": 0,
+  "rate": null,
+  "total": 0,
   "queue": 0,
   "signIn": 1
  },
@@ -190,8 +190,8 @@
   },
   {
    "service": "88236623(88236623)",
-   "callIn": 1,
-   "ivr": 1,
+   "callIn": 0,
+   "ivr": 0,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -210,8 +210,8 @@
   },
   {
    "service": "88236625(爱机汇)",
-   "callIn": 3,
-   "ivr": 3,
+   "callIn": 0,
+   "ivr": 0,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -220,11 +220,11 @@
   },
   {
    "service": "88236628(爱分类1(4001581707))",
-   "callIn": 13,
-   "ivr": 4,
+   "callIn": 0,
+   "ivr": 0,
    "ringMissed": 0,
-   "queueAbandon": 2,
-   "answered": 7,
+   "queueAbandon": 0,
+   "answered": 0,
    "other": 0,
    "transferred": 0
   },
@@ -240,13 +240,13 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 2487,
-   "ivr": 1131,
-   "ringMissed": 12,
-   "queueAbandon": 288,
-   "answered": 1058,
+   "callIn": 0,
+   "ivr": 0,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
    "other": 0,
-   "transferred": 3
+   "transferred": 0
   },
   {
    "service": "82013(平台无法验机场景一)",
@@ -270,8 +270,8 @@
   },
   {
    "service": "88236633(88236633)",
-   "callIn": 128,
-   "ivr": 128,
+   "callIn": 0,
+   "ivr": 0,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -280,8 +280,8 @@
   },
   {
    "service": "88236632(帮卖)",
-   "callIn": 3,
-   "ivr": 3,
+   "callIn": 0,
+   "ivr": 0,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -300,16 +300,6 @@
   },
   {
    "service": "88236634(88236634)",
-   "callIn": 186,
-   "ivr": 186,
-   "ringMissed": 0,
-   "queueAbandon": 0,
-   "answered": 0,
-   "other": 0,
-   "transferred": 0
-  },
-  {
-   "service": "88236637(奢侈品-商家)",
    "callIn": 1,
    "ivr": 1,
    "ringMissed": 0,
@@ -319,9 +309,19 @@
    "transferred": 0
   },
   {
+   "service": "88236637(奢侈品-商家)",
+   "callIn": 0,
+   "ivr": 0,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
+   "other": 0,
+   "transferred": 0
+  },
+  {
    "service": "88236636(一键转卖)",
-   "callIn": 20,
-   "ivr": 20,
+   "callIn": 0,
+   "ivr": 0,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -330,8 +330,8 @@
   },
   {
    "service": "88236639(88236639)",
-   "callIn": 14,
-   "ivr": 14,
+   "callIn": 0,
+   "ivr": 0,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -370,8 +370,8 @@
   },
   {
    "service": "88236608(京东物流报备)",
-   "callIn": 1,
-   "ivr": 1,
+   "callIn": 0,
+   "ivr": 0,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -400,8 +400,8 @@
   },
   {
    "service": "80540(80540)",
-   "callIn": 3301,
-   "ivr": 3301,
+   "callIn": 0,
+   "ivr": 0,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -430,23 +430,23 @@
   },
   {
    "service": "88236609(88236609)",
-   "callIn": 169,
-   "ivr": 103,
-   "ringMissed": 1,
-   "queueAbandon": 6,
-   "answered": 61,
+   "callIn": 0,
+   "ivr": 0,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
    "other": 0,
-   "transferred": 2
+   "transferred": 0
   },
   {
    "service": "81199(门店按键转接)",
-   "callIn": 662,
-   "ivr": 430,
-   "ringMissed": 3,
-   "queueAbandon": 24,
-   "answered": 209,
+   "callIn": 0,
+   "ivr": 0,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
    "other": 0,
-   "transferred": 4
+   "transferred": 0
   },
   {
    "service": "81994(客诉退货场景)",
@@ -460,41 +460,41 @@
   },
   {
    "service": "88236600(爱回收4001616365)",
-   "callIn": 36,
-   "ivr": 17,
+   "callIn": 0,
+   "ivr": 0,
    "ringMissed": 0,
-   "queueAbandon": 1,
-   "answered": 20,
+   "queueAbandon": 0,
+   "answered": 0,
    "other": 0,
-   "transferred": 2
+   "transferred": 0
   },
   {
    "service": "88236602(其他渠道4000166088)",
-   "callIn": 714,
-   "ivr": 356,
-   "ringMissed": 4,
-   "queueAbandon": 33,
-   "answered": 340,
+   "callIn": 0,
+   "ivr": 0,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
    "other": 0,
-   "transferred": 19
+   "transferred": 0
   },
   {
    "service": "81198(上门按键转接)",
-   "callIn": 2535,
-   "ivr": 1607,
-   "ringMissed": 20,
-   "queueAbandon": 175,
-   "answered": 842,
+   "callIn": 0,
+   "ivr": 0,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
    "other": 0,
-   "transferred": 109
+   "transferred": 0
   },
   {
    "service": "88236601(京东渠道（抖音引流）)",
-   "callIn": 15,
-   "ivr": 9,
+   "callIn": 0,
+   "ivr": 0,
    "ringMissed": 0,
    "queueAbandon": 0,
-   "answered": 6,
+   "answered": 0,
    "other": 0,
    "transferred": 0
   },
@@ -520,18 +520,18 @@
   },
   {
    "service": "88236603(京东渠道4000990166)",
-   "callIn": 892,
-   "ivr": 298,
-   "ringMissed": 5,
-   "queueAbandon": 46,
-   "answered": 558,
+   "callIn": 0,
+   "ivr": 0,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
    "other": 0,
-   "transferred": 15
+   "transferred": 0
   },
   {
    "service": "88236606(ahs物流收货)",
-   "callIn": 59,
-   "ivr": 59,
+   "callIn": 0,
+   "ivr": 0,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -540,11 +540,11 @@
   },
   {
    "service": "88236605(违法信息不良举报)",
-   "callIn": 22,
-   "ivr": 11,
+   "callIn": 0,
+   "ivr": 0,
    "ringMissed": 0,
-   "queueAbandon": 1,
-   "answered": 10,
+   "queueAbandon": 0,
+   "answered": 0,
    "other": 0,
    "transferred": 0
   },
@@ -610,8 +610,8 @@
   },
   {
    "service": "80409(奢侈品商家-门店验货报价)",
-   "callIn": 1190,
-   "ivr": 1190,
+   "callIn": 0,
+   "ivr": 0,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -640,8 +640,8 @@
   },
   {
    "service": "88236619(京东智能数码店)",
-   "callIn": 41,
-   "ivr": 41,
+   "callIn": 0,
+   "ivr": 0,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -660,11 +660,11 @@
   },
   {
    "service": "051983074462(9523622)",
-   "callIn": 77,
-   "ivr": 40,
+   "callIn": 0,
+   "ivr": 0,
    "ringMissed": 0,
-   "queueAbandon": 6,
-   "answered": 31,
+   "queueAbandon": 0,
+   "answered": 0,
    "other": 0,
    "transferred": 0
   },
@@ -876,39 +876,39 @@
    },
    {
     "service": "88236628(爱分类1(4001581707))",
-    "callIn": 13,
-    "ivr": 4,
+    "callIn": 0,
+    "ivr": 0,
     "ringMissed": 0,
-    "queueAbandon": 2,
-    "answered": 7,
+    "queueAbandon": 0,
+    "answered": 0,
     "other": 0,
     "transferred": 0
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 2487,
-    "ivr": 1131,
-    "ringMissed": 12,
-    "queueAbandon": 288,
-    "answered": 1058,
+    "callIn": 0,
+    "ivr": 0,
+    "ringMissed": 0,
+    "queueAbandon": 0,
+    "answered": 0,
     "other": 0,
-    "transferred": 3
+    "transferred": 0
    },
    {
     "service": "051983074462(9523622)",
-    "callIn": 77,
-    "ivr": 40,
+    "callIn": 0,
+    "ivr": 0,
     "ringMissed": 0,
-    "queueAbandon": 6,
-    "answered": 31,
+    "queueAbandon": 0,
+    "answered": 0,
     "other": 0,
     "transferred": 0
    }
   ],
-  "total": 2577,
-  "answered": 1096,
-  "ivr": 1175,
-  "connectRate": 88.13
+  "total": 0,
+  "answered": 0,
+  "ivr": 0,
+  "connectRate": null
  },
  "online": {
   "groups": [
@@ -1138,15 +1138,15 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1670,
-    "assigned": 1394,
+    "sessions": 5,
+    "assigned": 0,
     "current": 0,
     "max": 0,
-    "queue": 26,
+    "queue": 21,
     "onlineSeats": "0",
-    "done": 1341,
-    "answerRate": 83.47,
-    "abandon": 276,
+    "done": 0,
+    "answerRate": 0,
+    "abandon": 5,
     "voicemail": 0,
     "satisfactionRate": 0
    },
@@ -1754,17 +1754,17 @@
    },
    {
     "name": "爱回收官网接待组",
-    "sessions": 868,
-    "assigned": 868,
+    "sessions": 0,
+    "assigned": 0,
     "current": 0,
     "max": 0,
     "queue": 0,
     "onlineSeats": "0",
-    "done": 856,
-    "answerRate": 100,
+    "done": 0,
+    "answerRate": 0,
     "abandon": 0,
     "voicemail": 0,
-    "satisfactionRate": 90.91
+    "satisfactionRate": 0
    },
    {
     "name": "基础服务部-黑龙江、天津省地区",
@@ -2207,24 +2207,6 @@
   "rate400": 77.5
  },
  "history": [
-  {
-   "ts": 1792791955867,
-   "skillRate400": null,
-   "skillQueue400": 0,
-   "callIn400": 0,
-   "signIn400": 1,
-   "onlineSessions": 0,
-   "onlineSeat": 0
-  },
-  {
-   "ts": 1792792075066,
-   "skillRate400": null,
-   "skillQueue400": 0,
-   "callIn400": 0,
-   "signIn400": 1,
-   "onlineSessions": 0,
-   "onlineSeat": 0
-  },
   {
    "ts": 1792792194295,
    "skillRate400": null,
@@ -6703,6 +6685,24 @@
    "skillRate400": 42.5,
    "skillQueue400": 0,
    "callIn400": 40,
+   "signIn400": 1,
+   "onlineSessions": 1081,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1792857701357,
+   "skillRate400": null,
+   "skillQueue400": 0,
+   "callIn400": 0,
+   "signIn400": 1,
+   "onlineSessions": 1081,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1792857820478,
+   "skillRate400": null,
+   "skillQueue400": 0,
+   "callIn400": 0,
    "signIn400": 1,
    "onlineSessions": 1081,
    "onlineSeat": 0
