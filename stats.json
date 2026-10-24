@@ -1,13 +1,13 @@
 {
- "ts": 1792885571756,
- "collectedAtCn": "2026/10/25 07:46:11",
+ "ts": 1792885727067,
+ "collectedAtCn": "2026/10/25 07:48:47",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "5",
   "坐席忙碌数": "0 (0)",
   "接通率": "0%",
   "满意率": "100.00%",
-  "呼入总数": "103",
+  "呼入总数": "108",
   "当前呼入数": "1",
   "外呼总数": "0",
   "当前外呼数": "0",
@@ -496,8 +496,8 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 38,
-   "ivr": 38,
+   "callIn": 41,
+   "ivr": 41,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -726,8 +726,8 @@
   },
   {
    "service": "88236602(其他渠道4000166088)",
-   "callIn": 6,
-   "ivr": 6,
+   "callIn": 7,
+   "ivr": 7,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -1143,8 +1143,8 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 38,
-    "ivr": 38,
+    "callIn": 41,
+    "ivr": 41,
     "ringMissed": 0,
     "queueAbandon": 0,
     "answered": 0,
@@ -1162,9 +1162,9 @@
     "transferred": 0
    }
   ],
-  "total": 39,
+  "total": 42,
   "answered": 0,
-  "ivr": 39,
+  "ivr": 42,
   "connectRate": 100
  },
  "online": {
@@ -1381,17 +1381,17 @@
    },
    {
     "name": "爱回收官网接待组-【会员】",
-    "sessions": 21,
-    "assigned": 21,
+    "sessions": 0,
+    "assigned": 0,
     "current": 0,
     "max": 0,
     "queue": 0,
     "onlineSeats": "0",
-    "done": 21,
-    "answerRate": 100,
+    "done": 0,
+    "answerRate": 0,
     "abandon": 0,
     "voicemail": 0,
-    "satisfactionRate": 100
+    "satisfactionRate": 0
    },
    {
     "name": "官网严选自营售后咨询",
@@ -2464,15 +2464,6 @@
   "rate400": 77.5
  },
  "history": [
-  {
-   "ts": 1792819105677,
-   "skillRate400": 67.92,
-   "skillQueue400": 1,
-   "callIn400": 720,
-   "signIn400": 11,
-   "onlineSessions": 410,
-   "onlineSeat": 2
-  },
   {
    "ts": 1792819231492,
    "skillRate400": 67.68,
@@ -6957,6 +6948,15 @@
   },
   {
    "ts": 1792885571756,
+   "skillRate400": null,
+   "skillQueue400": 0,
+   "callIn400": 0,
+   "signIn400": 2,
+   "onlineSessions": 0,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1792885727067,
    "skillRate400": null,
    "skillQueue400": 0,
    "callIn400": 0,
