@@ -1,14 +1,14 @@
 {
- "ts": 1792849879803,
- "collectedAtCn": "2026/10/24 21:51:19",
+ "ts": 1792849999566,
+ "collectedAtCn": "2026/10/24 21:53:19",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "5",
   "坐席忙碌数": "0 (0)",
-  "接通率": "28.69%",
+  "接通率": "28.67%",
   "满意率": "100.00%",
-  "呼入总数": "18386",
-  "当前呼入数": "4",
+  "呼入总数": "18398",
+  "当前呼入数": "2",
   "外呼总数": "6723",
   "当前外呼数": "0",
   "呼入平均通话时长": "00:02:31",
@@ -480,8 +480,8 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 2452,
-   "ivr": 1096,
+   "callIn": 2453,
+   "ivr": 1097,
    "ringMissed": 12,
    "queueAbandon": 288,
    "answered": 1058,
@@ -720,8 +720,8 @@
   },
   {
    "service": "81198(上门按键转接)",
-   "callIn": 2403,
-   "ivr": 1475,
+   "callIn": 2408,
+   "ivr": 1480,
    "ringMissed": 20,
    "queueAbandon": 175,
    "answered": 842,
@@ -850,8 +850,8 @@
   },
   {
    "service": "80409(奢侈品商家-门店验货报价)",
-   "callIn": 1160,
-   "ivr": 1160,
+   "callIn": 1164,
+   "ivr": 1164,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -1127,8 +1127,8 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 2452,
-    "ivr": 1096,
+    "callIn": 2453,
+    "ivr": 1097,
     "ringMissed": 12,
     "queueAbandon": 288,
     "answered": 1058,
@@ -1146,9 +1146,9 @@
     "transferred": 0
    }
   ],
-  "total": 2541,
+  "total": 2542,
   "answered": 1096,
-  "ivr": 1139,
+  "ivr": 1140,
   "connectRate": 87.96
  },
  "online": {
@@ -1379,15 +1379,15 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1556,
-    "assigned": 1336,
-    "current": 69,
+    "sessions": 1558,
+    "assigned": 1337,
+    "current": 68,
     "max": 60,
-    "queue": 37,
+    "queue": 35,
     "onlineSeats": "2(王鹏,周鑫)",
-    "done": 1215,
-    "answerRate": 85.86,
-    "abandon": 220,
+    "done": 1217,
+    "answerRate": 85.82,
+    "abandon": 221,
     "voicemail": 0,
     "satisfactionRate": 0
    },
@@ -1705,7 +1705,7 @@
     "assigned": 35,
     "current": 2,
     "max": 60,
-    "queue": 1,
+    "queue": 2,
     "onlineSeats": "2(王鹏,周鑫)",
     "done": 33,
     "answerRate": 92.11,
@@ -1827,15 +1827,15 @@
    },
    {
     "name": "官网严选自营售前咨询",
-    "sessions": 522,
-    "assigned": 459,
-    "current": 15,
+    "sessions": 526,
+    "assigned": 461,
+    "current": 16,
     "max": 60,
-    "queue": 21,
+    "queue": 17,
     "onlineSeats": "2(王鹏,周鑫)",
-    "done": 438,
-    "answerRate": 87.93,
-    "abandon": 63,
+    "done": 439,
+    "answerRate": 87.64,
+    "abandon": 65,
     "voicemail": 0,
     "satisfactionRate": 0
    },
@@ -2449,15 +2449,6 @@
   "rate400": 77.5
  },
  "history": [
-  {
-   "ts": 1792783600651,
-   "skillRate400": null,
-   "skillQueue400": 0,
-   "callIn400": 0,
-   "signIn400": 1,
-   "onlineSessions": 0,
-   "onlineSeat": 0
-  },
   {
    "ts": 1792783719852,
    "skillRate400": null,
@@ -6942,6 +6933,15 @@
   },
   {
    "ts": 1792849879803,
+   "skillRate400": 74.97,
+   "skillQueue400": 0,
+   "callIn400": 1554,
+   "signIn400": 2,
+   "onlineSessions": 1081,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1792849999566,
    "skillRate400": 74.97,
    "skillQueue400": 0,
    "callIn400": 1554,
