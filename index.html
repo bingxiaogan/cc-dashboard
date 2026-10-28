@@ -1333,10 +1333,20 @@ function render400() {
      第一排 当前排队量 / 呼入量 / 人工进线量　第二排 在岗人力 / 运能负荷 / 人力缺口
      （「人力缺口」从原「在岗人力」的副文案里拆成独立卡） */
   const gapN = planDay ? (planDay.gap_hc || 0) : null;
+  /* 400 接通率口径（2026-10-28 用户要求）：主数值改成**工作时间口径**
+     —— 只算 8:00 起的半小时段（Σ接听 ÷ Σ转人工），因为技能组「今日」是全天累计，
+     夜里 0:00–8:00 / 21:00 后无人值守（夜间接通率 ~37%），会把 85% 稀释成 81%。
+     全天累计值降级到副文案做对照，别删（万一飞书表当天还没填，主数值自动退回全天口径）。 */
+  const w4 = cc.call400Work || null;
+  const rate400 = (w4 && w4.rate != null) ? w4.rate : ss.rate;
+  const rate400src = w4
+    ? `工作时间 ${w4.from}–${w4.to ? String(w4.to).slice(0, 5) : '21:00'} · Σ接听 ÷ Σ转人工 · ${w4.slots} 段`
+    : 'Σ技能组接听 ÷ Σ技能组呼入（全天累计）';
   $('#k400').innerHTML = [
     {
-      k: '接通率', v: pc(ss.rate), lead: 1, hl: 1, c: (ss.rate || 0) >= 85 ? 'c-green' : 'c-red',
-      d: `${(ss.rate || 0) >= 85 ? '<span class="ok">达标</span>' : '<span class="warn">低于 85% 目标</span>'} · Σ技能组接听 ÷ Σ技能组呼入`
+      k: '接通率', v: pc(rate400), lead: 1, hl: 1, c: (rate400 || 0) >= 85 ? 'c-green' : 'c-red',
+      d: `${(rate400 || 0) >= 85 ? '<span class="ok">达标</span>' : '<span class="warn">低于 85% 目标</span>'} · ${rate400src}`
+        + (w4 && w4.allDay != null ? ` · 全天累计 ${pc(w4.allDay)}` : '')
         + (wSlot ? ` · 最低 ${wSlot.k} ${wSlot.r.toFixed(0)}%` : ''),
       wk: week400 ? {
         txt: week400.off === 0 ? '本周' : '上周', v: pc(week400.rate),
