@@ -2937,13 +2937,12 @@ function renderTicket(tk) {
   const aggAll = tkAggFor(tk, 'all');
   const tbAll = aggAll.buckets || {};
   const overCnt = (k, tb) => sum(['待处理', '待分配', '处理中'], s => (tb[k] || {})[s] || 0);
-  /* 2026-10-28 桶改「超时相对档」**互斥**口径：未超时 / 超时<24h / 超时24-48h / 超时48-72h / 超时>72h
-     （5 档相加 = 该类总量）。⇒「已超时」必须把 4 个超时档相加 —— 旧版是累计口径、只取单桶就够，
-     改动后若照旧只取一桶会大幅少算，别混用。 */
-  const OVER_KS = ['超时<24h', '超时24-48h', '超时48-72h', '超时>72h'];
+  /* 2026-10-28 时效桶 = 升级时长 4 档互斥：升级24h内 / 24-48h / 48-72h / 72h以上
+     （4 档相加 = 该类总量）⇒「升级超 24h」= 后 3 档相加 */
+  const OVER_KS = ['升级24-48h', '升级48-72h', '升级72h以上'];
   const overSum = (ks, tb) => ks.reduce((a, k) => a + overCnt(k, tb), 0);
   const overN = overSum(OVER_KS, tbAll);
-  const inTime = overCnt('未超时', tbAll);
+  const in24 = overCnt('升级24h内', tbAll);
   const TYS = (tk.types && tk.types.length) ? tk.types : TK_TYPES;
   const grand = tk.grand_total || aggAll.total;
 
@@ -3000,10 +2999,10 @@ function renderTicket(tk) {
    · 堆叠条：红=待分配 · 黄=待处理 · 绿=处理中（沿用旧看板配色，勿改） */
 const TK_ORDER = ['待分配', '待处理', '处理中'];
 const TK_COLOR = { '待分配': 'var(--red)', '待处理': 'var(--amber)', '处理中': 'var(--green)' };
-const TK_TB_ORDER = ['未超时', '超时<24h', '超时24-48h', '超时48-72h', '超时>72h'];
+const TK_TB_ORDER = ['升级24h内', '升级24-48h', '升级48-72h', '升级72h以上'];
 const TK_TB_NAME = {
-  '未超时': '未超时', '超时<24h': '超时 <24h', '超时24-48h': '超时 24-48h',
-  '超时48-72h': '超时 48-72h', '超时>72h': '超时 >72h'
+  '升级24h内': '升级 24h 内', '升级24-48h': '升级 24-48h',
+  '升级48-72h': '升级 48-72h', '升级72h以上': '升级 72h 以上'
 };
 let TK_TIME_PICK = null;
 
