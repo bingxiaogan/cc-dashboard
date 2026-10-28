@@ -2970,17 +2970,17 @@ function renderTicket(tk) {
   const endStk = fc ? fc.out[fc.out.length - 1].stk : null;
   const diff = fc ? endStk - fc.stockNow : null;
   const trendUp = diff != null && diff > 0;
-  const over72 = overCnt('超时>72h', tbAll), over48 = overSum(['超时48-72h', '超时>72h'], tbAll);
+  const over72 = overCnt('升级72h以上', tbAll), over48 = overSum(['升级48-72h', '升级72h以上'], tbAll);
   const unassigned = st['待分配'] || 0;
 
   /* ③ 概况文字（原「处置 KPI」小方块，2026-09-24 用户要求删掉方块、把有用的信息改成文字）
      放在「工单总量级」四张卡片下面一行 —— 只陈述口径，不带建议（建议在处置策略建议里）。 */
   const brief = [];
-  brief.push(`已超时 <b>${n0(overN)}</b> 单<span class="sep">·</span>其中超时 48h 以上 <b>${n0(over48)}</b>、72h 以上 <b>${n0(over72)}</b>`);
+  brief.push(`升级超 24h <b>${n0(overN)}</b> 单<span class="sep">·</span>其中升级 48h 以上 <b>${n0(over48)}</b>、72h 以上 <b>${n0(over72)}</b>`);
   brief.push(`待处理 <b>${n0(st['待处理'])}</b>、待分配 <b>${n0(unassigned)}</b>、处理中 <b>${n0(st['处理中'])}</b>`);
   if (fc) brief.push(`积压 <b>${n0(fc.stockNow)}</b> 单 → 7 天后 <b>${endStk === 0 ? '清零' : n0(endStk)}</b> 单（<span class="${trendUp ? 'warn' : 'ok'}">${endStk === 0 ? '按当前节奏可清空' : trendUp ? '积压 +' + Math.abs(diff) : '消化 −' + Math.abs(diff)}</span>）`);
   if (fc) brief.push(`日均新增 <b>${n0(fc.nAvg14)}</b> / 处理 <b>${n0(fc.dAvg)}</b> 单<span class="sep">·</span>净变化 <b>${n1(fc.nAvg14 - fc.dAvg)}</b> 单/天`);
-  brief.push(`未超时（倒计时中） <b>${n0(inTime)}</b> 单`);
+  brief.push(`升级 24h 内 <b>${n0(in24)}</b> 单`);
   if ($('#tkBrief')) $('#tkBrief').innerHTML = brief.map(x => `<span class="bi">${x}</span>`).join('');
 
   /* ④ 状态 × 类型 矩阵已删除（2026-09-24 用户：「目前库存里面的状态类型也删掉」） */
@@ -3111,7 +3111,8 @@ function ticketForecast(ty) {
 /* ── 工单处置策略建议 ──
    2026-09-24 用户要求「调整下分析策略，不要写城市了，客诉、纠纷、申诉各分析下，当前的积压量和超时情况」，
    随后又要求「里面总览不要」→ 只保留 客诉 / 纠纷 / 申诉 三条
-   （每条 = 积压量 + 超时未结分级 + 占比 + 处置建议）。三类均不含舆情。 */
+   （每条 = 积压量 + 升级时长分级 + 占比 + 处置建议）。三类均不含舆情。
+   2026-10-28 档名统一为「升级 XXh」，不再用「超时/未超时」字样。 */
 function renderStrategyTicket(o) {
   const box = $('#stratTicket'); if (!box) return;
   const tk = o.tk; if (!tk) return;
@@ -3119,26 +3120,26 @@ function renderStrategyTicket(o) {
   const overCnt = (k, tb) => sum(TK_ORDER, s => (tb[k] || {})[s] || 0);
   const grand = tk.grand_total || 0;
 
-  /* 客诉 / 纠纷 / 申诉 逐类：积压量 + 超时情况 + 处置建议
+  /* 客诉 / 纠纷 / 申诉 逐类：积压量 + 升级时长情况 + 处置建议
      （2026-09-24 用户要求去掉「城市」条，随后又要求「总览不要」→ 只留三类） */
   ['客诉', '纠纷', '申诉'].forEach(t => {
     const a = tkAggFor(tk, t), tb = a.buckets || {};
     const n = a.total;
-    const ov = overCnt('超时<24h', tb) + overCnt('超时24-48h', tb) + overCnt('超时48-72h', tb) + overCnt('超时>72h', tb);
-    const o48 = overCnt('超时48-72h', tb) + overCnt('超时>72h', tb), o72 = overCnt('超时>72h', tb);
+    const ov = overCnt('升级24-48h', tb) + overCnt('升级48-72h', tb) + overCnt('升级72h以上', tb);
+    const o48 = overCnt('升级48-72h', tb) + overCnt('升级72h以上', tb), o72 = overCnt('升级72h以上', tb);
     const ua = ((tk.type_matrix || {})[t] || {})['待分配'] || 0;
     const rate = n ? ov / n * 100 : 0;
     const cls = ov ? (rate >= 30 ? 'risk' : 'slot') : (ua > n * 0.5 ? 'slot' : 'good');
     const tips = [];
-    if (ov) tips.push(o72 ? `${n0(o72)} 单已超 72h，建议按处理人逐单销项`
-      : o48 ? `${n0(o48)} 单超 48h，建议列为当日最优先`
-        : '超时均在 24h 以内，当日盯住即可');
+    if (ov) tips.push(o72 ? `${n0(o72)} 单升级已超 72h，建议按处理人逐单销项`
+      : o48 ? `${n0(o48)} 单升级已超 48h，建议列为当日最优先`
+        : '升级都在 24-48h 区间，当日盯住即可');
     if (ua) tips.push(`待分配 ${n0(ua)} 单尚未落到处理人，卡在分配环节会直接推高时长`);
     if (!tips.length) tips.push('按现节奏保持');
     items.push({
       tag: t, cls,
-      html: `积压 <b>${n0(n)}</b> 单（占总量 ${grand ? pc(n / grand * 100, 1) : '–'}），已超时 <b>${n0(ov)}</b> 单` +
-        (ov ? `（占本类 ${pc(rate, 1)}，其中超时 48h 以上 ${n0(o48)}、72h 以上 ${n0(o72)}）` : '') +
+      html: `积压 <b>${n0(n)}</b> 单（占总量 ${grand ? pc(n / grand * 100, 1) : '–'}），升级超 24h <b>${n0(ov)}</b> 单` +
+        (ov ? `（占本类 ${pc(rate, 1)}，其中升级 48h 以上 ${n0(o48)}、72h 以上 ${n0(o72)}）` : '') +
         `，待分配 ${n0(ua)} 单。${tips.join('；')}。`
     });
   });
