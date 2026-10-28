@@ -2936,13 +2936,14 @@ function renderTicket(tk) {
   const st = tk.status_totals || {};
   const aggAll = tkAggFor(tk, 'all');
   const tbAll = aggAll.buckets || {};
-  /* ⚠️ 时长桶是**累计**口径（采集侧注释：24h以上 ⊇ 48h以上 ⊇ 72h以上 ⊇ 96h以上，
-     且 24h内 + 24h以上 = 该类总量）⇒ 「超时未结 ≥24h」= **只取 `24h以上` 单桶**，
-     绝不能把 4 个桶相加（旧的 sum(OVER) 写法把 48h/72h/96h 重复计了一遍，2026-09-24 修正：
-     全部口径 83 → 78、纠纷 67 → 62）。 */
   const overCnt = (k, tb) => sum(['待处理', '待分配', '处理中'], s => (tb[k] || {})[s] || 0);
-  const overN = overCnt('24h以上', tbAll);
-  const in24 = overCnt('24h内', tbAll);
+  /* 2026-10-28 桶改「超时相对档」**互斥**口径：未超时 / 超时<24h / 超时24-48h / 超时48-72h / 超时>72h
+     （5 档相加 = 该类总量）。⇒「已超时」必须把 4 个超时档相加 —— 旧版是累计口径、只取单桶就够，
+     改动后若照旧只取一桶会大幅少算，别混用。 */
+  const OVER_KS = ['超时<24h', '超时24-48h', '超时48-72h', '超时>72h'];
+  const overSum = (ks, tb) => ks.reduce((a, k) => a + overCnt(k, tb), 0);
+  const overN = overSum(OVER_KS, tbAll);
+  const inTime = overCnt('未超时', tbAll);
   const TYS = (tk.types && tk.types.length) ? tk.types : TK_TYPES;
   const grand = tk.grand_total || aggAll.total;
 
@@ -2970,17 +2971,17 @@ function renderTicket(tk) {
   const endStk = fc ? fc.out[fc.out.length - 1].stk : null;
   const diff = fc ? endStk - fc.stockNow : null;
   const trendUp = diff != null && diff > 0;
-  const over96 = overCnt('96h以上', tbAll), over48 = overCnt('48h以上', tbAll);
+  const over72 = overCnt('超时>72h', tbAll), over48 = overSum(['超时48-72h', '超时>72h'], tbAll);
   const unassigned = st['待分配'] || 0;
 
   /* ③ 概况文字（原「处置 KPI」小方块，2026-09-24 用户要求删掉方块、把有用的信息改成文字）
      放在「工单总量级」四张卡片下面一行 —— 只陈述口径，不带建议（建议在处置策略建议里）。 */
   const brief = [];
-  brief.push(`超时未结（≥24h） <b>${n0(overN)}</b> 单<span class="sep">·</span>其中 48h 以上 <b>${n0(over48)}</b>、96h 以上 <b>${n0(over96)}</b>`);
+  brief.push(`已超时 <b>${n0(overN)}</b> 单<span class="sep">·</span>其中超时 48h 以上 <b>${n0(over48)}</b>、72h 以上 <b>${n0(over72)}</b>`);
   brief.push(`待处理 <b>${n0(st['待处理'])}</b>、待分配 <b>${n0(unassigned)}</b>、处理中 <b>${n0(st['处理中'])}</b>`);
   if (fc) brief.push(`积压 <b>${n0(fc.stockNow)}</b> 单 → 7 天后 <b>${endStk === 0 ? '清零' : n0(endStk)}</b> 单（<span class="${trendUp ? 'warn' : 'ok'}">${endStk === 0 ? '按当前节奏可清空' : trendUp ? '积压 +' + Math.abs(diff) : '消化 −' + Math.abs(diff)}</span>）`);
   if (fc) brief.push(`日均新增 <b>${n0(fc.nAvg14)}</b> / 处理 <b>${n0(fc.dAvg)}</b> 单<span class="sep">·</span>净变化 <b>${n1(fc.nAvg14 - fc.dAvg)}</b> 单/天`);
-  brief.push(`升级 24h 内 <b>${n0(in24)}</b> 单`);
+  brief.push(`未超时（倒计时中） <b>${n0(inTime)}</b> 单`);
   if ($('#tkBrief')) $('#tkBrief').innerHTML = brief.map(x => `<span class="bi">${x}</span>`).join('');
 
   /* ④ 状态 × 类型 矩阵已删除（2026-09-24 用户：「目前库存里面的状态类型也删掉」） */
@@ -2990,18 +2991,20 @@ function renderTicket(tk) {
   renderTicketBreakdown(tk);
 }
 
-/* ── 工单·客诉处理明细：升级时长（可下钻）/ 投诉类型大类 / 完整场景 TOP 10 / 预警 ──
-   数据全部来自工单系统快照 D.tk（= D:/ticket-monitor/stats.json），口径与旧工单看板一致：
-   · 只统计「客诉处理」量级 = 投诉工单 + 用户申诉工单，当前执行部门 = 客诉客服
-   · 升级时长 = 24h − 剩余倒计时（入库即计时）；倒计时归零后继续累加
-     24h 一组累计包含：24h内 / 24h以上 / 48h以上 / 72h以上 / 96h以上
+/* ── 工单·客诉处理明细：时效分布（可下钻）/ 投诉类型大类 / 完整场景 TOP 10 / 预警 ──
+   数据全部来自工单系统快照 D.tk（= D:/ticket-monitor/stats.json）：
+   · 四类口径：客诉 = 投诉里场景不属于纠纷的其余全部；纠纷 = 场景含「误投取回」或「认可补积分」；
+     申诉 = 用户申诉工单；舆情 = 舆情客诉单（2026-10-28 用户改定，不再按执行部门切）
+   · 时效 = 客诉/纠纷/舆情 48h 倒计时、申诉 72h 倒计时，归零后转正计时
+     超时相对档互斥：未超时 / 超时<24h / 超时24-48h / 超时48-72h / 超时>72h（5 档相加 = 该类总量）
+   · 堆叠条：红=待分配 · 黄=待处理 · 绿=处理中（沿用旧看板配色，勿改） */
    · 堆叠条：红=待分配 · 黄=待处理 · 绿=处理中（沿用旧看板配色，勿改） */
 const TK_ORDER = ['待分配', '待处理', '处理中'];
 const TK_COLOR = { '待分配': 'var(--red)', '待处理': 'var(--amber)', '处理中': 'var(--green)' };
-const TK_TB_ORDER = ['24h内', '24h以上', '48h以上', '72h以上', '96h以上'];
+const TK_TB_ORDER = ['未超时', '超时<24h', '超时24-48h', '超时48-72h', '超时>72h'];
 const TK_TB_NAME = {
-  '24h内': '升级 24h 内', '24h以上': '升级 24h 以上', '48h以上': '升级 48h 以上',
-  '72h以上': '升级 72h 以上', '96h以上': '升级 96h 以上'
+  '未超时': '未超时', '超时<24h': '超时 <24h', '超时24-48h': '超时 24-48h',
+  '超时48-72h': '超时 48-72h', '超时>72h': '超时 >72h'
 };
 let TK_TIME_PICK = null;
 
@@ -3123,21 +3126,21 @@ function renderStrategyTicket(o) {
   ['客诉', '纠纷', '申诉'].forEach(t => {
     const a = tkAggFor(tk, t), tb = a.buckets || {};
     const n = a.total;
-    const ov = overCnt('24h以上', tb);
-    const o48 = overCnt('48h以上', tb), o96 = overCnt('96h以上', tb);
+    const ov = overCnt('超时<24h', tb) + overCnt('超时24-48h', tb) + overCnt('超时48-72h', tb) + overCnt('超时>72h', tb);
+    const o48 = overCnt('超时48-72h', tb) + overCnt('超时>72h', tb), o72 = overCnt('超时>72h', tb);
     const ua = ((tk.type_matrix || {})[t] || {})['待分配'] || 0;
     const rate = n ? ov / n * 100 : 0;
     const cls = ov ? (rate >= 30 ? 'risk' : 'slot') : (ua > n * 0.5 ? 'slot' : 'good');
     const tips = [];
-    if (ov) tips.push(o96 ? `${n0(o96)} 单已超 96h，建议按处理人逐单销项`
+    if (ov) tips.push(o72 ? `${n0(o72)} 单已超 72h，建议按处理人逐单销项`
       : o48 ? `${n0(o48)} 单超 48h，建议列为当日最优先`
-        : '超时均在 24–48h 区间，当日盯住即可');
+        : '超时均在 24h 以内，当日盯住即可');
     if (ua) tips.push(`待分配 ${n0(ua)} 单尚未落到处理人，卡在分配环节会直接推高时长`);
     if (!tips.length) tips.push('按现节奏保持');
     items.push({
       tag: t, cls,
-      html: `积压 <b>${n0(n)}</b> 单（占总量 ${grand ? pc(n / grand * 100, 1) : '–'}），超时未结 ≥24h <b>${n0(ov)}</b> 单` +
-        (ov ? `（占本类 ${pc(rate, 1)}，其中 48h 以上 ${n0(o48)}、96h 以上 ${n0(o96)}）` : '') +
+      html: `积压 <b>${n0(n)}</b> 单（占总量 ${grand ? pc(n / grand * 100, 1) : '–'}），已超时 <b>${n0(ov)}</b> 单` +
+        (ov ? `（占本类 ${pc(rate, 1)}，其中超时 48h 以上 ${n0(o48)}、72h 以上 ${n0(o72)}）` : '') +
         `，待分配 ${n0(ua)} 单。${tips.join('；')}。`
     });
   });
