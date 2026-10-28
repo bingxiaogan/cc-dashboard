@@ -1,6 +1,6 @@
 {
- "ts": 1793192213966,
- "collectedAtCn": "2026/10/28 20:56:53",
+ "ts": 1793197374651,
+ "collectedAtCn": "2026/10/28 22:22:54",
  "overview": {
   "接通率": "8.47%"
  },
@@ -1166,14 +1166,14 @@
   "connectRate": 91.97
  },
  "call400Work": {
-  "rate": 84.97,
-  "answered": 865,
-  "turn": 1018,
-  "inbound": 1805,
-  "ivr": 787,
-  "slots": 19,
+  "rate": 83.63,
+  "answered": 1022,
+  "turn": 1222,
+  "inbound": 2126,
+  "ivr": 904,
+  "slots": 25,
   "from": "08:00",
-  "to": "17:30",
+  "to": "20:30",
   "allDay": 81.31,
   "src": "飞书分时段表"
  },
@@ -1243,15 +1243,6 @@
   "rate400": 76.3
  },
  "history": [
-  {
-   "ts": 1793072067739,
-   "skillRate400": 77.97,
-   "skillQueue400": 0,
-   "callIn400": 472,
-   "signIn400": 16,
-   "onlineSessions": 216,
-   "onlineSeat": 2
-  },
   {
    "ts": 1793072226357,
    "skillRate400": 78.5,
@@ -5736,6 +5727,15 @@
   },
   {
    "ts": 1793192213966,
+   "skillRate400": 81.31,
+   "skillQueue400": 0,
+   "callIn400": 1225,
+   "signIn400": 10,
+   "onlineSessions": null,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1793197374651,
    "skillRate400": 81.31,
    "skillQueue400": 0,
    "callIn400": 1225,
