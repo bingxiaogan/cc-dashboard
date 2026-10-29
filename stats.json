@@ -1,13 +1,13 @@
 {
- "ts": 1793292183502,
- "collectedAtCn": "2026/10/30 00:43:03",
+ "ts": 1793292387453,
+ "collectedAtCn": "2026/10/30 00:46:27",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "1",
   "坐席忙碌数": "0 (0)",
   "接通率": "0%",
   "满意率": "0%",
-  "呼入总数": "7",
+  "呼入总数": "8",
   "当前呼入数": "0",
   "外呼总数": "0",
   "当前外呼数": "0",
@@ -457,8 +457,8 @@
   },
   {
    "service": "88236601(京东渠道（抖音引流）)",
-   "callIn": 0,
-   "ivr": 0,
+   "callIn": 1,
+   "ivr": 1,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -1103,15 +1103,15 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 19,
+    "sessions": 20,
     "assigned": 0,
     "current": 0,
     "max": 0,
-    "queue": 4,
+    "queue": 3,
     "onlineSeats": "0",
     "done": 0,
     "answerRate": 0,
-    "abandon": 19,
+    "abandon": 20,
     "voicemail": 0,
     "satisfactionRate": 0
    },
@@ -2174,15 +2174,6 @@
   "rate400": 76.8
  },
  "history": [
-  {
-   "ts": 1793163754293,
-   "skillRate400": 78.49,
-   "skillQueue400": 0,
-   "callIn400": 609,
-   "signIn400": 16,
-   "onlineSessions": 311,
-   "onlineSeat": 3
-  },
   {
    "ts": 1793163909742,
    "skillRate400": 78.44,
@@ -6667,6 +6658,15 @@
   },
   {
    "ts": 1793292183502,
+   "skillRate400": null,
+   "skillQueue400": 0,
+   "callIn400": 0,
+   "signIn400": 0,
+   "onlineSessions": 0,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1793292387453,
    "skillRate400": null,
    "skillQueue400": 0,
    "callIn400": 0,
