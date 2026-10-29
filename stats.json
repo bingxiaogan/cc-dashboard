@@ -1,14 +1,14 @@
 {
- "ts": 1793279863356,
- "collectedAtCn": "2026/10/29 21:17:43",
+ "ts": 1793279983721,
+ "collectedAtCn": "2026/10/29 21:19:43",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "2",
   "坐席忙碌数": "0 (0)",
   "接通率": "9.44%",
   "满意率": "100.00%",
-  "呼入总数": "39678",
-  "当前呼入数": "1",
+  "呼入总数": "39685",
+  "当前呼入数": "2",
   "外呼总数": "7453",
   "当前外呼数": "0",
   "呼入平均通话时长": "00:02:44",
@@ -82,8 +82,8 @@
   {
    "name": "95分分类回收400-6催清运（爱分类）",
    "idleSeats": 0,
-   "signIn": 3,
-   "members": "李华,蔡凌天,邵燕萍",
+   "signIn": 2,
+   "members": "李华,邵燕萍",
    "ring": 0,
    "queue": 0,
    "todayAnswered": 1,
@@ -98,8 +98,8 @@
   {
    "name": "95分分类回收400-3收益到账咨询",
    "idleSeats": 0,
-   "signIn": 3,
-   "members": "李华,蔡凌天,邵燕萍",
+   "signIn": 2,
+   "members": "李华,邵燕萍",
    "ring": 0,
    "queue": 0,
    "todayAnswered": 1,
@@ -146,8 +146,8 @@
   {
    "name": "95分分类回收400-4返航新生活动",
    "idleSeats": 0,
-   "signIn": 3,
-   "members": "李华,蔡凌天,邵燕萍",
+   "signIn": 2,
+   "members": "李华,邵燕萍",
    "ring": 0,
    "queue": 0,
    "todayAnswered": 7,
@@ -258,8 +258,8 @@
   {
    "name": "分类回收400-5提现流程（爱分类）",
    "idleSeats": 0,
-   "signIn": 3,
-   "members": "李华,蔡凌天,邵燕萍",
+   "signIn": 2,
+   "members": "李华,邵燕萍",
    "ring": 0,
    "queue": 0,
    "todayAnswered": 0,
@@ -311,7 +311,7 @@
   "rate": 78.77,
   "total": 1305,
   "queue": 0,
-  "signIn": 3
+  "signIn": 2
  },
  "services": [
   {
@@ -696,8 +696,8 @@
   },
   {
    "service": "81199(门店按键转接)",
-   "callIn": 503,
-   "ivr": 337,
+   "callIn": 504,
+   "ivr": 338,
    "ringMissed": 4,
    "queueAbandon": 35,
    "answered": 131,
@@ -726,8 +726,8 @@
   },
   {
    "service": "88236602(其他渠道4000166088)",
-   "callIn": 767,
-   "ivr": 372,
+   "callIn": 768,
+   "ivr": 373,
    "ringMissed": 6,
    "queueAbandon": 56,
    "answered": 349,
@@ -736,8 +736,8 @@
   },
   {
    "service": "81198(上门按键转接)",
-   "callIn": 1215,
-   "ivr": 659,
+   "callIn": 1218,
+   "ivr": 662,
    "ringMissed": 15,
    "queueAbandon": 149,
    "answered": 428,
@@ -866,8 +866,8 @@
   },
   {
    "service": "80409(奢侈品商家-门店验货报价)",
-   "callIn": 1151,
-   "ivr": 1151,
+   "callIn": 1153,
+   "ivr": 1153,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -1117,8 +1117,7 @@
  ],
  "signInAgents400": [
   "李华",
-  "邵燕萍",
-  "蔡凌天"
+  "邵燕萍"
  ],
  "keyServices": {
   "list": [
@@ -1408,15 +1407,15 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1517,
+    "sessions": 1519,
     "assigned": 1400,
-    "current": 74,
+    "current": 72,
     "max": 90,
-    "queue": 53,
+    "queue": 54,
     "onlineSeats": "3(张慧敏,陈可,刘梓爱)",
     "done": 0,
-    "answerRate": 92.29,
-    "abandon": 117,
+    "answerRate": 92.17,
+    "abandon": 119,
     "voicemail": 0,
     "satisfactionRate": 7.14
    },
@@ -1858,11 +1857,11 @@
     "name": "官网严选自营售前咨询",
     "sessions": 577,
     "assigned": 554,
-    "current": 46,
+    "current": 43,
     "max": 90,
-    "queue": 3,
+    "queue": 4,
     "onlineSeats": "3(张慧敏,陈可,刘梓爱)",
-    "done": 494,
+    "done": 497,
     "answerRate": 96.01,
     "abandon": 23,
     "voicemail": 0,
@@ -2026,11 +2025,11 @@
     "name": "爱回收官网接待组",
     "sessions": 807,
     "assigned": 807,
-    "current": 1,
+    "current": 0,
     "max": 0,
     "queue": 0,
     "onlineSeats": "0",
-    "done": 782,
+    "done": 783,
     "answerRate": 100,
     "abandon": 0,
     "voicemail": 0,
@@ -2478,15 +2477,6 @@
   "rate400": 76.8
  },
  "history": [
-  {
-   "ts": 1793156145922,
-   "skillRate400": 78.09,
-   "skillQueue400": 2,
-   "callIn400": 388,
-   "signIn400": 17,
-   "onlineSessions": null,
-   "onlineSeat": 0
-  },
   {
    "ts": 1793156365724,
    "skillRate400": 77.89,
@@ -6975,6 +6965,15 @@
    "skillQueue400": 0,
    "callIn400": 1305,
    "signIn400": 3,
+   "onlineSessions": 818,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1793279983721,
+   "skillRate400": 78.77,
+   "skillQueue400": 0,
+   "callIn400": 1305,
+   "signIn400": 2,
    "onlineSessions": 818,
    "onlineSeat": 0
   }
