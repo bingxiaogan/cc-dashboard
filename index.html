@@ -1347,7 +1347,7 @@ function render400() {
       : `工作时间 08:00–${w4To} · Σ接听 ÷ Σ转人工${w4.slots ? ' · ' + w4.slots + ' 段' : ''}`);
   $('#k400').innerHTML = [
     {
-      k: '接通率', v: pc(rate400), lead: 1, hl: 1, c: (rate400 || 0) >= 85 ? 'c-green' : 'c-red',
+      k: w4 ? '接通率（工时）' : '接通率（全天）', v: pc(rate400), lead: 1, hl: 1, c: (rate400 || 0) >= 85 ? 'c-green' : 'c-red',
       d: `${(rate400 || 0) >= 85 ? '<span class="ok">达标</span>' : '<span class="warn">低于 85% 目标</span>'} · ${rate400src}`
         + (w4 && w4.allDay != null ? ` · 全天累计 ${pc(w4.allDay)}` : '')
         + (wSlot ? ` · 最低 ${wSlot.k} ${wSlot.r.toFixed(0)}%` : ''),
