@@ -667,12 +667,12 @@ svg{display:block;width:100%;overflow:visible}
                 <span><em style="background:#4a6b9a"></em>实际人工进线量</span>
                 <span><em style="background:#a0c4e6"></em>实际接听量</span>
                 <span><em style="background:var(--amber)"></em>预测人工进线量</span>
-                <span><em style="background:#94a3b8"></em>参考（8:00–9:00 · 近 4 个同星期几）</span>
+                <span><em style="background:#94a3b8"></em>参考（缺实时数据的时段 · 近 4 个同星期几）</span>
               </div>
               <span class="hint" id="note400hh"></span>
             </div>
             <div id="ch400hh"></div>
-            <div class="subhead">每半小时接通率 <span>接听量 ÷ 人工进线量 · 8:00–9:00 为参考值</span>
+            <div class="subhead">每半小时接通率 <span>接听量 ÷ 人工进线量 · 8:00 起为实时采集</span>
               <div class="lgd">
                 <span><em style="background:#22d3ee"></em>实际</span>
                 <span><em style="background:#a78bfa"></em>同时段基准（近 7 日）</span>
@@ -1561,18 +1561,16 @@ function renderHh400() {
   });
   const nLive = act.filter(v => v != null).length;
 
-  /* ── 08:00 / 08:30 补位（2026-09-24 定）────────────────────────────────────
-     7x24cc「呼入时间趋势」只输出**有效工作时间**内的行，本线路被配置成 09:00–21:00
-     → 08:00 / 08:30 两段实时采集**永远**拿不到（13 天归档全部 09:00 起，已核实；
-       9/23 校验：现场表转人工 1111 − 8:00 两段 97 = 7x24cc 1014，完全吻合）。
-     三级优先级，只补 09:00 之前的时段，**绝不覆盖实时采集**（免得遮住采集故障）：
+  /* ── 08:00 / 08:30 补位（2026-09-24 定，2026-10-29 更新）──────────────────
+     🔴 2026-10-29 起：账号「工作时间」已配成 08:00–21:00，合力报表 08:00 / 08:30
+        两段**有真实数据**了（采集器走「自定义 ( 小时 )」08:00–21:00）。
+        所以下面这套补位退化为**纯兜底**：只有实时采集缺这两段时才补（例如采集故障/跨天初始化）。
+     历史背景：旧配置是 09:00–21:00，报表不产 8 点行，13 天归档全部 09:00 起。
+     三级优先级，只补 09:00 之前的时段，**绝不覆盖实时采集**：
        ① 实时采集（call_halfhour.json）——最高优先；
        ② 现场表**同日**真实值（forecast/hh_fill.json ← 飞书《现场调控》分时段表，
           口径同为「人工进线量 = 呼入 − IVR」「接通率 = 接通量 ÷ 人工进线量」）；
-       ③ 参考值 = 近 4 个**同星期几**的现场表均值（灰色柱，图例/提示里标明「参考」）。
-     ⚠️ ②只在当天**当晚回填后**才有值 —— 现场表整个工作簿是「次日补 D-1」，
-        所以**当天白天 08:00 / 08:30 一定落到 ③**，这是源侧限制，不是采集故障。
-     ⚠️ 想让当天就有真实值：只能请系统侧把该线路「有效工作时间」配到 08:00 起（报表页可配）。 */
+       ③ 参考值 = 近 4 个**同星期几**的现场表均值（灰色柱，图例/提示里标明「参考」）。 */
   const REF_BEFORE = '09:00';
   const fillToday = ((D.fill && D.fill.days) || {})[todayCn()] || {};
   const refAvg = refSlotAvg(todayCn());
@@ -1615,7 +1613,7 @@ function renderHh400() {
   const liveAnsSum = ansAct.reduce((s, v) => s + (v == null ? 0 : v), 0);
   const nSeg = [];
   if (nFill) nSeg.push(`现场表补位 ${nFill} 段 ${n0(sFill)} 通`);
-  if (nRef) nSeg.push(`8:00–9:00 参考 ${nRef} 段（无采集源，人工进线量 ${n0(sRef)} 通 + 接通率均取近 4 个同星期几均值）`);
+  if (nRef) nSeg.push(`参考补位 ${nRef} 段（该时段报表无数据，人工进线量 ${n0(sRef)} 通 + 接通率均取近 4 个同星期几均值）`);
   $('#note400hh').textContent = isToday
     ? `实时 ${nLive}/${keys.length} 段${lastI >= 0 ? `（最新 ${keys[lastI]}–${dispKeys[lastI]}）` : ''} · 人工进线量 ${n0(liveSum)} 通 · 接听量 ${n0(liveAnsSum)} 通` +
       (nSeg.length ? ` · ${nSeg.join(' · ')}` : '') +
