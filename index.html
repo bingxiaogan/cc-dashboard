@@ -1340,17 +1340,19 @@ function render400() {
   const w4 = cc.call400Work || null;
   const rate400 = (w4 && w4.rate != null) ? w4.rate : ss.rate;
   const w4To = w4 && w4.to ? String(w4.to).slice(0, 5) : '21:00';
+  /* 副文案写人话（2026-10-29 用户「这句话啥意思」）：不用 Σ 符号，直接给
+     「时段 + 已出几段 + 接听几通 ÷ 转人工几通」，业务侧一眼能对数字核对。 */
   const rate400src = !w4
-    ? 'Σ技能组接听 ÷ Σ技能组呼入（全天累计）· 工时口径等报表出数'
+    ? '全天累计口径 · 工时口径等报表出数'
     : (w4.src === '技能组增量'
-      ? `工时增量 ${w4.from}–${w4To} · Σ接听 ÷ Σ转人工（合力报表未出数，暂用技能组增量）`
-      : `工作时间 ${w4.from}–${w4To} · Σ接听 ÷ Σ转人工${w4.slots ? ' · ' + w4.slots + ' 段' : ''} · 合力400报表`);
+      ? `${w4.from}–${w4To} 增量：接听 ${n0(w4.answered)} ÷ 转人工 ${n0(w4.turn)}（合力报表未出数，暂用技能组口径）`
+      : `${w4.from}–${w4To} 已出 ${w4.slots || 0} 段：接听 ${n0(w4.answered)} 通 ÷ 转人工 ${n0(w4.turn)} 通`);
   $('#k400').innerHTML = [
     {
       k: w4 ? '接通率（工时）' : '接通率（全天）', v: pc(rate400), lead: 1, hl: 1, c: (rate400 || 0) >= 85 ? 'c-green' : 'c-red',
       d: `${(rate400 || 0) >= 85 ? '<span class="ok">达标</span>' : '<span class="warn">低于 85% 目标</span>'} · ${rate400src}`
-        + (w4 && w4.allDay != null ? ` · 全天累计 ${pc(w4.allDay)}` : '')
-        + (wSlot ? ` · 最低 ${wSlot.k} ${wSlot.r.toFixed(0)}%` : ''),
+        + (w4 && w4.allDay != null ? ` · 全天累计 ${pc(w4.allDay)}（含夜间，仅参考）` : '')
+        + (wSlot ? ` · 最低时段 ${wSlot.k} ${wSlot.r.toFixed(0)}%` : ''),
       wk: week400 ? {
         txt: week400.off === 0 ? '本周' : '上周', v: pc(week400.rate),
         rng: `${week400.from.slice(5)} ~ ${week400.to.slice(5)}（周日~周六）· 已出 ${week400.n} 天`,
