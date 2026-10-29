@@ -1,13 +1,13 @@
 {
- "ts": 1793291689718,
- "collectedAtCn": "2026/10/30 00:34:49",
+ "ts": 1793291893689,
+ "collectedAtCn": "2026/10/30 00:38:13",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "1",
   "坐席忙碌数": "0 (0)",
   "接通率": "0%",
   "满意率": "0%",
-  "呼入总数": "6",
+  "呼入总数": "7",
   "当前呼入数": "0",
   "外呼总数": "0",
   "当前外呼数": "0",
@@ -407,8 +407,8 @@
   },
   {
    "service": "81199(门店按键转接)",
-   "callIn": 0,
-   "ivr": 0,
+   "callIn": 1,
+   "ivr": 1,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -2174,15 +2174,6 @@
   "rate400": 76.8
  },
  "history": [
-  {
-   "ts": 1793163523376,
-   "skillRate400": 78.35,
-   "skillQueue400": 0,
-   "callIn400": 605,
-   "signIn400": 16,
-   "onlineSessions": 306,
-   "onlineSeat": 2
-  },
   {
    "ts": 1793163636783,
    "skillRate400": 78.38,
@@ -6667,6 +6658,15 @@
   },
   {
    "ts": 1793291689718,
+   "skillRate400": null,
+   "skillQueue400": 0,
+   "callIn400": 0,
+   "signIn400": 0,
+   "onlineSessions": 0,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1793291893689,
    "skillRate400": null,
    "skillQueue400": 0,
    "callIn400": 0,
