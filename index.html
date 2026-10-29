@@ -1339,12 +1339,9 @@ function render400() {
      全天累计值降级到副文案做对照，别删（万一飞书表当天还没填，主数值自动退回全天口径）。 */
   const w4 = cc.call400Work || null;
   const rate400 = (w4 && w4.rate != null) ? w4.rate : ss.rate;
-  const w4To = w4 && w4.to ? String(w4.to).slice(0, 5) : '21:00';
-  const rate400src = !w4
-    ? 'Σ技能组接听 ÷ Σ技能组呼入（全天累计）'
-    : (w4.src === '技能组增量'
-      ? `工时增量 ${w4.from}–${w4To} · Σ接听 ÷ Σ转人工（飞书分时段表未更新，暂用技能组增量）`
-      : `工作时间 08:00–${w4To} · Σ接听 ÷ Σ转人工${w4.slots ? ' · ' + w4.slots + ' 段' : ''}`);
+  const rate400src = w4
+    ? `工作时间 ${w4.from}–${w4.to ? String(w4.to).slice(0, 5) : '21:00'} · Σ接听 ÷ Σ转人工 · ${w4.slots} 段`
+    : 'Σ技能组接听 ÷ Σ技能组呼入（全天累计）';
   $('#k400').innerHTML = [
     {
       k: '接通率', v: pc(rate400), lead: 1, hl: 1, c: (rate400 || 0) >= 85 ? 'c-green' : 'c-red',
