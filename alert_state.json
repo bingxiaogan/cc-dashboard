@@ -1,48 +1,42 @@
 {
  "objects": {
   "c400d": {
-   "level": 2,
-   "levelName": "一级",
-   "color": "黄",
+   "level": 4,
+   "levelName": "三级",
+   "color": "红",
    "vals": {
-    "load": 134.6,
-    "rate": 81.3,
-    "lv": 3,
-    "rv": 2
+    "load": 220.5,
+    "rate": 71.1,
+    "lv": 4,
+    "rv": 4
    },
-   "ts": 1793198272209,
-   "tsCn": "2026/10/28 22:37:52",
-   "lastLevel": 2,
+   "ts": 1793235928274,
+   "tsCn": "2026/10/29 09:05:28",
+   "lastLevel": 4,
    "muted": false,
    "minLevel": 2,
-   "lastAlertTs": 1793197792034
+   "lastAlertTs": 1793235819875
   },
   "c400w": {
    "level": 3,
    "levelName": "二级",
    "color": "橙",
    "vals": {
-    "load": 143.5,
-    "rate": 77.9,
+    "load": 144.4,
+    "rate": 77.8,
     "lv": 3,
     "rv": 3,
     "src": "周报口径(今实时)",
-    "wDays": 4,
+    "wDays": 5,
     "sum": {
-     "call": 5232,
-     "ans": 4075,
-     "den400": 3645,
-     "on": 3813,
-     "denOn": 3960
+     "call": 5329,
+     "ans": 4144,
+     "den400": 3691,
+     "on": 3961,
+     "denOn": 4950
     },
     "wplan": {
      "days": [
-      {
-       "date": "2026-10-29",
-       "wd": "周四",
-       "turn": 1132,
-       "est": false
-      },
       {
        "date": "2026-10-30",
        "wd": "周五",
@@ -56,77 +50,75 @@
        "est": false
       }
      ],
-     "remainTurn": 3557,
+     "remainTurn": 2425,
      "targets": [
       {
        "tgt": 80,
-       "rate": 83.1,
+       "rate": 84.9,
        "perDay": [
-        941,
-        980,
-        1036
+        1001,
+        1058
        ],
        "status": "ok"
       },
       {
        "tgt": 85,
-       "rate": 95.5,
+       "rate": 100.9,
        "perDay": [
-        1082,
-        1126,
-        1190
+        1179,
+        1246
        ],
-       "status": "ok"
+       "status": "impossible"
       }
      ],
-     "todayKey": "2026-10-28",
+     "todayKey": "2026-10-29",
      "lastDay": false,
      "todayIn": 0,
      "todayAns": 0,
-     "from": "10-29",
+     "from": "10-30",
      "to": "10-31",
      "weekEnd": "2026-10-31"
     }
    },
-   "ts": 1793198272209,
-   "tsCn": "2026/10/28 22:37:52",
+   "ts": 1793235928274,
+   "tsCn": "2026/10/29 09:05:28",
    "lastLevel": 3,
    "muted": false,
    "minLevel": 2,
-   "lastAlertTs": 1793197792034
+   "lastAlertTs": 1793235819875
   },
   "onld": {
-   "level": 0,
-   "levelName": "低负荷",
-   "color": "绿",
+   "level": 4,
+   "levelName": "三级",
+   "color": "红",
    "vals": {
-    "load": 59.2
+    "load": 212.5
    },
-   "ts": 1793198272209,
-   "tsCn": "2026/10/28 22:37:52",
-   "lastLevel": 0,
+   "ts": 1793235928274,
+   "tsCn": "2026/10/29 09:05:28",
+   "lastLevel": 4,
    "muted": true,
    "minLevel": 99
   },
   "onlw": {
-   "level": 1,
-   "levelName": "正常",
-   "color": "蓝",
+   "level": 0,
+   "levelName": "低负荷",
+   "color": "绿",
    "vals": {
-    "load": 96.3,
+    "load": 80,
     "src": "周报口径(今实时)",
-    "wDays": 4,
+    "wDays": 5,
     "sum": {
-     "call": 5232,
-     "ans": 4075,
-     "den400": 3645,
-     "on": 3813,
-     "denOn": 3960
+     "call": 5329,
+     "ans": 4144,
+     "den400": 3691,
+     "on": 3961,
+     "denOn": 4950
     }
    },
-   "ts": 1793198272209,
-   "tsCn": "2026/10/28 22:37:52",
-   "lastLevel": 1,
+   "ts": 1793235928274,
+   "tsCn": "2026/10/29 09:05:28",
+   "lastLevel": 0,
    "muted": true,
    "minLevel": 99
   },
@@ -135,16 +127,16 @@
    "levelName": "正常",
    "color": "蓝",
    "vals": {
-    "stock": 114,
-    "un": 29,
+    "stock": 123,
+    "un": 25,
     "cap": 57.1,
-    "load": 199.5,
+    "load": 215.3,
     "lv": 4,
     "rv": 1,
     "agents": 2
    },
-   "ts": 1793198272209,
-   "tsCn": "2026/10/28 22:37:52",
+   "ts": 1793235928274,
+   "tsCn": "2026/10/29 09:05:28",
    "lastLevel": 1,
    "muted": true,
    "minLevel": 99
@@ -164,6 +156,6 @@
    "minLevel": 99
   }
  },
- "updated": "2026/10/28 22:37:52",
- "updatedTs": 1793198272209
+ "updated": "2026/10/29 09:05:28",
+ "updatedTs": 1793235928274
 }
