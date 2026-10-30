@@ -1,20 +1,20 @@
 {
  "objects": {
   "c400d": {
-   "level": 2,
-   "levelName": "一级",
-   "color": "黄",
+   "level": 1,
+   "levelName": "正常",
+   "color": "蓝",
    "vals": {
-    "load": 118.6,
+    "load": 107.7,
     "rate": 72.86,
-    "rateTag": "工时口径09:00起 · 全天69.28%",
-    "rateAllDay": 69.28,
-    "lv": 2,
+    "rateTag": "工时口径09:00起 · 全天68.4%",
+    "rateAllDay": 68.4,
+    "lv": 1,
     "rv": 4
    },
-   "ts": 1793327129945,
-   "tsCn": "2026/10/30 10:25:29",
-   "lastLevel": 2,
+   "ts": 1793327441648,
+   "tsCn": "2026/10/30 10:30:41",
+   "lastLevel": 1,
    "muted": false,
    "minLevel": 2,
    "lastAlertTs": 1793325402351
@@ -24,7 +24,7 @@
    "levelName": "一级",
    "color": "黄",
    "vals": {
-    "load": 115.9,
+    "load": 115.6,
     "rate": 80.2,
     "lv": 2,
     "rv": 2,
@@ -33,8 +33,8 @@
     "sum": {
      "call": 5775,
      "ans": 4630,
-     "den400": 4983,
-     "on": 5055,
+     "den400": 4995,
+     "on": 5076,
      "denOn": 5940
     },
     "wplan": {
@@ -74,23 +74,23 @@
      "weekEnd": "2026-10-31"
     }
    },
-   "ts": 1793327129945,
-   "tsCn": "2026/10/30 10:25:29",
+   "ts": 1793327441648,
+   "tsCn": "2026/10/30 10:30:41",
    "lastLevel": 2,
    "muted": false,
    "minLevel": 2,
    "lastAlertTs": 1793325703913
   },
   "onld": {
-   "level": 0,
-   "levelName": "低负荷",
-   "color": "绿",
+   "level": 1,
+   "levelName": "正常",
+   "color": "蓝",
    "vals": {
-    "load": 88.1
+    "load": 92.6
    },
-   "ts": 1793327129945,
-   "tsCn": "2026/10/30 10:25:29",
-   "lastLevel": 0,
+   "ts": 1793327441648,
+   "tsCn": "2026/10/30 10:30:41",
+   "lastLevel": 1,
    "muted": true,
    "minLevel": 99
   },
@@ -99,19 +99,19 @@
    "levelName": "低负荷",
    "color": "绿",
    "vals": {
-    "load": 85.1,
+    "load": 85.5,
     "src": "周报口径(今实时)",
     "wDays": 6,
     "sum": {
      "call": 5775,
      "ans": 4630,
-     "den400": 4983,
-     "on": 5055,
+     "den400": 4995,
+     "on": 5076,
      "denOn": 5940
     }
    },
-   "ts": 1793327129945,
-   "tsCn": "2026/10/30 10:25:29",
+   "ts": 1793327441648,
+   "tsCn": "2026/10/30 10:30:41",
    "lastLevel": 0,
    "muted": true,
    "minLevel": 99
@@ -129,8 +129,8 @@
     "rv": 1,
     "agents": 2
    },
-   "ts": 1793327129945,
-   "tsCn": "2026/10/30 10:25:29",
+   "ts": 1793327441648,
+   "tsCn": "2026/10/30 10:30:41",
    "lastLevel": 1,
    "muted": true,
    "minLevel": 99
@@ -150,6 +150,6 @@
    "minLevel": 99
   }
  },
- "updated": "2026/10/30 10:25:29",
- "updatedTs": 1793327129945
+ "updated": "2026/10/30 10:30:41",
+ "updatedTs": 1793327441648
 }
