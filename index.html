@@ -1016,7 +1016,7 @@ svg{display:block;width:100%;overflow:visible}
 
   <div class="foot">
     <b>数据源</b>　实时：7x24cc（400 / 在线，90 秒）· 爱回收工单系统（2 小时）　|　400 分时段：合力「通话报表 - 呼入时间趋势」直采（8:00 起，约 9 分钟一轮）　|　趋势：飞书日报（每日 21:50 固化）　|　400 预测：货量 → 进线量 → 转人工 → 所需人力（产能按 85% 人工接通率标定）<br>
-    <b>口径提示</b>　<b>400 接通率（实时）= 监控 / 通话 / 通话监控</b>：4 条 400 线路（88236628 / 88236629 / 4001581707 / 9523622）今日 0 点起累计，Σ已接听 ÷ Σ(今日呼入 − IVR)，每 <b>90 秒</b>刷一次；「呼入量 / 人工进线量」两张卡同源同口径。<b>400 分时段 = 报表 / 通话报表 / 呼入时间趋势</b>：合力直采当天已落库的半小时段（约 <b>9 分钟</b>一轮，首段 09:00 —— 400 线 8:00–9:00 没有话务行），另用于「每半小时接通率」图与调控策略里的同期预测对比。<b>两个数天然不同</b>（一个含 0–8 点夜间、一个是工时段），不要互相校对。在线<b>不看接通率、也没有排队</b>（会话直连坐席，系统里没有排队队列；唯一缺口来自顾客自行离开），只看接待量、坐席与并发负荷（**口径统一为「分类在线技能组」**，不含抖音售后 / 官网严选自营 / 寄卖商服等其它在线组）。在线与工单预测为趋势外推，非驱动模型。<br>
+    <b>口径提示</b>　<b>400 实时（8 点起）= 监控 / 通话 / 通话监控</b>：4 条 400 线路（88236628 / 88236629 / 4001581707 / 9523622），以 8 点那一刻的累计为基线做差，得到 8 点起的呼入 / IVR / 接听 / 人工，Σ已接听 ÷ Σ(呼入 − IVR)，每 <b>90 秒</b>刷一次；接通率、呼入量、人工进线量、运能负荷四张卡同源同口径。<b>400 分时段 = 报表 / 通话报表 / 呼入时间趋势</b>：合力直采当天已落库的半小时段（约 <b>9 分钟</b>一轮，首段 09:00 —— 400 线 8:00–9:00 没有话务行），用于「每半小时接通率」图与调控策略里的同期预测对比。<b>两个数天然不同</b>，不要互相校对。在线<b>不看接通率、也没有排队</b>（会话直连坐席，系统里没有排队队列；唯一缺口来自顾客自行离开），只看接待量、坐席与并发负荷（**口径统一为「分类在线技能组」**，不含抖音售后 / 官网严选自营 / 寄卖商服等其它在线组）。在线与工单预测为趋势外推，非驱动模型。<br>
     <b>操作</b>　顶部切换业务线（也可按 <b>1</b> / <b>2</b> / <b>3</b> 键），地址栏 <b>#400</b> / <b>#online</b> / <b>#ticket</b> 可直接定位板块。
   </div>
 </div>
@@ -1333,16 +1333,18 @@ function render400() {
         = stats.call400Work，9 分钟一轮，只用于时段明细 / 工时达标判断。
      卡片主数值 = ①（用户指定「实时接通率」），② 进副文案。
      任一口径读不到就显示「–」，不拿旧值、也不拿另一个口径顶替。 */
-  const ks = cc.keyServices || null;
-  const rtIn = ks ? (+ks.total || 0) : null;              // 今日呼入（通话监控，0 点起）
-  const rtIvr = ks ? (+ks.ivr || 0) : null;
-  const rtTurn = ks ? Math.max(0, rtIn - rtIvr) : 0;
-  const rtAns = ks ? (+ks.answered || 0) : 0;
-  const rtRate = rtTurn > 0 ? +((rtAns / rtTurn) * 100).toFixed(2) : null;
-  /* 「呼入量（实时）/人工进线量（实时）」两张卡也走通话监控（2026-10-30 用户：
-     显示 370 / 208 那其实是报表 9:00 起的三段累计，9 分钟才动一次，不是实时）。
-     预测偏差（devIn/devTurn）仍按时段口径算，留在「时段明细/调控策略」里，不往这两张卡上挂。 */
-  const rtTurnNow = ks ? rtTurn : null;
+  /* 🔴 400 实时三个数（用户 2026-10-30 定）：一律 **8 点起**，不要 0 点。
+     源 = 监控/通话/通话监控（`#/monitor/monitor_agent`），页面给的是「今日 0 点起累计」，
+     采集器已把 8 点那一刻的累计存成基线（`.400svcbase.json`）并做差 ⇒ `stats.callRtWork`。
+     读不到就显示「–」，绝不退回 0 点累计。 */
+  const rt = cc.callRtWork || null;
+  const rtIn = rt ? rt.total : null;
+  const rtIvr = rt ? rt.ivr : null;
+  const rtTurn = rt ? rt.turn : null;
+  const rtAns = rt ? rt.answered : null;
+  const rtRate = (rt && rt.rate != null) ? rt.rate : null;
+  const rtFrom = (rt && rt.from) ? rt.from : '8:00';
+  const rtAt = (rt && rt.at) ? String(rt.at).slice(11, 16) : (cc.collectedAtCn ? String(cc.collectedAtCn).slice(11, 16) : null);
 
   const w4raw = cc.call400Work || null;
   /* 报表口径的停更护栏：正常 9 分钟一轮，超过 25 分钟没刷新即判停更 → 副文案退回「–」。 */
@@ -1352,7 +1354,9 @@ function render400() {
   const hasW4 = !!(w4 && w4.rate != null);
   const w4Gap = hasW4 ? (w4.gap || 0) : 0;
   const rate400 = rtRate;
-  const load400w = (hasW4 && cap.cap400) ? Math.round((w4.turn || 0) / cap.cap400 * 1000) / 10 : null;
+  /* 运能负荷：分子同样换成「8 点起」实时人工量（原用报表时段累计，9 分钟才动一次） */
+  const loadBase = (rtTurn != null) ? rtTurn : (hasW4 ? (w4.turn || 0) : null);
+  const load400w = (cap.cap400 && loadBase != null) ? Math.round(loadBase / cap.cap400 * 1000) / 10 : null;
   const capW = Object.assign({}, cap, { load400: load400w });
   const w4From = (w4 && w4.from) ? w4.from : '工作时段开始';
   const w4To = w4 && w4.to ? String(w4.to).slice(0, 5) : '21:00';
@@ -1376,9 +1380,9 @@ function render400() {
      报表时段口径不写在这里 —— 它 9 分钟一轮、还可能整轮失败，写在卡片上会变成
      「71.9% 是实时的还是 43 分钟前的？」这种没法回答的话。时段数去「时段明细」看。 */
   const rtSrc = rtRate != null
-    ? `实时 · 通话监控 4 线 · 今日 0 点起：接听 ${n0(rtAns)} ÷ 转人工 ${n0(rtTurn)}`
-      + (cc.collectedAtCn ? ` · 截至 ${String(cc.collectedAtCn).slice(11, 16)}` : '')
-    : '通话监控没读到 400 线路数据 · 暂不出数';
+    ? `实时 · 通话监控 4 线 · ${rtFrom} 起：接听 ${n0(rtAns)} ÷ 转人工 ${n0(rtTurn)}`
+      + (rtAt ? ` · 截至 ${rtAt}` : '')
+    : '通话监控 8 点起口径还没就绪 · 暂不出数';
   const rate400src = rtSrc;
   $('#k400').innerHTML = [
     {
@@ -1400,21 +1404,21 @@ function render400() {
       d: `${(ss.queue || 0) > 0 ? '<span class="warn">有排队积压</span>' : '<span class="ok">无排队</span>'} · 技能组实时汇总`
     },
     { k: '呼入量（实时）', v: rtIn == null ? '–' : n0(rtIn), c: 'c-cyan',
-      d: rtIn == null ? '<span class="ok">通话监控未出数</span>'
-        : `今日 0 点起累计 · 通话监控${cc.collectedAtCn ? ' · 截至 ' + String(cc.collectedAtCn).slice(11, 16) : ''}` },
-    { k: '人工进线量（实时）', v: rtTurnNow == null ? '–' : n0(rtTurnNow), c: 'c-cyan',
-      d: rtTurnNow == null ? '<span class="ok">通话监控未出数</span>'
+      d: rtIn == null ? '<span class="ok">8 点起口径未就绪</span>'
+        : `${rtFrom} 起累计 · 通话监控${rtAt ? ' · 截至 ' + rtAt : ''}` },
+    { k: '人工进线量（实时）', v: rtTurn == null ? '–' : n0(rtTurn), c: 'c-cyan',
+      d: rtTurn == null ? '<span class="ok">8 点起口径未就绪</span>'
         : `呼入 ${n0(rtIn)} − IVR ${n0(rtIvr)} · 同上口径` },
     {
       k: '在岗人力（出勤 / 排班）', v: `${on}<small>/${duty}</small>`, c: on >= duty ? 'c-green' : 'c-amber',
       d: `签入 ${n0(ss.signIn)} 人 · 排班 ${duty} 人`
     },
     {
-      k: '运能负荷（工时）', v: load400w == null ? '–' : pc(load400w, 0),
+      k: '运能负荷（实时）', v: load400w == null ? '–' : pc(load400w, 0),
       c: load400w == null ? 'c-blue' : load400w >= 110 ? 'c-red' : load400w < 90 ? 'c-blue' : 'c-green',
       d: load400w == null
-        ? `${w4From}后开始统计 · 夜间进线不计入`
-        : `进线 ${n0(w4.turn)} / 应接 ${n0(cap.cap400)}（${w4From} 起，不含夜间）` + (predLoadNow != null ? ` · 预测同期 ${pc(predLoadNow, 0)}` : '')
+        ? '8 点起人工量还没出来'
+        : `进线 ${n0(loadBase)} / 应接 ${n0(cap.cap400)}（${rtTurn != null ? rtFrom + ' 起，通话监控' : w4From + ' 起（报表）'}，不含夜间）`
     },
     {
       k: '人力缺口', v: gapN == null ? '–' : hcSign(gapN) + '<small>人</small>',
@@ -3391,10 +3395,8 @@ function showPane(key, opt) {
 function updateTabs() {
   const cc = D.cc, tk = D.tk;
   const ss = (cc && cc.skillSummary) || {};
-  const ksT = (cc && cc.keyServices) || null;
-  /* tab 的 400 数 = 实时口径（通话监控），与主卡片同源；没读到就 – */
-  const rtTurnT = ksT ? Math.max(0, (+ksT.total || 0) - (+ksT.ivr || 0)) : 0;
-  const rtRateT = rtTurnT > 0 ? +(((+ksT.answered || 0) / rtTurnT) * 100).toFixed(2) : null;
+  const rtT = (cc && cc.callRtWork) || null;   // 8 点起（通话监控 − 8 点基线）
+  const rtRateT = (rtT && rtT.rate != null) ? rtT.rate : null;
   $('#tab400').textContent = rtRateT != null ? pc(rtRateT) : '–';
   $('#tabOnline').textContent = cc ? n0(onlineAgg(cc).sessions) : '–';
   $('#tabTicket').textContent = tk ? n0(tk.grand_total) : '–';
