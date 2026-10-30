@@ -672,7 +672,7 @@ svg{display:block;width:100%;overflow:visible}
               <span class="hint" id="note400hh"></span>
             </div>
             <div id="ch400hh"></div>
-            <div class="subhead">每半小时接通率 <span>接听量 ÷ 人工进线量 · 8:00 起为实时采集</span>
+            <div class="subhead">每半小时接通率 <span>接听量 ÷ 人工进线量 · 报表口径（合力「呼入时间趋势」，9 分钟一轮）</span>
               <div class="lgd">
                 <span><em style="background:#22d3ee"></em>实际</span>
                 <span><em style="background:#a78bfa"></em>同时段基准（近 7 日）</span>
@@ -1016,7 +1016,7 @@ svg{display:block;width:100%;overflow:visible}
 
   <div class="foot">
     <b>数据源</b>　实时：7x24cc（400 / 在线，90 秒）· 爱回收工单系统（2 小时）　|　400 分时段：合力「通话报表 - 呼入时间趋势」直采（8:00 起，约 9 分钟一轮）　|　趋势：飞书日报（每日 21:50 固化）　|　400 预测：货量 → 进线量 → 转人工 → 所需人力（产能按 85% 人工接通率标定）<br>
-    <b>口径提示</b>　400 接通率 = <b>工作时间口径</b>：8:00 起的半小时段 Σ接听 ÷ Σ转人工（源：合力报表「呼入时间趋势」当天已落库时段，不再取飞书现场表）；夜间 0:00–8:00 与 21:00 后无人值守，不进这个数，卡片副文案里另附「技能组全天累计」作对照 —— 全天值一定会比工时口径低，属正常。400 趋势为人工进线量（呼入 − IVR），口径同源可直接比。在线<b>不看接通率、也没有排队</b>（会话直连坐席，系统里没有排队队列；唯一缺口来自顾客自行离开），只看接待量、坐席与并发负荷（**口径统一为「分类在线技能组」**，不含抖音售后 / 官网严选自营 / 寄卖商服等其它在线组）。在线与工单预测为趋势外推，非驱动模型。<br>
+    <b>口径提示</b>　<b>400 接通率（实时）= 监控 / 通话 / 通话监控</b>：4 条 400 线路（88236628 / 88236629 / 4001581707 / 9523622）今日 0 点起累计，Σ已接听 ÷ Σ(今日呼入 − IVR)，每 <b>90 秒</b>刷一次；「呼入量 / 人工进线量」两张卡同源同口径。<b>400 分时段 = 报表 / 通话报表 / 呼入时间趋势</b>：合力直采当天已落库的半小时段（约 <b>9 分钟</b>一轮，首段 09:00 —— 400 线 8:00–9:00 没有话务行），另用于「每半小时接通率」图与调控策略里的同期预测对比。<b>两个数天然不同</b>（一个含 0–8 点夜间、一个是工时段），不要互相校对。在线<b>不看接通率、也没有排队</b>（会话直连坐席，系统里没有排队队列；唯一缺口来自顾客自行离开），只看接待量、坐席与并发负荷（**口径统一为「分类在线技能组」**，不含抖音售后 / 官网严选自营 / 寄卖商服等其它在线组）。在线与工单预测为趋势外推，非驱动模型。<br>
     <b>操作</b>　顶部切换业务线（也可按 <b>1</b> / <b>2</b> / <b>3</b> 键），地址栏 <b>#400</b> / <b>#online</b> / <b>#ticket</b> 可直接定位板块。
   </div>
 </div>
@@ -1334,9 +1334,15 @@ function render400() {
      卡片主数值 = ①（用户指定「实时接通率」），② 进副文案。
      任一口径读不到就显示「–」，不拿旧值、也不拿另一个口径顶替。 */
   const ks = cc.keyServices || null;
-  const rtTurn = ks ? Math.max(0, (+ks.total || 0) - (+ks.ivr || 0)) : 0;
+  const rtIn = ks ? (+ks.total || 0) : null;              // 今日呼入（通话监控，0 点起）
+  const rtIvr = ks ? (+ks.ivr || 0) : null;
+  const rtTurn = ks ? Math.max(0, rtIn - rtIvr) : 0;
   const rtAns = ks ? (+ks.answered || 0) : 0;
   const rtRate = rtTurn > 0 ? +((rtAns / rtTurn) * 100).toFixed(2) : null;
+  /* 「呼入量（实时）/人工进线量（实时）」两张卡也走通话监控（2026-10-30 用户：
+     显示 370 / 208 那其实是报表 9:00 起的三段累计，9 分钟才动一次，不是实时）。
+     预测偏差（devIn/devTurn）仍按时段口径算，留在「时段明细/调控策略」里，不往这两张卡上挂。 */
+  const rtTurnNow = ks ? rtTurn : null;
 
   const w4raw = cc.call400Work || null;
   /* 报表口径的停更护栏：正常 9 分钟一轮，超过 25 分钟没刷新即判停更 → 副文案退回「–」。 */
@@ -1393,8 +1399,12 @@ function render400() {
       k: '当前排队量', v: n0(ss.queue), c: (ss.queue || 0) > 0 ? 'c-red' : 'c-green',
       d: `${(ss.queue || 0) > 0 ? '<span class="warn">有排队积压</span>' : '<span class="ok">无排队</span>'} · 技能组实时汇总`
     },
-    { k: '呼入量（实时）', v: n0(sumIn), c: 'c-cyan', d: `${curEnd ? '截至 ' + curEnd : '待采集'} · ${devTxt(devIn)}` },
-    { k: '人工进线量（实时）', v: n0(sumTurn), c: 'c-cyan', d: `${curEnd ? '截至 ' + curEnd : '待采集'} · ${devTxt(devTurn)}` },
+    { k: '呼入量（实时）', v: rtIn == null ? '–' : n0(rtIn), c: 'c-cyan',
+      d: rtIn == null ? '<span class="ok">通话监控未出数</span>'
+        : `今日 0 点起累计 · 通话监控${cc.collectedAtCn ? ' · 截至 ' + String(cc.collectedAtCn).slice(11, 16) : ''}` },
+    { k: '人工进线量（实时）', v: rtTurnNow == null ? '–' : n0(rtTurnNow), c: 'c-cyan',
+      d: rtTurnNow == null ? '<span class="ok">通话监控未出数</span>'
+        : `呼入 ${n0(rtIn)} − IVR ${n0(rtIvr)} · 同上口径` },
     {
       k: '在岗人力（出勤 / 排班）', v: `${on}<small>/${duty}</small>`, c: on >= duty ? 'c-green' : 'c-amber',
       d: `签入 ${n0(ss.signIn)} 人 · 排班 ${duty} 人`
