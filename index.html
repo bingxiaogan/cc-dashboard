@@ -3403,8 +3403,13 @@ function updateTabs() {
   /* tab 的 400 数 = 实时：优先 8 点起（基线已建），否则今日累计；都读不到就 – */
   const rtT = (cc && cc.callRtWork) || null;
   const ksT = (cc && cc.keyServices) || null;
-  const rtRateT = (rtT && rtT.rate != null) ? rtT.rate
-    : (ksT && (ksT.total - ksT.ivr) > 0 ? +(((+ksT.answered || 0) / (ksT.total - ksT.ivr)) * 100).toFixed(2) : null);
+  /* 🔴 2026-10-30：这里必须和下方「接通率（实时）」卡用**同一条判定**，
+     否则会出现「标签 96.6% / 卡片 74.2%」两个数 —— 96.6% 是「基线 11:37 之后那一小段」的率，
+     不是全天的率，用户看到只会以为又乱了。基线不合法（from > 08:30）时一律退回全天累计。 */
+  const useRt8T = !!(rtT && rtT.rate != null && String(rtT.from || '99:99') <= '08:30');
+  const ksRateT = (ksT && (ksT.total - ksT.ivr) > 0)
+    ? +(((+ksT.answered || 0) / (ksT.total - ksT.ivr)) * 100).toFixed(2) : null;
+  const rtRateT = useRt8T ? rtT.rate : (ksRateT != null ? ksRateT : ((rtT && rtT.rate != null) ? rtT.rate : null));
   $('#tab400').textContent = rtRateT != null ? pc(rtRateT) : '–';
   $('#tabOnline').textContent = cc ? n0(onlineAgg(cc).sessions) : '–';
   $('#tabTicket').textContent = tk ? n0(tk.grand_total) : '–';
