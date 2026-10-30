@@ -1,6 +1,6 @@
 {
- "ts": 1793375116590,
- "collectedAtCn": "2026/10/30 23:45:16",
+ "ts": 1793375351549,
+ "collectedAtCn": "2026/10/30 23:49:11",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "3",
@@ -8,7 +8,7 @@
   "接通率": "19.05%",
   "满意率": "100.00%",
   "呼入总数": "20698",
-  "当前呼入数": "1",
+  "当前呼入数": "0",
   "外呼总数": "6542",
   "当前外呼数": "0",
   "呼入平均通话时长": "00:02:37",
@@ -1188,7 +1188,7 @@
   "to": "20:30",
   "allDay": 76.98,
   "at": 1793374618153,
-  "agedMin": 10,
+  "agedMin": 14,
   "gap": 0,
   "complete": true,
   "src": "合力400报表"
@@ -1369,7 +1369,7 @@
     "assigned": 250,
     "current": 5,
     "max": 30,
-    "queue": 6,
+    "queue": 7,
     "onlineSeats": "1(张慧敏)",
     "done": 245,
     "answerRate": 90.58,
@@ -1423,11 +1423,11 @@
     "name": "官网严选自营售后咨询",
     "sessions": 1803,
     "assigned": 1654,
-    "current": 46,
+    "current": 42,
     "max": 30,
-    "queue": 19,
+    "queue": 20,
     "onlineSeats": "1(张慧敏)",
-    "done": 1545,
+    "done": 1549,
     "answerRate": 91.74,
     "abandon": 149,
     "voicemail": 0,
@@ -1871,11 +1871,11 @@
     "name": "官网严选自营售前咨询",
     "sessions": 598,
     "assigned": 577,
-    "current": 20,
+    "current": 17,
     "max": 30,
     "queue": 2,
     "onlineSeats": "1(张慧敏)",
-    "done": 546,
+    "done": 549,
     "answerRate": 96.49,
     "abandon": 21,
     "voicemail": 0,
@@ -2493,15 +2493,6 @@
   "rate400": 76.8
  },
  "history": [
-  {
-   "ts": 1793277414542,
-   "skillRate400": 79.2,
-   "skillQueue400": 2,
-   "callIn400": 1279,
-   "signIn400": 6,
-   "onlineSessions": 798,
-   "onlineSeat": 3
-  },
   {
    "ts": 1793277527803,
    "skillRate400": 79.11,
@@ -6986,6 +6977,15 @@
   },
   {
    "ts": 1793375116590,
+   "skillRate400": 76.98,
+   "skillQueue400": 0,
+   "callIn400": 1325,
+   "signIn400": 1,
+   "onlineSessions": 814,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1793375351549,
    "skillRate400": 76.98,
    "skillQueue400": 0,
    "callIn400": 1325,
