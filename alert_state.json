@@ -12,8 +12,8 @@
     "lv": 2,
     "rv": 2
    },
-   "ts": 1793375874354,
-   "tsCn": "2026/10/30 23:57:54",
+   "ts": 1793376143307,
+   "tsCn": "2026/10/31 00:02:23",
    "lastLevel": 2,
    "muted": false,
    "minLevel": 2,
@@ -24,18 +24,18 @@
    "levelName": "一级",
    "color": "黄",
    "vals": {
-    "load": 115.4,
-    "rate": 80.3,
+    "load": 116.5,
+    "rate": 79.8,
     "lv": 2,
-    "rv": 2,
+    "rv": 3,
     "src": "周报口径(今实时)",
-    "wDays": 6,
+    "wDays": 7,
     "sum": {
-     "call": 6855,
-     "ans": 5507,
-     "den400": 5940,
-     "on": 5744,
-     "denOn": 5940
+     "call": 8180,
+     "ans": 6527,
+     "den400": 7020,
+     "on": 6558,
+     "denOn": 6930
     },
     "wplan": {
      "days": [
@@ -43,7 +43,8 @@
        "date": "2026-10-31",
        "wd": "周六",
        "turn": 1288,
-       "est": false
+       "est": false,
+       "isToday": true
       }
      ],
      "remainTurn": 1288,
@@ -65,17 +66,17 @@
        "status": "impossible"
       }
      ],
-     "todayKey": "2026-10-30",
-     "lastDay": false,
-     "todayIn": 0,
-     "todayAns": 0,
+     "todayKey": "2026-10-31",
+     "lastDay": true,
+     "todayIn": 1325,
+     "todayAns": 1020,
      "from": "10-31",
      "to": "10-31",
      "weekEnd": "2026-10-31"
     }
    },
-   "ts": 1793375874354,
-   "tsCn": "2026/10/30 23:57:54",
+   "ts": 1793376365462,
+   "tsCn": "2026/10/31 00:06:05",
    "lastLevel": 2,
    "muted": false,
    "minLevel": 2,
@@ -88,8 +89,8 @@
    "vals": {
     "load": 82.2
    },
-   "ts": 1793375874354,
-   "tsCn": "2026/10/30 23:57:54",
+   "ts": 1793376365462,
+   "tsCn": "2026/10/31 00:06:05",
    "lastLevel": 0,
    "muted": true,
    "minLevel": 99
@@ -99,19 +100,19 @@
    "levelName": "正常",
    "color": "蓝",
    "vals": {
-    "load": 96.7,
+    "load": 94.6,
     "src": "周报口径(今实时)",
-    "wDays": 6,
+    "wDays": 7,
     "sum": {
-     "call": 6855,
-     "ans": 5507,
-     "den400": 5940,
-     "on": 5744,
-     "denOn": 5940
+     "call": 8180,
+     "ans": 6527,
+     "den400": 7020,
+     "on": 6558,
+     "denOn": 6930
     }
    },
-   "ts": 1793375874354,
-   "tsCn": "2026/10/30 23:57:54",
+   "ts": 1793376365462,
+   "tsCn": "2026/10/31 00:06:05",
    "lastLevel": 1,
    "muted": true,
    "minLevel": 99
@@ -129,8 +130,8 @@
     "rv": 1,
     "agents": 2
    },
-   "ts": 1793375874354,
-   "tsCn": "2026/10/30 23:57:54",
+   "ts": 1793376365462,
+   "tsCn": "2026/10/31 00:06:05",
    "lastLevel": 1,
    "muted": true,
    "minLevel": 99
@@ -150,6 +151,6 @@
    "minLevel": 99
   }
  },
- "updated": "2026/10/30 23:57:54",
- "updatedTs": 1793375874354
+ "updated": "2026/10/31 00:06:05",
+ "updatedTs": 1793376365462
 }
