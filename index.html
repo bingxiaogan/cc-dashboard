@@ -1325,16 +1325,27 @@ function render400() {
         一律显示「–」+「工作时段未出数」。全天值只在有工时口径之后，作为副文案参考出现。
      运能负荷同口径：分子用**工时段人工量**，分母 cap400（本就是按已过工时段折算的应接产能）；
      以前是 capacity.in400（全天累计含夜间）/ cap400 → 早上 8:59 直接 253%。 */
+  /* 🔴 400 接通率**两个口径、两个数据源**（2026-10-30 用户明确，别再混）：
+     ① 实时接通率 → 监控 / 通话 / 通话监控（#/monitor/monitor_agent）的「服务号」表
+        = stats.keyServices（4 条 400 线路 88236628 / 88236629 / 4001581707 / 9523622）
+        接通率 = Σ已接听 ÷ Σ(今日呼入 − IVR)，今日 0 点起累计，每 90 秒刷一次。
+     ② 时段口径 → 报表 / 通话报表 / 呼入时间趋势（call_halfhour.json，工时 8:00 起）
+        = stats.call400Work，9 分钟一轮，只用于时段明细 / 工时达标判断。
+     卡片主数值 = ①（用户指定「实时接通率」），② 进副文案。
+     任一口径读不到就显示「–」，不拿旧值、也不拿另一个口径顶替。 */
+  const ks = cc.keyServices || null;
+  const rtTurn = ks ? Math.max(0, (+ks.total || 0) - (+ks.ivr || 0)) : 0;
+  const rtAns = ks ? (+ks.answered || 0) : 0;
+  const rtRate = rtTurn > 0 ? +((rtAns / rtTurn) * 100).toFixed(2) : null;
+
   const w4raw = cc.call400Work || null;
-  /* 🔴 2026-10-30 用户定案：「如果没有读到数据就先别展示」。
-     合力报表某轮没读到数时，旧值会一直挂在卡上（用户看到的就是「数不动了」/「怎么又 72%」）。
-     正常 9 分钟一轮采集，超过 25 分钟没刷新即判停更 → 主数值退回「–」，不拿旧值冒充实时。 */
+  /* 报表口径的停更护栏：正常 9 分钟一轮，超过 25 分钟没刷新即判停更 → 副文案退回「–」。 */
   const w4age = (w4raw && w4raw.agedMin != null) ? w4raw.agedMin : null;
   const w4Stale = w4age != null && w4age > 25;
   const w4 = (w4raw && !w4Stale) ? w4raw : null;
   const hasW4 = !!(w4 && w4.rate != null);
   const w4Gap = hasW4 ? (w4.gap || 0) : 0;
-  const rate400 = hasW4 ? w4.rate : null;
+  const rate400 = rtRate;
   const load400w = (hasW4 && cap.cap400) ? Math.round((w4.turn || 0) / cap.cap400 * 1000) / 10 : null;
   const capW = Object.assign({}, cap, { load400: load400w });
   const w4From = (w4 && w4.from) ? w4.from : '工作时段开始';
@@ -1355,24 +1366,22 @@ function render400() {
   const gapN = planDay ? (planDay.gap_hc || 0) : null;
   /* 副文案写人话（2026-10-29 用户「这句话啥意思」）：不用 Σ 符号，直接给
      「时段 + 已出几段 + 接听几通 ÷ 转人工几通」，业务侧一眼能对数字核对。 */
-  const rate400src = !hasW4
-    ? (w4Stale
-      ? `合力报表已 ${w4age} 分钟没读到新数据 · 不出数（不拿旧值充当实时）`
-      : `${w4From}后开始采集 · 夜间（0–8 点）不计入本数`)
-    : (w4.src === '技能组增量'
-      ? `${w4.from}–${w4To} 增量：接听 ${n0(w4.answered)} ÷ 转人工 ${n0(w4.turn)}（合力报表未出数，暂用技能组口径）`
-      : `${w4.from}–${w4To} 已出 ${w4.slots || 0} 段：接听 ${n0(w4.answered)} 通 ÷ 转人工 ${n0(w4.turn)} 通`
-        + (w4Gap ? `（有 ${w4Gap} 处时段缺口）` : '')
-        + (w4age != null ? ` · ${w4age} 分钟前采集` : ''));
+  /* 副文案：主口径写「实时（通话监控）」的数，报表时段口径跟在后面，两边都标清来源。 */
+  const rtSrc = rtRate != null
+    ? `实时 · 通话监控 4 线 · 今日 0 点起：接听 ${n0(rtAns)} ÷ 转人工 ${n0(rtTurn)}`
+    : '通话监控未读到 400 线路数据 · 暂不出数';
+  const w4Src = !hasW4
+    ? `时段（报表）：${w4Stale ? `已 ${w4age} 分钟没读到新数据` : '工作时段未出数'}`
+    : `时段（报表）${w4.from}–${w4To} 已出 ${w4.slots || 0} 段：接听 ${n0(w4.answered)} ÷ 转人工 ${n0(w4.turn)}${w4Gap ? `（缺 ${w4Gap} 处）` : ''}`;
+  const rate400src = rtSrc + ' · ' + w4Src;
   $('#k400').innerHTML = [
     {
-      k: '接通率（工时）', v: rate400 == null ? '–' : pc(rate400), lead: 1, hl: 1,
+      k: '接通率（实时）', v: rate400 == null ? '–' : pc(rate400), lead: 1, hl: 1,
       c: rate400 == null ? 'c-blue' : (rate400 >= 85 ? 'c-green' : 'c-red'),
       d: (rate400 == null
-        ? `<span class="ok">${w4Stale ? '数据停更 · 暂不出数' : '工作时段未出数'}</span>`
+        ? '<span class="ok">通话监控未出数</span>'
         : (rate400 >= 85 ? '<span class="ok">达标</span>' : '<span class="warn">低于 85% 目标</span>'))
         + ` · ${rate400src}`
-        + (hasW4 && w4.allDay != null ? ` · 全天累计 ${pc(w4.allDay)}（含夜间，仅参考）` : '')
         + (rate400 != null && wSlot ? ` · 最低时段 ${wSlot.k} ${wSlot.r.toFixed(0)}%` : ''),
       wk: week400 ? {
         txt: week400.off === 0 ? '本周' : '上周', v: pc(week400.rate),
@@ -1729,13 +1738,13 @@ function renderTr400() {
 function renderDiag400(o) {
   const box = $('#diag400'); if (!box) return;
   const ss = o.ss || {};
-  /* 口径跟主卡片一致：只认【工作时间口径】（o.rate，8:00 起 Σ接听÷Σ转人工）。
-     🔴 2026-10-30：工时口径没数据时**不再退回 ss.rate（全天含夜间）**，直接说明未出数 ——
+  /* 口径跟主卡片一致：主数值 = 实时接通率（通话监控 4 线，今日累计）。
+     🔴 2026-10-30：读不到就说明未出数，不退回别的口径 ——
      否则会出现「卡片显示 –、解读却说 59% 未达标」这种自相矛盾。 */
   const rate = (o.rate != null) ? o.rate : null, low = o.low || [];
   if (rate == null) {
-    box.innerHTML = `<div class="diag"><div class="dh">工作时段尚未出数</div>
-      <div class="dt">8:00 起的报表时段还没落库（夜间 0–8 点不计入本页口径），出数后自动刷新。</div></div>`;
+    box.innerHTML = `<div class="diag"><div class="dh">通话监控尚未出数</div>
+      <div class="dt">监控 / 通话 / 通话监控 的 400 线路数据没读到，出数后自动刷新。</div></div>`;
     return;
   }
   const w = low.slice().sort((a, b) => a.r - b.r)[0];
@@ -3373,10 +3382,11 @@ function showPane(key, opt) {
 function updateTabs() {
   const cc = D.cc, tk = D.tk;
   const ss = (cc && cc.skillSummary) || {};
-  const w4 = (cc && cc.call400Work) || null;
-  /* tab 上的 400 数跟主卡片同口径：只认工作时间口径；没出数 / 停更超 25 分钟就显示 –（不拿旧值） */
-  const w4ok = !!(w4 && w4.rate != null && !(w4.agedMin != null && w4.agedMin > 25));
-  $('#tab400').textContent = w4ok ? pc(w4.rate) : '–';
+  const ksT = (cc && cc.keyServices) || null;
+  /* tab 的 400 数 = 实时口径（通话监控），与主卡片同源；没读到就 – */
+  const rtTurnT = ksT ? Math.max(0, (+ksT.total || 0) - (+ksT.ivr || 0)) : 0;
+  const rtRateT = rtTurnT > 0 ? +(((+ksT.answered || 0) / rtTurnT) * 100).toFixed(2) : null;
+  $('#tab400').textContent = rtRateT != null ? pc(rtRateT) : '–';
   $('#tabOnline').textContent = cc ? n0(onlineAgg(cc).sessions) : '–';
   $('#tabTicket').textContent = tk ? n0(tk.grand_total) : '–';
 }
