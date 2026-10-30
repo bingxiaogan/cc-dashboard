@@ -1319,9 +1319,22 @@ function render400() {
     : (Math.abs(d) < 5 ? '<span style="color:var(--tx3)">与预测持平</span>'
       : `<span class="${d > 0 ? 'warn' : 'ok'}">${d > 0 ? '高于' : '低于'}预测 ${Math.abs(d).toFixed(0)}%</span>`);
 
-  /* —— 预测同期负荷：按「进线量 vs 同期预测」的同一偏差折算
-     （cap.load400 的分子是技能组口径，直接用半小时口径的预测进线量去除会自相矛盾） —— */
-  const predLoadNow = (cap.load400 != null && devIn != null && devIn > -95) ? cap.load400 / (1 + devIn / 100) : null;
+  /* 400 接通率/负荷口径（2026-10-28 用户要求，2026-10-30 收紧）：
+     主数值 = **工作时间口径**：8:00 起的半小时段（Σ接听 ÷ Σ转人工），夜间 0–8 点 / 21 点后不计。
+     🔴 工时段报表还没出数时，**不再退回全天累计当主数值**（那是含夜间的数，早上会显示 59%），
+        一律显示「–」+「工作时段未出数」。全天值只在有工时口径之后，作为副文案参考出现。
+     运能负荷同口径：分子用**工时段人工量**，分母 cap400（本就是按已过工时段折算的应接产能）；
+     以前是 capacity.in400（全天累计含夜间）/ cap400 → 早上 8:59 直接 253%。 */
+  const w4 = cc.call400Work || null;
+  const hasW4 = !!(w4 && w4.rate != null);
+  const rate400 = hasW4 ? w4.rate : null;
+  const load400w = (hasW4 && cap.cap400) ? Math.round((w4.turn || 0) / cap.cap400 * 1000) / 10 : null;
+  const capW = Object.assign({}, cap, { load400: load400w });
+  const w4From = (w4 && w4.from) ? w4.from : '工作时段开始';
+  const w4To = w4 && w4.to ? String(w4.to).slice(0, 5) : '21:00';
+
+  /* —— 预测同期负荷：按「进线量 vs 同期预测」的同一偏差折算（分子分母都用工时口径） —— */
+  const predLoadNow = (load400w != null && devIn != null && devIn > -95) ? load400w / (1 + devIn / 100) : null;
 
   /* 已出时段未达标清单（重点卡副文案、不达标解读、调控策略共用） */
   const lowSlots = lowRateSlots();
@@ -1333,26 +1346,23 @@ function render400() {
      第一排 当前排队量 / 呼入量 / 人工进线量　第二排 在岗人力 / 运能负荷 / 人力缺口
      （「人力缺口」从原「在岗人力」的副文案里拆成独立卡） */
   const gapN = planDay ? (planDay.gap_hc || 0) : null;
-  /* 400 接通率口径（2026-10-28 用户要求）：主数值改成**工作时间口径**
-     —— 只算 8:00 起的半小时段（Σ接听 ÷ Σ转人工），因为技能组「今日」是全天累计，
-     夜里 0:00–8:00 / 21:00 后无人值守（夜间接通率 ~37%），会把 85% 稀释成 81%。
-     全天累计值降级到副文案做对照，别删（万一飞书表当天还没填，主数值自动退回全天口径）。 */
-  const w4 = cc.call400Work || null;
-  const rate400 = (w4 && w4.rate != null) ? w4.rate : ss.rate;
-  const w4To = w4 && w4.to ? String(w4.to).slice(0, 5) : '21:00';
   /* 副文案写人话（2026-10-29 用户「这句话啥意思」）：不用 Σ 符号，直接给
      「时段 + 已出几段 + 接听几通 ÷ 转人工几通」，业务侧一眼能对数字核对。 */
-  const rate400src = !w4
-    ? '全天累计口径 · 工时口径等报表出数'
+  const rate400src = !hasW4
+    ? `${w4From}后开始采集 · 夜间（0–8 点）不计入本数`
     : (w4.src === '技能组增量'
       ? `${w4.from}–${w4To} 增量：接听 ${n0(w4.answered)} ÷ 转人工 ${n0(w4.turn)}（合力报表未出数，暂用技能组口径）`
       : `${w4.from}–${w4To} 已出 ${w4.slots || 0} 段：接听 ${n0(w4.answered)} 通 ÷ 转人工 ${n0(w4.turn)} 通`);
   $('#k400').innerHTML = [
     {
-      k: w4 ? '接通率（工时）' : '接通率（全天）', v: pc(rate400), lead: 1, hl: 1, c: (rate400 || 0) >= 85 ? 'c-green' : 'c-red',
-      d: `${(rate400 || 0) >= 85 ? '<span class="ok">达标</span>' : '<span class="warn">低于 85% 目标</span>'} · ${rate400src}`
-        + (w4 && w4.allDay != null ? ` · 全天累计 ${pc(w4.allDay)}（含夜间，仅参考）` : '')
-        + (wSlot ? ` · 最低时段 ${wSlot.k} ${wSlot.r.toFixed(0)}%` : ''),
+      k: '接通率（工时）', v: rate400 == null ? '–' : pc(rate400), lead: 1, hl: 1,
+      c: rate400 == null ? 'c-blue' : (rate400 >= 85 ? 'c-green' : 'c-red'),
+      d: (rate400 == null
+        ? '<span class="ok">工作时段未出数</span>'
+        : (rate400 >= 85 ? '<span class="ok">达标</span>' : '<span class="warn">低于 85% 目标</span>'))
+        + ` · ${rate400src}`
+        + (hasW4 && w4.allDay != null ? ` · 全天累计 ${pc(w4.allDay)}（含夜间，仅参考）` : '')
+        + (rate400 != null && wSlot ? ` · 最低时段 ${wSlot.k} ${wSlot.r.toFixed(0)}%` : ''),
       wk: week400 ? {
         txt: week400.off === 0 ? '本周' : '上周', v: pc(week400.rate),
         rng: `${week400.from.slice(5)} ~ ${week400.to.slice(5)}（周日~周六）· 已出 ${week400.n} 天`,
@@ -1371,9 +1381,11 @@ function render400() {
       d: `签入 ${n0(ss.signIn)} 人 · 排班 ${duty} 人`
     },
     {
-      k: '运能负荷（实时）', v: pc(cap.load400, 0),
-      c: (cap.load400 || 0) >= 110 ? 'c-red' : (cap.load400 || 0) < 90 ? 'c-blue' : 'c-green',
-      d: `进线 ${n0(cap.in400)} / 应接 ${n0(cap.cap400)}` + (predLoadNow != null ? ` · 预测同期 ${pc(predLoadNow, 0)}` : '')
+      k: '运能负荷（工时）', v: load400w == null ? '–' : pc(load400w, 0),
+      c: load400w == null ? 'c-blue' : load400w >= 110 ? 'c-red' : load400w < 90 ? 'c-blue' : 'c-green',
+      d: load400w == null
+        ? `${w4From}后开始统计 · 夜间进线不计入`
+        : `进线 ${n0(w4.turn)} / 应接 ${n0(cap.cap400)}（${w4From} 起，不含夜间）` + (predLoadNow != null ? ` · 预测同期 ${pc(predLoadNow, 0)}` : '')
     },
     {
       k: '人力缺口', v: gapN == null ? '–' : hcSign(gapN) + '<small>人</small>',
@@ -1385,7 +1397,7 @@ function render400() {
   ].map(x => `<div class="kpi ${x.c}${x.lead ? ' lead' : ''}"><div class="kl">${x.k}</div><div class="kv ${x.hl ? 'hl' : ''}">${x.v}</div><div class="kd">${x.d}</div>${x.wk ? `<div class="kw ${x.wk.ok ? 'ok' : 'warn'}"><span>${x.wk.txt}</span><b>${x.wk.v}</b>${x.wk.rng ? `<i>${x.wk.rng}</i>` : ''}</div>` : ''}${x.sp || ''}</div>`).join('');
 
   /* —— 不达标解读（在上）+ 今日调控策略建议（在下） —— */
-  renderDiag400({ ss, cap, devIn, planDay, low: lowSlots, rate: rate400, rateSrc: rate400src });
+  renderDiag400({ ss, cap: capW, devIn, planDay, low: lowSlots, rate: rate400, rateSrc: rate400src });
   renderStrategy400({ keys, full, act, sumTurn, sumIn, devTurn, devIn, predictTurnNow, doneN, planDay, lastI, low: lowSlots });
 
   /* 每半小时人工进线量（现场）与接通率 */
@@ -1706,11 +1718,15 @@ function renderTr400() {
 function renderDiag400(o) {
   const box = $('#diag400'); if (!box) return;
   const ss = o.ss || {};
-  /* 口径跟主卡片一致：优先【工作时间口径】（o.rate，8:00 起 Σ接听÷Σ转人工），
-     没有才退回技能组全天累计（ss.rate）—— 两处必须同口径，否则会出现
-     「卡片说达标、解读说未达标」的自相矛盾。 */
-  const rate = (o.rate != null) ? o.rate : ss.rate, low = o.low || [];
-  if (rate == null) { box.innerHTML = ''; return; }
+  /* 口径跟主卡片一致：只认【工作时间口径】（o.rate，8:00 起 Σ接听÷Σ转人工）。
+     🔴 2026-10-30：工时口径没数据时**不再退回 ss.rate（全天含夜间）**，直接说明未出数 ——
+     否则会出现「卡片显示 –、解读却说 59% 未达标」这种自相矛盾。 */
+  const rate = (o.rate != null) ? o.rate : null, low = o.low || [];
+  if (rate == null) {
+    box.innerHTML = `<div class="diag"><div class="dh">工作时段尚未出数</div>
+      <div class="dt">8:00 起的报表时段还没落库（夜间 0–8 点不计入本页口径），出数后自动刷新。</div></div>`;
+    return;
+  }
   const w = low.slice().sort((a, b) => a.r - b.r)[0];
   if (rate >= 85) {
     box.innerHTML = `<div class="diag ok">
@@ -3347,8 +3363,8 @@ function updateTabs() {
   const cc = D.cc, tk = D.tk;
   const ss = (cc && cc.skillSummary) || {};
   const w4 = (cc && cc.call400Work) || null;
-  /* tab 上的 400 数跟主卡片同口径：优先工作时间口径，无则退回全天累计 */
-  $('#tab400').textContent = cc ? pc((w4 && w4.rate != null) ? w4.rate : ss.rate) : '–';
+  /* tab 上的 400 数跟主卡片同口径：只认工作时间口径；没出数就显示 –（不再退回全天累计） */
+  $('#tab400').textContent = (cc && w4 && w4.rate != null) ? pc(w4.rate) : '–';
   $('#tabOnline').textContent = cc ? n0(onlineAgg(cc).sessions) : '–';
   $('#tabTicket').textContent = tk ? n0(tk.grand_total) : '–';
 }
