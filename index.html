@@ -1807,7 +1807,7 @@ function renderStrategy400(o) {
     else adv = '节奏与预测吻合，按计划推进。';
     items.push({
       tag: '整体', cls,
-      html: `截至 <b>${curEnd}</b>，人工进线量 <b>${n0(o.sumTurn)}</b> 通、呼入 <b>${n0(o.sumIn)}</b> 通（同期预测 ${n0(o.predictTurnNow)} 通），<b>${dir}</b>。${adv}`
+      html: `截至 <b>${curEnd}</b>，人工进线量 <b>${n0(o.sumTurn)}</b> 通（同期预测 ${n0(o.predictTurnNow)} 通，<b>${dir}</b>）、呼入 <b>${n0(o.sumIn)}</b> 通。${adv}`
     });
   } else {
     items.push({ tag: '整体', cls: 'all', html: '今日半小时数据待采集，先按预测执行：以「每半小时人工进线量」图上的预测线为当日节奏基准。' });
