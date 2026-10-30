@@ -1,16 +1,16 @@
 {
- "ts": 1793367417936,
- "collectedAtCn": "2026/10/30 21:36:57",
+ "ts": 1793367653258,
+ "collectedAtCn": "2026/10/30 21:40:53",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "4",
   "坐席忙碌数": "0 (0)",
   "接通率": "19.05%",
   "满意率": "100.00%",
-  "呼入总数": "20367",
-  "当前呼入数": "4",
+  "呼入总数": "20398",
+  "当前呼入数": "2",
   "外呼总数": "6541",
-  "当前外呼数": "14",
+  "当前外呼数": "17",
   "呼入平均通话时长": "00:02:37",
   "AI通话数": "0 (3)"
  },
@@ -1188,7 +1188,7 @@
   "to": "20:30",
   "allDay": 76.98,
   "at": 1793366917820,
-  "agedMin": 10,
+  "agedMin": 14,
   "gap": 0,
   "complete": true,
   "src": "合力400报表"
@@ -1262,7 +1262,7 @@
     "done": 58,
     "answerRate": 100,
     "abandon": 0,
-    "voicemail": 8,
+    "voicemail": 9,
     "satisfactionRate": 100
    },
    {
@@ -1365,14 +1365,14 @@
    },
    {
     "name": "官网严选寄卖售后咨询",
-    "sessions": 249,
-    "assigned": 229,
-    "current": 15,
+    "sessions": 251,
+    "assigned": 231,
+    "current": 16,
     "max": 120,
-    "queue": 11,
+    "queue": 9,
     "onlineSeats": "4(张慧敏,刘梓爱,陈可,沈东升)",
-    "done": 214,
-    "answerRate": 91.97,
+    "done": 215,
+    "answerRate": 92.03,
     "abandon": 20,
     "voicemail": 0,
     "satisfactionRate": 0
@@ -1421,14 +1421,14 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1651,
-    "assigned": 1515,
-    "current": 101,
+    "sessions": 1660,
+    "assigned": 1524,
+    "current": 103,
     "max": 120,
-    "queue": 39,
+    "queue": 37,
     "onlineSeats": "4(张慧敏,刘梓爱,陈可,沈东升)",
-    "done": 1355,
-    "answerRate": 91.76,
+    "done": 1362,
+    "answerRate": 91.81,
     "abandon": 136,
     "voicemail": 0,
     "satisfactionRate": 0
@@ -1743,11 +1743,11 @@
    },
    {
     "name": "官网严选寄卖售前咨询",
-    "sessions": 37,
-    "assigned": 37,
-    "current": 2,
+    "sessions": 38,
+    "assigned": 38,
+    "current": 3,
     "max": 120,
-    "queue": 1,
+    "queue": 0,
     "onlineSeats": "4(张慧敏,刘梓爱,陈可,沈东升)",
     "done": 35,
     "answerRate": 100,
@@ -1869,14 +1869,14 @@
    },
    {
     "name": "官网严选自营售前咨询",
-    "sessions": 545,
-    "assigned": 528,
-    "current": 50,
+    "sessions": 546,
+    "assigned": 529,
+    "current": 45,
     "max": 120,
     "queue": 1,
     "onlineSeats": "4(张慧敏,刘梓爱,陈可,沈东升)",
-    "done": 467,
-    "answerRate": 96.88,
+    "done": 473,
+    "answerRate": 96.89,
     "abandon": 17,
     "voicemail": 0,
     "satisfactionRate": 33.33
@@ -2489,15 +2489,6 @@
   "rate400": 76.8
  },
  "history": [
-  {
-   "ts": 1793272934795,
-   "skillRate400": 81.44,
-   "skillQueue400": 0,
-   "callIn400": 1153,
-   "signIn400": 8,
-   "onlineSessions": 703,
-   "onlineSeat": 3
-  },
   {
    "ts": 1793273048491,
    "skillRate400": 81.4,
@@ -6982,6 +6973,15 @@
   },
   {
    "ts": 1793367417936,
+   "skillRate400": 76.98,
+   "skillQueue400": 0,
+   "callIn400": 1325,
+   "signIn400": 1,
+   "onlineSessions": 814,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1793367653258,
    "skillRate400": 76.98,
    "skillQueue400": 0,
    "callIn400": 1325,
