@@ -1366,14 +1366,14 @@ function render400() {
   const gapN = planDay ? (planDay.gap_hc || 0) : null;
   /* 副文案写人话（2026-10-29 用户「这句话啥意思」）：不用 Σ 符号，直接给
      「时段 + 已出几段 + 接听几通 ÷ 转人工几通」，业务侧一眼能对数字核对。 */
-  /* 副文案：主口径写「实时（通话监控）」的数，报表时段口径跟在后面，两边都标清来源。 */
+  /* 🔴 2026-10-30 用户第 N 次强调「不要混」：这张卡**只放实时口径一个数**。
+     报表时段口径不写在这里 —— 它 9 分钟一轮、还可能整轮失败，写在卡片上会变成
+     「71.9% 是实时的还是 43 分钟前的？」这种没法回答的话。时段数去「时段明细」看。 */
   const rtSrc = rtRate != null
     ? `实时 · 通话监控 4 线 · 今日 0 点起：接听 ${n0(rtAns)} ÷ 转人工 ${n0(rtTurn)}`
-    : '通话监控未读到 400 线路数据 · 暂不出数';
-  const w4Src = !hasW4
-    ? `时段（报表）：${w4Stale ? `已 ${w4age} 分钟没读到新数据` : '工作时段未出数'}`
-    : `时段（报表）${w4.from}–${w4To} 已出 ${w4.slots || 0} 段：接听 ${n0(w4.answered)} ÷ 转人工 ${n0(w4.turn)}${w4Gap ? `（缺 ${w4Gap} 处）` : ''}`;
-  const rate400src = rtSrc + ' · ' + w4Src;
+      + (cc.collectedAtCn ? ` · 截至 ${String(cc.collectedAtCn).slice(11, 16)}` : '')
+    : '通话监控没读到 400 线路数据 · 暂不出数';
+  const rate400src = rtSrc;
   $('#k400').innerHTML = [
     {
       k: '接通率（实时）', v: rate400 == null ? '–' : pc(rate400), lead: 1, hl: 1,
@@ -1381,8 +1381,7 @@ function render400() {
       d: (rate400 == null
         ? '<span class="ok">通话监控未出数</span>'
         : (rate400 >= 85 ? '<span class="ok">达标</span>' : '<span class="warn">低于 85% 目标</span>'))
-        + ` · ${rate400src}`
-        + (rate400 != null && wSlot ? ` · 最低时段 ${wSlot.k} ${wSlot.r.toFixed(0)}%` : ''),
+        + ` · ${rate400src}`,
       wk: week400 ? {
         txt: week400.off === 0 ? '本周' : '上周', v: pc(week400.rate),
         rng: `${week400.from.slice(5)} ~ ${week400.to.slice(5)}（周日~周六）· 已出 ${week400.n} 天`,
