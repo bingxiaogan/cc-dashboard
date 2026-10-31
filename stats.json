@@ -1,6 +1,6 @@
 {
- "ts": 1793462036478,
- "collectedAtCn": "2026/10/31 23:53:56",
+ "ts": 1793462268058,
+ "collectedAtCn": "2026/10/31 23:57:48",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "3",
@@ -1188,8 +1188,8 @@
   "from": "08:00",
   "to": "20:30",
   "allDay": 78.44,
-  "at": 1793460893134,
-  "agedMin": 21,
+  "at": 1793462178042,
+  "agedMin": 3,
   "gap": 0,
   "complete": true,
   "src": "合力400报表"
@@ -1366,15 +1366,15 @@
    },
    {
     "name": "官网严选寄卖售后咨询",
-    "sessions": 293,
+    "sessions": 294,
     "assigned": 201,
     "current": 0,
     "max": 0,
-    "queue": 5,
+    "queue": 4,
     "onlineSeats": "0",
     "done": 201,
-    "answerRate": 68.6,
-    "abandon": 92,
+    "answerRate": 68.37,
+    "abandon": 93,
     "voicemail": 0,
     "satisfactionRate": 0
    },
@@ -1422,15 +1422,15 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1927,
+    "sessions": 1932,
     "assigned": 1671,
-    "current": 5,
+    "current": 0,
     "max": 0,
-    "queue": 27,
+    "queue": 25,
     "onlineSeats": "0",
-    "done": 1608,
-    "answerRate": 86.72,
-    "abandon": 256,
+    "done": 1613,
+    "answerRate": 86.49,
+    "abandon": 261,
     "voicemail": 0,
     "satisfactionRate": 0
    },
@@ -1753,7 +1753,7 @@
     "done": 66,
     "answerRate": 92.96,
     "abandon": 5,
-    "voicemail": 1,
+    "voicemail": 3,
     "satisfactionRate": 0
    },
    {
@@ -1879,7 +1879,7 @@
     "done": 580,
     "answerRate": 94.25,
     "abandon": 36,
-    "voicemail": 3,
+    "voicemail": 4,
     "satisfactionRate": 0
    },
    {
@@ -2491,15 +2491,6 @@
   "rate400": 77.1
  },
  "history": [
-  {
-   "ts": 1793388320975,
-   "skillRate400": null,
-   "skillQueue400": 0,
-   "callIn400": 0,
-   "signIn400": 0,
-   "onlineSessions": 0,
-   "onlineSeat": 0
-  },
   {
    "ts": 1793388525132,
    "skillRate400": null,
@@ -6984,6 +6975,15 @@
   },
   {
    "ts": 1793462036478,
+   "skillRate400": 78.44,
+   "skillQueue400": 0,
+   "callIn400": 1475,
+   "signIn400": 2,
+   "onlineSessions": 906,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1793462268058,
    "skillRate400": 78.44,
    "skillQueue400": 0,
    "callIn400": 1475,
