@@ -1,16 +1,16 @@
 {
- "ts": 1793452185984,
- "collectedAtCn": "2026/10/31 21:09:45",
+ "ts": 1793452390844,
+ "collectedAtCn": "2026/10/31 21:13:10",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "3",
   "坐席忙碌数": "0 (0)",
   "接通率": "25.66%",
   "满意率": "100.00%",
-  "呼入总数": "19248",
+  "呼入总数": "19281",
   "当前呼入数": "4",
-  "外呼总数": "6635",
-  "当前外呼数": "18",
+  "外呼总数": "6638",
+  "当前外呼数": "5",
   "呼入平均通话时长": "00:02:36",
   "AI通话数": "0 (3)"
  },
@@ -1189,7 +1189,7 @@
   "to": "20:00",
   "allDay": 78.44,
   "at": 1793451890667,
-  "agedMin": 6,
+  "agedMin": 10,
   "gap": 0,
   "complete": true,
   "src": "合力400报表"
@@ -1235,7 +1235,7 @@
     "done": 15,
     "answerRate": 100,
     "abandon": 0,
-    "voicemail": 1,
+    "voicemail": 0,
     "satisfactionRate": 0
    },
    {
@@ -1305,7 +1305,7 @@
     "done": 0,
     "answerRate": 0,
     "abandon": 0,
-    "voicemail": 0,
+    "voicemail": 1,
     "satisfactionRate": 0
    },
    {
@@ -1370,7 +1370,7 @@
     "assigned": 188,
     "current": 8,
     "max": 60,
-    "queue": 9,
+    "queue": 10,
     "onlineSeats": "2(丁萌萌,刘梓爱)",
     "done": 180,
     "answerRate": 74.9,
@@ -1422,15 +1422,15 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1714,
-    "assigned": 1525,
-    "current": 70,
+    "sessions": 1723,
+    "assigned": 1533,
+    "current": 73,
     "max": 60,
-    "queue": 53,
+    "queue": 47,
     "onlineSeats": "2(丁萌萌,刘梓爱)",
-    "done": 1398,
+    "done": 1403,
     "answerRate": 88.97,
-    "abandon": 189,
+    "abandon": 190,
     "voicemail": 0,
     "satisfactionRate": 0
    },
@@ -1744,14 +1744,14 @@
    },
    {
     "name": "官网严选寄卖售前咨询",
-    "sessions": 58,
-    "assigned": 54,
-    "current": 5,
+    "sessions": 60,
+    "assigned": 56,
+    "current": 6,
     "max": 60,
-    "queue": 2,
+    "queue": 0,
     "onlineSeats": "2(丁萌萌,刘梓爱)",
-    "done": 49,
-    "answerRate": 93.1,
+    "done": 50,
+    "answerRate": 93.33,
     "abandon": 4,
     "voicemail": 0,
     "satisfactionRate": 0
@@ -1870,14 +1870,14 @@
    },
    {
     "name": "官网严选自营售前咨询",
-    "sessions": 562,
-    "assigned": 529,
-    "current": 43,
+    "sessions": 566,
+    "assigned": 533,
+    "current": 41,
     "max": 60,
     "queue": 3,
     "onlineSeats": "2(丁萌萌,刘梓爱)",
-    "done": 479,
-    "answerRate": 94.13,
+    "done": 485,
+    "answerRate": 94.17,
     "abandon": 33,
     "voicemail": 0,
     "satisfactionRate": 0
@@ -2491,15 +2491,6 @@
   "rate400": 77.1
  },
  "history": [
-  {
-   "ts": 1793377835451,
-   "skillRate400": null,
-   "skillQueue400": 0,
-   "callIn400": 0,
-   "signIn400": 0,
-   "onlineSessions": 0,
-   "onlineSeat": 0
-  },
   {
    "ts": 1793378093764,
    "skillRate400": null,
@@ -6984,6 +6975,15 @@
   },
   {
    "ts": 1793452185984,
+   "skillRate400": 78.44,
+   "skillQueue400": 0,
+   "callIn400": 1475,
+   "signIn400": 2,
+   "onlineSessions": 906,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1793452390844,
    "skillRate400": 78.44,
    "skillQueue400": 0,
    "callIn400": 1475,
