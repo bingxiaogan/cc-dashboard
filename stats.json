@@ -1,13 +1,13 @@
 {
- "ts": 1793489830665,
- "collectedAtCn": "2026/11/1 07:37:10",
+ "ts": 1793490069237,
+ "collectedAtCn": "2026/11/1 07:41:09",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "3",
   "坐席忙碌数": "0 (0)",
   "接通率": "0%",
   "满意率": "0%",
-  "呼入总数": "65",
+  "呼入总数": "73",
   "当前呼入数": "0",
   "外呼总数": "0",
   "当前外呼数": "0",
@@ -480,8 +480,8 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 26,
-   "ivr": 26,
+   "callIn": 28,
+   "ivr": 28,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -720,8 +720,8 @@
   },
   {
    "service": "81198(上门按键转接)",
-   "callIn": 4,
-   "ivr": 4,
+   "callIn": 5,
+   "ivr": 5,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -1126,8 +1126,8 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 26,
-    "ivr": 26,
+    "callIn": 28,
+    "ivr": 28,
     "ringMissed": 0,
     "queueAbandon": 0,
     "answered": 0,
@@ -1145,9 +1145,9 @@
     "transferred": 0
    }
   ],
-  "total": 26,
+  "total": 28,
   "answered": 0,
-  "ivr": 26,
+  "ivr": 28,
   "connectRate": 100
  },
  "online": {
@@ -2447,24 +2447,6 @@
   "rate400": 77.1
  },
  "history": [
-  {
-   "ts": 1793411522694,
-   "skillRate400": 77.06,
-   "skillQueue400": 0,
-   "callIn400": 170,
-   "signIn400": 10,
-   "onlineSessions": 72,
-   "onlineSeat": 3
-  },
-  {
-   "ts": 1793411635579,
-   "skillRate400": 76.14,
-   "skillQueue400": 1,
-   "callIn400": 176,
-   "signIn400": 10,
-   "onlineSessions": 74,
-   "onlineSeat": 3
-  },
   {
    "ts": 1793411776893,
    "skillRate400": 76.67,
@@ -6940,6 +6922,24 @@
   },
   {
    "ts": 1793489830665,
+   "skillRate400": null,
+   "skillQueue400": 0,
+   "callIn400": 0,
+   "signIn400": 1,
+   "onlineSessions": 0,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1793489949956,
+   "skillRate400": null,
+   "skillQueue400": 0,
+   "callIn400": 0,
+   "signIn400": 1,
+   "onlineSessions": 0,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1793490069237,
    "skillRate400": null,
    "skillQueue400": 0,
    "callIn400": 0,
