@@ -24,17 +24,17 @@
    "levelName": "一级",
    "color": "黄",
    "vals": {
-    "load": 116,
+    "load": 116.2,
     "rate": 80.2,
     "lv": 2,
     "rv": 2,
     "src": "周报口径(今实时)",
     "wDays": 7,
     "sum": {
-     "call": 6922,
-     "ans": 5551,
-     "den400": 5969,
-     "on": 5750,
+     "call": 6950,
+     "ans": 5571,
+     "den400": 5981,
+     "on": 5760,
      "denOn": 6930
     },
     "wplan": {
@@ -68,30 +68,30 @@
      ],
      "todayKey": "2026-10-31",
      "lastDay": true,
-     "todayIn": 67,
-     "todayAns": 44,
+     "todayIn": 95,
+     "todayAns": 64,
      "from": "10-31",
      "to": "10-31",
      "weekEnd": "2026-10-31"
     }
    },
-   "ts": 1793408682977,
-   "tsCn": "2026/10/31 09:04:42",
+   "ts": 1793408907434,
+   "tsCn": "2026/10/31 09:08:27",
    "lastLevel": 2,
    "muted": false,
    "minLevel": 2,
    "lastAlertTs": 1793408682977
   },
   "onld": {
-   "level": 0,
-   "levelName": "低负荷",
-   "color": "绿",
+   "level": 4,
+   "levelName": "三级",
+   "color": "红",
    "vals": {
-    "load": 82.2
+    "load": 177.8
    },
-   "ts": 1793404760552,
-   "tsCn": "2026/10/31 07:59:20",
-   "lastLevel": 0,
+   "ts": 1793408907434,
+   "tsCn": "2026/10/31 09:08:27",
+   "lastLevel": 4,
    "muted": true,
    "minLevel": 99
   },
@@ -100,19 +100,19 @@
    "levelName": "低负荷",
    "color": "绿",
    "vals": {
-    "load": 83,
+    "load": 83.1,
     "src": "周报口径(今实时)",
     "wDays": 7,
     "sum": {
-     "call": 6922,
-     "ans": 5551,
-     "den400": 5969,
-     "on": 5750,
+     "call": 6950,
+     "ans": 5571,
+     "den400": 5981,
+     "on": 5760,
      "denOn": 6930
     }
    },
-   "ts": 1793408682977,
-   "tsCn": "2026/10/31 09:04:42",
+   "ts": 1793408907434,
+   "tsCn": "2026/10/31 09:08:27",
    "lastLevel": 0,
    "muted": true,
    "minLevel": 99
@@ -130,8 +130,8 @@
     "rv": 1,
     "agents": 2
    },
-   "ts": 1793408682977,
-   "tsCn": "2026/10/31 09:04:42",
+   "ts": 1793408907434,
+   "tsCn": "2026/10/31 09:08:27",
    "lastLevel": 1,
    "muted": true,
    "minLevel": 99
@@ -151,6 +151,6 @@
    "minLevel": 99
   }
  },
- "updated": "2026/10/31 09:04:42",
- "updatedTs": 1793408682977
+ "updated": "2026/10/31 09:08:27",
+ "updatedTs": 1793408907434
 }
