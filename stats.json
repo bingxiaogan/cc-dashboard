@@ -1,13 +1,13 @@
 {
- "ts": 1793458818428,
- "collectedAtCn": "2026/10/31 23:00:18",
+ "ts": 1793459056702,
+ "collectedAtCn": "2026/10/31 23:04:16",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "3",
   "坐席忙碌数": "0 (0)",
   "接通率": "25.66%",
   "满意率": "100.00%",
-  "呼入总数": "19758",
+  "呼入总数": "19763",
   "当前呼入数": "0",
   "外呼总数": "6649",
   "当前外呼数": "0",
@@ -1189,7 +1189,7 @@
   "to": "20:30",
   "allDay": 78.44,
   "at": 1793458319340,
-  "agedMin": 10,
+  "agedMin": 14,
   "gap": 0,
   "complete": true,
   "src": "合力400报表"
@@ -1263,7 +1263,7 @@
     "done": 62,
     "answerRate": 100,
     "abandon": 0,
-    "voicemail": 8,
+    "voicemail": 7,
     "satisfactionRate": 100
    },
    {
@@ -1366,15 +1366,15 @@
    },
    {
     "name": "官网严选寄卖售后咨询",
-    "sessions": 282,
+    "sessions": 284,
     "assigned": 200,
-    "current": 8,
+    "current": 6,
     "max": 30,
-    "queue": 6,
+    "queue": 5,
     "onlineSeats": "1(张慧敏)",
-    "done": 192,
-    "answerRate": 70.92,
-    "abandon": 82,
+    "done": 194,
+    "answerRate": 70.42,
+    "abandon": 84,
     "voicemail": 0,
     "satisfactionRate": 0
    },
@@ -1422,15 +1422,15 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1879,
+    "sessions": 1883,
     "assigned": 1658,
-    "current": 51,
+    "current": 35,
     "max": 30,
-    "queue": 24,
+    "queue": 26,
     "onlineSeats": "1(张慧敏)",
-    "done": 1549,
-    "answerRate": 88.24,
-    "abandon": 221,
+    "done": 1565,
+    "answerRate": 88.05,
+    "abandon": 225,
     "voicemail": 0,
     "satisfactionRate": 0
    },
@@ -1744,14 +1744,14 @@
    },
    {
     "name": "官网严选寄卖售前咨询",
-    "sessions": 68,
-    "assigned": 64,
-    "current": 5,
+    "sessions": 69,
+    "assigned": 65,
+    "current": 6,
     "max": 30,
     "queue": 0,
     "onlineSeats": "1(张慧敏)",
     "done": 59,
-    "answerRate": 94.12,
+    "answerRate": 94.2,
     "abandon": 4,
     "voicemail": 0,
     "satisfactionRate": 0
@@ -1870,14 +1870,14 @@
    },
    {
     "name": "官网严选自营售前咨询",
-    "sessions": 614,
-    "assigned": 580,
-    "current": 20,
+    "sessions": 616,
+    "assigned": 582,
+    "current": 18,
     "max": 30,
-    "queue": 2,
+    "queue": 1,
     "onlineSeats": "1(张慧敏)",
-    "done": 551,
-    "answerRate": 94.46,
+    "done": 555,
+    "answerRate": 94.48,
     "abandon": 34,
     "voicemail": 0,
     "satisfactionRate": 0
@@ -2491,15 +2491,6 @@
   "rate400": 77.1
  },
  "history": [
-  {
-   "ts": 1793384902786,
-   "skillRate400": null,
-   "skillQueue400": 0,
-   "callIn400": 0,
-   "signIn400": 0,
-   "onlineSessions": 0,
-   "onlineSeat": 0
-  },
   {
    "ts": 1793385106857,
    "skillRate400": null,
@@ -6984,6 +6975,15 @@
   },
   {
    "ts": 1793458818428,
+   "skillRate400": 78.44,
+   "skillQueue400": 0,
+   "callIn400": 1475,
+   "signIn400": 2,
+   "onlineSessions": 906,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1793459056702,
    "skillRate400": 78.44,
    "skillQueue400": 0,
    "callIn400": 1475,
