@@ -1,16 +1,16 @@
 {
- "ts": 1793453913537,
- "collectedAtCn": "2026/10/31 21:38:33",
+ "ts": 1793454118812,
+ "collectedAtCn": "2026/10/31 21:41:58",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "4",
   "坐席忙碌数": "0 (0)",
   "接通率": "25.66%",
   "满意率": "100.00%",
-  "呼入总数": "19499",
-  "当前呼入数": "2",
+  "呼入总数": "19526",
+  "当前呼入数": "1",
   "外呼总数": "6644",
-  "当前外呼数": "2",
+  "当前外呼数": "0",
   "呼入平均通话时长": "00:02:36",
   "AI通话数": "0 (3)"
  },
@@ -1189,7 +1189,7 @@
   "to": "20:30",
   "allDay": 78.44,
   "at": 1793453178535,
-  "agedMin": 14,
+  "agedMin": 17,
   "gap": 0,
   "complete": true,
   "src": "合力400报表"
@@ -1263,7 +1263,7 @@
     "done": 62,
     "answerRate": 100,
     "abandon": 0,
-    "voicemail": 3,
+    "voicemail": 4,
     "satisfactionRate": 100
    },
    {
@@ -1366,15 +1366,15 @@
    },
    {
     "name": "官网严选寄卖售后咨询",
-    "sessions": 259,
-    "assigned": 189,
-    "current": 6,
+    "sessions": 262,
+    "assigned": 190,
+    "current": 4,
     "max": 90,
-    "queue": 10,
+    "queue": 9,
     "onlineSeats": "3(丁萌萌,刘梓爱,张慧敏)",
-    "done": 183,
-    "answerRate": 72.97,
-    "abandon": 70,
+    "done": 186,
+    "answerRate": 72.52,
+    "abandon": 72,
     "voicemail": 0,
     "satisfactionRate": 0
    },
@@ -1422,14 +1422,14 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1773,
-    "assigned": 1561,
-    "current": 76,
+    "sessions": 1778,
+    "assigned": 1566,
+    "current": 79,
     "max": 90,
-    "queue": 33,
+    "queue": 31,
     "onlineSeats": "3(丁萌萌,刘梓爱,张慧敏)",
-    "done": 1428,
-    "answerRate": 88.04,
+    "done": 1430,
+    "answerRate": 88.08,
     "abandon": 212,
     "voicemail": 0,
     "satisfactionRate": 0
@@ -1744,14 +1744,14 @@
    },
    {
     "name": "官网严选寄卖售前咨询",
-    "sessions": 61,
-    "assigned": 57,
+    "sessions": 62,
+    "assigned": 58,
     "current": 7,
     "max": 90,
     "queue": 1,
     "onlineSeats": "3(丁萌萌,刘梓爱,张慧敏)",
-    "done": 50,
-    "answerRate": 93.44,
+    "done": 51,
+    "answerRate": 93.55,
     "abandon": 4,
     "voicemail": 0,
     "satisfactionRate": 0
@@ -1870,14 +1870,14 @@
    },
    {
     "name": "官网严选自营售前咨询",
-    "sessions": 581,
-    "assigned": 548,
-    "current": 42,
+    "sessions": 582,
+    "assigned": 549,
+    "current": 40,
     "max": 90,
     "queue": 2,
     "onlineSeats": "3(丁萌萌,刘梓爱,张慧敏)",
-    "done": 497,
-    "answerRate": 94.32,
+    "done": 500,
+    "answerRate": 94.33,
     "abandon": 33,
     "voicemail": 0,
     "satisfactionRate": 0
@@ -2491,15 +2491,6 @@
   "rate400": 77.1
  },
  "history": [
-  {
-   "ts": 1793379659515,
-   "skillRate400": null,
-   "skillQueue400": 0,
-   "callIn400": 0,
-   "signIn400": 0,
-   "onlineSessions": 0,
-   "onlineSeat": 0
-  },
   {
    "ts": 1793379863622,
    "skillRate400": null,
@@ -6984,6 +6975,15 @@
   },
   {
    "ts": 1793453913537,
+   "skillRate400": 78.44,
+   "skillQueue400": 0,
+   "callIn400": 1475,
+   "signIn400": 2,
+   "onlineSessions": 906,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1793454118812,
    "skillRate400": 78.44,
    "skillQueue400": 0,
    "callIn400": 1475,
