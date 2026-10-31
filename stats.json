@@ -1,13 +1,13 @@
 {
- "ts": 1793466414525,
- "collectedAtCn": "2026/11/1 01:06:54",
+ "ts": 1793466618545,
+ "collectedAtCn": "2026/11/1 01:10:18",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "3",
   "坐席忙碌数": "0 (0)",
   "接通率": "0%",
   "满意率": "0%",
-  "呼入总数": "11",
+  "呼入总数": "12",
   "当前呼入数": "0",
   "外呼总数": "0",
   "当前外呼数": "0",
@@ -287,8 +287,8 @@
   },
   {
    "service": "88236636(一键转卖)",
-   "callIn": 0,
-   "ivr": 0,
+   "callIn": 1,
+   "ivr": 1,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -902,7 +902,7 @@
     "done": 0,
     "answerRate": 0,
     "abandon": 0,
-    "voicemail": 0,
+    "voicemail": 1,
     "satisfactionRate": 0
    },
    {
@@ -2172,15 +2172,6 @@
   "rate400": 77.1
  },
  "history": [
-  {
-   "ts": 1793392610108,
-   "skillRate400": null,
-   "skillQueue400": 0,
-   "callIn400": 0,
-   "signIn400": 0,
-   "onlineSessions": 0,
-   "onlineSeat": 0
-  },
   {
    "ts": 1793392814144,
    "skillRate400": null,
@@ -6665,6 +6656,15 @@
   },
   {
    "ts": 1793466414525,
+   "skillRate400": null,
+   "skillQueue400": 0,
+   "callIn400": 0,
+   "signIn400": 0,
+   "onlineSessions": 0,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1793466618545,
    "skillRate400": null,
    "skillQueue400": 0,
    "callIn400": 0,
