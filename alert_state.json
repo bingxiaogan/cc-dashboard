@@ -24,18 +24,18 @@
    "levelName": "一级",
    "color": "黄",
    "vals": {
-    "load": 115.5,
-    "rate": 80.3,
+    "load": 115.8,
+    "rate": 80.2,
     "lv": 2,
     "rv": 2,
     "src": "周报口径(今实时)",
     "wDays": 7,
     "sum": {
-     "call": 6875,
-     "ans": 5523,
-     "den400": 5950,
-     "on": 5744,
-     "denOn": 5940
+     "call": 6899,
+     "ans": 5534,
+     "den400": 5959,
+     "on": 5750,
+     "denOn": 6930
     },
     "wplan": {
      "days": [
@@ -68,19 +68,19 @@
      ],
      "todayKey": "2026-10-31",
      "lastDay": true,
-     "todayIn": 20,
-     "todayAns": 16,
+     "todayIn": 44,
+     "todayAns": 27,
      "from": "10-31",
      "to": "10-31",
      "weekEnd": "2026-10-31"
     }
    },
-   "ts": 1793406762714,
-   "tsCn": "2026/10/31 08:32:42",
+   "ts": 1793406882464,
+   "tsCn": "2026/10/31 08:34:42",
    "lastLevel": 2,
    "muted": false,
    "minLevel": 2,
-   "lastAlertTs": 1793404963240
+   "lastAlertTs": 1793406882464
   },
   "onld": {
    "level": 0,
@@ -96,23 +96,23 @@
    "minLevel": 99
   },
   "onlw": {
-   "level": 1,
-   "levelName": "正常",
-   "color": "蓝",
+   "level": 0,
+   "levelName": "低负荷",
+   "color": "绿",
    "vals": {
-    "load": 96.7,
+    "load": 83,
     "src": "周报口径(今实时)",
     "wDays": 7,
     "sum": {
-     "call": 6875,
-     "ans": 5523,
-     "den400": 5950,
-     "on": 5744,
-     "denOn": 5940
+     "call": 6899,
+     "ans": 5534,
+     "den400": 5959,
+     "on": 5750,
+     "denOn": 6930
     }
    },
-   "ts": 1793406762714,
-   "tsCn": "2026/10/31 08:32:42",
+   "ts": 1793406882464,
+   "tsCn": "2026/10/31 08:34:42",
    "lastLevel": 1,
    "muted": true,
    "minLevel": 99
@@ -130,8 +130,8 @@
     "rv": 1,
     "agents": 2
    },
-   "ts": 1793406762714,
-   "tsCn": "2026/10/31 08:32:42",
+   "ts": 1793406882464,
+   "tsCn": "2026/10/31 08:34:42",
    "lastLevel": 1,
    "muted": true,
    "minLevel": 99
@@ -151,6 +151,6 @@
    "minLevel": 99
   }
  },
- "updated": "2026/10/31 08:32:42",
- "updatedTs": 1793406762714
+ "updated": "2026/10/31 08:34:42",
+ "updatedTs": 1793406882464
 }
