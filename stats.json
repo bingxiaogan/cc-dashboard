@@ -1,17 +1,17 @@
 {
- "ts": 1793494348735,
- "collectedAtCn": "2026/11/1 08:52:28",
+ "ts": 1793494550000,
+ "collectedAtCn": "2026/11/1 08:55:50",
  "overview": {
-  "总排队数": "0",
-  "坐席空闲数": "16",
-  "坐席忙碌数": "0 (0)",
-  "接通率": "7.69%",
+  "总排队数": "3",
+  "坐席空闲数": "21",
+  "坐席忙碌数": "1 (1)",
+  "接通率": "8.15%",
   "满意率": "100.00%",
-  "呼入总数": "533",
-  "当前呼入数": "7",
-  "外呼总数": "59",
+  "呼入总数": "577",
+  "当前呼入数": "9",
+  "外呼总数": "62",
   "当前外呼数": "3",
-  "呼入平均通话时长": "00:03:12",
+  "呼入平均通话时长": "00:02:56",
   "AI通话数": "0 (3)"
  },
  "skillGroups": [
@@ -52,14 +52,14 @@
    "idleSeats": 0,
    "signIn": 6,
    "members": "彭静,李华,孟佳欢,赵晓晓,梁鑫怡,黄天琦",
-   "ring": 2,
-   "queue": 0,
-   "todayAnswered": 27,
-   "missed": 5,
-   "rate": 84.38,
-   "total": 32,
-   "current": 3,
-   "avgDuration": "00:02:35",
+   "ring": 0,
+   "queue": 1,
+   "todayAnswered": 32,
+   "missed": 3,
+   "rate": 88.89,
+   "total": 36,
+   "current": 4,
+   "avgDuration": "00:02:23",
    "transferIn": 0,
    "transferOut": 0
   },
@@ -165,13 +165,13 @@
    "signIn": 6,
    "members": "彭静,李华,孟佳欢,赵晓晓,梁鑫怡,黄天琦",
    "ring": 0,
-   "queue": 0,
-   "todayAnswered": 5,
+   "queue": 2,
+   "todayAnswered": 6,
    "missed": 1,
-   "rate": 83.33,
-   "total": 6,
-   "current": 0,
-   "avgDuration": "00:03:42",
+   "rate": 66.67,
+   "total": 9,
+   "current": 3,
+   "avgDuration": "00:03:05",
    "transferIn": 0,
    "transferOut": 0
   },
@@ -306,11 +306,11 @@
  ],
  "skillSummary": {
   "idleSeats": 0,
-  "answered": 41,
-  "missed": 8,
-  "rate": 83.67,
-  "total": 49,
-  "queue": 0,
+  "answered": 47,
+  "missed": 6,
+  "rate": 83.93,
+  "total": 56,
+  "queue": 3,
   "signIn": 6
  },
  "services": [
@@ -496,11 +496,11 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 127,
-   "ivr": 82,
-   "ringMissed": 2,
+   "callIn": 135,
+   "ivr": 87,
+   "ringMissed": 0,
    "queueAbandon": 6,
-   "answered": 37,
+   "answered": 42,
    "other": 0,
    "transferred": 0
   },
@@ -696,8 +696,8 @@
   },
   {
    "service": "81199(门店按键转接)",
-   "callIn": 26,
-   "ivr": 26,
+   "callIn": 27,
+   "ivr": 27,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -736,8 +736,8 @@
   },
   {
    "service": "81198(上门按键转接)",
-   "callIn": 77,
-   "ivr": 77,
+   "callIn": 89,
+   "ivr": 89,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -776,8 +776,8 @@
   },
   {
    "service": "88236603(京东渠道4000990166)",
-   "callIn": 14,
-   "ivr": 14,
+   "callIn": 16,
+   "ivr": 16,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -1147,11 +1147,11 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 127,
-    "ivr": 82,
-    "ringMissed": 2,
+    "callIn": 135,
+    "ivr": 87,
+    "ringMissed": 0,
     "queueAbandon": 6,
-    "answered": 37,
+    "answered": 42,
     "other": 0,
     "transferred": 0
    },
@@ -1166,21 +1166,21 @@
     "transferred": 0
    }
   ],
-  "total": 133,
-  "answered": 39,
-  "ivr": 86,
-  "connectRate": 93.98
+  "total": 141,
+  "answered": 44,
+  "ivr": 91,
+  "connectRate": 95.74
  },
  "callRtWork": {
   "from": "8:01:",
-  "at": "2026/11/1 08:52:28",
-  "total": 95,
-  "ivr": 49,
-  "answered": 38,
-  "turn": 46,
-  "rate": 82.61,
-  "totalAllDay": 133,
-  "answeredAllDay": 39
+  "at": "2026/11/1 08:55:50",
+  "total": 103,
+  "ivr": 54,
+  "answered": 43,
+  "turn": 49,
+  "rate": 87.76,
+  "totalAllDay": 141,
+  "answeredAllDay": 44
  },
  "online": {
   "groups": [
@@ -2455,15 +2455,6 @@
   "rate400": 77.1
  },
  "history": [
-  {
-   "ts": 1793415476966,
-   "skillRate400": 78.84,
-   "skillQueue400": 0,
-   "callIn400": 345,
-   "signIn400": 10,
-   "onlineSessions": 157,
-   "onlineSeat": 3
-  },
   {
    "ts": 1793415589269,
    "skillRate400": 77.56,
@@ -6951,6 +6942,15 @@
    "skillRate400": 83.67,
    "skillQueue400": 0,
    "callIn400": 49,
+   "signIn400": 6,
+   "onlineSessions": 0,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1793494550000,
+   "skillRate400": 83.93,
+   "skillQueue400": 3,
+   "callIn400": 56,
    "signIn400": 6,
    "onlineSessions": 0,
    "onlineSeat": 0
