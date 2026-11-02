@@ -1,16 +1,16 @@
 {
- "ts": 1793627146506,
- "collectedAtCn": "2026/11/2 21:45:46",
+ "ts": 1793627266566,
+ "collectedAtCn": "2026/11/2 21:47:46",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "3",
   "坐席忙碌数": "0 (0)",
-  "接通率": "24.91%",
+  "接通率": "24.89%",
   "满意率": "100.00%",
-  "呼入总数": "17074",
-  "当前呼入数": "0",
+  "呼入总数": "17083",
+  "当前呼入数": "1",
   "外呼总数": "6763",
-  "当前外呼数": "2",
+  "当前外呼数": "0",
   "呼入平均通话时长": "00:02:40",
   "AI通话数": "0 (3)"
  },
@@ -496,8 +496,8 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 2151,
-   "ivr": 888,
+   "callIn": 2152,
+   "ivr": 889,
    "ringMissed": 4,
    "queueAbandon": 340,
    "answered": 920,
@@ -736,8 +736,8 @@
   },
   {
    "service": "81198(上门按键转接)",
-   "callIn": 1517,
-   "ivr": 934,
+   "callIn": 1522,
+   "ivr": 939,
    "ringMissed": 14,
    "queueAbandon": 125,
    "answered": 498,
@@ -1143,8 +1143,8 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 2151,
-    "ivr": 888,
+    "callIn": 2152,
+    "ivr": 889,
     "ringMissed": 4,
     "queueAbandon": 340,
     "answered": 920,
@@ -1162,20 +1162,20 @@
     "transferred": 0
    }
   ],
-  "total": 2251,
+  "total": 2252,
   "answered": 954,
-  "ivr": 936,
-  "connectRate": 83.96
+  "ivr": 937,
+  "connectRate": 83.97
  },
  "callRtWork": {
   "from": "09:05",
-  "at": "2026/11/2 21:45:46",
-  "total": 2047,
-  "ivr": 829,
+  "at": "2026/11/2 21:47:46",
+  "total": 2048,
+  "ivr": 830,
   "answered": 896,
   "turn": 1218,
   "rate": 73.56,
-  "totalAllDay": 2251,
+  "totalAllDay": 2252,
   "answeredAllDay": 954
  },
  "call400Work": {
@@ -1189,7 +1189,7 @@
   "to": "20:30",
   "allDay": 69.99,
   "at": 1793626537989,
-  "agedMin": 10,
+  "agedMin": 12,
   "gap": 0,
   "complete": true,
   "src": "合力400报表"
@@ -1424,11 +1424,11 @@
     "name": "官网严选自营售后咨询",
     "sessions": 1690,
     "assigned": 1667,
-    "current": 106,
+    "current": 105,
     "max": 35,
-    "queue": 12,
+    "queue": 16,
     "onlineSeats": "1(黄益群)",
-    "done": 1482,
+    "done": 1483,
     "answerRate": 98.64,
     "abandon": 23,
     "voicemail": 0,
@@ -1872,11 +1872,11 @@
     "name": "官网严选自营售前咨询",
     "sessions": 515,
     "assigned": 510,
-    "current": 24,
+    "current": 22,
     "max": 35,
     "queue": 4,
     "onlineSeats": "1(黄益群)",
-    "done": 480,
+    "done": 482,
     "answerRate": 99.03,
     "abandon": 5,
     "voicemail": 0,
@@ -2494,15 +2494,6 @@
   "rate400": 70
  },
  "history": [
-  {
-   "ts": 1793516304907,
-   "skillRate400": 77.26,
-   "skillQueue400": 1,
-   "callIn400": 840,
-   "signIn400": 10,
-   "onlineSessions": 544,
-   "onlineSeat": 2
-  },
   {
    "ts": 1793516446558,
    "skillRate400": 76.98,
@@ -6987,6 +6978,15 @@
   },
   {
    "ts": 1793627146506,
+   "skillRate400": 69.99,
+   "skillQueue400": 0,
+   "callIn400": 1483,
+   "signIn400": 2,
+   "onlineSessions": 991,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1793627266566,
    "skillRate400": 69.99,
    "skillQueue400": 0,
    "callIn400": 1483,
