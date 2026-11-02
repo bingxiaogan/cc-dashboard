@@ -1262,6 +1262,23 @@ function todayCn() {
   return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
 }
 
+/* 🔴 2026-11-02 新增：从时间串里取 HH:mm（24 小时制、补零）。
+   背景：`collectedAtCn` 是 `toLocaleString('zh-CN',{hour12:false})` 出来的
+   **`2026/11/2 13:44:58`**（斜杠分隔、月/日/时不补零），以前一律按固定下标
+   `slice(11,16)` 去切，结果：
+     · 截至时间切出 `3:44:` ⇒ 卡片上 13:44 显示成 3:44（用户 11-02 抓到）
+     · 基线起点切出 `9:05:` ⇒ 字符串比较 `'9:05:' <= '08:30'` 恒为 false
+       ⇒ 实时卡「8 点起」口径**一次都没生效过**，永远退回含夜间的「今日 0 点起」
+   所以时间一律走这个函数，不再按位置切。 */
+function hhmmOf(v) {
+  if (v == null || v === '') return null;
+  const m = String(v).match(/(\d{1,2}):(\d{2})/);
+  if (!m) return null;
+  const h = +m[1];
+  if (!(h >= 0 && h <= 23)) return null;
+  return String(h).padStart(2, '0') + ':' + m[2];
+}
+
 /* ══════════════════ 顶栏状态 ══════════════════ */
 function setMeta(list) {
   $('#metaBar').innerHTML = list.map(x =>
@@ -1341,15 +1358,56 @@ function render400() {
         · 基线还没建（今天中午才上线这套逻辑）→ 退回今日累计，并**在文案里写明 0 点起**，不假装 8 点。*/
   const rt = cc.callRtWork || null;
   const ksAll = cc.keyServices || null;
-  const useRt8 = !!(rt && rt.rate != null && String(rt.from || '99:99') <= '08:30');
-  const rtIn = useRt8 ? rt.total : (ksAll ? (+ksAll.total || 0) : null);
-  const rtIvr = useRt8 ? rt.ivr : (ksAll ? (+ksAll.ivr || 0) : null);
-  const rtAns = useRt8 ? rt.answered : (ksAll ? (+ksAll.answered || 0) : null);
+  /* 🔴 2026-11-02 重写这段判定（用户「这个是 13:40 吧」+「为啥没有超预测多少」同源）：
+     旧规则 `String(rt.from) <= '08:30'` 本来是想「基线建得比 8:30 晚就不算 8 点起」，
+     但因为 `from` 被切成了 `9:05:`（见 hhmmOf 注释），这个比较**恒为 false**，
+     结果 8 点起口径一天都没生效过，实时卡一直退到「今日 0 点起」——含凌晨 0–8 点的夜间话务，
+     既不是用户要的工时口径，也没法跟「8:00 起的预测」对齐比偏差。
+     现在改成：**只要有今天的基线、起点落在 08:00–20:00、样本够（人工 ≥30 通），就用工时口径**，
+     并且**如实标出真实起点**（今早采集器 09:05 才起 ⇒ 就写「09:05 起」），不假装 8:00；
+     只有基线缺失或样本太薄时才退回「今日 0 点起」。 */
+  const rtFromHm = hhmmOf(rt && rt.from) || '08:00';
+  const rtAt = hhmmOf(rt && rt.at) || hhmmOf(cc.collectedAtCn);
+  const useRtBase = !!(rt && rt.rate != null && (rt.turn || 0) >= 30
+    && rtFromHm >= '08:00' && rtFromHm <= '20:00');
+  const rtIn = useRtBase ? rt.total : (ksAll ? (+ksAll.total || 0) : null);
+  const rtIvr = useRtBase ? rt.ivr : (ksAll ? (+ksAll.ivr || 0) : null);
+  const rtAns = useRtBase ? rt.answered : (ksAll ? (+ksAll.answered || 0) : null);
   const rtTurn = (rtIn != null && rtIvr != null) ? Math.max(0, rtIn - rtIvr) : null;
   const rtRate = (rtTurn > 0) ? +((rtAns / rtTurn) * 100).toFixed(2) : null;
-  const rtScope = useRt8 ? `${(rt.from || '8:00')} 起` : '今日 0 点起';
-  const rtFrom = useRt8 ? (rt.from || '8:00') : '8:00';
-  const rtAt = (rt && rt.at) ? String(rt.at).slice(11, 16) : (cc.collectedAtCn ? String(cc.collectedAtCn).slice(11, 16) : null);
+  const rtScope = useRtBase ? `${rtFromHm} 起` : '今日 0 点起';
+  const rtFrom = useRtBase ? rtFromHm : '8:00';
+
+  /* —— 实时卡「超预测多少」（2026-11-02 用户要求，与调控策略区同一套形状模型）——
+     · 窗口 = [实时真实起点, 实时截至时间]，不是硬编码 8:00：否则 09:05 起的实时数
+       会被拿去比 8:00 起的预测，凭空少一截、永远显示「低于预测」。
+     · 半小时段按**真实重叠比例**摊（13:30 那段只算到 13:44 的 14/30），不四舍五入到整档。 */
+  const hm2m = s => (+String(s).slice(0, 2)) * 60 + (+String(s).slice(3, 5));
+  const shapeShare = (a, b, sh) => {
+    if (!sh || !a || !b) return 0;
+    const A = hm2m(a), B = hm2m(b);
+    if (!(B > A)) return 0;
+    return keys.reduce((acc, k, i) => {
+      const s0 = hm2m(full[i].slice(0, 5)), s1 = hm2m(full[i].slice(6));
+      const ov = Math.min(B, s1) - Math.max(A, s0);
+      return (ov > 0 && s1 > s0) ? acc + (sh[full[i]] || 0) * ov / (s1 - s0) : acc;
+    }, 0);
+  };
+  const rtPredTurn = (useRtBase && planDay && shp && rtAt)
+    ? Math.round(planDay.turn * shapeShare(rtFromHm, rtAt, shp.share_turn)) : null;
+  const rtPredIn = (useRtBase && planDay && shp && shp.share_in && rtAt)
+    ? Math.round(planDay.inbound * shapeShare(rtFromHm, rtAt, shp.share_in)) : null;
+  /* 偏差文案：<5% 记持平（与调控策略 devTxt 同阈值）；同比给「通数 + 百分比」，
+     short=true 只给百分比（呼入量卡位置窄）。 */
+  const vsPred = (act, pred, short) => {
+    if (act == null || !pred || !(pred > 0)) return '';
+    const d = act - pred, p = d / pred * 100;
+    if (short) return ` · 同期预测 ${n0(pred)} 通（${d > 0 ? '+' : ''}${p.toFixed(0)}%）`;
+    const flat = Math.abs(p) < 5;
+    const cls = flat ? '' : (d > 0 ? 'warn' : 'ok');
+    const word = flat ? '与预测持平' : (d > 0 ? `超预测 <b>${n0(d)}</b> 通` : `低于预测 <b>${n0(-d)}</b> 通`);
+    return ` · 同期预测 ${n0(pred)} 通，<span class="${cls}">${word}（${d > 0 ? '+' : ''}${p.toFixed(1)}%）</span>`;
+  };
 
   const w4raw = cc.call400Work || null;
   /* 报表口径的停更护栏：正常 9 分钟一轮，超过 25 分钟没刷新即判停更 → 副文案退回「–」。 */
@@ -1410,10 +1468,10 @@ function render400() {
     },
     { k: '呼入量（实时）', v: rtIn == null ? '–' : n0(rtIn), c: 'c-cyan',
       d: rtIn == null ? '<span class="ok">8 点起口径未就绪</span>'
-        : `${rtScope}累计 · 通话监控${rtAt ? ' · 截至 ' + rtAt : ''}` },
+        : `${rtScope}累计 · 通话监控${rtAt ? ' · 截至 ' + rtAt : ''}${vsPred(rtIn, rtPredIn, 1)}` },
     { k: '人工进线量（实时）', v: rtTurn == null ? '–' : n0(rtTurn), c: 'c-cyan',
       d: rtTurn == null ? '<span class="ok">8 点起口径未就绪</span>'
-        : `呼入 ${n0(rtIn)} − IVR ${n0(rtIvr)} · 同上口径` },
+        : `呼入 ${n0(rtIn)} − IVR ${n0(rtIvr)}${vsPred(rtTurn, rtPredTurn)}` },
     {
       k: '在岗人力（出勤 / 排班）', v: `${on}<small>/${duty}</small>`, c: on >= duty ? 'c-green' : 'c-amber',
       d: `签入 ${n0(ss.signIn)} 人 · 排班 ${duty} 人`
@@ -3405,8 +3463,12 @@ function updateTabs() {
   const ksT = (cc && cc.keyServices) || null;
   /* 🔴 2026-10-30：这里必须和下方「接通率（实时）」卡用**同一条判定**，
      否则会出现「标签 96.6% / 卡片 74.2%」两个数 —— 96.6% 是「基线 11:37 之后那一小段」的率，
-     不是全天的率，用户看到只会以为又乱了。基线不合法（from > 08:30）时一律退回全天累计。 */
-  const useRt8T = !!(rtT && rtT.rate != null && String(rtT.from || '99:99') <= '08:30');
+     不是全天的率，用户看到只会以为又乱了。
+     🔴 2026-11-02：判定同步改成 useRtBase（基线存在 + 起点 08:00–20:00 + 人工 ≥30 通），
+     与卡片严格一致；旧版 `from <= '08:30'` 因为 from 被切坏而恒 false，两边一起退全天。 */
+  const rtFromT = hhmmOf(rtT && rtT.from) || '08:00';
+  const useRt8T = !!(rtT && rtT.rate != null && (rtT.turn || 0) >= 30
+    && rtFromT >= '08:00' && rtFromT <= '20:00');
   const ksRateT = (ksT && (ksT.total - ksT.ivr) > 0)
     ? +(((+ksT.answered || 0) / (ksT.total - ksT.ivr)) * 100).toFixed(2) : null;
   const rtRateT = useRt8T ? rtT.rate : (ksRateT != null ? ksRateT : ((rtT && rtT.rate != null) ? rtT.rate : null));
