@@ -1,16 +1,16 @@
 {
- "ts": 1793627656806,
- "collectedAtCn": "2026/11/2 21:54:16",
+ "ts": 1793627926487,
+ "collectedAtCn": "2026/11/2 21:58:46",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "3",
   "坐席忙碌数": "0 (0)",
-  "接通率": "24.85%",
+  "接通率": "24.83%",
   "满意率": "100.00%",
-  "呼入总数": "17112",
-  "当前呼入数": "0",
+  "呼入总数": "17125",
+  "当前呼入数": "2",
   "外呼总数": "6763",
-  "当前外呼数": "15",
+  "当前外呼数": "0",
   "呼入平均通话时长": "00:02:40",
   "AI通话数": "0 (3)"
  },
@@ -496,8 +496,8 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 2157,
-   "ivr": 894,
+   "callIn": 2159,
+   "ivr": 896,
    "ringMissed": 4,
    "queueAbandon": 340,
    "answered": 920,
@@ -696,8 +696,8 @@
   },
   {
    "service": "81199(门店按键转接)",
-   "callIn": 794,
-   "ivr": 545,
+   "callIn": 795,
+   "ivr": 546,
    "ringMissed": 6,
    "queueAbandon": 44,
    "answered": 208,
@@ -726,8 +726,8 @@
   },
   {
    "service": "88236602(其他渠道4000166088)",
-   "callIn": 769,
-   "ivr": 384,
+   "callIn": 770,
+   "ivr": 385,
    "ringMissed": 5,
    "queueAbandon": 69,
    "answered": 323,
@@ -736,8 +736,8 @@
   },
   {
    "service": "81198(上门按键转接)",
-   "callIn": 1536,
-   "ivr": 953,
+   "callIn": 1542,
+   "ivr": 959,
    "ringMissed": 14,
    "queueAbandon": 125,
    "answered": 498,
@@ -1143,8 +1143,8 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 2157,
-    "ivr": 894,
+    "callIn": 2159,
+    "ivr": 896,
     "ringMissed": 4,
     "queueAbandon": 340,
     "answered": 920,
@@ -1162,20 +1162,20 @@
     "transferred": 0
    }
   ],
-  "total": 2257,
+  "total": 2259,
   "answered": 954,
-  "ivr": 942,
-  "connectRate": 84.01
+  "ivr": 944,
+  "connectRate": 84.02
  },
  "callRtWork": {
   "from": "09:05",
-  "at": "2026/11/2 21:54:16",
-  "total": 2053,
-  "ivr": 835,
+  "at": "2026/11/2 21:58:46",
+  "total": 2055,
+  "ivr": 837,
   "answered": 896,
   "turn": 1218,
   "rate": 73.56,
-  "totalAllDay": 2257,
+  "totalAllDay": 2259,
   "answeredAllDay": 954
  },
  "call400Work": {
@@ -1189,7 +1189,7 @@
   "to": "20:30",
   "allDay": 69.99,
   "at": 1793627321920,
-  "agedMin": 6,
+  "agedMin": 10,
   "gap": 0,
   "complete": true,
   "src": "合力400报表"
@@ -1263,7 +1263,7 @@
     "done": 70,
     "answerRate": 100,
     "abandon": 0,
-    "voicemail": 4,
+    "voicemail": 5,
     "satisfactionRate": 100
    },
    {
@@ -1368,11 +1368,11 @@
     "name": "官网严选寄卖售后咨询",
     "sessions": 258,
     "assigned": 252,
-    "current": 18,
+    "current": 16,
     "max": 35,
-    "queue": 1,
+    "queue": 3,
     "onlineSeats": "1(黄益群)",
-    "done": 234,
+    "done": 236,
     "answerRate": 97.67,
     "abandon": 6,
     "voicemail": 0,
@@ -1422,14 +1422,14 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1702,
-    "assigned": 1676,
+    "sessions": 1705,
+    "assigned": 1679,
     "current": 97,
     "max": 35,
-    "queue": 11,
+    "queue": 13,
     "onlineSeats": "1(黄益群)",
-    "done": 1500,
-    "answerRate": 98.47,
+    "done": 1503,
+    "answerRate": 98.48,
     "abandon": 26,
     "voicemail": 0,
     "satisfactionRate": 0
@@ -1870,11 +1870,11 @@
    },
    {
     "name": "官网严选自营售前咨询",
-    "sessions": 520,
-    "assigned": 515,
-    "current": 18,
+    "sessions": 522,
+    "assigned": 517,
+    "current": 20,
     "max": 35,
-    "queue": 2,
+    "queue": 1,
     "onlineSeats": "1(黄益群)",
     "done": 491,
     "answerRate": 99.04,
@@ -2477,41 +2477,23 @@
   "capOnDay": 660,
   "onHoursDay": 22,
   "in400": 1483,
-  "inOn": 991,
+  "inOn": 1006,
   "load400": 126.8,
-  "loadOn": 150.2,
+  "loadOn": 152.4,
   "rate400": 70
  },
  "capacity_week": {
   "wDays": 1,
   "wIn400": 1483,
   "wAns400": 1038,
-  "wInOn": 991,
+  "wInOn": 1006,
   "wExp400": 1170,
   "wExpOn": 660,
   "load400": 126.8,
-  "loadOn": 150.2,
+  "loadOn": 152.4,
   "rate400": 70
  },
  "history": [
-  {
-   "ts": 1793516810855,
-   "skillRate400": 77.45,
-   "skillQueue400": 2,
-   "callIn400": 856,
-   "signIn400": 9,
-   "onlineSessions": 547,
-   "onlineSeat": 2
-  },
-  {
-   "ts": 1793516923326,
-   "skillRate400": 77.15,
-   "skillQueue400": 4,
-   "callIn400": 862,
-   "signIn400": 9,
-   "onlineSessions": 548,
-   "onlineSeat": 1
-  },
   {
    "ts": 1793517037201,
    "skillRate400": 77.48,
@@ -6987,6 +6969,24 @@
   },
   {
    "ts": 1793627656806,
+   "skillRate400": 69.99,
+   "skillQueue400": 0,
+   "callIn400": 1483,
+   "signIn400": 2,
+   "onlineSessions": 991,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1793627806815,
+   "skillRate400": 69.99,
+   "skillQueue400": 0,
+   "callIn400": 1483,
+   "signIn400": 2,
+   "onlineSessions": 991,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1793627926487,
    "skillRate400": 69.99,
    "skillQueue400": 0,
    "callIn400": 1483,
