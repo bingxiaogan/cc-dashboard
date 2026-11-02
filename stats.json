@@ -1,14 +1,14 @@
 {
- "ts": 1793630670342,
- "collectedAtCn": "2026/11/2 22:44:30",
+ "ts": 1793630875310,
+ "collectedAtCn": "2026/11/2 22:47:55",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "3",
   "坐席忙碌数": "0 (0)",
   "接通率": "24.74%",
   "满意率": "100.00%",
-  "呼入总数": "17206",
-  "当前呼入数": "1",
+  "呼入总数": "17210",
+  "当前呼入数": "0",
   "外呼总数": "6763",
   "当前外呼数": "0",
   "呼入平均通话时长": "00:02:40",
@@ -1172,7 +1172,7 @@
   "to": "20:30",
   "allDay": 69.99,
   "at": 1793630580331,
-  "agedMin": 3,
+  "agedMin": 6,
   "gap": 0,
   "complete": true,
   "src": "合力400报表"
@@ -1246,7 +1246,7 @@
     "done": 70,
     "answerRate": 100,
     "abandon": 0,
-    "voicemail": 10,
+    "voicemail": 11,
     "satisfactionRate": 100
    },
    {
@@ -1349,14 +1349,14 @@
    },
    {
     "name": "官网严选寄卖售后咨询",
-    "sessions": 267,
-    "assigned": 259,
-    "current": 7,
+    "sessions": 270,
+    "assigned": 262,
+    "current": 10,
     "max": 70,
     "queue": 0,
     "onlineSeats": "2(张馨月,丁萌萌)",
     "done": 252,
-    "answerRate": 97,
+    "answerRate": 97.04,
     "abandon": 8,
     "voicemail": 0,
     "satisfactionRate": 0
@@ -1405,14 +1405,14 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1767,
-    "assigned": 1740,
-    "current": 63,
+    "sessions": 1774,
+    "assigned": 1747,
+    "current": 60,
     "max": 70,
     "queue": 0,
     "onlineSeats": "2(张馨月,丁萌萌)",
-    "done": 1598,
-    "answerRate": 98.47,
+    "done": 1608,
+    "answerRate": 98.48,
     "abandon": 27,
     "voicemail": 0,
     "satisfactionRate": 0
@@ -1727,13 +1727,13 @@
    },
    {
     "name": "官网严选寄卖售前咨询",
-    "sessions": 47,
-    "assigned": 47,
+    "sessions": 48,
+    "assigned": 48,
     "current": 3,
     "max": 70,
     "queue": 0,
     "onlineSeats": "2(张馨月,丁萌萌)",
-    "done": 44,
+    "done": 45,
     "answerRate": 100,
     "abandon": 0,
     "voicemail": 0,
@@ -1855,11 +1855,11 @@
     "name": "官网严选自营售前咨询",
     "sessions": 542,
     "assigned": 537,
-    "current": 18,
+    "current": 17,
     "max": 70,
     "queue": 0,
     "onlineSeats": "2(张馨月,丁萌萌)",
-    "done": 512,
+    "done": 513,
     "answerRate": 99.08,
     "abandon": 5,
     "voicemail": 0,
@@ -2477,15 +2477,6 @@
   "rate400": 70
  },
  "history": [
-  {
-   "ts": 1793519254214,
-   "skillRate400": 74.52,
-   "skillQueue400": 1,
-   "callIn400": 981,
-   "signIn400": 10,
-   "onlineSessions": 597,
-   "onlineSeat": 2
-  },
   {
    "ts": 1793519405441,
    "skillRate400": 74.72,
@@ -6970,6 +6961,15 @@
   },
   {
    "ts": 1793630670342,
+   "skillRate400": 69.99,
+   "skillQueue400": 0,
+   "callIn400": 1483,
+   "signIn400": 1,
+   "onlineSessions": 991,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1793630875310,
    "skillRate400": 69.99,
    "skillQueue400": 0,
    "callIn400": 1483,
