@@ -1,16 +1,16 @@
 {
- "ts": 1793626089721,
- "collectedAtCn": "2026/11/2 21:28:09",
+ "ts": 1793626237895,
+ "collectedAtCn": "2026/11/2 21:30:37",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "3",
   "坐席忙碌数": "0 (0)",
-  "接通率": "25.03%",
+  "接通率": "25.02%",
   "满意率": "100.00%",
-  "呼入总数": "16988",
-  "当前呼入数": "1",
-  "外呼总数": "6760",
-  "当前外呼数": "13",
+  "呼入总数": "16998",
+  "当前呼入数": "0",
+  "外呼总数": "6761",
+  "当前外呼数": "1",
   "呼入平均通话时长": "00:02:40",
   "AI通话数": "0 (3)"
  },
@@ -496,8 +496,8 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 2135,
-   "ivr": 872,
+   "callIn": 2136,
+   "ivr": 873,
    "ringMissed": 4,
    "queueAbandon": 340,
    "answered": 920,
@@ -736,8 +736,8 @@
   },
   {
    "service": "81198(上门按键转接)",
-   "callIn": 1487,
-   "ivr": 904,
+   "callIn": 1490,
+   "ivr": 907,
    "ringMissed": 14,
    "queueAbandon": 125,
    "answered": 498,
@@ -796,8 +796,8 @@
   },
   {
    "service": "88236605(违法信息不良举报)",
-   "callIn": 5,
-   "ivr": 4,
+   "callIn": 6,
+   "ivr": 5,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 1,
@@ -866,8 +866,8 @@
   },
   {
    "service": "80409(奢侈品商家-门店验货报价)",
-   "callIn": 1400,
-   "ivr": 1400,
+   "callIn": 1403,
+   "ivr": 1403,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -1143,8 +1143,8 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 2135,
-    "ivr": 872,
+    "callIn": 2136,
+    "ivr": 873,
     "ringMissed": 4,
     "queueAbandon": 340,
     "answered": 920,
@@ -1162,20 +1162,20 @@
     "transferred": 0
    }
   ],
-  "total": 2235,
+  "total": 2236,
   "answered": 954,
-  "ivr": 920,
-  "connectRate": 83.85
+  "ivr": 921,
+  "connectRate": 83.86
  },
  "callRtWork": {
   "from": "09:05",
-  "at": "2026/11/2 21:28:09",
-  "total": 2031,
-  "ivr": 813,
+  "at": "2026/11/2 21:30:37",
+  "total": 2032,
+  "ivr": 814,
   "answered": 896,
   "turn": 1218,
   "rate": 73.56,
-  "totalAllDay": 2235,
+  "totalAllDay": 2236,
   "answeredAllDay": 954
  },
  "call400Work": {
@@ -1189,7 +1189,7 @@
   "to": "20:30",
   "allDay": 69.99,
   "at": 1793625754053,
-  "agedMin": 6,
+  "agedMin": 8,
   "gap": 0,
   "complete": true,
   "src": "合力400报表"
@@ -1422,13 +1422,13 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1663,
-    "assigned": 1643,
-    "current": 103,
+    "sessions": 1667,
+    "assigned": 1647,
+    "current": 104,
     "max": 105,
-    "queue": 14,
+    "queue": 13,
     "onlineSeats": "3(张馨月,沈东升,黄益群)",
-    "done": 1461,
+    "done": 1464,
     "answerRate": 98.8,
     "abandon": 20,
     "voicemail": 0,
@@ -2494,15 +2494,6 @@
   "rate400": 70
  },
  "history": [
-  {
-   "ts": 1793515339177,
-   "skillRate400": 76.9,
-   "skillQueue400": 1,
-   "callIn400": 814,
-   "signIn400": 10,
-   "onlineSessions": 522,
-   "onlineSeat": 2
-  },
   {
    "ts": 1793515453278,
    "skillRate400": 77.17,
@@ -6987,6 +6978,15 @@
   },
   {
    "ts": 1793626089721,
+   "skillRate400": 69.99,
+   "skillQueue400": 0,
+   "callIn400": 1483,
+   "signIn400": 2,
+   "onlineSessions": 991,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1793626237895,
    "skillRate400": 69.99,
    "skillQueue400": 0,
    "callIn400": 1483,
