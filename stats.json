@@ -1,13 +1,13 @@
 {
- "ts": 1793720292808,
- "collectedAtCn": "2026/11/3 23:38:12",
+ "ts": 1793720497217,
+ "collectedAtCn": "2026/11/3 23:41:37",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "2",
   "坐席忙碌数": "0 (0)",
   "接通率": "14.32%",
   "满意率": "100.00%",
-  "呼入总数": "28166",
+  "呼入总数": "28167",
   "当前呼入数": "0",
   "外呼总数": "6986",
   "当前外呼数": "0",
@@ -1172,7 +1172,7 @@
   "to": "20:30",
   "allDay": 80.25,
   "at": 1793719559327,
-  "agedMin": 14,
+  "agedMin": 17,
   "gap": 0,
   "complete": true,
   "src": "合力400报表"
@@ -1405,13 +1405,13 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1819,
-    "assigned": 1789,
-    "current": 54,
+    "sessions": 1821,
+    "assigned": 1791,
+    "current": 55,
     "max": 70,
-    "queue": 0,
+    "queue": 1,
     "onlineSeats": "2(丁萌萌,张馨月)",
-    "done": 1677,
+    "done": 1678,
     "answerRate": 98.35,
     "abandon": 30,
     "voicemail": 0,
@@ -1857,7 +1857,7 @@
     "assigned": 596,
     "current": 17,
     "max": 70,
-    "queue": 0,
+    "queue": 1,
     "onlineSeats": "2(丁萌萌,张馨月)",
     "done": 565,
     "answerRate": 99.33,
@@ -2481,15 +2481,6 @@
   "rate400": 74.6
  },
  "history": [
-  {
-   "ts": 1793629100426,
-   "skillRate400": 69.99,
-   "skillQueue400": 0,
-   "callIn400": 1483,
-   "signIn400": 2,
-   "onlineSessions": 991,
-   "onlineSeat": 0
-  },
   {
    "ts": 1793629221625,
    "skillRate400": 69.99,
@@ -6974,6 +6965,15 @@
   },
   {
    "ts": 1793720292808,
+   "skillRate400": 80.25,
+   "skillQueue400": 0,
+   "callIn400": 1200,
+   "signIn400": 1,
+   "onlineSessions": 900,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1793720497217,
    "skillRate400": 80.25,
    "skillQueue400": 0,
    "callIn400": 1200,
