@@ -1,17 +1,17 @@
 {
- "ts": 1793752989835,
- "collectedAtCn": "2026/11/4 08:43:09",
+ "ts": 1793753146594,
+ "collectedAtCn": "2026/11/4 08:45:46",
  "overview": {
   "总排队数": "0",
-  "坐席空闲数": "11",
+  "坐席空闲数": "12",
   "坐席忙碌数": "0 (0)",
-  "接通率": "8.57%",
+  "接通率": "8.70%",
   "满意率": "100.00%",
-  "呼入总数": "350",
-  "当前呼入数": "4",
-  "外呼总数": "30",
-  "当前外呼数": "1",
-  "呼入平均通话时长": "00:02:56",
+  "呼入总数": "368",
+  "当前呼入数": "5",
+  "外呼总数": "32",
+  "当前外呼数": "2",
+  "呼入平均通话时长": "00:03:00",
   "AI通话数": "0 (3)"
  },
  "skillGroups": [
@@ -54,12 +54,12 @@
    "members": "王轩,许玉娟,彭静,王雅雯,爱分类支援1",
    "ring": 0,
    "queue": 0,
-   "todayAnswered": 19,
+   "todayAnswered": 21,
    "missed": 3,
-   "rate": 86.36,
-   "total": 22,
-   "current": 2,
-   "avgDuration": "00:03:06",
+   "rate": 87.5,
+   "total": 24,
+   "current": 3,
+   "avgDuration": "00:03:11",
    "transferIn": 0,
    "transferOut": 0
   },
@@ -306,10 +306,10 @@
  ],
  "skillSummary": {
   "idleSeats": 18,
-  "answered": 30,
+  "answered": 32,
   "missed": 6,
-  "rate": 83.33,
-  "total": 36,
+  "rate": 84.21,
+  "total": 38,
   "queue": 0,
   "signIn": 5
  },
@@ -496,11 +496,11 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 91,
+   "callIn": 93,
    "ivr": 58,
    "ringMissed": 0,
    "queueAbandon": 5,
-   "answered": 28,
+   "answered": 30,
    "other": 0,
    "transferred": 0
   },
@@ -696,8 +696,8 @@
   },
   {
    "service": "81199(门店按键转接)",
-   "callIn": 12,
-   "ivr": 12,
+   "callIn": 14,
+   "ivr": 14,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -736,8 +736,8 @@
   },
   {
    "service": "81198(上门按键转接)",
-   "callIn": 48,
-   "ivr": 48,
+   "callIn": 52,
+   "ivr": 52,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -776,8 +776,8 @@
   },
   {
    "service": "88236603(京东渠道4000990166)",
-   "callIn": 18,
-   "ivr": 18,
+   "callIn": 20,
+   "ivr": 20,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -786,8 +786,8 @@
   },
   {
    "service": "88236606(ahs物流收货)",
-   "callIn": 3,
-   "ivr": 3,
+   "callIn": 4,
+   "ivr": 4,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -1146,11 +1146,11 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 91,
+    "callIn": 93,
     "ivr": 58,
     "ringMissed": 0,
     "queueAbandon": 5,
-    "answered": 28,
+    "answered": 30,
     "other": 0,
     "transferred": 0
    },
@@ -1165,21 +1165,21 @@
     "transferred": 0
    }
   ],
-  "total": 93,
-  "answered": 29,
+  "total": 95,
+  "answered": 31,
   "ivr": 59,
-  "connectRate": 94.62
+  "connectRate": 94.74
  },
  "callRtWork": {
   "from": "08:00",
-  "at": "2026/11/4 08:43:09",
-  "total": 66,
+  "at": "2026/11/4 08:45:46",
+  "total": 68,
   "ivr": 32,
-  "answered": 29,
-  "turn": 34,
-  "rate": 85.29,
-  "totalAllDay": 93,
-  "answeredAllDay": 29
+  "answered": 31,
+  "turn": 36,
+  "rate": 86.11,
+  "totalAllDay": 95,
+  "answeredAllDay": 31
  },
  "online": {
   "groups": [
@@ -1409,14 +1409,14 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 45,
-    "assigned": 39,
+    "sessions": 46,
+    "assigned": 40,
     "current": 38,
     "max": 70,
     "queue": 1,
     "onlineSeats": "2(陈可,周悬)",
-    "done": 1,
-    "answerRate": 86.67,
+    "done": 2,
+    "answerRate": 86.96,
     "abandon": 6,
     "voicemail": 0,
     "satisfactionRate": 0
@@ -2485,15 +2485,6 @@
   "rate400": 74.7
  },
  "history": [
-  {
-   "ts": 1793663131742,
-   "skillRate400": null,
-   "skillQueue400": 0,
-   "callIn400": 0,
-   "signIn400": 1,
-   "onlineSessions": 0,
-   "onlineSeat": 0
-  },
   {
    "ts": 1793663251089,
    "skillRate400": null,
@@ -6981,6 +6972,15 @@
    "skillRate400": 83.33,
    "skillQueue400": 0,
    "callIn400": 36,
+   "signIn400": 5,
+   "onlineSessions": 0,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1793753146594,
+   "skillRate400": 84.21,
+   "skillQueue400": 0,
+   "callIn400": 38,
    "signIn400": 5,
    "onlineSessions": 0,
    "onlineSeat": 0
