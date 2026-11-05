@@ -1,17 +1,17 @@
 {
- "ts": 1793865164957,
- "collectedAtCn": "2026/11/5 15:52:44",
+ "ts": 1793865278086,
+ "collectedAtCn": "2026/11/5 15:54:38",
  "overview": {
-  "总排队数": "6",
-  "坐席空闲数": "45",
+  "总排队数": "5",
+  "坐席空闲数": "50",
   "坐席忙碌数": "0 (0)",
-  "接通率": "21.69%",
+  "接通率": "21.66%",
   "满意率": "100.00%",
-  "呼入总数": "10628",
-  "当前呼入数": "31",
-  "外呼总数": "4729",
+  "呼入总数": "10675",
+  "当前呼入数": "26",
+  "外呼总数": "4740",
   "当前外呼数": "27",
-  "呼入平均通话时长": "00:02:28",
+  "呼入平均通话时长": "00:02:29",
   "AI通话数": "0 (3)"
  },
  "skillGroups": [
@@ -52,14 +52,14 @@
    "idleSeats": 0,
    "signIn": 15,
    "members": "王轩,许玉娟,刘雅敏,李华,曾琬淇,孟佳欢,魏玲慧,刘菲,姚中焱,邵燕萍,赵晓晓,梁鑫怡,黄天琦,王楚楚,徐叶晨",
-   "ring": 1,
+   "ring": 0,
    "queue": 0,
-   "todayAnswered": 333,
-   "missed": 45,
-   "rate": 88.1,
-   "total": 376,
-   "current": 9,
-   "avgDuration": "00:03:14",
+   "todayAnswered": 337,
+   "missed": 44,
+   "rate": 88.45,
+   "total": 379,
+   "current": 8,
+   "avgDuration": "00:03:13",
    "transferIn": 2,
    "transferOut": 2
   },
@@ -170,8 +170,8 @@
    "missed": 36,
    "rate": 70.25,
    "total": 114,
-   "current": 2,
-   "avgDuration": "00:03:46",
+   "current": 1,
+   "avgDuration": "00:03:47",
    "transferIn": 7,
    "transferOut": 0
   },
@@ -306,10 +306,10 @@
  ],
  "skillSummary": {
   "idleSeats": 0,
-  "answered": 574,
-  "missed": 140,
-  "rate": 81.42,
-  "total": 705,
+  "answered": 578,
+  "missed": 139,
+  "rate": 81.64,
+  "total": 708,
   "queue": 0,
   "signIn": 15
  },
@@ -496,11 +496,11 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 1099,
-   "ivr": 491,
-   "ringMissed": 5,
+   "callIn": 1106,
+   "ivr": 495,
+   "ringMissed": 4,
    "queueAbandon": 83,
-   "answered": 522,
+   "answered": 526,
    "other": 0,
    "transferred": 2
   },
@@ -656,8 +656,8 @@
   },
   {
    "service": "80540(80540)",
-   "callIn": 3087,
-   "ivr": 3087,
+   "callIn": 3092,
+   "ivr": 3092,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -696,11 +696,11 @@
   },
   {
    "service": "81199(门店按键转接)",
-   "callIn": 324,
-   "ivr": 202,
+   "callIn": 326,
+   "ivr": 203,
    "ringMissed": 1,
    "queueAbandon": 16,
-   "answered": 107,
+   "answered": 108,
    "other": 0,
    "transferred": 2
   },
@@ -726,10 +726,10 @@
   },
   {
    "service": "88236602(其他渠道4000166088)",
-   "callIn": 421,
-   "ivr": 227,
+   "callIn": 424,
+   "ivr": 229,
    "ringMissed": 3,
-   "queueAbandon": 22,
+   "queueAbandon": 23,
    "answered": 175,
    "other": 0,
    "transferred": 6
@@ -777,9 +777,9 @@
   {
    "service": "88236603(京东渠道4000990166)",
    "callIn": 397,
-   "ivr": 134,
+   "ivr": 130,
    "ringMissed": 4,
-   "queueAbandon": 22,
+   "queueAbandon": 26,
    "answered": 238,
    "other": 0,
    "transferred": 1
@@ -866,8 +866,8 @@
   },
   {
    "service": "80409(奢侈品商家-门店验货报价)",
-   "callIn": 721,
-   "ivr": 721,
+   "callIn": 738,
+   "ivr": 738,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -1156,11 +1156,11 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 1099,
-    "ivr": 491,
-    "ringMissed": 5,
+    "callIn": 1106,
+    "ivr": 495,
+    "ringMissed": 4,
     "queueAbandon": 83,
-    "answered": 522,
+    "answered": 526,
     "other": 0,
     "transferred": 2
    },
@@ -1175,21 +1175,21 @@
     "transferred": 0
    }
   ],
-  "total": 1131,
-  "answered": 538,
-  "ivr": 503,
-  "connectRate": 92.04
+  "total": 1138,
+  "answered": 542,
+  "ivr": 507,
+  "connectRate": 92.18
  },
  "callRtWork": {
   "from": "08:01",
-  "at": "2026/11/5 15:52:44",
-  "total": 1100,
-  "ivr": 473,
-  "answered": 537,
-  "turn": 627,
-  "rate": 85.65,
-  "totalAllDay": 1131,
-  "answeredAllDay": 538
+  "at": "2026/11/5 15:54:38",
+  "total": 1107,
+  "ivr": 477,
+  "answered": 541,
+  "turn": 630,
+  "rate": 85.87,
+  "totalAllDay": 1138,
+  "answeredAllDay": 542
  },
  "call400Work": {
   "rate": 84.57,
@@ -1200,9 +1200,9 @@
   "slots": 15,
   "from": "08:00",
   "to": "15:00",
-  "allDay": 81.42,
+  "allDay": 81.64,
   "at": 1793864961943,
-  "agedMin": 4,
+  "agedMin": 5,
   "gap": 0,
   "complete": true,
   "src": "合力400报表"
@@ -2512,15 +2512,6 @@
   "rate400": 78.3
  },
  "history": [
-  {
-   "ts": 1793784303241,
-   "skillRate400": 85.61,
-   "skillQueue400": 0,
-   "callIn400": 834,
-   "signIn400": 12,
-   "onlineSessions": 563,
-   "onlineSeat": 2
-  },
   {
    "ts": 1793784459370,
    "skillRate400": 85.61,
@@ -7008,6 +6999,15 @@
    "skillRate400": 81.42,
    "skillQueue400": 0,
    "callIn400": 705,
+   "signIn400": 15,
+   "onlineSessions": 284,
+   "onlineSeat": 2
+  },
+  {
+   "ts": 1793865278086,
+   "skillRate400": 81.64,
+   "skillQueue400": 0,
+   "callIn400": 708,
    "signIn400": 15,
    "onlineSessions": 284,
    "onlineSeat": 2
