@@ -1,17 +1,17 @@
 {
- "ts": 1793839234872,
- "collectedAtCn": "2026/11/5 08:40:34",
+ "ts": 1793839394651,
+ "collectedAtCn": "2026/11/5 08:43:14",
  "overview": {
   "总排队数": "0",
-  "坐席空闲数": "7",
+  "坐席空闲数": "9",
   "坐席忙碌数": "0 (0)",
-  "接通率": "8.52%",
+  "接通率": "8.71%",
   "满意率": "100.00%",
-  "呼入总数": "317",
+  "呼入总数": "334",
   "当前呼入数": "6",
-  "外呼总数": "13",
-  "当前外呼数": "0",
-  "呼入平均通话时长": "00:02:55",
+  "外呼总数": "18",
+  "当前外呼数": "1",
+  "呼入平均通话时长": "00:02:48",
   "AI通话数": "0 (3)"
  },
  "skillGroups": [
@@ -54,10 +54,10 @@
    "members": "李华,孟佳欢,赵晓晓,黄天琦",
    "ring": 0,
    "queue": 0,
-   "todayAnswered": 17,
+   "todayAnswered": 18,
    "missed": 0,
    "rate": 100,
-   "total": 17,
+   "total": 18,
    "current": 2,
    "avgDuration": "00:02:38",
    "transferIn": 0,
@@ -118,12 +118,12 @@
    "members": "李华,孟佳欢,赵晓晓,黄天琦",
    "ring": 0,
    "queue": 0,
-   "todayAnswered": 1,
+   "todayAnswered": 2,
    "missed": 0,
    "rate": 100,
-   "total": 1,
-   "current": 0,
-   "avgDuration": "00:01:40",
+   "total": 2,
+   "current": 1,
+   "avgDuration": "00:00:50",
    "transferIn": 0,
    "transferOut": 0
   },
@@ -177,7 +177,7 @@
   },
   {
    "name": "分类回收400-1２老年用户溢出组",
-   "idleSeats": 1,
+   "idleSeats": 0,
    "signIn": 3,
    "members": "孟佳欢,赵晓晓,黄天琦",
    "ring": 0,
@@ -305,11 +305,11 @@
   }
  ],
  "skillSummary": {
-  "idleSeats": 18,
-  "answered": 27,
+  "idleSeats": 17,
+  "answered": 29,
   "missed": 1,
-  "rate": 96.43,
-  "total": 28,
+  "rate": 96.67,
+  "total": 30,
   "queue": 0,
   "signIn": 4
  },
@@ -496,11 +496,11 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 93,
-   "ivr": 68,
+   "callIn": 97,
+   "ivr": 71,
    "ringMissed": 0,
    "queueAbandon": 0,
-   "answered": 25,
+   "answered": 26,
    "other": 0,
    "transferred": 0
   },
@@ -726,8 +726,8 @@
   },
   {
    "service": "88236602(其他渠道4000166088)",
-   "callIn": 13,
-   "ivr": 13,
+   "callIn": 14,
+   "ivr": 14,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -736,8 +736,8 @@
   },
   {
    "service": "81198(上门按键转接)",
-   "callIn": 34,
-   "ivr": 34,
+   "callIn": 38,
+   "ivr": 38,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -776,8 +776,8 @@
   },
   {
    "service": "88236603(京东渠道4000990166)",
-   "callIn": 10,
-   "ivr": 10,
+   "callIn": 12,
+   "ivr": 12,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -1145,11 +1145,11 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 93,
-    "ivr": 68,
+    "callIn": 97,
+    "ivr": 71,
     "ringMissed": 0,
     "queueAbandon": 0,
-    "answered": 25,
+    "answered": 26,
     "other": 0,
     "transferred": 0
    },
@@ -1164,21 +1164,21 @@
     "transferred": 0
    }
   ],
-  "total": 95,
-  "answered": 26,
-  "ivr": 69,
+  "total": 99,
+  "answered": 27,
+  "ivr": 72,
   "connectRate": 100
  },
  "callRtWork": {
   "from": "08:01",
-  "at": "2026/11/5 08:40:34",
-  "total": 64,
-  "ivr": 39,
-  "answered": 25,
-  "turn": 25,
+  "at": "2026/11/5 08:43:14",
+  "total": 68,
+  "ivr": 42,
+  "answered": 26,
+  "turn": 26,
   "rate": 100,
-  "totalAllDay": 95,
-  "answeredAllDay": 26
+  "totalAllDay": 99,
+  "answeredAllDay": 27
  },
  "online": {
   "groups": [
@@ -2482,15 +2482,6 @@
   "rate400": 77.8
  },
  "history": [
-  {
-   "ts": 1793758120956,
-   "skillRate400": 79.8,
-   "skillQueue400": 0,
-   "callIn400": 203,
-   "signIn400": 14,
-   "onlineSessions": 91,
-   "onlineSeat": 3
-  },
   {
    "ts": 1793758238227,
    "skillRate400": 80.49,
@@ -6978,6 +6969,15 @@
    "skillRate400": 96.43,
    "skillQueue400": 0,
    "callIn400": 28,
+   "signIn400": 4,
+   "onlineSessions": 0,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1793839394651,
+   "skillRate400": 96.67,
+   "skillQueue400": 0,
+   "callIn400": 30,
    "signIn400": 4,
    "onlineSessions": 0,
    "onlineSeat": 0
