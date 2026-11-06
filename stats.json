@@ -1,6 +1,6 @@
 {
- "ts": 1793985236472,
- "collectedAtCn": "2026/11/7 01:13:56",
+ "ts": 1793985494985,
+ "collectedAtCn": "2026/11/7 01:18:14",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "1",
@@ -972,7 +972,7 @@
     "done": 0,
     "answerRate": 0,
     "abandon": 0,
-    "voicemail": 0,
+    "voicemail": 1,
     "satisfactionRate": 0
    },
    {
@@ -2176,15 +2176,6 @@
   "rate400": 78.4
  },
  "history": [
-  {
-   "ts": 1793868816727,
-   "skillRate400": 80.86,
-   "skillQueue400": 0,
-   "callIn400": 810,
-   "signIn400": 15,
-   "onlineSessions": 284,
-   "onlineSeat": 2
-  },
   {
    "ts": 1793868966248,
    "skillRate400": 80.91,
@@ -6669,6 +6660,15 @@
   },
   {
    "ts": 1793985236472,
+   "skillRate400": null,
+   "skillQueue400": 0,
+   "callIn400": 0,
+   "signIn400": 0,
+   "onlineSessions": 0,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1793985494985,
    "skillRate400": null,
    "skillQueue400": 0,
    "callIn400": 0,
