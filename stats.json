@@ -1,6 +1,6 @@
 {
- "ts": 1793974010395,
- "collectedAtCn": "2026/11/6 22:06:50",
+ "ts": 1793974123220,
+ "collectedAtCn": "2026/11/6 22:08:43",
  "overview": {
   "总排队数": "1",
   "坐席空闲数": "12",
@@ -1172,7 +1172,7 @@
  },
  "callRtWork": {
   "from": "09:00",
-  "at": "2026/11/6 22:06:50",
+  "at": "2026/11/6 22:08:43",
   "total": 1710,
   "ivr": 765,
   "answered": 806,
@@ -1192,7 +1192,7 @@
   "to": "19:30",
   "allDay": 80.53,
   "at": 1793973433670,
-  "agedMin": 10,
+  "agedMin": 12,
   "gap": 0,
   "complete": true,
   "src": "合力400报表"
@@ -2531,15 +2531,6 @@
   "rate400": 78.4
  },
  "history": [
-  {
-   "ts": 1793862476739,
-   "skillRate400": 81.21,
-   "skillQueue400": 3,
-   "callIn400": 628,
-   "signIn400": 15,
-   "onlineSessions": 284,
-   "onlineSeat": 2
-  },
   {
    "ts": 1793862591927,
    "skillRate400": 80.91,
@@ -7024,6 +7015,15 @@
   },
   {
    "ts": 1793974010395,
+   "skillRate400": 80.53,
+   "skillQueue400": 0,
+   "callIn400": 1104,
+   "signIn400": 5,
+   "onlineSessions": 752,
+   "onlineSeat": 2
+  },
+  {
+   "ts": 1793974123220,
    "skillRate400": 80.53,
    "skillQueue400": 0,
    "callIn400": 1104,
