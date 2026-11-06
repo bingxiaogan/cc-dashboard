@@ -1,14 +1,14 @@
 {
- "ts": 1793977862605,
- "collectedAtCn": "2026/11/6 23:11:02",
+ "ts": 1793978094879,
+ "collectedAtCn": "2026/11/6 23:14:54",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "1",
   "坐席忙碌数": "0 (0)",
   "接通率": "21.97%",
   "满意率": "100.00%",
-  "呼入总数": "16375",
-  "当前呼入数": "0",
+  "呼入总数": "16378",
+  "当前呼入数": "1",
   "外呼总数": "7209",
   "当前外呼数": "0",
   "呼入平均通话时长": "00:02:34",
@@ -1191,8 +1191,8 @@
   "from": "08:00",
   "to": "20:30",
   "allDay": 80.53,
-  "at": 1793976721273,
-  "agedMin": 21,
+  "at": 1793978004870,
+  "agedMin": 3,
   "gap": 0,
   "complete": true,
   "src": "合力400报表"
@@ -1399,11 +1399,11 @@
     "name": "官网严选寄卖售后咨询",
     "sessions": 250,
     "assigned": 229,
-    "current": 3,
+    "current": 2,
     "max": 0,
     "queue": 1,
     "onlineSeats": "0",
-    "done": 225,
+    "done": 226,
     "answerRate": 91.6,
     "abandon": 21,
     "voicemail": 0,
@@ -1453,14 +1453,14 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1587,
-    "assigned": 1529,
-    "current": 38,
+    "sessions": 1592,
+    "assigned": 1534,
+    "current": 36,
     "max": 0,
-    "queue": 12,
+    "queue": 11,
     "onlineSeats": "0",
-    "done": 1454,
-    "answerRate": 96.35,
+    "done": 1461,
+    "answerRate": 96.36,
     "abandon": 58,
     "voicemail": 0,
     "satisfactionRate": 6.67
@@ -1910,7 +1910,7 @@
     "done": 485,
     "answerRate": 95.36,
     "abandon": 24,
-    "voicemail": 28,
+    "voicemail": 29,
     "satisfactionRate": 100
    },
    {
@@ -2527,15 +2527,6 @@
   "rate400": 78.4
  },
  "history": [
-  {
-   "ts": 1793864511472,
-   "skillRate400": 80.9,
-   "skillQueue400": 2,
-   "callIn400": 686,
-   "signIn400": 15,
-   "onlineSessions": 284,
-   "onlineSeat": 2
-  },
   {
    "ts": 1793864679269,
    "skillRate400": 81.19,
@@ -7020,6 +7011,15 @@
   },
   {
    "ts": 1793977862605,
+   "skillRate400": 80.53,
+   "skillQueue400": 0,
+   "callIn400": 1104,
+   "signIn400": 5,
+   "onlineSessions": 791,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1793978094879,
    "skillRate400": 80.53,
    "skillQueue400": 0,
    "callIn400": 1104,
