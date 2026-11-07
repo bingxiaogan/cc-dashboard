@@ -1,13 +1,13 @@
 {
- "ts": 1794093796105,
- "collectedAtCn": "2026/11/8 07:23:16",
+ "ts": 1794094169476,
+ "collectedAtCn": "2026/11/8 07:29:29",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "3",
   "坐席忙碌数": "0 (0)",
   "接通率": "0%",
   "满意率": "0%",
-  "呼入总数": "40",
+  "呼入总数": "42",
   "当前呼入数": "0",
   "外呼总数": "0",
   "当前外呼数": "0",
@@ -487,8 +487,8 @@
   },
   {
    "service": "88236603(京东渠道4000990166)",
-   "callIn": 1,
-   "ivr": 1,
+   "callIn": 2,
+   "ivr": 2,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -972,7 +972,7 @@
     "done": 0,
     "answerRate": 0,
     "abandon": 0,
-    "voicemail": 0,
+    "voicemail": 1,
     "satisfactionRate": 0
    },
    {
@@ -2176,24 +2176,6 @@
   "rate400": 79.6
  },
  "history": [
-  {
-   "ts": 1794014731489,
-   "skillRate400": 90.65,
-   "skillQueue400": 0,
-   "callIn400": 107,
-   "signIn400": 11,
-   "onlineSessions": 36,
-   "onlineSeat": 3
-  },
-  {
-   "ts": 1794014926141,
-   "skillRate400": 91.3,
-   "skillQueue400": 0,
-   "callIn400": 115,
-   "signIn400": 11,
-   "onlineSessions": 36,
-   "onlineSeat": 3
-  },
   {
    "ts": 1794015038964,
    "skillRate400": 91.53,
@@ -6669,6 +6651,24 @@
   },
   {
    "ts": 1794093796105,
+   "skillRate400": null,
+   "skillQueue400": 0,
+   "callIn400": 0,
+   "signIn400": 0,
+   "onlineSessions": 0,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1794094054675,
+   "skillRate400": null,
+   "skillQueue400": 0,
+   "callIn400": 0,
+   "signIn400": 0,
+   "onlineSessions": 0,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1794094169476,
    "skillRate400": null,
    "skillQueue400": 0,
    "callIn400": 0,
