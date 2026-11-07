@@ -5,16 +5,16 @@
    "levelName": "低负荷",
    "color": "绿",
    "vals": {
-    "load": 30.1,
+    "load": 24.6,
     "rate": 100,
-    "rateTag": "工时口径09:00起 至 09:00 · 全天94%",
-    "rateAllDay": 94,
+    "rateTag": "工时口径09:00起 至 09:00 · 全天94.38%",
+    "rateAllDay": 94.38,
     "lv": 0,
     "rv": 0
    },
-   "ts": 1794016470730,
-   "tsCn": "2026/11/7 09:54:30",
-   "lastLevel": 1,
+   "ts": 1794016695672,
+   "tsCn": "2026/11/7 09:58:15",
+   "lastLevel": 0,
    "muted": false,
    "minLevel": 2,
    "lastAlertTs": 1793940871758
@@ -24,7 +24,7 @@
    "levelName": "正常",
    "color": "蓝",
    "vals": {
-    "load": 105.5,
+    "load": 105,
     "rate": 80,
     "lv": 1,
     "rv": 2,
@@ -33,8 +33,8 @@
     "sum": {
      "call": 6832,
      "ans": 5531,
-     "den400": 6476,
-     "on": 4349,
+     "den400": 6509,
+     "on": 4381,
      "denOn": 8010
     },
     "wplan": {
@@ -51,15 +51,15 @@
      "targets": [
       {
        "tgt": 80,
-       "rate": 76.6,
+       "rate": 76.9,
        "perDay": [
-        1063
+        1067
        ],
        "status": "ok"
       },
       {
        "tgt": 85,
-       "rate": 105.7,
+       "rate": 106,
        "perDay": [
         1387
        ],
@@ -68,29 +68,29 @@
      ],
      "todayKey": "2026-11-07",
      "lastDay": true,
-     "todayIn": 133,
-     "todayAns": 124,
+     "todayIn": 160,
+     "todayAns": 151,
      "from": "11-07",
      "to": "11-07",
      "weekEnd": "2026-11-07"
     }
    },
-   "ts": 1794016470730,
-   "tsCn": "2026/11/7 09:54:30",
+   "ts": 1794016695672,
+   "tsCn": "2026/11/7 09:58:15",
    "lastLevel": 1,
    "muted": false,
    "minLevel": 2,
    "lastAlertTs": 1793949500700
   },
   "onld": {
-   "level": 0,
-   "levelName": "低负荷",
-   "color": "绿",
+   "level": 1,
+   "levelName": "正常",
+   "color": "蓝",
    "vals": {
-    "load": 82.5
+    "load": 96.6
    },
-   "ts": 1794016470730,
-   "tsCn": "2026/11/7 09:54:30",
+   "ts": 1794016695672,
+   "tsCn": "2026/11/7 09:58:15",
    "lastLevel": 0,
    "muted": true,
    "minLevel": 99
@@ -100,19 +100,19 @@
    "levelName": "低负荷",
    "color": "绿",
    "vals": {
-    "load": 54.3,
+    "load": 54.7,
     "src": "周报口径(今实时)",
     "wDays": 7,
     "sum": {
      "call": 6832,
      "ans": 5531,
-     "den400": 6476,
-     "on": 4349,
+     "den400": 6509,
+     "on": 4381,
      "denOn": 8010
     }
    },
-   "ts": 1794016470730,
-   "tsCn": "2026/11/7 09:54:30",
+   "ts": 1794016695672,
+   "tsCn": "2026/11/7 09:58:15",
    "lastLevel": 0,
    "muted": true,
    "minLevel": 99
@@ -130,8 +130,8 @@
     "rv": 1,
     "agents": 2
    },
-   "ts": 1794016470730,
-   "tsCn": "2026/11/7 09:54:30",
+   "ts": 1794016695672,
+   "tsCn": "2026/11/7 09:58:15",
    "lastLevel": 1,
    "muted": true,
    "minLevel": 99
@@ -151,6 +151,6 @@
    "minLevel": 99
   }
  },
- "updated": "2026/11/7 09:54:30",
- "updatedTs": 1794016470730
+ "updated": "2026/11/7 09:58:15",
+ "updatedTs": 1794016695672
 }
