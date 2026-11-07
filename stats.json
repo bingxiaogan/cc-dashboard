@@ -1,20 +1,879 @@
 {
- "ts": 1794077376582,
- "collectedAtCn": "2026/11/8 02:49:36",
+ "ts": 1794077635183,
+ "collectedAtCn": "2026/11/8 02:53:55",
  "overview": {
-  "外呼总数": "外呼成功数",
-  "接通率": "0%"
+  "总排队数": "0",
+  "坐席空闲数": "3",
+  "坐席忙碌数": "0 (0)",
+  "接通率": "0%",
+  "满意率": "0%",
+  "呼入总数": "13",
+  "当前呼入数": "0",
+  "外呼总数": "0",
+  "当前外呼数": "0",
+  "呼入平均通话时长": "00:00:00",
+  "AI通话数": "0 (3)"
  },
  "skillGroups": [],
- "skillSummary": null,
- "services": [],
+ "skillSummary": {
+  "idleSeats": 0,
+  "answered": 0,
+  "missed": 0,
+  "rate": null,
+  "total": 0,
+  "queue": 0,
+  "signIn": 0
+ },
+ "services": [
+  {
+   "service": "88236631(退货物流面单)",
+   "callIn": 0,
+   "ivr": 0,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
+   "other": 0,
+   "transferred": 0
+  },
+  {
+   "service": "88236630(苹果古霖)",
+   "callIn": 0,
+   "ivr": 0,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
+   "other": 0,
+   "transferred": 0
+  },
+  {
+   "service": "88236629(爱分类2)",
+   "callIn": 0,
+   "ivr": 0,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
+   "other": 0,
+   "transferred": 0
+  },
+  {
+   "service": "81976(81976)",
+   "callIn": 0,
+   "ivr": 0,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
+   "other": 0,
+   "transferred": 0
+  },
+  {
+   "service": "81734(人工)",
+   "callIn": 0,
+   "ivr": 0,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
+   "other": 0,
+   "transferred": 0
+  },
+  {
+   "service": "80403(回收催寄)",
+   "callIn": 0,
+   "ivr": 0,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
+   "other": 0,
+   "transferred": 0
+  },
+  {
+   "service": "81298(81298)",
+   "callIn": 0,
+   "ivr": 0,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
+   "other": 0,
+   "transferred": 0
+  },
+  {
+   "service": "80645(80645)",
+   "callIn": 0,
+   "ivr": 0,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
+   "other": 0,
+   "transferred": 0
+  },
+  {
+   "service": "80644(易奢堂)",
+   "callIn": 0,
+   "ivr": 0,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
+   "other": 0,
+   "transferred": 0
+  },
+  {
+   "service": "88236622(88236622)",
+   "callIn": 0,
+   "ivr": 0,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
+   "other": 0,
+   "transferred": 0
+  },
+  {
+   "service": "88236621(88236621)",
+   "callIn": 0,
+   "ivr": 0,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
+   "other": 0,
+   "transferred": 0
+  },
+  {
+   "service": "88236624(88236624)",
+   "callIn": 0,
+   "ivr": 0,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
+   "other": 0,
+   "transferred": 0
+  },
+  {
+   "service": "80081(帮卖)",
+   "callIn": 0,
+   "ivr": 0,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
+   "other": 0,
+   "transferred": 0
+  },
+  {
+   "service": "88236623(88236623)",
+   "callIn": 0,
+   "ivr": 0,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
+   "other": 0,
+   "transferred": 0
+  },
+  {
+   "service": "88236626(88236626)",
+   "callIn": 0,
+   "ivr": 0,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
+   "other": 0,
+   "transferred": 0
+  },
+  {
+   "service": "88236625(爱机汇)",
+   "callIn": 0,
+   "ivr": 0,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
+   "other": 0,
+   "transferred": 0
+  },
+  {
+   "service": "88236628(爱分类1(4001581707))",
+   "callIn": 0,
+   "ivr": 0,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
+   "other": 0,
+   "transferred": 0
+  },
+  {
+   "service": "88236627(88236627)",
+   "callIn": 0,
+   "ivr": 0,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
+   "other": 0,
+   "transferred": 0
+  },
+  {
+   "service": "4001581707(4001581707)",
+   "callIn": 6,
+   "ivr": 6,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
+   "other": 0,
+   "transferred": 0
+  },
+  {
+   "service": "82013(平台无法验机场景一)",
+   "callIn": 0,
+   "ivr": 0,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
+   "other": 0,
+   "transferred": 0
+  },
+  {
+   "service": "82014(平台无法验机场景二)",
+   "callIn": 0,
+   "ivr": 0,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
+   "other": 0,
+   "transferred": 0
+  },
+  {
+   "service": "88236633(88236633)",
+   "callIn": 1,
+   "ivr": 1,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
+   "other": 0,
+   "transferred": 0
+  },
+  {
+   "service": "88236632(帮卖)",
+   "callIn": 0,
+   "ivr": 0,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
+   "other": 0,
+   "transferred": 0
+  },
+  {
+   "service": "88236635(奢侈品-商家鉴定)",
+   "callIn": 0,
+   "ivr": 0,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
+   "other": 0,
+   "transferred": 0
+  },
+  {
+   "service": "88236634(88236634)",
+   "callIn": 0,
+   "ivr": 0,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
+   "other": 0,
+   "transferred": 0
+  },
+  {
+   "service": "88236637(奢侈品-商家)",
+   "callIn": 0,
+   "ivr": 0,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
+   "other": 0,
+   "transferred": 0
+  },
+  {
+   "service": "88236636(一键转卖)",
+   "callIn": 0,
+   "ivr": 0,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
+   "other": 0,
+   "transferred": 0
+  },
+  {
+   "service": "88236639(88236639)",
+   "callIn": 0,
+   "ivr": 0,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
+   "other": 0,
+   "transferred": 0
+  },
+  {
+   "service": "88236638(奢侈品业务)",
+   "callIn": 0,
+   "ivr": 0,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
+   "other": 0,
+   "transferred": 0
+  },
+  {
+   "service": "4001863921(4001863921)",
+   "callIn": 0,
+   "ivr": 0,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
+   "other": 0,
+   "transferred": 0
+  },
+  {
+   "service": "82838(抖音商城回收订单仍未寄出)",
+   "callIn": 0,
+   "ivr": 0,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
+   "other": 0,
+   "transferred": 0
+  },
+  {
+   "service": "88236608(京东物流报备)",
+   "callIn": 0,
+   "ivr": 0,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
+   "other": 0,
+   "transferred": 0
+  },
+  {
+   "service": "81874(81874)",
+   "callIn": 0,
+   "ivr": 0,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
+   "other": 0,
+   "transferred": 0
+  },
+  {
+   "service": "88236607(大区飞单外呼)",
+   "callIn": 0,
+   "ivr": 0,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
+   "other": 0,
+   "transferred": 0
+  },
+  {
+   "service": "80540(80540)",
+   "callIn": 0,
+   "ivr": 0,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
+   "other": 0,
+   "transferred": 0
+  },
+  {
+   "service": "88236609(88236609)",
+   "callIn": 0,
+   "ivr": 0,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
+   "other": 0,
+   "transferred": 0
+  },
+  {
+   "service": "81756(81756)",
+   "callIn": 0,
+   "ivr": 0,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
+   "other": 0,
+   "transferred": 0
+  },
+  {
+   "service": "82966(82966)",
+   "callIn": 0,
+   "ivr": 0,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
+   "other": 0,
+   "transferred": 0
+  },
+  {
+   "service": "81199(门店按键转接)",
+   "callIn": 1,
+   "ivr": 1,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
+   "other": 0,
+   "transferred": 0
+  },
+  {
+   "service": "81994(客诉退货场景)",
+   "callIn": 0,
+   "ivr": 0,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
+   "other": 0,
+   "transferred": 0
+  },
+  {
+   "service": "88236600(爱回收4001616365)",
+   "callIn": 0,
+   "ivr": 0,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
+   "other": 0,
+   "transferred": 0
+  },
+  {
+   "service": "88236602(其他渠道4000166088)",
+   "callIn": 0,
+   "ivr": 0,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
+   "other": 0,
+   "transferred": 0
+  },
+  {
+   "service": "81198(上门按键转接)",
+   "callIn": 1,
+   "ivr": 1,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
+   "other": 0,
+   "transferred": 0
+  },
+  {
+   "service": "88236601(京东渠道（抖音引流）)",
+   "callIn": 0,
+   "ivr": 0,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
+   "other": 0,
+   "transferred": 0
+  },
+  {
+   "service": "83074460(83074460)",
+   "callIn": 0,
+   "ivr": 0,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
+   "other": 0,
+   "transferred": 0
+  },
+  {
+   "service": "88236604(大区转接)",
+   "callIn": 0,
+   "ivr": 0,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
+   "other": 0,
+   "transferred": 0
+  },
+  {
+   "service": "88236603(京东渠道4000990166)",
+   "callIn": 1,
+   "ivr": 1,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
+   "other": 0,
+   "transferred": 0
+  },
+  {
+   "service": "88236606(ahs物流收货)",
+   "callIn": 0,
+   "ivr": 0,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
+   "other": 0,
+   "transferred": 0
+  },
+  {
+   "service": "88236605(违法信息不良举报)",
+   "callIn": 0,
+   "ivr": 0,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
+   "other": 0,
+   "transferred": 0
+  },
+  {
+   "service": "88236620(测试号码)",
+   "callIn": 0,
+   "ivr": 0,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
+   "other": 0,
+   "transferred": 0
+  },
+  {
+   "service": "80407(奢侈品商家-报价)",
+   "callIn": 0,
+   "ivr": 0,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
+   "other": 0,
+   "transferred": 0
+  },
+  {
+   "service": "051983074469(9523629)",
+   "callIn": 0,
+   "ivr": 0,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
+   "other": 0,
+   "transferred": 0
+  },
+  {
+   "service": "051983074468(9523628)",
+   "callIn": 0,
+   "ivr": 0,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
+   "other": 0,
+   "transferred": 0
+  },
+  {
+   "service": "051983074467(9523627)",
+   "callIn": 0,
+   "ivr": 0,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
+   "other": 0,
+   "transferred": 0
+  },
+  {
+   "service": "80646(80646)",
+   "callIn": 0,
+   "ivr": 0,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
+   "other": 0,
+   "transferred": 0
+  },
+  {
+   "service": "80409(奢侈品商家-门店验货报价)",
+   "callIn": 0,
+   "ivr": 0,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
+   "other": 0,
+   "transferred": 0
+  },
+  {
+   "service": "80408(奢侈品商家-门店报价)",
+   "callIn": 0,
+   "ivr": 0,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
+   "other": 0,
+   "transferred": 0
+  },
+  {
+   "service": "80410(奢侈品商家-远程鉴定)",
+   "callIn": 0,
+   "ivr": 0,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
+   "other": 0,
+   "transferred": 0
+  },
+  {
+   "service": "88236619(京东智能数码店)",
+   "callIn": 0,
+   "ivr": 0,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
+   "other": 0,
+   "transferred": 0
+  },
+  {
+   "service": "80531(80531)",
+   "callIn": 0,
+   "ivr": 0,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
+   "other": 0,
+   "transferred": 0
+  },
+  {
+   "service": "051983074462(9523622)",
+   "callIn": 0,
+   "ivr": 0,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
+   "other": 0,
+   "transferred": 0
+  },
+  {
+   "service": "051983074461(9523621)",
+   "callIn": 0,
+   "ivr": 0,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
+   "other": 0,
+   "transferred": 0
+  },
+  {
+   "service": "051983074460(9523620)",
+   "callIn": 0,
+   "ivr": 0,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
+   "other": 0,
+   "transferred": 0
+  },
+  {
+   "service": "051983074466(9523626)",
+   "callIn": 0,
+   "ivr": 0,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
+   "other": 0,
+   "transferred": 0
+  },
+  {
+   "service": "80534(正向物流)",
+   "callIn": 0,
+   "ivr": 0,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
+   "other": 0,
+   "transferred": 0
+  },
+  {
+   "service": "051983074465(9523625)",
+   "callIn": 0,
+   "ivr": 0,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
+   "other": 0,
+   "transferred": 0
+  },
+  {
+   "service": "80533(逆向物流)",
+   "callIn": 0,
+   "ivr": 0,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
+   "other": 0,
+   "transferred": 0
+  },
+  {
+   "service": "051983074464(9523624)",
+   "callIn": 0,
+   "ivr": 0,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
+   "other": 0,
+   "transferred": 0
+  },
+  {
+   "service": "80532(80532)",
+   "callIn": 0,
+   "ivr": 0,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
+   "other": 0,
+   "transferred": 0
+  },
+  {
+   "service": "051983074463(9523623)",
+   "callIn": 0,
+   "ivr": 0,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
+   "other": 0,
+   "transferred": 0
+  },
+  {
+   "service": "88236611(值耀-易奢堂)",
+   "callIn": 0,
+   "ivr": 0,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
+   "other": 0,
+   "transferred": 0
+  },
+  {
+   "service": "88236610(官网)",
+   "callIn": 0,
+   "ivr": 0,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
+   "other": 0,
+   "transferred": 0
+  },
+  {
+   "service": "80326(80326)",
+   "callIn": 0,
+   "ivr": 0,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
+   "other": 0,
+   "transferred": 0
+  },
+  {
+   "service": "82182(82182)",
+   "callIn": 0,
+   "ivr": 0,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
+   "other": 0,
+   "transferred": 0
+  },
+  {
+   "service": "80429(80429)",
+   "callIn": 0,
+   "ivr": 0,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
+   "other": 0,
+   "transferred": 0
+  },
+  {
+   "service": "80669(80669)",
+   "callIn": 0,
+   "ivr": 0,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
+   "other": 0,
+   "transferred": 0
+  },
+  {
+   "service": "80789(80789)",
+   "callIn": 0,
+   "ivr": 0,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
+   "other": 0,
+   "transferred": 0
+  },
+  {
+   "service": "80436(订单完成（奢侈品）)",
+   "callIn": 0,
+   "ivr": 0,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
+   "other": 0,
+   "transferred": 0
+  },
+  {
+   "service": "82179(82179)",
+   "callIn": 0,
+   "ivr": 0,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
+   "other": 0,
+   "transferred": 0
+  },
+  {
+   "service": "80435(订单寄出(奢侈品))",
+   "callIn": 0,
+   "ivr": 0,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
+   "other": 0,
+   "transferred": 0
+  }
+ ],
  "signInAgents400": [],
  "keyServices": {
-  "list": [],
-  "total": 0,
+  "list": [
+   {
+    "service": "88236629(爱分类2)",
+    "callIn": 0,
+    "ivr": 0,
+    "ringMissed": 0,
+    "queueAbandon": 0,
+    "answered": 0,
+    "other": 0,
+    "transferred": 0
+   },
+   {
+    "service": "88236628(爱分类1(4001581707))",
+    "callIn": 0,
+    "ivr": 0,
+    "ringMissed": 0,
+    "queueAbandon": 0,
+    "answered": 0,
+    "other": 0,
+    "transferred": 0
+   },
+   {
+    "service": "4001581707(4001581707)",
+    "callIn": 6,
+    "ivr": 6,
+    "ringMissed": 0,
+    "queueAbandon": 0,
+    "answered": 0,
+    "other": 0,
+    "transferred": 0
+   },
+   {
+    "service": "051983074462(9523622)",
+    "callIn": 0,
+    "ivr": 0,
+    "ringMissed": 0,
+    "queueAbandon": 0,
+    "answered": 0,
+    "other": 0,
+    "transferred": 0
+   }
+  ],
+  "total": 6,
   "answered": 0,
-  "ivr": 0,
-  "connectRate": null
+  "ivr": 6,
+  "connectRate": 100
  },
  "online": {
   "groups": [
@@ -1317,15 +2176,6 @@
   "rate400": 79.6
  },
  "history": [
-  {
-   "ts": 1794002534463,
-   "skillRate400": null,
-   "skillQueue400": 0,
-   "callIn400": 0,
-   "signIn400": 0,
-   "onlineSessions": 0,
-   "onlineSeat": 0
-  },
   {
    "ts": 1794002738585,
    "skillRate400": null,
@@ -5813,6 +6663,15 @@
    "skillRate400": null,
    "skillQueue400": null,
    "callIn400": null,
+   "signIn400": 0,
+   "onlineSessions": 0,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1794077635183,
+   "skillRate400": null,
+   "skillQueue400": 0,
+   "callIn400": 0,
    "signIn400": 0,
    "onlineSessions": 0,
    "onlineSeat": 0
