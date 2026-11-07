@@ -1,13 +1,13 @@
 {
- "ts": 1794068497490,
- "collectedAtCn": "2026/11/8 00:21:37",
+ "ts": 1794068785685,
+ "collectedAtCn": "2026/11/8 00:26:25",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "3",
   "坐席忙碌数": "0 (0)",
   "接通率": "0%",
   "满意率": "0%",
-  "呼入总数": "4",
+  "呼入总数": "5",
   "当前呼入数": "0",
   "外呼总数": "0",
   "当前外呼数": "0",
@@ -487,8 +487,8 @@
   },
   {
    "service": "88236603(京东渠道4000990166)",
-   "callIn": 0,
-   "ivr": 0,
+   "callIn": 1,
+   "ivr": 1,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -1131,15 +1131,15 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 7,
+    "sessions": 13,
     "assigned": 0,
     "current": 0,
     "max": 0,
-    "queue": 12,
+    "queue": 6,
     "onlineSeats": "0",
     "done": 0,
     "answerRate": 0,
-    "abandon": 7,
+    "abandon": 13,
     "voicemail": 0,
     "satisfactionRate": 0
    },
@@ -2143,44 +2143,12 @@
  "satisfaction": null,
  "attendance": {
   "today": "2026-11-07",
-  "duty400": [
-   "马艳",
-   "朱静珏",
-   "王雅雯",
-   "胡洁",
-   "王轩",
-   "彭静",
-   "程露芹",
-   "王婧",
-   "许玉娟",
-   "刘菲",
-   "徐叶晨"
-  ],
-  "dutyOnline": [
-   "刘丽娜",
-   "侯勤裕",
-   "陈孝正"
-  ],
+  "duty400": [],
+  "dutyOnline": [],
   "on400": [],
-  "off400": [
-   "马艳",
-   "朱静珏",
-   "王雅雯",
-   "胡洁",
-   "王轩",
-   "彭静",
-   "程露芹",
-   "王婧",
-   "许玉娟",
-   "刘菲",
-   "徐叶晨"
-  ],
+  "off400": [],
   "onOnline": [],
-  "offOnline": [
-   "刘丽娜",
-   "侯勤裕",
-   "陈孝正"
-  ]
+  "offOnline": []
  },
  "capacity": {
   "date": "2026-11-07",
@@ -2208,15 +2176,6 @@
   "rate400": 79.6
  },
  "history": [
-  {
-   "ts": 1793993667685,
-   "skillRate400": null,
-   "skillQueue400": 0,
-   "callIn400": 0,
-   "signIn400": 0,
-   "onlineSessions": 0,
-   "onlineSeat": 0
-  },
   {
    "ts": 1793993871846,
    "skillRate400": null,
@@ -6701,6 +6660,15 @@
   },
   {
    "ts": 1794068497490,
+   "skillRate400": null,
+   "skillQueue400": 0,
+   "callIn400": 0,
+   "signIn400": 0,
+   "onlineSessions": 0,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1794068785685,
    "skillRate400": null,
    "skillQueue400": 0,
    "callIn400": 0,
