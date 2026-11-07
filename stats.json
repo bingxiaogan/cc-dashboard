@@ -1,17 +1,17 @@
 {
- "ts": 1794010181428,
- "collectedAtCn": "2026/11/7 08:09:41",
+ "ts": 1794010353248,
+ "collectedAtCn": "2026/11/7 08:12:33",
  "overview": {
   "总排队数": "0",
-  "坐席空闲数": "5",
+  "坐席空闲数": "6",
   "坐席忙碌数": "0 (0)",
   "接通率": "6.19%",
   "满意率": "100.00%",
-  "呼入总数": "194",
-  "当前呼入数": "8",
-  "外呼总数": "2",
+  "呼入总数": "210",
+  "当前呼入数": "10",
+  "外呼总数": "5",
   "当前外呼数": "1",
-  "呼入平均通话时长": "00:01:34",
+  "呼入平均通话时长": "00:01:53",
   "AI通话数": "0 (3)"
  },
  "skillGroups": [
@@ -54,12 +54,12 @@
    "members": "王轩,许玉娟,彭静,王雅雯,爱分类支援1,胡洁,朱静珏",
    "ring": 0,
    "queue": 0,
-   "todayAnswered": 9,
+   "todayAnswered": 10,
    "missed": 1,
-   "rate": 90,
-   "total": 10,
-   "current": 5,
-   "avgDuration": "00:01:12",
+   "rate": 90.91,
+   "total": 11,
+   "current": 4,
+   "avgDuration": "00:01:39",
    "transferIn": 0,
    "transferOut": 0
   },
@@ -306,10 +306,10 @@
  ],
  "skillSummary": {
   "idleSeats": 35,
-  "answered": 12,
+  "answered": 13,
   "missed": 1,
-  "rate": 92.31,
-  "total": 13,
+  "rate": 92.86,
+  "total": 14,
   "queue": 0,
   "signIn": 7
  },
@@ -496,11 +496,11 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 86,
-   "ivr": 74,
+   "callIn": 90,
+   "ivr": 77,
    "ringMissed": 0,
    "queueAbandon": 1,
-   "answered": 11,
+   "answered": 12,
    "other": 0,
    "transferred": 0
   },
@@ -696,8 +696,8 @@
   },
   {
    "service": "81199(门店按键转接)",
-   "callIn": 4,
-   "ivr": 4,
+   "callIn": 6,
+   "ivr": 6,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -1148,11 +1148,11 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 86,
-    "ivr": 74,
+    "callIn": 90,
+    "ivr": 77,
     "ringMissed": 0,
     "queueAbandon": 1,
-    "answered": 11,
+    "answered": 12,
     "other": 0,
     "transferred": 0
    },
@@ -1167,21 +1167,21 @@
     "transferred": 0
    }
   ],
-  "total": 90,
-  "answered": 12,
-  "ivr": 77,
-  "connectRate": 98.89
+  "total": 94,
+  "answered": 13,
+  "ivr": 80,
+  "connectRate": 98.94
  },
  "callRtWork": {
   "from": "08:00",
-  "at": "2026/11/7 08:09:41",
-  "total": 23,
-  "ivr": 10,
-  "answered": 12,
-  "turn": 13,
-  "rate": 92.31,
-  "totalAllDay": 90,
-  "answeredAllDay": 12
+  "at": "2026/11/7 08:12:33",
+  "total": 27,
+  "ivr": 13,
+  "answered": 13,
+  "turn": 14,
+  "rate": 92.86,
+  "totalAllDay": 94,
+  "answeredAllDay": 13
  },
  "online": {
   "groups": [
@@ -1890,9 +1890,9 @@
     "sessions": 3,
     "assigned": 3,
     "current": 3,
-    "max": 35,
+    "max": 70,
     "queue": 0,
-    "onlineSeats": "1(陈可)",
+    "onlineSeats": "2(陈可,朱博宇)",
     "done": 0,
     "answerRate": 100,
     "abandon": 0,
@@ -2517,15 +2517,6 @@
   "rate400": 78.4
  },
  "history": [
-  {
-   "ts": 1793927445349,
-   "skillRate400": 79.52,
-   "skillQueue400": 1,
-   "callIn400": 83,
-   "signIn400": 13,
-   "onlineSessions": 18,
-   "onlineSeat": 4
-  },
   {
    "ts": 1793927609499,
    "skillRate400": 78.89,
@@ -7013,6 +7004,15 @@
    "skillRate400": 92.31,
    "skillQueue400": 0,
    "callIn400": 13,
+   "signIn400": 7,
+   "onlineSessions": 0,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1794010353248,
+   "skillRate400": 92.86,
+   "skillQueue400": 0,
+   "callIn400": 14,
    "signIn400": 7,
    "onlineSessions": 0,
    "onlineSeat": 0
