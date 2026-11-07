@@ -24,18 +24,18 @@
    "levelName": "正常",
    "color": "蓝",
    "vals": {
-    "load": 107.4,
-    "rate": 79.9,
+    "load": 107.3,
+    "rate": 80,
     "lv": 1,
-    "rv": 3,
+    "rv": 2,
     "src": "周报口径(今实时)",
     "wDays": 7,
     "sum": {
-     "call": 6853,
-     "ans": 5545,
-     "den400": 6381,
-     "on": 4297,
-     "denOn": 7020
+     "call": 6873,
+     "ans": 5564,
+     "den400": 6405,
+     "on": 4309,
+     "denOn": 8010
     },
     "wplan": {
      "days": [
@@ -68,29 +68,29 @@
      ],
      "todayKey": "2026-11-07",
      "lastDay": true,
-     "todayIn": 64,
-     "todayAns": 57,
+     "todayIn": 84,
+     "todayAns": 76,
      "from": "11-07",
      "to": "11-07",
      "weekEnd": "2026-11-07"
     }
    },
-   "ts": 1794013582288,
-   "tsCn": "2026/11/7 09:06:22",
+   "ts": 1794013731678,
+   "tsCn": "2026/11/7 09:08:51",
    "lastLevel": 1,
    "muted": false,
    "minLevel": 2,
    "lastAlertTs": 1793949500700
   },
   "onld": {
-   "level": 0,
-   "levelName": "低负荷",
-   "color": "绿",
+   "level": 1,
+   "levelName": "正常",
+   "color": "蓝",
    "vals": {
-    "load": 53.8
+    "load": 100
    },
-   "ts": 1794009652724,
-   "tsCn": "2026/11/7 08:00:52",
+   "ts": 1794013731678,
+   "tsCn": "2026/11/7 09:08:51",
    "lastLevel": 0,
    "muted": true,
    "minLevel": 99
@@ -100,19 +100,19 @@
    "levelName": "低负荷",
    "color": "绿",
    "vals": {
-    "load": 61.2,
+    "load": 53.8,
     "src": "周报口径(今实时)",
     "wDays": 7,
     "sum": {
-     "call": 6853,
-     "ans": 5545,
-     "den400": 6381,
-     "on": 4297,
-     "denOn": 7020
+     "call": 6873,
+     "ans": 5564,
+     "den400": 6405,
+     "on": 4309,
+     "denOn": 8010
     }
    },
-   "ts": 1794013582288,
-   "tsCn": "2026/11/7 09:06:22",
+   "ts": 1794013731678,
+   "tsCn": "2026/11/7 09:08:51",
    "lastLevel": 0,
    "muted": true,
    "minLevel": 99
@@ -130,8 +130,8 @@
     "rv": 1,
     "agents": 2
    },
-   "ts": 1794013582288,
-   "tsCn": "2026/11/7 09:06:22",
+   "ts": 1794013731678,
+   "tsCn": "2026/11/7 09:08:51",
    "lastLevel": 1,
    "muted": true,
    "minLevel": 99
@@ -151,6 +151,6 @@
    "minLevel": 99
   }
  },
- "updated": "2026/11/7 09:06:22",
- "updatedTs": 1794013582288
+ "updated": "2026/11/7 09:08:51",
+ "updatedTs": 1794013731678
 }
