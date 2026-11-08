@@ -1,16 +1,16 @@
 {
- "ts": 1794097680960,
- "collectedAtCn": "2026/11/8 08:28:00",
+ "ts": 1794097800869,
+ "collectedAtCn": "2026/11/8 08:30:00",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "9",
   "坐席忙碌数": "0 (0)",
-  "接通率": "7.51%",
+  "接通率": "7.14%",
   "满意率": "100.00%",
-  "呼入总数": "213",
-  "当前呼入数": "4",
-  "外呼总数": "10",
-  "当前外呼数": "0",
+  "呼入总数": "224",
+  "当前呼入数": "1",
+  "外呼总数": "12",
+  "当前外呼数": "1",
   "呼入平均通话时长": "00:02:08",
   "AI通话数": "0 (3)"
  },
@@ -736,8 +736,8 @@
   },
   {
    "service": "81198(上门按键转接)",
-   "callIn": 27,
-   "ivr": 27,
+   "callIn": 30,
+   "ivr": 30,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -786,8 +786,8 @@
   },
   {
    "service": "88236606(ahs物流收货)",
-   "callIn": 2,
-   "ivr": 2,
+   "callIn": 3,
+   "ivr": 3,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -1172,7 +1172,7 @@
  },
  "callRtWork": {
   "from": "08:01",
-  "at": "2026/11/8 08:28:00",
+  "at": "2026/11/8 08:30:00",
   "total": 22,
   "ivr": 7,
   "answered": 14,
@@ -1437,14 +1437,14 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 41,
-    "assigned": 22,
-    "current": 22,
+    "sessions": 42,
+    "assigned": 23,
+    "current": 23,
     "max": 70,
     "queue": 0,
     "onlineSeats": "2(朱博宇,张馨月)",
     "done": 0,
-    "answerRate": 53.66,
+    "answerRate": 54.76,
     "abandon": 19,
     "voicemail": 0,
     "satisfactionRate": 0
@@ -2515,15 +2515,6 @@
   "rate400": 90.9
  },
  "history": [
-  {
-   "ts": 1794017780873,
-   "skillRate400": 81.53,
-   "skillQueue400": 0,
-   "callIn400": 222,
-   "signIn400": 11,
-   "onlineSessions": 118,
-   "onlineSeat": 2
-  },
   {
    "ts": 1794017918502,
    "skillRate400": 81.55,
@@ -7008,6 +6999,15 @@
   },
   {
    "ts": 1794097680960,
+   "skillRate400": 94.12,
+   "skillQueue400": 0,
+   "callIn400": 17,
+   "signIn400": 5,
+   "onlineSessions": 0,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1794097800869,
    "skillRate400": 94.12,
    "skillQueue400": 0,
    "callIn400": 17,
