@@ -24,17 +24,17 @@
    "levelName": "正常",
    "color": "蓝",
    "vals": {
-    "load": 86.3,
-    "rate": 86.2,
-    "lv": 0,
-    "rv": 1,
+    "load": 90.8,
+    "rate": 84.3,
+    "lv": 1,
+    "rv": 2,
     "src": "周报口径(今实时)",
     "wDays": 1,
     "sum": {
-     "call": 86,
-     "ans": 75,
-     "den400": 100,
-     "on": 39,
+     "call": 116,
+     "ans": 99,
+     "den400": 128,
+     "on": 70,
      "denOn": 1230
     },
     "wplan": {
@@ -114,23 +114,23 @@
      "weekEnd": "2026-11-14"
     }
    },
-   "ts": 1794101781217,
-   "tsCn": "2026/11/8 09:36:21",
+   "ts": 1794102006603,
+   "tsCn": "2026/11/8 09:40:06",
    "lastLevel": 1,
    "muted": false,
    "minLevel": 2,
    "lastAlertTs": 1793949500700
   },
   "onld": {
-   "level": 0,
-   "levelName": "低负荷",
-   "color": "绿",
+   "level": 1,
+   "levelName": "正常",
+   "color": "蓝",
    "vals": {
-    "load": 84.8
+    "load": 92.1
    },
-   "ts": 1794101781217,
-   "tsCn": "2026/11/8 09:36:21",
-   "lastLevel": 0,
+   "ts": 1794102006603,
+   "tsCn": "2026/11/8 09:40:06",
+   "lastLevel": 1,
    "muted": true,
    "minLevel": 99
   },
@@ -139,19 +139,19 @@
    "levelName": "低负荷",
    "color": "绿",
    "vals": {
-    "load": 3.2,
+    "load": 5.7,
     "src": "周报口径(今实时)",
     "wDays": 1,
     "sum": {
-     "call": 86,
-     "ans": 75,
-     "den400": 100,
-     "on": 39,
+     "call": 116,
+     "ans": 99,
+     "den400": 128,
+     "on": 70,
      "denOn": 1230
     }
    },
-   "ts": 1794101781217,
-   "tsCn": "2026/11/8 09:36:21",
+   "ts": 1794102006603,
+   "tsCn": "2026/11/8 09:40:06",
    "lastLevel": 0,
    "muted": true,
    "minLevel": 99
@@ -169,8 +169,8 @@
     "rv": 1,
     "agents": 2
    },
-   "ts": 1794101781217,
-   "tsCn": "2026/11/8 09:36:21",
+   "ts": 1794102006603,
+   "tsCn": "2026/11/8 09:40:06",
    "lastLevel": 1,
    "muted": true,
    "minLevel": 99
@@ -190,6 +190,6 @@
    "minLevel": 99
   }
  },
- "updated": "2026/11/8 09:36:21",
- "updatedTs": 1794101781217
+ "updated": "2026/11/8 09:40:06",
+ "updatedTs": 1794102006603
 }
