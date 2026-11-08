@@ -1,14 +1,14 @@
 {
- "ts": 1794145337500,
- "collectedAtCn": "2026/11/8 21:42:17",
+ "ts": 1794145542171,
+ "collectedAtCn": "2026/11/8 21:45:42",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "2",
   "坐席忙碌数": "0 (0)",
   "接通率": "22.06%",
   "满意率": "100.00%",
-  "呼入总数": "20009",
-  "当前呼入数": "1",
+  "呼入总数": "20026",
+  "当前呼入数": "0",
   "外呼总数": "6031",
   "当前外呼数": "0",
   "呼入平均通话时长": "00:02:28",
@@ -1188,7 +1188,7 @@
   "to": "20:30",
   "allDay": 81.32,
   "at": 1794145042061,
-  "agedMin": 6,
+  "agedMin": 10,
   "gap": 0,
   "complete": true,
   "src": "合力400报表"
@@ -1449,14 +1449,14 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1600,
-    "assigned": 1545,
-    "current": 57,
+    "sessions": 1605,
+    "assigned": 1550,
+    "current": 60,
     "max": 140,
     "queue": 0,
     "onlineSeats": "4(王鹏,李宜慢,刘亚森,周鑫)",
-    "done": 1425,
-    "answerRate": 96.56,
+    "done": 1427,
+    "answerRate": 96.57,
     "abandon": 55,
     "voicemail": 0,
     "satisfactionRate": 0
@@ -1897,14 +1897,14 @@
    },
    {
     "name": "官网严选自营售前咨询",
-    "sessions": 403,
-    "assigned": 397,
-    "current": 13,
+    "sessions": 405,
+    "assigned": 399,
+    "current": 14,
     "max": 140,
     "queue": 0,
     "onlineSeats": "4(王鹏,李宜慢,刘亚森,周鑫)",
-    "done": 379,
-    "answerRate": 98.51,
+    "done": 380,
+    "answerRate": 98.52,
     "abandon": 6,
     "voicemail": 0,
     "satisfactionRate": 0
@@ -2525,15 +2525,6 @@
   "rate400": 81.3
  },
  "history": [
-  {
-   "ts": 1794069453695,
-   "skillRate400": null,
-   "skillQueue400": 0,
-   "callIn400": 0,
-   "signIn400": 0,
-   "onlineSessions": 0,
-   "onlineSeat": 0
-  },
   {
    "ts": 1794069657998,
    "skillRate400": null,
@@ -7018,6 +7009,15 @@
   },
   {
    "ts": 1794145337500,
+   "skillRate400": 81.32,
+   "skillQueue400": 0,
+   "callIn400": 1215,
+   "signIn400": 1,
+   "onlineSessions": 981,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1794145542171,
    "skillRate400": 81.32,
    "skillQueue400": 0,
    "callIn400": 1215,
