@@ -1,14 +1,14 @@
 {
- "ts": 1794264929261,
- "collectedAtCn": "2026/11/10 06:55:29",
+ "ts": 1794265318636,
+ "collectedAtCn": "2026/11/10 07:01:58",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "2",
   "坐席忙碌数": "0 (0)",
   "接通率": "0%",
   "满意率": "0%",
-  "呼入总数": "19",
-  "当前呼入数": "0",
+  "呼入总数": "22",
+  "当前呼入数": "1",
   "外呼总数": "0",
   "当前外呼数": "0",
   "呼入平均通话时长": "00:00:00",
@@ -207,8 +207,8 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 13,
-   "ivr": 13,
+   "callIn": 14,
+   "ivr": 14,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -507,8 +507,8 @@
   },
   {
    "service": "88236605(违法信息不良举报)",
-   "callIn": 0,
-   "ivr": 0,
+   "callIn": 1,
+   "ivr": 1,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -627,8 +627,8 @@
   },
   {
    "service": "051983074462(9523622)",
-   "callIn": 0,
-   "ivr": 0,
+   "callIn": 1,
+   "ivr": 1,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -851,8 +851,8 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 13,
-    "ivr": 13,
+    "callIn": 14,
+    "ivr": 14,
     "ringMissed": 0,
     "queueAbandon": 0,
     "answered": 0,
@@ -861,8 +861,8 @@
    },
    {
     "service": "051983074462(9523622)",
-    "callIn": 0,
-    "ivr": 0,
+    "callIn": 1,
+    "ivr": 1,
     "ringMissed": 0,
     "queueAbandon": 0,
     "answered": 0,
@@ -870,9 +870,9 @@
     "transferred": 0
    }
   ],
-  "total": 14,
+  "total": 16,
   "answered": 0,
-  "ivr": 14,
+  "ivr": 16,
   "connectRate": 100
  },
  "online": {
@@ -2176,15 +2176,6 @@
   "rate400": 77
  },
  "history": [
-  {
-   "ts": 1794156718390,
-   "skillRate400": null,
-   "skillQueue400": 0,
-   "callIn400": 0,
-   "signIn400": 0,
-   "onlineSessions": 0,
-   "onlineSeat": 0
-  },
   {
    "ts": 1794156985260,
    "skillRate400": null,
@@ -6669,6 +6660,15 @@
   },
   {
    "ts": 1794264929261,
+   "skillRate400": null,
+   "skillQueue400": 0,
+   "callIn400": 0,
+   "signIn400": 0,
+   "onlineSessions": 0,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1794265318636,
    "skillRate400": null,
    "skillQueue400": 0,
    "callIn400": 0,
