@@ -1,13 +1,13 @@
 {
- "ts": 1794242937145,
- "collectedAtCn": "2026/11/10 00:48:57",
+ "ts": 1794243141439,
+ "collectedAtCn": "2026/11/10 00:52:21",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "2",
   "坐席忙碌数": "0 (0)",
   "接通率": "0%",
   "满意率": "0%",
-  "呼入总数": "3",
+  "呼入总数": "4",
   "当前呼入数": "0",
   "外呼总数": "0",
   "当前外呼数": "0",
@@ -607,8 +607,8 @@
   },
   {
    "service": "88236619(京东智能数码店)",
-   "callIn": 0,
-   "ivr": 0,
+   "callIn": 1,
+   "ivr": 1,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -2204,15 +2204,6 @@
   "rate400": 77
  },
  "history": [
-  {
-   "ts": 1794138550079,
-   "skillRate400": 81.86,
-   "skillQueue400": 0,
-   "callIn400": 1119,
-   "signIn400": 10,
-   "onlineSessions": 880,
-   "onlineSeat": 2
-  },
   {
    "ts": 1794138710777,
    "skillRate400": 81.96,
@@ -6697,6 +6688,15 @@
   },
   {
    "ts": 1794242937145,
+   "skillRate400": null,
+   "skillQueue400": 0,
+   "callIn400": 0,
+   "signIn400": 0,
+   "onlineSessions": 0,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1794243141439,
    "skillRate400": null,
    "skillQueue400": 0,
    "callIn400": 0,
