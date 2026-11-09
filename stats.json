@@ -1,9 +1,9 @@
 {
- "ts": 1794238422236,
- "collectedAtCn": "2026/11/9 23:33:42",
+ "ts": 1794238656825,
+ "collectedAtCn": "2026/11/9 23:37:36",
  "overview": {
   "总排队数": "0",
-  "坐席空闲数": "3",
+  "坐席空闲数": "2",
   "坐席忙碌数": "0 (0)",
   "接通率": "21.17%",
   "满意率": "100.00%",
@@ -1188,7 +1188,7 @@
   "to": "20:30",
   "allDay": 73.01,
   "at": 1794237923618,
-  "agedMin": 10,
+  "agedMin": 14,
   "gap": 0,
   "complete": true,
   "src": "合力400报表"
@@ -1449,15 +1449,15 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1561,
+    "sessions": 1562,
     "assigned": 1544,
-    "current": 17,
+    "current": 16,
     "max": 0,
-    "queue": 8,
+    "queue": 12,
     "onlineSeats": "0",
-    "done": 1458,
-    "answerRate": 98.91,
-    "abandon": 17,
+    "done": 1459,
+    "answerRate": 98.85,
+    "abandon": 18,
     "voicemail": 0,
     "satisfactionRate": 8.33
    },
@@ -1906,7 +1906,7 @@
     "done": 493,
     "answerRate": 99.8,
     "abandon": 1,
-    "voicemail": 8,
+    "voicemail": 9,
     "satisfactionRate": 0
    },
    {
@@ -2506,32 +2506,23 @@
   "capOnDay": 1470,
   "onHoursDay": 49,
   "in400": 1345,
-  "inOn": 897,
+  "inOn": 901,
   "load400": 115,
-  "loadOn": 61,
+  "loadOn": 61.3,
   "rate400": 73
  },
  "capacity_week": {
   "wDays": 2,
   "wIn400": 2560,
   "wAns400": 1970,
-  "wInOn": 1878,
+  "wInOn": 1882,
   "wExp400": 2470,
   "wExpOn": 2370,
   "load400": 103.6,
-  "loadOn": 79.2,
+  "loadOn": 79.4,
   "rate400": 77
  },
  "history": [
-  {
-   "ts": 1794136181326,
-   "skillRate400": 81.51,
-   "skillQueue400": 1,
-   "callIn400": 1071,
-   "signIn400": 10,
-   "onlineSessions": 818,
-   "onlineSeat": 1
-  },
   {
    "ts": 1794136294341,
    "skillRate400": 81.72,
@@ -7016,6 +7007,15 @@
   },
   {
    "ts": 1794238422236,
+   "skillRate400": 73.01,
+   "skillQueue400": 0,
+   "callIn400": 1345,
+   "signIn400": 1,
+   "onlineSessions": 897,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1794238656825,
    "skillRate400": 73.01,
    "skillQueue400": 0,
    "callIn400": 1345,
