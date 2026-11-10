@@ -1,17 +1,17 @@
 {
- "ts": 1794271139550,
- "collectedAtCn": "2026/11/10 08:38:59",
+ "ts": 1794271259009,
+ "collectedAtCn": "2026/11/10 08:40:59",
  "overview": {
   "总排队数": "0",
-  "坐席空闲数": "13",
+  "坐席空闲数": "12",
   "坐席忙碌数": "0 (0)",
-  "接通率": "8.45%",
+  "接通率": "7.84%",
   "满意率": "100.00%",
-  "呼入总数": "296",
-  "当前呼入数": "4",
-  "外呼总数": "16",
-  "当前外呼数": "0",
-  "呼入平均通话时长": "00:02:30",
+  "呼入总数": "319",
+  "当前呼入数": "6",
+  "外呼总数": "17",
+  "当前外呼数": "1",
+  "呼入平均通话时长": "00:02:38",
   "AI通话数": "0 (3)"
  },
  "skillGroups": [
@@ -122,8 +122,8 @@
    "missed": 0,
    "rate": 100,
    "total": 1,
-   "current": 1,
-   "avgDuration": "00:00:00",
+   "current": 0,
+   "avgDuration": "00:03:27",
    "transferIn": 0,
    "transferOut": 0
   },
@@ -177,7 +177,7 @@
   },
   {
    "name": "分类回收400-1２老年用户溢出组",
-   "idleSeats": 1,
+   "idleSeats": 2,
    "signIn": 3,
    "members": "孟佳欢,赵晓晓,黄天琦",
    "ring": 0,
@@ -305,7 +305,7 @@
   }
  ],
  "skillSummary": {
-  "idleSeats": 35,
+  "idleSeats": 36,
   "answered": 25,
   "missed": 3,
   "rate": 89.29,
@@ -496,8 +496,8 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 77,
-   "ivr": 54,
+   "callIn": 78,
+   "ivr": 55,
    "ringMissed": 1,
    "queueAbandon": 1,
    "answered": 21,
@@ -696,8 +696,8 @@
   },
   {
    "service": "81199(门店按键转接)",
-   "callIn": 20,
-   "ivr": 20,
+   "callIn": 24,
+   "ivr": 24,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -726,8 +726,8 @@
   },
   {
    "service": "88236602(其他渠道4000166088)",
-   "callIn": 9,
-   "ivr": 9,
+   "callIn": 10,
+   "ivr": 10,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -736,8 +736,8 @@
   },
   {
    "service": "81198(上门按键转接)",
-   "callIn": 27,
-   "ivr": 27,
+   "callIn": 28,
+   "ivr": 28,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -776,8 +776,8 @@
   },
   {
    "service": "88236603(京东渠道4000990166)",
-   "callIn": 14,
-   "ivr": 14,
+   "callIn": 16,
+   "ivr": 16,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -1145,8 +1145,8 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 77,
-    "ivr": 54,
+    "callIn": 78,
+    "ivr": 55,
     "ringMissed": 1,
     "queueAbandon": 1,
     "answered": 21,
@@ -1164,20 +1164,20 @@
     "transferred": 0
    }
   ],
-  "total": 81,
+  "total": 82,
   "answered": 23,
-  "ivr": 56,
-  "connectRate": 97.53
+  "ivr": 57,
+  "connectRate": 97.56
  },
  "callRtWork": {
   "from": "08:01",
-  "at": "2026/11/10 08:38:59",
-  "total": 40,
-  "ivr": 17,
+  "at": "2026/11/10 08:40:59",
+  "total": 41,
+  "ivr": 18,
   "answered": 22,
   "turn": 23,
   "rate": 95.65,
-  "totalAllDay": 81,
+  "totalAllDay": 82,
   "answeredAllDay": 23
  },
  "online": {
@@ -2510,15 +2510,6 @@
   "rate400": 77.1
  },
  "history": [
-  {
-   "ts": 1794165090742,
-   "skillRate400": null,
-   "skillQueue400": 0,
-   "callIn400": 0,
-   "signIn400": 0,
-   "onlineSessions": 0,
-   "onlineSeat": 0
-  },
   {
    "ts": 1794165306377,
    "skillRate400": null,
@@ -7003,6 +6994,15 @@
   },
   {
    "ts": 1794271139550,
+   "skillRate400": 89.29,
+   "skillQueue400": 0,
+   "callIn400": 28,
+   "signIn400": 4,
+   "onlineSessions": 0,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1794271259009,
    "skillRate400": 89.29,
    "skillQueue400": 0,
    "callIn400": 28,
