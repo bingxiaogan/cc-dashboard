@@ -1,18 +1,18 @@
 {
- "ts": 1794324496360,
- "collectedAtCn": "2026/11/10 23:28:16",
+ "ts": 1794324700333,
+ "collectedAtCn": "2026/11/10 23:31:40",
  "overview": {
   "总排队数": "技能组",
   "坐席空闲数": "0",
   "坐席忙碌数": "0 (0)",
   "接通率": "24.06%",
-  "满意率": "0%",
-  "呼入总数": "0",
+  "满意率": "99.51%",
+  "呼入总数": "17869",
   "当前呼入数": "呼入平均通话时长",
   "外呼总数": "外呼成功数",
   "当前外呼数": "0",
-  "呼入平均通话时长": "00:00:00",
-  "AI通话数": "0 (0)"
+  "呼入平均通话时长": "00:02:43",
+  "AI通话数": "0 (3)"
  },
  "skillGroups": [
   {
@@ -1188,7 +1188,7 @@
   "to": "20:30",
   "allDay": 77.18,
   "at": 1794323764177,
-  "agedMin": 14,
+  "agedMin": 17,
   "gap": 0,
   "complete": true,
   "src": "合力400报表"
@@ -1453,7 +1453,7 @@
     "assigned": 1491,
     "current": 42,
     "max": 70,
-    "queue": 6,
+    "queue": 9,
     "onlineSeats": "2(李宜慢,沈东升)",
     "done": 1382,
     "answerRate": 98.09,
@@ -2502,32 +2502,23 @@
   "capOnDay": 1470,
   "onHoursDay": 49,
   "in400": 1363,
-  "inOn": 861,
+  "inOn": 868,
   "load400": 131.1,
-  "loadOn": 58.6,
+  "loadOn": 59,
   "rate400": 77.2
  },
  "capacity_week": {
   "wDays": 3,
   "wIn400": 3923,
   "wAns400": 3022,
-  "wInOn": 2743,
+  "wInOn": 2750,
   "wExp400": 3510,
   "wExpOn": 3840,
   "load400": 111.8,
-  "loadOn": 71.4,
+  "loadOn": 71.6,
   "rate400": 77
  },
  "history": [
-  {
-   "ts": 1794247712792,
-   "skillRate400": null,
-   "skillQueue400": 0,
-   "callIn400": 0,
-   "signIn400": 0,
-   "onlineSessions": 0,
-   "onlineSeat": 0
-  },
   {
    "ts": 1794247916954,
    "skillRate400": null,
@@ -7012,6 +7003,15 @@
   },
   {
    "ts": 1794324496360,
+   "skillRate400": 77.18,
+   "skillQueue400": 0,
+   "callIn400": 1363,
+   "signIn400": 1,
+   "onlineSessions": 861,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1794324700333,
    "skillRate400": 77.18,
    "skillQueue400": 0,
    "callIn400": 1363,
