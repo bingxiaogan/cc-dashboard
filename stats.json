@@ -1,18 +1,18 @@
 {
- "ts": 1794319572249,
- "collectedAtCn": "2026/11/10 22:06:12",
+ "ts": 1794319776186,
+ "collectedAtCn": "2026/11/10 22:09:36",
  "overview": {
   "总排队数": "技能组",
   "坐席空闲数": "0",
   "坐席忙碌数": "0 (0)",
   "接通率": "24.06%",
-  "满意率": "0%",
-  "呼入总数": "0",
+  "满意率": "99.51%",
+  "呼入总数": "17776",
   "当前呼入数": "呼入平均通话时长",
   "外呼总数": "外呼成功数",
   "当前外呼数": "0",
-  "呼入平均通话时长": "00:00:00",
-  "AI通话数": "0 (0)"
+  "呼入平均通话时长": "00:02:43",
+  "AI通话数": "0 (3)"
  },
  "skillGroups": [
   {
@@ -1188,7 +1188,7 @@
   "to": "20:30",
   "allDay": 77.18,
   "at": 1794318631518,
-  "agedMin": 17,
+  "agedMin": 21,
   "gap": 0,
   "complete": true,
   "src": "合力400报表"
@@ -1449,13 +1449,13 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1463,
-    "assigned": 1434,
-    "current": 82,
+    "sessions": 1467,
+    "assigned": 1438,
+    "current": 81,
     "max": 105,
     "queue": 0,
     "onlineSeats": "3(张慧敏,刘梓爱,陈可)",
-    "done": 1285,
+    "done": 1290,
     "answerRate": 98.02,
     "abandon": 29,
     "voicemail": 0,
@@ -1897,9 +1897,9 @@
    },
    {
     "name": "官网严选自营售前咨询",
-    "sessions": 491,
-    "assigned": 488,
-    "current": 20,
+    "sessions": 492,
+    "assigned": 489,
+    "current": 21,
     "max": 105,
     "queue": 0,
     "onlineSeats": "3(张慧敏,刘梓爱,陈可)",
@@ -2519,15 +2519,6 @@
   "rate400": 77
  },
  "history": [
-  {
-   "ts": 1794242474294,
-   "skillRate400": null,
-   "skillQueue400": 0,
-   "callIn400": 0,
-   "signIn400": 0,
-   "onlineSessions": 0,
-   "onlineSeat": 0
-  },
   {
    "ts": 1794242733031,
    "skillRate400": null,
@@ -7012,6 +7003,15 @@
   },
   {
    "ts": 1794319572249,
+   "skillRate400": 77.18,
+   "skillQueue400": 0,
+   "callIn400": 1363,
+   "signIn400": 1,
+   "onlineSessions": 861,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1794319776186,
    "skillRate400": 77.18,
    "skillQueue400": 0,
    "callIn400": 1363,
