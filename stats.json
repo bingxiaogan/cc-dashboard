@@ -1,14 +1,14 @@
 {
- "ts": 1794353441489,
- "collectedAtCn": "2026/11/11 07:30:41",
+ "ts": 1794353728666,
+ "collectedAtCn": "2026/11/11 07:35:28",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "2",
   "坐席忙碌数": "0 (0)",
   "接通率": "0%",
   "满意率": "0%",
-  "呼入总数": "48",
-  "当前呼入数": "1",
+  "呼入总数": "59",
+  "当前呼入数": "0",
   "外呼总数": "0",
   "当前外呼数": "0",
   "呼入平均通话时长": "00:00:00",
@@ -207,8 +207,8 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 20,
-   "ivr": 20,
+   "callIn": 25,
+   "ivr": 25,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -267,8 +267,8 @@
   },
   {
    "service": "88236634(88236634)",
-   "callIn": 0,
-   "ivr": 0,
+   "callIn": 1,
+   "ivr": 1,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -377,8 +377,8 @@
   },
   {
    "service": "88236609(88236609)",
-   "callIn": 0,
-   "ivr": 0,
+   "callIn": 2,
+   "ivr": 2,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -497,8 +497,8 @@
   },
   {
    "service": "88236606(ahs物流收货)",
-   "callIn": 1,
-   "ivr": 1,
+   "callIn": 2,
+   "ivr": 2,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -851,8 +851,8 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 20,
-    "ivr": 20,
+    "callIn": 25,
+    "ivr": 25,
     "ringMissed": 0,
     "queueAbandon": 0,
     "answered": 0,
@@ -870,9 +870,9 @@
     "transferred": 0
    }
   ],
-  "total": 21,
+  "total": 26,
   "answered": 0,
-  "ivr": 21,
+  "ivr": 26,
   "connectRate": 100
  },
  "online": {
@@ -2176,15 +2176,6 @@
   "rate400": 77
  },
  "history": [
-  {
-   "ts": 1794273448998,
-   "skillRate400": 88.46,
-   "skillQueue400": 0,
-   "callIn400": 78,
-   "signIn400": 12,
-   "onlineSessions": 24,
-   "onlineSeat": 4
-  },
   {
    "ts": 1794273599606,
    "skillRate400": 90.24,
@@ -6669,6 +6660,15 @@
   },
   {
    "ts": 1794353441489,
+   "skillRate400": null,
+   "skillQueue400": 0,
+   "callIn400": 0,
+   "signIn400": 0,
+   "onlineSessions": 0,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1794353728666,
    "skillRate400": null,
    "skillQueue400": 0,
    "callIn400": 0,
