@@ -1,17 +1,17 @@
 {
- "ts": 1794355896705,
- "collectedAtCn": "2026/11/11 08:11:36",
+ "ts": 1794356016179,
+ "collectedAtCn": "2026/11/11 08:13:36",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "4",
   "坐席忙碌数": "0 (0)",
-  "接通率": "6.29%",
+  "接通率": "6.71%",
   "满意率": "100.00%",
-  "呼入总数": "159",
-  "当前呼入数": "5",
+  "呼入总数": "164",
+  "当前呼入数": "3",
   "外呼总数": "2",
   "当前外呼数": "0",
-  "呼入平均通话时长": "00:02:19",
+  "呼入平均通话时长": "00:02:16",
   "AI通话数": "0 (3)"
  },
  "skillGroups": [
@@ -54,12 +54,12 @@
    "members": "许玉娟,彭静,王雅雯,爱分类支援1,梁鑫怡",
    "ring": 0,
    "queue": 0,
-   "todayAnswered": 7,
+   "todayAnswered": 8,
    "missed": 1,
-   "rate": 87.5,
-   "total": 8,
+   "rate": 88.89,
+   "total": 9,
    "current": 2,
-   "avgDuration": "00:02:45",
+   "avgDuration": "00:02:39",
    "transferIn": 0,
    "transferOut": 0
   },
@@ -306,10 +306,10 @@
  ],
  "skillSummary": {
   "idleSeats": 18,
-  "answered": 10,
+  "answered": 11,
   "missed": 2,
-  "rate": 83.33,
-  "total": 12,
+  "rate": 84.62,
+  "total": 13,
   "queue": 0,
   "signIn": 5
  },
@@ -496,11 +496,11 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 65,
+   "callIn": 66,
    "ivr": 53,
    "ringMissed": 0,
    "queueAbandon": 2,
-   "answered": 10,
+   "answered": 11,
    "other": 0,
    "transferred": 0
   },
@@ -696,8 +696,8 @@
   },
   {
    "service": "81199(门店按键转接)",
-   "callIn": 9,
-   "ivr": 9,
+   "callIn": 10,
+   "ivr": 10,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -726,8 +726,8 @@
   },
   {
    "service": "88236602(其他渠道4000166088)",
-   "callIn": 5,
-   "ivr": 5,
+   "callIn": 6,
+   "ivr": 6,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -776,8 +776,8 @@
   },
   {
    "service": "88236603(京东渠道4000990166)",
-   "callIn": 6,
-   "ivr": 6,
+   "callIn": 7,
+   "ivr": 7,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -1146,11 +1146,11 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 65,
+    "callIn": 66,
     "ivr": 53,
     "ringMissed": 0,
     "queueAbandon": 2,
-    "answered": 10,
+    "answered": 11,
     "other": 0,
     "transferred": 0
    },
@@ -1165,21 +1165,21 @@
     "transferred": 0
    }
   ],
-  "total": 66,
-  "answered": 10,
+  "total": 67,
+  "answered": 11,
   "ivr": 54,
-  "connectRate": 96.97
+  "connectRate": 97.01
  },
  "callRtWork": {
   "from": "08:02",
-  "at": "2026/11/11 08:11:36",
-  "total": 14,
+  "at": "2026/11/11 08:13:36",
+  "total": 15,
   "ivr": 5,
-  "answered": 7,
-  "turn": 9,
-  "rate": 77.78,
-  "totalAllDay": 66,
-  "answeredAllDay": 10
+  "answered": 8,
+  "turn": 10,
+  "rate": 80,
+  "totalAllDay": 67,
+  "answeredAllDay": 11
  },
  "online": {
   "groups": [
@@ -1437,14 +1437,14 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 29,
-    "assigned": 16,
-    "current": 16,
+    "sessions": 32,
+    "assigned": 19,
+    "current": 19,
     "max": 105,
     "queue": 0,
     "onlineSeats": "3(王鹏,刘谊鸽,张馨月)",
     "done": 0,
-    "answerRate": 55.17,
+    "answerRate": 59.38,
     "abandon": 13,
     "voicemail": 0,
     "satisfactionRate": 0
@@ -1885,14 +1885,14 @@
    },
    {
     "name": "官网严选自营售前咨询",
-    "sessions": 8,
-    "assigned": 3,
-    "current": 3,
+    "sessions": 9,
+    "assigned": 4,
+    "current": 4,
     "max": 105,
     "queue": 0,
     "onlineSeats": "3(王鹏,刘谊鸽,张馨月)",
     "done": 0,
-    "answerRate": 37.5,
+    "answerRate": 44.44,
     "abandon": 5,
     "voicemail": 2,
     "satisfactionRate": 0
@@ -2509,15 +2509,6 @@
   "rate400": 77.1
  },
  "history": [
-  {
-   "ts": 1794275313285,
-   "skillRate400": 91.2,
-   "skillQueue400": 0,
-   "callIn400": 125,
-   "signIn400": 12,
-   "onlineSessions": 66,
-   "onlineSeat": 5
-  },
   {
    "ts": 1794275425209,
    "skillRate400": 90.84,
@@ -7005,6 +6996,15 @@
    "skillRate400": 83.33,
    "skillQueue400": 0,
    "callIn400": 12,
+   "signIn400": 5,
+   "onlineSessions": 0,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1794356016179,
+   "skillRate400": 84.62,
+   "skillQueue400": 0,
+   "callIn400": 13,
    "signIn400": 5,
    "onlineSessions": 0,
    "onlineSeat": 0
