@@ -1,13 +1,13 @@
 {
- "ts": 1794579662939,
- "collectedAtCn": "2026/11/13 22:21:02",
+ "ts": 1794579868258,
+ "collectedAtCn": "2026/11/13 22:24:28",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "2",
   "坐席忙碌数": "0 (0)",
   "接通率": "23.62%",
   "满意率": "99.29%",
-  "呼入总数": "17450",
+  "呼入总数": "17453",
   "当前呼入数": "0",
   "外呼总数": "7395",
   "当前外呼数": "0",
@@ -1188,7 +1188,7 @@
   "to": "20:30",
   "allDay": 75.71,
   "at": 1794579368160,
-  "agedMin": 6,
+  "agedMin": 10,
   "gap": 0,
   "complete": true,
   "src": "合力400报表"
@@ -1397,7 +1397,7 @@
     "assigned": 266,
     "current": 21,
     "max": 70,
-    "queue": 3,
+    "queue": 4,
     "onlineSeats": "2(沈东升,张慧敏)",
     "done": 245,
     "answerRate": 97.79,
@@ -1449,15 +1449,15 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1627,
-    "assigned": 1605,
-    "current": 79,
+    "sessions": 1630,
+    "assigned": 1607,
+    "current": 74,
     "max": 70,
     "queue": 21,
     "onlineSeats": "2(沈东升,张慧敏)",
-    "done": 1462,
-    "answerRate": 98.65,
-    "abandon": 22,
+    "done": 1469,
+    "answerRate": 98.59,
+    "abandon": 23,
     "voicemail": 0,
     "satisfactionRate": 0
    },
@@ -1901,7 +1901,7 @@
     "assigned": 480,
     "current": 21,
     "max": 70,
-    "queue": 1,
+    "queue": 4,
     "onlineSeats": "2(沈东升,张慧敏)",
     "done": 457,
     "answerRate": 98.97,
@@ -2521,15 +2521,6 @@
   "rate400": 77.3
  },
  "history": [
-  {
-   "ts": 1794486578553,
-   "skillRate400": 78.15,
-   "skillQueue400": 0,
-   "callIn400": 1254,
-   "signIn400": 5,
-   "onlineSessions": 913,
-   "onlineSeat": 3
-  },
   {
    "ts": 1794486693544,
    "skillRate400": 78.2,
@@ -7014,6 +7005,15 @@
   },
   {
    "ts": 1794579662939,
+   "skillRate400": 75.71,
+   "skillQueue400": 0,
+   "callIn400": 1264,
+   "signIn400": 1,
+   "onlineSessions": 874,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1794579868258,
    "skillRate400": 75.71,
    "skillQueue400": 0,
    "callIn400": 1264,
