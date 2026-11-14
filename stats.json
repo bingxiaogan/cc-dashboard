@@ -1,14 +1,14 @@
 {
- "ts": 1794666769014,
- "collectedAtCn": "2026/11/14 22:32:49",
+ "ts": 1794666973632,
+ "collectedAtCn": "2026/11/14 22:36:13",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "2",
   "坐席忙碌数": "0 (0)",
   "接通率": "24.72%",
   "满意率": "99.56%",
-  "呼入总数": "18737",
-  "当前呼入数": "2",
+  "呼入总数": "18743",
+  "当前呼入数": "0",
   "外呼总数": "7070",
   "当前外呼数": "0",
   "呼入平均通话时长": "00:02:31",
@@ -1172,7 +1172,7 @@
   "to": "20:30",
   "allDay": 83.18,
   "at": 1794666474890,
-  "agedMin": 6,
+  "agedMin": 10,
   "gap": 0,
   "complete": true,
   "src": "合力400报表"
@@ -1232,7 +1232,7 @@
     "done": 15,
     "answerRate": 100,
     "abandon": 0,
-    "voicemail": 1,
+    "voicemail": 2,
     "satisfactionRate": 100
    },
    {
@@ -1379,11 +1379,11 @@
     "name": "官网严选寄卖售后咨询",
     "sessions": 285,
     "assigned": 249,
-    "current": 16,
+    "current": 12,
     "max": 70,
     "queue": 5,
     "onlineSeats": "2(沈东升,张馨月)",
-    "done": 233,
+    "done": 237,
     "answerRate": 87.37,
     "abandon": 36,
     "voicemail": 0,
@@ -1433,15 +1433,15 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1739,
-    "assigned": 1622,
-    "current": 73,
+    "sessions": 1744,
+    "assigned": 1626,
+    "current": 75,
     "max": 70,
-    "queue": 11,
+    "queue": 9,
     "onlineSeats": "2(沈东升,张馨月)",
-    "done": 1472,
-    "answerRate": 93.27,
-    "abandon": 117,
+    "done": 1474,
+    "answerRate": 93.23,
+    "abandon": 118,
     "voicemail": 0,
     "satisfactionRate": 0
    },
@@ -1757,11 +1757,11 @@
     "name": "官网严选寄卖售前咨询",
     "sessions": 55,
     "assigned": 53,
-    "current": 4,
+    "current": 3,
     "max": 70,
     "queue": 0,
     "onlineSeats": "2(沈东升,张馨月)",
-    "done": 49,
+    "done": 50,
     "answerRate": 96.36,
     "abandon": 2,
     "voicemail": 0,
@@ -1881,17 +1881,17 @@
    },
    {
     "name": "官网严选自营售前咨询",
-    "sessions": 507,
+    "sessions": 508,
     "assigned": 491,
-    "current": 27,
+    "current": 26,
     "max": 70,
     "queue": 3,
     "onlineSeats": "2(沈东升,张馨月)",
-    "done": 459,
-    "answerRate": 96.84,
-    "abandon": 16,
+    "done": 460,
+    "answerRate": 96.65,
+    "abandon": 17,
     "voicemail": 0,
-    "satisfactionRate": 100
+    "satisfactionRate": 50
    },
    {
     "name": "分类在线技能组",
@@ -2507,15 +2507,6 @@
   "rate400": 78.1
  },
  "history": [
-  {
-   "ts": 1794541274604,
-   "skillRate400": 70.25,
-   "skillQueue400": 0,
-   "callIn400": 447,
-   "signIn400": 15,
-   "onlineSessions": 215,
-   "onlineSeat": 3
-  },
   {
    "ts": 1794541598620,
    "skillRate400": 70.42,
@@ -7000,6 +6991,15 @@
   },
   {
    "ts": 1794666769014,
+   "skillRate400": 83.18,
+   "skillQueue400": 0,
+   "callIn400": 1272,
+   "signIn400": 1,
+   "onlineSessions": 1017,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1794666973632,
    "skillRate400": 83.18,
    "skillQueue400": 0,
    "callIn400": 1272,
