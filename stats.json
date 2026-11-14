@@ -1,6 +1,6 @@
 {
- "ts": 1794675362244,
- "collectedAtCn": "2026/11/15 00:56:02",
+ "ts": 1794675566306,
+ "collectedAtCn": "2026/11/15 00:59:26",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "2",
@@ -1131,15 +1131,15 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 27,
+    "sessions": 28,
     "assigned": 0,
     "current": 0,
     "max": 0,
-    "queue": 4,
+    "queue": 3,
     "onlineSeats": "0",
     "done": 0,
     "answerRate": 0,
-    "abandon": 27,
+    "abandon": 28,
     "voicemail": 0,
     "satisfactionRate": 0
    },
@@ -2143,40 +2143,12 @@
  "satisfaction": null,
  "attendance": {
   "today": "2026-11-14",
-  "duty400": [
-   "黄天琦",
-   "孟佳欢",
-   "李华",
-   "邵燕萍",
-   "赵晓晓",
-   "彭静",
-   "程露芹",
-   "王婧",
-   "刘菲",
-   "徐叶晨"
-  ],
-  "dutyOnline": [
-   "曹张祺",
-   "陆心怡"
-  ],
+  "duty400": [],
+  "dutyOnline": [],
   "on400": [],
-  "off400": [
-   "黄天琦",
-   "孟佳欢",
-   "李华",
-   "邵燕萍",
-   "赵晓晓",
-   "彭静",
-   "程露芹",
-   "王婧",
-   "刘菲",
-   "徐叶晨"
-  ],
+  "off400": [],
   "onOnline": [],
-  "offOnline": [
-   "曹张祺",
-   "陆心怡"
-  ]
+  "offOnline": []
  },
  "capacity": {
   "date": "2026-11-14",
@@ -2204,15 +2176,6 @@
   "rate400": 78.1
  },
  "history": [
-  {
-   "ts": 1794546397163,
-   "skillRate400": 71.5,
-   "skillQueue400": 0,
-   "callIn400": 572,
-   "signIn400": 14,
-   "onlineSessions": 300,
-   "onlineSeat": 3
-  },
   {
    "ts": 1794546551170,
    "skillRate400": 71.83,
@@ -6697,6 +6660,15 @@
   },
   {
    "ts": 1794675362244,
+   "skillRate400": null,
+   "skillQueue400": 0,
+   "callIn400": 0,
+   "signIn400": 0,
+   "onlineSessions": 0,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1794675566306,
    "skillRate400": null,
    "skillQueue400": 0,
    "callIn400": 0,
