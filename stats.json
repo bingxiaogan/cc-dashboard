@@ -1,14 +1,14 @@
 {
- "ts": 1794667208790,
- "collectedAtCn": "2026/11/14 22:40:08",
+ "ts": 1794667413284,
+ "collectedAtCn": "2026/11/14 22:43:33",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "2",
   "坐席忙碌数": "0 (0)",
   "接通率": "24.72%",
   "满意率": "99.56%",
-  "呼入总数": "18745",
-  "当前呼入数": "0",
+  "呼入总数": "18751",
+  "当前呼入数": "2",
   "外呼总数": "7070",
   "当前外呼数": "0",
   "呼入平均通话时长": "00:02:31",
@@ -1172,7 +1172,7 @@
   "to": "20:30",
   "allDay": 83.18,
   "at": 1794666474890,
-  "agedMin": 14,
+  "agedMin": 17,
   "gap": 0,
   "complete": true,
   "src": "合力400报表"
@@ -1381,7 +1381,7 @@
     "assigned": 250,
     "current": 13,
     "max": 70,
-    "queue": 4,
+    "queue": 6,
     "onlineSeats": "2(沈东升,张馨月)",
     "done": 237,
     "answerRate": 87.41,
@@ -1433,14 +1433,14 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1747,
-    "assigned": 1627,
-    "current": 75,
+    "sessions": 1750,
+    "assigned": 1630,
+    "current": 72,
     "max": 70,
     "queue": 12,
     "onlineSeats": "2(沈东升,张馨月)",
-    "done": 1475,
-    "answerRate": 93.13,
+    "done": 1481,
+    "answerRate": 93.14,
     "abandon": 120,
     "voicemail": 0,
     "satisfactionRate": 0
@@ -1883,11 +1883,11 @@
     "name": "官网严选自营售前咨询",
     "sessions": 509,
     "assigned": 492,
-    "current": 23,
+    "current": 20,
     "max": 70,
-    "queue": 7,
+    "queue": 9,
     "onlineSeats": "2(沈东升,张馨月)",
-    "done": 464,
+    "done": 467,
     "answerRate": 96.66,
     "abandon": 17,
     "voicemail": 0,
@@ -2507,15 +2507,6 @@
   "rate400": 78.1
  },
  "history": [
-  {
-   "ts": 1794541737152,
-   "skillRate400": 70.24,
-   "skillQueue400": 1,
-   "callIn400": 457,
-   "signIn400": 15,
-   "onlineSessions": 221,
-   "onlineSeat": 2
-  },
   {
    "ts": 1794541933826,
    "skillRate400": 69.98,
@@ -7000,6 +6991,15 @@
   },
   {
    "ts": 1794667208790,
+   "skillRate400": 83.18,
+   "skillQueue400": 0,
+   "callIn400": 1272,
+   "signIn400": 1,
+   "onlineSessions": 1017,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1794667413284,
    "skillRate400": 83.18,
    "skillQueue400": 0,
    "callIn400": 1272,
