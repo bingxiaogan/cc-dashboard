@@ -20,21 +20,21 @@
    "lastAlertTs": 1794555254579
   },
   "c400w": {
-   "level": 1,
-   "levelName": "正常",
-   "color": "蓝",
+   "level": 2,
+   "levelName": "一级",
+   "color": "黄",
    "vals": {
-    "load": 107,
-    "rate": 84,
-    "lv": 1,
+    "load": 112.8,
+    "rate": 81.9,
+    "lv": 2,
     "rv": 2,
     "src": "周报口径(今实时)",
     "wDays": 1,
     "sum": {
-     "call": 60,
-     "ans": 51,
-     "den400": 56,
-     "on": 5,
+     "call": 82,
+     "ans": 68,
+     "den400": 73,
+     "on": 17,
      "denOn": 990
     },
     "wplan": {
@@ -114,22 +114,22 @@
      "weekEnd": "2026-11-21"
     }
    },
-   "ts": 1794704614845,
-   "tsCn": "2026/11/15 09:03:34",
+   "ts": 1794704727733,
+   "tsCn": "2026/11/15 09:05:27",
    "lastLevel": 1,
    "muted": false,
    "minLevel": 2,
-   "lastAlertTs": 1793949500700
+   "lastAlertTs": 1794704727733
   },
   "onld": {
-   "level": 1,
-   "levelName": "正常",
-   "color": "蓝",
+   "level": 4,
+   "levelName": "三级",
+   "color": "红",
    "vals": {
-    "load": 105.5
+    "load": 212.5
    },
-   "ts": 1794700798229,
-   "tsCn": "2026/11/15 07:59:58",
+   "ts": 1794704727733,
+   "tsCn": "2026/11/15 09:05:27",
    "lastLevel": 1,
    "muted": true,
    "minLevel": 99
@@ -139,19 +139,19 @@
    "levelName": "低负荷",
    "color": "绿",
    "vals": {
-    "load": 0.5,
+    "load": 1.7,
     "src": "周报口径(今实时)",
     "wDays": 1,
     "sum": {
-     "call": 60,
-     "ans": 51,
-     "den400": 56,
-     "on": 5,
+     "call": 82,
+     "ans": 68,
+     "den400": 73,
+     "on": 17,
      "denOn": 990
     }
    },
-   "ts": 1794704614845,
-   "tsCn": "2026/11/15 09:03:34",
+   "ts": 1794704727733,
+   "tsCn": "2026/11/15 09:05:27",
    "lastLevel": 0,
    "muted": true,
    "minLevel": 99
@@ -169,8 +169,8 @@
     "rv": 1,
     "agents": 2
    },
-   "ts": 1794704614845,
-   "tsCn": "2026/11/15 09:03:34",
+   "ts": 1794704727733,
+   "tsCn": "2026/11/15 09:05:27",
    "lastLevel": 1,
    "muted": true,
    "minLevel": 99
@@ -190,6 +190,6 @@
    "minLevel": 99
   }
  },
- "updated": "2026/11/15 09:03:34",
- "updatedTs": 1794704614845
+ "updated": "2026/11/15 09:05:27",
+ "updatedTs": 1794704727733
 }
