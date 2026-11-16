@@ -1,13 +1,13 @@
 {
- "ts": 1794869063750,
- "collectedAtCn": "2026/11/17 06:44:23",
+ "ts": 1794869268019,
+ "collectedAtCn": "2026/11/17 06:47:48",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "2",
   "坐席忙碌数": "0 (0)",
   "接通率": "0%",
   "满意率": "0%",
-  "呼入总数": "31",
+  "呼入总数": "32",
   "当前呼入数": "0",
   "外呼总数": "0",
   "当前外呼数": "0",
@@ -237,8 +237,8 @@
   },
   {
    "service": "88236633(88236633)",
-   "callIn": 0,
-   "ivr": 0,
+   "callIn": 1,
+   "ivr": 1,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -2190,15 +2190,6 @@
   "rate400": 80.5
  },
  "history": [
-  {
-   "ts": 1794738418687,
-   "skillRate400": 79.1,
-   "skillQueue400": 0,
-   "callIn400": 1450,
-   "signIn400": 10,
-   "onlineSessions": 930,
-   "onlineSeat": 2
-  },
   {
    "ts": 1794738559471,
    "skillRate400": 79.19,
@@ -6683,6 +6674,15 @@
   },
   {
    "ts": 1794869063750,
+   "skillRate400": null,
+   "skillQueue400": 0,
+   "callIn400": 0,
+   "signIn400": 0,
+   "onlineSessions": 0,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1794869268019,
    "skillRate400": null,
    "skillQueue400": 0,
    "callIn400": 0,
