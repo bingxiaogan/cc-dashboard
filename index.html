@@ -1420,11 +1420,6 @@ function render400() {
     ? Math.round(planDay.turn * shapeShare(rtFrom, rtAt, shp.share_turn)) : null;
   const rtPredIn = ((useRtBase || useRtWork) && planDay && shp && shp.share_in && rtAt && rtFrom)
     ? Math.round(planDay.inbound * shapeShare(rtFrom, rtAt, shp.share_in)) : null;
-  try { window.__rtdbg = { rtFrom, rtAt, planTurn: planDay && planDay.turn, planIn: planDay && planDay.inbound,
-    predTurn: rtPredTurn, predIn: rtPredIn, shareT: shp ? +shapeShare(rtFrom, rtAt, shp.share_turn).toFixed(4) : null,
-    planGen: D.plan && D.plan.generated_at, planDaysN: D.plan && D.plan.days && D.plan.days.length,
-    day0: D.plan && D.plan.days && D.plan.days[0] ? { date: D.plan.days[0].date, turn: D.plan.days[0].turn, in: D.plan.days[0].inbound } : null,
-    planDayDate: planDay && planDay.date, today: todayCn() }; } catch (e) {}
   /* 偏差文案：<5% 记持平（与调控策略 devTxt 同阈值）；同比给「通数 + 百分比」，
      short=true 只给百分比（呼入量卡位置窄）。 */
   const vsPred = (act, pred, short) => {
