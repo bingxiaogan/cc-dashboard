@@ -1,6 +1,6 @@
 {
- "ts": 1794840452381,
- "collectedAtCn": "2026/11/16 22:47:32",
+ "ts": 1794840656541,
+ "collectedAtCn": "2026/11/16 22:50:56",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "2",
@@ -1189,7 +1189,7 @@
   "to": "20:30",
   "allDay": 81.97,
   "at": 1794840158315,
-  "agedMin": 6,
+  "agedMin": 10,
   "gap": 0,
   "complete": true,
   "src": "合力400报表"
@@ -1305,7 +1305,7 @@
     "done": 99,
     "answerRate": 100,
     "abandon": 0,
-    "voicemail": 9,
+    "voicemail": 10,
     "satisfactionRate": 100
    },
    {
@@ -1412,7 +1412,7 @@
     "assigned": 237,
     "current": 3,
     "max": 36,
-    "queue": 9,
+    "queue": 11,
     "onlineSeats": "2(姚以伟,张馨月)",
     "done": 234,
     "answerRate": 82.58,
@@ -1464,15 +1464,15 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1854,
+    "sessions": 1855,
     "assigned": 1539,
     "current": 37,
     "max": 36,
-    "queue": 38,
+    "queue": 40,
     "onlineSeats": "2(姚以伟,张馨月)",
     "done": 1443,
-    "answerRate": 83.01,
-    "abandon": 315,
+    "answerRate": 82.96,
+    "abandon": 316,
     "voicemail": 0,
     "satisfactionRate": 7.69
    },
@@ -1912,15 +1912,15 @@
    },
    {
     "name": "官网严选自营售前咨询",
-    "sessions": 524,
+    "sessions": 527,
     "assigned": 477,
     "current": 14,
     "max": 36,
-    "queue": 11,
+    "queue": 9,
     "onlineSeats": "2(姚以伟,张馨月)",
     "done": 455,
-    "answerRate": 91.03,
-    "abandon": 47,
+    "answerRate": 90.51,
+    "abandon": 50,
     "voicemail": 0,
     "satisfactionRate": 0
    },
@@ -2538,15 +2538,6 @@
   "rate400": 80.5
  },
  "history": [
-  {
-   "ts": 1794723098804,
-   "skillRate400": 75.06,
-   "skillQueue400": 3,
-   "callIn400": 886,
-   "signIn400": 12,
-   "onlineSessions": 524,
-   "onlineSeat": 2
-  },
   {
    "ts": 1794723211461,
    "skillRate400": 74.97,
@@ -7031,6 +7022,15 @@
   },
   {
    "ts": 1794840452381,
+   "skillRate400": 81.97,
+   "skillQueue400": 0,
+   "callIn400": 1348,
+   "signIn400": 2,
+   "onlineSessions": 1145,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1794840656541,
    "skillRate400": 81.97,
    "skillQueue400": 0,
    "callIn400": 1348,
