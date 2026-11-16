@@ -1413,10 +1413,13 @@ function render400() {
       return (ov > 0 && s1 > s0) ? acc + (sh[full[i]] || 0) * ov / (s1 - s0) : acc;
     }, 0);
   };
-  const rtPredTurn = (useRtBase && planDay && shp && rtAt)
-    ? Math.round(planDay.turn * shapeShare(rtFromHm, rtAt, shp.share_turn)) : null;
-  const rtPredIn = (useRtBase && planDay && shp && shp.share_in && rtAt)
-    ? Math.round(planDay.inbound * shapeShare(rtFromHm, rtAt, shp.share_in)) : null;
+  /* 🔴 2026-11-16：预测对比不能只认 useRtBase —— 基线不可信那天走工时口径，
+     窗口 = [08:00, 报表截止] 同样能比预测，否则卡片上「超预测/低于预测」直接消失。
+     起点终点一律取 rtFrom / rtAt（两种口径都已归一到这里）。 */
+  const rtPredTurn = ((useRtBase || useRtWork) && planDay && shp && rtAt && rtFrom)
+    ? Math.round(planDay.turn * shapeShare(rtFrom, rtAt, shp.share_turn)) : null;
+  const rtPredIn = ((useRtBase || useRtWork) && planDay && shp && shp.share_in && rtAt && rtFrom)
+    ? Math.round(planDay.inbound * shapeShare(rtFrom, rtAt, shp.share_in)) : null;
   /* 偏差文案：<5% 记持平（与调控策略 devTxt 同阈值）；同比给「通数 + 百分比」，
      short=true 只给百分比（呼入量卡位置窄）。 */
   const vsPred = (act, pred, short) => {
