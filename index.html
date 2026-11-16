@@ -1393,7 +1393,7 @@ function render400() {
   const rtAns = useRtBase ? rt.answered : (useRtWork ? rtW.answered : (ksAll ? (+ksAll.answered || 0) : null));
   const rtTurn = (rtIn != null && rtIvr != null) ? Math.max(0, rtIn - rtIvr) : null;
   const rtRate = (rtTurn > 0) ? +((rtAns / rtTurn) * 100).toFixed(2) : null;
-  const rtScope = useRtBase ? `${rtFromHm} 起` : (useRtWork ? `${rtWFrom} 起 · 工时报表` : '今日 0 点起');
+  const rtScope = useRtBase ? `${rtFromHm} 起` : (useRtWork ? `${rtWFrom} 起` : '今日 0 点起');
   const rtFrom = useRtBase ? rtFromHm : (useRtWork ? rtWFrom : '8:00');
   /* 口径来源标签：工时口径时不能写「实时 · 通话监控」，否则又是两个口径混着说。 */
   const rtSrcTag = useRtBase ? '实时 · 通话监控 4 线' : (useRtWork ? '工时报表 4 线' : '实时 · 通话监控 4 线');
