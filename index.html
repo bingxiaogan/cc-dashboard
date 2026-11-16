@@ -1368,7 +1368,14 @@ function render400() {
      只有基线缺失或样本太薄时才退回「今日 0 点起」。 */
   const rtFromHm = hhmmOf(rt && rt.from) || '08:00';
   const rtAt = hhmmOf(rt && rt.at) || hhmmOf(cc.collectedAtCn);
-  const useRtBase = !!(rt && rt.rate != null && (rt.turn || 0) >= 30
+  /* 🔴 2026-11-16 修：还要校验「基线真的扣掉东西了」。
+     今天基线 `.400svcbase.json` 在 09:13:29 建立，但那一刻页面还没出数，
+     total/ivr/answered 全录成 0 ⇒ `total - 0` 等于没减 = 全天累计；
+     而 from 照样写 09:13 ⇒ 卡片出现「09:13 起：接听 751 ÷ 转人工 887」，
+     数字是 0 点起的量、标注是 9 点起，自相矛盾（用户当场发现）。
+     判据：`total` 必须严格小于 `totalAllDay`，否则说明没扣到基线 → 退回「今日 0 点起」。 */
+  const rtBaseReal = !(rt && rt.totalAllDay != null && rt.total != null && rt.total >= rt.totalAllDay);
+  const useRtBase = !!(rt && rt.rate != null && (rt.turn || 0) >= 30 && rtBaseReal
     && rtFromHm >= '08:00' && rtFromHm <= '20:00');
   const rtIn = useRtBase ? rt.total : (ksAll ? (+ksAll.total || 0) : null);
   const rtIvr = useRtBase ? rt.ivr : (ksAll ? (+ksAll.ivr || 0) : null);
