@@ -1,13 +1,13 @@
 {
- "ts": 1794837659879,
- "collectedAtCn": "2026/11/16 22:00:59",
+ "ts": 1794837864903,
+ "collectedAtCn": "2026/11/16 22:04:24",
  "overview": {
   "总排队数": "0",
-  "坐席空闲数": "4",
+  "坐席空闲数": "3",
   "坐席忙碌数": "0 (0)",
   "接通率": "22.57%",
   "满意率": "99.33%",
-  "呼入总数": "15373",
+  "呼入总数": "15379",
   "当前呼入数": "0",
   "外呼总数": "6308",
   "当前外呼数": "1",
@@ -1189,7 +1189,7 @@
   "to": "20:30",
   "allDay": 81.97,
   "at": 1794837569856,
-  "agedMin": 3,
+  "agedMin": 6,
   "gap": 0,
   "complete": true,
   "src": "合力400报表"
@@ -1412,7 +1412,7 @@
     "assigned": 234,
     "current": 3,
     "max": 36,
-    "queue": 9,
+    "queue": 10,
     "onlineSeats": "2(姚以伟,张馨月)",
     "done": 231,
     "answerRate": 85.4,
@@ -1464,15 +1464,15 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1794,
-    "assigned": 1509,
-    "current": 52,
+    "sessions": 1800,
+    "assigned": 1514,
+    "current": 50,
     "max": 36,
-    "queue": 37,
+    "queue": 34,
     "onlineSeats": "2(姚以伟,张馨月)",
-    "done": 1398,
+    "done": 1405,
     "answerRate": 84.11,
-    "abandon": 285,
+    "abandon": 286,
     "voicemail": 0,
     "satisfactionRate": 8.33
    },
@@ -1916,7 +1916,7 @@
     "assigned": 463,
     "current": 9,
     "max": 36,
-    "queue": 10,
+    "queue": 13,
     "onlineSeats": "2(姚以伟,张馨月)",
     "done": 446,
     "answerRate": 92.23,
@@ -2538,15 +2538,6 @@
   "rate400": 80.5
  },
  "history": [
-  {
-   "ts": 1794721478551,
-   "skillRate400": 74.52,
-   "skillQueue400": 0,
-   "callIn400": 828,
-   "signIn400": 12,
-   "onlineSessions": 482,
-   "onlineSeat": 2
-  },
   {
    "ts": 1794721629624,
    "skillRate400": 74.58,
@@ -7031,6 +7022,15 @@
   },
   {
    "ts": 1794837659879,
+   "skillRate400": 81.97,
+   "skillQueue400": 0,
+   "callIn400": 1348,
+   "signIn400": 2,
+   "onlineSessions": 1145,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1794837864903,
    "skillRate400": 81.97,
    "skillQueue400": 0,
    "callIn400": 1348,
