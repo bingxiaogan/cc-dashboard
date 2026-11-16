@@ -1367,23 +1367,36 @@ function render400() {
      并且**如实标出真实起点**（今早采集器 09:05 才起 ⇒ 就写「09:05 起」），不假装 8:00；
      只有基线缺失或样本太薄时才退回「今日 0 点起」。 */
   const rtFromHm = hhmmOf(rt && rt.from) || '08:00';
-  const rtAt = hhmmOf(rt && rt.at) || hhmmOf(cc.collectedAtCn);
   /* 🔴 2026-11-16 修：还要校验「基线真的扣掉东西了」。
      今天基线 `.400svcbase.json` 在 09:13:29 建立，但那一刻页面还没出数，
      total/ivr/answered 全录成 0 ⇒ `total - 0` 等于没减 = 全天累计；
      而 from 照样写 09:13 ⇒ 卡片出现「09:13 起：接听 751 ÷ 转人工 887」，
      数字是 0 点起的量、标注是 9 点起，自相矛盾（用户当场发现）。
-     判据：`total` 必须严格小于 `totalAllDay`，否则说明没扣到基线 → 退回「今日 0 点起」。 */
+     判据：`total` 必须严格小于 `totalAllDay`，否则说明没扣到基线 → 不可信。 */
   const rtBaseReal = !(rt && rt.totalAllDay != null && rt.total != null && rt.total >= rt.totalAllDay);
   const useRtBase = !!(rt && rt.rate != null && (rt.turn || 0) >= 30 && rtBaseReal
     && rtFromHm >= '08:00' && rtFromHm <= '20:00');
-  const rtIn = useRtBase ? rt.total : (ksAll ? (+ksAll.total || 0) : null);
-  const rtIvr = useRtBase ? rt.ivr : (ksAll ? (+ksAll.ivr || 0) : null);
-  const rtAns = useRtBase ? rt.answered : (ksAll ? (+ksAll.answered || 0) : null);
+  /* 🔴 2026-11-16 用户明确要求：「不要 0 点起，我就要 8 点起」。
+     基线不可信当天（采集器 8 点后才上线，0–8 点夜间量取不到，合力报表也不存非工作时段），
+     不再退回「今日 0 点起」，改用**工时报表**的 8 点起口径 `call400Work`
+     （合力「呼入时间趋势」半小时段累加，真实 08:00 起，滞后 15–30 分钟）。
+     数字与实时口径同定义（接听 ÷ (呼入−IVR)），只是晚一个采集周期。 */
+  const rtW = cc.call400Work || null;
+  const useRtWork = !useRtBase && !!(rtW && rtW.rate != null
+    && (rtW.turn || 0) >= 30 && (rtW.slots || 0) >= 2);
+  const rtWFrom = (rtW && rtW.from) || '08:00';
+  const rtWTo = (rtW && rtW.to) || '';
+  const rtAt = useRtBase ? (hhmmOf(rt && rt.at) || hhmmOf(cc.collectedAtCn))
+    : (useRtWork ? rtWTo : (hhmmOf(rt && rt.at) || hhmmOf(cc.collectedAtCn)));
+  const rtIn = useRtBase ? rt.total : (useRtWork ? rtW.inbound : (ksAll ? (+ksAll.total || 0) : null));
+  const rtIvr = useRtBase ? rt.ivr : (useRtWork ? rtW.ivr : (ksAll ? (+ksAll.ivr || 0) : null));
+  const rtAns = useRtBase ? rt.answered : (useRtWork ? rtW.answered : (ksAll ? (+ksAll.answered || 0) : null));
   const rtTurn = (rtIn != null && rtIvr != null) ? Math.max(0, rtIn - rtIvr) : null;
   const rtRate = (rtTurn > 0) ? +((rtAns / rtTurn) * 100).toFixed(2) : null;
-  const rtScope = useRtBase ? `${rtFromHm} 起` : '今日 0 点起';
-  const rtFrom = useRtBase ? rtFromHm : '8:00';
+  const rtScope = useRtBase ? `${rtFromHm} 起` : (useRtWork ? `${rtWFrom} 起 · 工时报表` : '今日 0 点起');
+  const rtFrom = useRtBase ? rtFromHm : (useRtWork ? rtWFrom : '8:00');
+  /* 口径来源标签：工时口径时不能写「实时 · 通话监控」，否则又是两个口径混着说。 */
+  const rtSrcTag = useRtBase ? '实时 · 通话监控 4 线' : (useRtWork ? '工时报表 4 线' : '实时 · 通话监控 4 线');
 
   /* —— 实时卡「超预测多少」（2026-11-02 用户要求，与调控策略区同一套形状模型）——
      · 窗口 = [实时真实起点, 实时截至时间]，不是硬编码 8:00：否则 09:05 起的实时数
@@ -1450,7 +1463,7 @@ function render400() {
      报表时段口径不写在这里 —— 它 9 分钟一轮、还可能整轮失败，写在卡片上会变成
      「71.9% 是实时的还是 43 分钟前的？」这种没法回答的话。时段数去「时段明细」看。 */
   const rtSrc = rtRate != null
-    ? `实时 · 通话监控 4 线 · ${rtScope}：接听 ${n0(rtAns)} ÷ 转人工 ${n0(rtTurn)}`
+    ? `${rtSrcTag} · ${rtScope}：接听 ${n0(rtAns)} ÷ 转人工 ${n0(rtTurn)}`
       + (rtAt ? ` · 截至 ${rtAt}` : '')
     : '通话监控 8 点起口径还没就绪 · 暂不出数';
   const rate400src = rtSrc;
@@ -1475,7 +1488,7 @@ function render400() {
     },
     { k: '呼入量（实时）', v: rtIn == null ? '–' : n0(rtIn), c: 'c-cyan',
       d: rtIn == null ? '<span class="ok">8 点起口径未就绪</span>'
-        : `${rtScope}累计 · 通话监控${rtAt ? ' · 截至 ' + rtAt : ''}${vsPred(rtIn, rtPredIn, 1)}` },
+        : `${rtScope}累计 · ${rtSrcTag}${rtAt ? ' · 截至 ' + rtAt : ''}${vsPred(rtIn, rtPredIn, 1)}` },
     { k: '人工进线量（实时）', v: rtTurn == null ? '–' : n0(rtTurn), c: 'c-cyan',
       d: rtTurn == null ? '<span class="ok">8 点起口径未就绪</span>'
         : `呼入 ${n0(rtIn)} − IVR ${n0(rtIvr)}${vsPred(rtTurn, rtPredTurn)}` },
@@ -1488,7 +1501,7 @@ function render400() {
       c: load400w == null ? 'c-blue' : load400w >= 110 ? 'c-red' : load400w < 90 ? 'c-blue' : 'c-green',
       d: load400w == null
         ? '8 点起人工量还没出来'
-        : `进线 ${n0(loadBase)} / 应接 ${n0(cap.cap400)}（${rtTurn != null ? rtScope + ' · 通话监控' : w4From + ' 起（报表）'}）`
+        : `进线 ${n0(loadBase)} / 应接 ${n0(cap.cap400)}（${rtTurn != null ? rtScope + ' · ' + rtSrcTag : w4From + ' 起（报表）'}）`
     },
     {
       k: '人力缺口', v: gapN == null ? '–' : hcSign(gapN) + '<small>人</small>',
@@ -3474,11 +3487,18 @@ function updateTabs() {
      🔴 2026-11-02：判定同步改成 useRtBase（基线存在 + 起点 08:00–20:00 + 人工 ≥30 通），
      与卡片严格一致；旧版 `from <= '08:30'` 因为 from 被切坏而恒 false，两边一起退全天。 */
   const rtFromT = hhmmOf(rtT && rtT.from) || '08:00';
-  const useRt8T = !!(rtT && rtT.rate != null && (rtT.turn || 0) >= 30
+  /* 🔴 2026-11-16：必须和卡片同一条判定 —— 补上「基线真扣到东西」校验 + 工时口径回退，
+     否则今天会出现「标签 84.73%（0 点起）/ 卡片 84.33%（8 点起）」两个数。 */
+  const rtBaseRealT = !(rtT && rtT.totalAllDay != null && rtT.total != null && rtT.total >= rtT.totalAllDay);
+  const useRt8T = !!(rtT && rtT.rate != null && (rtT.turn || 0) >= 30 && rtBaseRealT
     && rtFromT >= '08:00' && rtFromT <= '20:00');
+  const wT = (cc && cc.call400Work) || null;
+  const useRtWT = !useRt8T && !!(wT && wT.rate != null && (wT.turn || 0) >= 30 && (wT.slots || 0) >= 2);
   const ksRateT = (ksT && (ksT.total - ksT.ivr) > 0)
     ? +(((+ksT.answered || 0) / (ksT.total - ksT.ivr)) * 100).toFixed(2) : null;
-  const rtRateT = useRt8T ? rtT.rate : (ksRateT != null ? ksRateT : ((rtT && rtT.rate != null) ? rtT.rate : null));
+  const rtRateT = useRt8T ? rtT.rate
+    : (useRtWT ? wT.rate
+      : (ksRateT != null ? ksRateT : ((rtT && rtT.rate != null) ? rtT.rate : null)));
   $('#tab400').textContent = rtRateT != null ? pc(rtRateT) : '–';
   $('#tabOnline').textContent = cc ? n0(onlineAgg(cc).sessions) : '–';
   $('#tabTicket').textContent = tk ? n0(tk.grand_total) : '–';
