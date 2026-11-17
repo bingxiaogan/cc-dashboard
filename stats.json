@@ -1,13 +1,13 @@
 {
- "ts": 1794926989423,
- "collectedAtCn": "2026/11/17 22:49:49",
+ "ts": 1794927193665,
+ "collectedAtCn": "2026/11/17 22:53:13",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "3",
   "坐席忙碌数": "0 (0)",
   "接通率": "12.95%",
   "满意率": "98.76%",
-  "呼入总数": "25979",
+  "呼入总数": "25984",
   "当前呼入数": "0",
   "外呼总数": "7688",
   "当前外呼数": "0",
@@ -1156,7 +1156,7 @@
   "to": "20:30",
   "allDay": 83.21,
   "at": 1794926694932,
-  "agedMin": 6,
+  "agedMin": 10,
   "gap": 0,
   "complete": true,
   "src": "合力400报表"
@@ -1377,11 +1377,11 @@
     "name": "官网严选寄卖售后咨询",
     "sessions": 337,
     "assigned": 255,
-    "current": 8,
+    "current": 7,
     "max": 35,
-    "queue": 2,
+    "queue": 3,
     "onlineSeats": "1(张馨月)",
-    "done": 246,
+    "done": 247,
     "answerRate": 75.67,
     "abandon": 82,
     "voicemail": 0,
@@ -1431,17 +1431,17 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1794,
-    "assigned": 1448,
-    "current": 46,
+    "sessions": 1797,
+    "assigned": 1450,
+    "current": 42,
     "max": 35,
-    "queue": 34,
+    "queue": 35,
     "onlineSeats": "1(张馨月)",
-    "done": 1354,
-    "answerRate": 80.71,
-    "abandon": 346,
+    "done": 1360,
+    "answerRate": 80.69,
+    "abandon": 347,
     "voicemail": 0,
-    "satisfactionRate": 9.09
+    "satisfactionRate": 8.33
    },
    {
     "name": "寄卖商服理赔",
@@ -1879,15 +1879,15 @@
    },
    {
     "name": "官网严选自营售前咨询",
-    "sessions": 553,
+    "sessions": 554,
     "assigned": 537,
-    "current": 14,
+    "current": 13,
     "max": 35,
-    "queue": 6,
+    "queue": 7,
     "onlineSeats": "1(张馨月)",
-    "done": 516,
-    "answerRate": 97.11,
-    "abandon": 16,
+    "done": 517,
+    "answerRate": 96.93,
+    "abandon": 17,
     "voicemail": 3,
     "satisfactionRate": 0
    },
@@ -2505,15 +2505,6 @@
   "rate400": 80.7
  },
  "history": [
-  {
-   "ts": 1794844531119,
-   "skillRate400": 81.97,
-   "skillQueue400": 0,
-   "callIn400": 1348,
-   "signIn400": 2,
-   "onlineSessions": 1145,
-   "onlineSeat": 0
-  },
   {
    "ts": 1794845007854,
    "skillRate400": null,
@@ -6998,6 +6989,15 @@
   },
   {
    "ts": 1794926989423,
+   "skillRate400": 83.21,
+   "skillQueue400": 0,
+   "callIn400": 1310,
+   "signIn400": 1,
+   "onlineSessions": 892,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1794927193665,
    "skillRate400": 83.21,
    "skillQueue400": 0,
    "callIn400": 1310,
