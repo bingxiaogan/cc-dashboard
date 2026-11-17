@@ -1,13 +1,13 @@
 {
- "ts": 1794930016100,
- "collectedAtCn": "2026/11/17 23:40:16",
+ "ts": 1794930220444,
+ "collectedAtCn": "2026/11/17 23:43:40",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "3",
   "坐席忙碌数": "0 (0)",
   "接通率": "12.95%",
   "满意率": "98.76%",
-  "呼入总数": "26008",
+  "呼入总数": "26009",
   "当前呼入数": "0",
   "外呼总数": "7688",
   "当前外呼数": "0",
@@ -1156,7 +1156,7 @@
   "to": "20:30",
   "allDay": 83.21,
   "at": 1794929282573,
-  "agedMin": 14,
+  "agedMin": 17,
   "gap": 0,
   "complete": true,
   "src": "合力400报表"
@@ -1379,7 +1379,7 @@
     "assigned": 258,
     "current": 7,
     "max": 70,
-    "queue": 2,
+    "queue": 3,
     "onlineSeats": "2(张馨月,刘谊鸽)",
     "done": 250,
     "answerRate": 75.66,
@@ -1431,14 +1431,14 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1862,
-    "assigned": 1490,
+    "sessions": 1867,
+    "assigned": 1495,
     "current": 53,
     "max": 70,
-    "queue": 13,
+    "queue": 10,
     "onlineSeats": "2(张馨月,刘谊鸽)",
-    "done": 1389,
-    "answerRate": 80.02,
+    "done": 1394,
+    "answerRate": 80.07,
     "abandon": 372,
     "voicemail": 0,
     "satisfactionRate": 8.33
@@ -1879,11 +1879,11 @@
    },
    {
     "name": "官网严选自营售前咨询",
-    "sessions": 576,
-    "assigned": 553,
-    "current": 15,
+    "sessions": 577,
+    "assigned": 554,
+    "current": 16,
     "max": 70,
-    "queue": 1,
+    "queue": 0,
     "onlineSeats": "2(张馨月,刘谊鸽)",
     "done": 531,
     "answerRate": 96.01,
@@ -2505,15 +2505,6 @@
   "rate400": 80.7
  },
  "history": [
-  {
-   "ts": 1794848002366,
-   "skillRate400": null,
-   "skillQueue400": 0,
-   "callIn400": 0,
-   "signIn400": 0,
-   "onlineSessions": 0,
-   "onlineSeat": 0
-  },
   {
    "ts": 1794848297407,
    "skillRate400": null,
@@ -6998,6 +6989,15 @@
   },
   {
    "ts": 1794930016100,
+   "skillRate400": 83.21,
+   "skillQueue400": 0,
+   "callIn400": 1310,
+   "signIn400": 1,
+   "onlineSessions": 892,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1794930220444,
    "skillRate400": 83.21,
    "skillQueue400": 0,
    "callIn400": 1310,
