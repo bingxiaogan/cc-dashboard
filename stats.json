@@ -1,14 +1,14 @@
 {
- "ts": 1794922850486,
- "collectedAtCn": "2026/11/17 21:40:50",
+ "ts": 1794922970733,
+ "collectedAtCn": "2026/11/17 21:42:50",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "3",
   "坐席忙碌数": "0 (0)",
   "接通率": "12.96%",
   "满意率": "98.76%",
-  "呼入总数": "25834",
-  "当前呼入数": "2",
+  "呼入总数": "25841",
+  "当前呼入数": "1",
   "外呼总数": "7688",
   "当前外呼数": "0",
   "呼入平均通话时长": "00:02:41",
@@ -464,8 +464,8 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 2018,
-   "ivr": 866,
+   "callIn": 2021,
+   "ivr": 869,
    "ringMissed": 8,
    "queueAbandon": 181,
    "answered": 963,
@@ -834,8 +834,8 @@
   },
   {
    "service": "80409(奢侈品商家-门店验货报价)",
-   "callIn": 1211,
-   "ivr": 1211,
+   "callIn": 1214,
+   "ivr": 1214,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -1110,8 +1110,8 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 2018,
-    "ivr": 866,
+    "callIn": 2021,
+    "ivr": 869,
     "ringMissed": 8,
     "queueAbandon": 181,
     "answered": 963,
@@ -1129,20 +1129,20 @@
     "transferred": 1
    }
   ],
-  "total": 2105,
+  "total": 2108,
   "answered": 1005,
-  "ivr": 908,
-  "connectRate": 90.88
+  "ivr": 911,
+  "connectRate": 90.89
  },
  "callRtWork": {
   "from": "07:59",
-  "at": "2026/11/17 21:40:50",
-  "total": 2061,
-  "ivr": 864,
+  "at": "2026/11/17 21:42:50",
+  "total": 2064,
+  "ivr": 867,
   "answered": 1005,
   "turn": 1197,
   "rate": 83.96,
-  "totalAllDay": 2105,
+  "totalAllDay": 2108,
   "answeredAllDay": 1005
  },
  "call400Work": {
@@ -1156,7 +1156,7 @@
   "to": "20:30",
   "allDay": 83.21,
   "at": 1794922238122,
-  "agedMin": 10,
+  "agedMin": 12,
   "gap": 0,
   "complete": true,
   "src": "合力400报表"
@@ -1230,7 +1230,7 @@
     "done": 11,
     "answerRate": 100,
     "abandon": 0,
-    "voicemail": 0,
+    "voicemail": 1,
     "satisfactionRate": 100
    },
    {
@@ -1272,7 +1272,7 @@
     "done": 63,
     "answerRate": 100,
     "abandon": 0,
-    "voicemail": 1,
+    "voicemail": 2,
     "satisfactionRate": 100
    },
    {
@@ -1377,11 +1377,11 @@
     "name": "官网严选寄卖售后咨询",
     "sessions": 328,
     "assigned": 247,
-    "current": 19,
+    "current": 17,
     "max": 70,
     "queue": 2,
     "onlineSeats": "2(刘亚森,张馨月)",
-    "done": 227,
+    "done": 229,
     "answerRate": 75.3,
     "abandon": 81,
     "voicemail": 0,
@@ -1431,14 +1431,14 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1739,
-    "assigned": 1398,
-    "current": 91,
+    "sessions": 1745,
+    "assigned": 1404,
+    "current": 92,
     "max": 70,
-    "queue": 6,
+    "queue": 3,
     "onlineSeats": "2(刘亚森,张馨月)",
-    "done": 1259,
-    "answerRate": 80.39,
+    "done": 1264,
+    "answerRate": 80.46,
     "abandon": 341,
     "voicemail": 0,
     "satisfactionRate": 10
@@ -1755,11 +1755,11 @@
     "name": "官网严选寄卖售前咨询",
     "sessions": 45,
     "assigned": 43,
-    "current": 3,
+    "current": 2,
     "max": 70,
     "queue": 0,
     "onlineSeats": "2(刘亚森,张馨月)",
-    "done": 40,
+    "done": 41,
     "answerRate": 95.56,
     "abandon": 2,
     "voicemail": 0,
@@ -1879,14 +1879,14 @@
    },
    {
     "name": "官网严选自营售前咨询",
-    "sessions": 525,
-    "assigned": 512,
-    "current": 25,
+    "sessions": 528,
+    "assigned": 515,
+    "current": 23,
     "max": 70,
-    "queue": 3,
+    "queue": 0,
     "onlineSeats": "2(刘亚森,张馨月)",
-    "done": 481,
-    "answerRate": 97.52,
+    "done": 486,
+    "answerRate": 97.54,
     "abandon": 13,
     "voicemail": 0,
     "satisfactionRate": 0
@@ -2505,15 +2505,6 @@
   "rate400": 80.7
  },
  "history": [
-  {
-   "ts": 1794840248328,
-   "skillRate400": 81.97,
-   "skillQueue400": 0,
-   "callIn400": 1348,
-   "signIn400": 2,
-   "onlineSessions": 1145,
-   "onlineSeat": 0
-  },
   {
    "ts": 1794840452381,
    "skillRate400": 81.97,
@@ -6998,6 +6989,15 @@
   },
   {
    "ts": 1794922850486,
+   "skillRate400": 83.21,
+   "skillQueue400": 0,
+   "callIn400": 1310,
+   "signIn400": 1,
+   "onlineSessions": 892,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1794922970733,
    "skillRate400": 83.21,
    "skillQueue400": 0,
    "callIn400": 1310,
