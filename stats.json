@@ -1,14 +1,14 @@
 {
- "ts": 1794926340804,
- "collectedAtCn": "2026/11/17 22:39:00",
+ "ts": 1794926546081,
+ "collectedAtCn": "2026/11/17 22:42:26",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "3",
   "坐席忙碌数": "0 (0)",
   "接通率": "12.95%",
   "满意率": "98.76%",
-  "呼入总数": "25973",
-  "当前呼入数": "1",
+  "呼入总数": "25977",
+  "当前呼入数": "0",
   "外呼总数": "7688",
   "当前外呼数": "0",
   "呼入平均通话时长": "00:02:41",
@@ -1156,7 +1156,7 @@
   "to": "20:30",
   "allDay": 83.21,
   "at": 1794925402666,
-  "agedMin": 17,
+  "agedMin": 21,
   "gap": 0,
   "complete": true,
   "src": "合力400报表"
@@ -1272,7 +1272,7 @@
     "done": 63,
     "answerRate": 100,
     "abandon": 0,
-    "voicemail": 9,
+    "voicemail": 10,
     "satisfactionRate": 100
    },
    {
@@ -1379,7 +1379,7 @@
     "assigned": 255,
     "current": 12,
     "max": 35,
-    "queue": 2,
+    "queue": 3,
     "onlineSeats": "1(张馨月)",
     "done": 242,
     "answerRate": 75.89,
@@ -1433,11 +1433,11 @@
     "name": "官网严选自营售后咨询",
     "sessions": 1792,
     "assigned": 1448,
-    "current": 49,
+    "current": 47,
     "max": 35,
-    "queue": 23,
+    "queue": 25,
     "onlineSeats": "1(张馨月)",
-    "done": 1351,
+    "done": 1353,
     "answerRate": 80.8,
     "abandon": 344,
     "voicemail": 0,
@@ -1883,7 +1883,7 @@
     "assigned": 537,
     "current": 15,
     "max": 35,
-    "queue": 4,
+    "queue": 5,
     "onlineSeats": "1(张馨月)",
     "done": 515,
     "answerRate": 97.11,
@@ -2505,15 +2505,6 @@
   "rate400": 80.7
  },
  "history": [
-  {
-   "ts": 1794843883660,
-   "skillRate400": 81.97,
-   "skillQueue400": 0,
-   "callIn400": 1348,
-   "signIn400": 2,
-   "onlineSessions": 1145,
-   "onlineSeat": 0
-  },
   {
    "ts": 1794844122635,
    "skillRate400": 81.97,
@@ -6998,6 +6989,15 @@
   },
   {
    "ts": 1794926340804,
+   "skillRate400": 83.21,
+   "skillQueue400": 0,
+   "callIn400": 1310,
+   "signIn400": 1,
+   "onlineSessions": 892,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1794926546081,
    "skillRate400": 83.21,
    "skillQueue400": 0,
    "callIn400": 1310,
