@@ -1,6 +1,6 @@
 {
- "ts": 1795014371627,
- "collectedAtCn": "2026/11/18 23:06:11",
+ "ts": 1795014582093,
+ "collectedAtCn": "2026/11/18 23:09:42",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "2",
@@ -1156,7 +1156,7 @@
   "to": "20:30",
   "allDay": 79.26,
   "at": 1795014281616,
-  "agedMin": 3,
+  "agedMin": 7,
   "gap": 0,
   "complete": true,
   "src": "合力400报表"
@@ -1375,14 +1375,14 @@
    },
    {
     "name": "官网严选寄卖售后咨询",
-    "sessions": 286,
-    "assigned": 269,
-    "current": 14,
+    "sessions": 287,
+    "assigned": 270,
+    "current": 13,
     "max": 70,
-    "queue": 3,
+    "queue": 2,
     "onlineSeats": "2(张馨月,刘谊鸽)",
-    "done": 254,
-    "answerRate": 94.06,
+    "done": 256,
+    "answerRate": 94.08,
     "abandon": 17,
     "voicemail": 0,
     "satisfactionRate": 0
@@ -1431,11 +1431,11 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1597,
-    "assigned": 1538,
-    "current": 47,
+    "sessions": 1601,
+    "assigned": 1542,
+    "current": 51,
     "max": 70,
-    "queue": 9,
+    "queue": 6,
     "onlineSeats": "2(张馨月,刘谊鸽)",
     "done": 1424,
     "answerRate": 96.31,
@@ -1883,7 +1883,7 @@
     "assigned": 489,
     "current": 14,
     "max": 70,
-    "queue": 1,
+    "queue": 2,
     "onlineSeats": "2(张馨月,刘谊鸽)",
     "done": 473,
     "answerRate": 98.99,
@@ -2503,15 +2503,6 @@
   "rate400": 80.1
  },
  "history": [
-  {
-   "ts": 1794933681434,
-   "skillRate400": null,
-   "skillQueue400": 0,
-   "callIn400": 0,
-   "signIn400": 0,
-   "onlineSessions": 0,
-   "onlineSeat": 0
-  },
   {
    "ts": 1794933885586,
    "skillRate400": null,
@@ -6996,6 +6987,15 @@
   },
   {
    "ts": 1795014371627,
+   "skillRate400": 79.26,
+   "skillQueue400": 0,
+   "callIn400": 1114,
+   "signIn400": 1,
+   "onlineSessions": 762,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1795014582093,
    "skillRate400": 79.26,
    "skillQueue400": 0,
    "callIn400": 1114,
