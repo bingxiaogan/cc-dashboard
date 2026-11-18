@@ -1,16 +1,16 @@
 {
- "ts": 1795007812567,
- "collectedAtCn": "2026/11/18 21:16:52",
+ "ts": 1795008021603,
+ "collectedAtCn": "2026/11/18 21:20:21",
  "overview": {
   "总排队数": "0",
-  "坐席空闲数": "7",
+  "坐席空闲数": "4",
   "坐席忙碌数": "0 (0)",
   "接通率": "15.73%",
   "满意率": "98.66%",
-  "呼入总数": "18669",
+  "呼入总数": "18681",
   "当前呼入数": "2",
-  "外呼总数": "8526",
-  "当前外呼数": "31",
+  "外呼总数": "8529",
+  "当前外呼数": "2",
   "呼入平均通话时长": "00:02:43",
   "AI通话数": "0 (3)"
  },
@@ -1156,7 +1156,7 @@
   "to": "20:00",
   "allDay": 79.26,
   "at": 1795007722549,
-  "agedMin": 3,
+  "agedMin": 7,
   "gap": 0,
   "complete": true,
   "src": "合力400报表"
@@ -1377,11 +1377,11 @@
     "name": "官网严选寄卖售后咨询",
     "sessions": 266,
     "assigned": 249,
-    "current": 18,
+    "current": 17,
     "max": 140,
     "queue": 0,
     "onlineSeats": "4(黄益群,张馨月,刘亚森,周鑫)",
-    "done": 230,
+    "done": 231,
     "answerRate": 93.61,
     "abandon": 17,
     "voicemail": 0,
@@ -1431,14 +1431,14 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1489,
-    "assigned": 1432,
+    "sessions": 1496,
+    "assigned": 1439,
     "current": 90,
     "max": 140,
     "queue": 0,
     "onlineSeats": "4(黄益群,张馨月,刘亚森,周鑫)",
-    "done": 1276,
-    "answerRate": 96.17,
+    "done": 1283,
+    "answerRate": 96.19,
     "abandon": 57,
     "voicemail": 0,
     "satisfactionRate": 0
@@ -1879,14 +1879,14 @@
    },
    {
     "name": "官网严选自营售前咨询",
-    "sessions": 458,
-    "assigned": 453,
+    "sessions": 461,
+    "assigned": 456,
     "current": 22,
     "max": 140,
     "queue": 0,
     "onlineSeats": "4(黄益群,张馨月,刘亚森,周鑫)",
-    "done": 429,
-    "answerRate": 98.91,
+    "done": 432,
+    "answerRate": 98.92,
     "abandon": 5,
     "voicemail": 0,
     "satisfactionRate": 0
@@ -2503,15 +2503,6 @@
   "rate400": 80.1
  },
  "history": [
-  {
-   "ts": 1794926989423,
-   "skillRate400": 83.21,
-   "skillQueue400": 0,
-   "callIn400": 1310,
-   "signIn400": 1,
-   "onlineSessions": 892,
-   "onlineSeat": 0
-  },
   {
    "ts": 1794927193665,
    "skillRate400": 83.21,
@@ -6996,6 +6987,15 @@
   },
   {
    "ts": 1795007812567,
+   "skillRate400": 79.26,
+   "skillQueue400": 0,
+   "callIn400": 1114,
+   "signIn400": 1,
+   "onlineSessions": 762,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1795008021603,
    "skillRate400": 79.26,
    "skillQueue400": 0,
    "callIn400": 1114,
