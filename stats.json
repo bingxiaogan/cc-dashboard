@@ -1,16 +1,16 @@
 {
- "ts": 1795007139240,
- "collectedAtCn": "2026/11/18 21:05:39",
+ "ts": 1795007259500,
+ "collectedAtCn": "2026/11/18 21:07:39",
  "overview": {
-  "总排队数": "0",
-  "坐席空闲数": "7",
+  "总排队数": "1",
+  "坐席空闲数": "10",
   "坐席忙碌数": "1 (1)",
-  "接通率": "15.77%",
+  "接通率": "15.76%",
   "满意率": "98.66%",
-  "呼入总数": "18593",
-  "当前呼入数": "3",
-  "外呼总数": "8491",
-  "当前外呼数": "7",
+  "呼入总数": "18604",
+  "当前呼入数": "2",
+  "外呼总数": "8493",
+  "当前外呼数": "3",
   "呼入平均通话时长": "00:02:43",
   "AI通话数": "0 (3)"
  },
@@ -144,22 +144,6 @@
    "transferOut": 0
   },
   {
-   "name": "95分分类回收400-4返航新生活动",
-   "idleSeats": 0,
-   "signIn": 1,
-   "members": "梁鑫怡",
-   "ring": 0,
-   "queue": 0,
-   "todayAnswered": 5,
-   "missed": 9,
-   "rate": 35.71,
-   "total": 13,
-   "current": 0,
-   "avgDuration": "00:01:56",
-   "transferIn": 1,
-   "transferOut": 0
-  },
-  {
    "name": "95分分类回收400-1分类回收客服组",
    "idleSeats": 0,
    "signIn": 1,
@@ -272,22 +256,6 @@
    "transferOut": 0
   },
   {
-   "name": "分类回收400-4返航新生活动（爱分类）",
-   "idleSeats": 0,
-   "signIn": 1,
-   "members": "梁鑫怡",
-   "ring": 0,
-   "queue": 0,
-   "todayAnswered": 20,
-   "missed": 22,
-   "rate": 47.62,
-   "total": 41,
-   "current": 2,
-   "avgDuration": "00:02:19",
-   "transferIn": 0,
-   "transferOut": 0
-  },
-  {
    "name": "分类回收400-3收益到账咨询（爱分类）",
    "idleSeats": 0,
    "signIn": 1,
@@ -306,12 +274,12 @@
  ],
  "skillSummary": {
   "idleSeats": 0,
-  "answered": 908,
-  "missed": 279,
-  "rate": 77.74,
-  "total": 1168,
+  "answered": 883,
+  "missed": 248,
+  "rate": 79.26,
+  "total": 1114,
   "queue": 0,
-  "signIn": 2
+  "signIn": 1
  },
  "services": [
   {
@@ -496,8 +464,8 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 1737,
-   "ivr": 791,
+   "callIn": 1743,
+   "ivr": 797,
    "ringMissed": 1,
    "queueAbandon": 153,
    "answered": 792,
@@ -736,8 +704,8 @@
   },
   {
    "service": "81198(上门按键转接)",
-   "callIn": 708,
-   "ivr": 405,
+   "callIn": 710,
+   "ivr": 407,
    "ringMissed": 2,
    "queueAbandon": 61,
    "answered": 253,
@@ -866,8 +834,8 @@
   },
   {
    "service": "80409(奢侈品商家-门店验货报价)",
-   "callIn": 1209,
-   "ivr": 1209,
+   "callIn": 1210,
+   "ivr": 1210,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -1116,8 +1084,7 @@
   }
  ],
  "signInAgents400": [
-  "孟佳欢",
-  "梁鑫怡"
+  "孟佳欢"
  ],
  "keyServices": {
   "list": [
@@ -1143,8 +1110,8 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 1737,
-    "ivr": 791,
+    "callIn": 1743,
+    "ivr": 797,
     "ringMissed": 1,
     "queueAbandon": 153,
     "answered": 792,
@@ -1162,20 +1129,20 @@
     "transferred": 1
    }
   ],
-  "total": 1795,
+  "total": 1801,
   "answered": 827,
-  "ivr": 809,
-  "connectRate": 91.14
+  "ivr": 815,
+  "connectRate": 91.17
  },
  "callRtWork": {
   "from": "08:00",
-  "at": "2026/11/18 21:05:39",
-  "total": 1751,
-  "ivr": 766,
+  "at": "2026/11/18 21:07:39",
+  "total": 1757,
+  "ivr": 772,
   "answered": 827,
   "turn": 985,
   "rate": 83.96,
-  "totalAllDay": 1795,
+  "totalAllDay": 1801,
   "answeredAllDay": 827
  },
  "call400Work": {
@@ -1187,9 +1154,9 @@
   "slots": 25,
   "from": "08:00",
   "to": "20:00",
-  "allDay": 77.74,
+  "allDay": 79.26,
   "at": 1795006926263,
-  "agedMin": 4,
+  "agedMin": 6,
   "gap": 0,
   "complete": true,
   "src": "合力400报表"
@@ -1466,11 +1433,11 @@
     "name": "官网严选自营售后咨询",
     "sessions": 1471,
     "assigned": 1414,
-    "current": 99,
+    "current": 97,
     "max": 140,
     "queue": 0,
     "onlineSeats": "4(黄益群,张馨月,刘亚森,周鑫)",
-    "done": 1251,
+    "done": 1253,
     "answerRate": 96.13,
     "abandon": 57,
     "voicemail": 0,
@@ -1912,13 +1879,13 @@
    },
    {
     "name": "官网严选自营售前咨询",
-    "sessions": 453,
-    "assigned": 448,
+    "sessions": 454,
+    "assigned": 449,
     "current": 22,
     "max": 140,
     "queue": 0,
     "onlineSeats": "4(黄益群,张馨月,刘亚森,周鑫)",
-    "done": 424,
+    "done": 425,
     "answerRate": 98.9,
     "abandon": 5,
     "voicemail": 0,
@@ -2536,15 +2503,6 @@
   "rate400": 80.1
  },
  "history": [
-  {
-   "ts": 1794925901485,
-   "skillRate400": 83.21,
-   "skillQueue400": 0,
-   "callIn400": 1310,
-   "signIn400": 1,
-   "onlineSessions": 892,
-   "onlineSeat": 0
-  },
   {
    "ts": 1794926136037,
    "skillRate400": 83.21,
@@ -7033,6 +6991,15 @@
    "skillQueue400": 0,
    "callIn400": 1168,
    "signIn400": 2,
+   "onlineSessions": 762,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1795007259500,
+   "skillRate400": 79.26,
+   "skillQueue400": 0,
+   "callIn400": 1114,
+   "signIn400": 1,
    "onlineSessions": 762,
    "onlineSeat": 0
   }
