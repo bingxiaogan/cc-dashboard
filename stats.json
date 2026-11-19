@@ -1,14 +1,14 @@
 {
- "ts": 1795098698513,
- "collectedAtCn": "2026/11/19 22:31:38",
+ "ts": 1795098938676,
+ "collectedAtCn": "2026/11/19 22:35:38",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "1",
   "坐席忙碌数": "0 (0)",
   "接通率": "15.27%",
   "满意率": "98.71%",
-  "呼入总数": "17644",
-  "当前呼入数": "1",
+  "呼入总数": "17646",
+  "当前呼入数": "0",
   "外呼总数": "8142",
   "当前外呼数": "0",
   "呼入平均通话时长": "00:02:44",
@@ -464,8 +464,8 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 1737,
-   "ivr": 789,
+   "callIn": 1739,
+   "ivr": 791,
    "ringMissed": 3,
    "queueAbandon": 114,
    "answered": 831,
@@ -1110,8 +1110,8 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 1737,
-    "ivr": 789,
+    "callIn": 1739,
+    "ivr": 791,
     "ringMissed": 3,
     "queueAbandon": 114,
     "answered": 831,
@@ -1129,20 +1129,20 @@
     "transferred": 0
    }
   ],
-  "total": 1791,
+  "total": 1793,
   "answered": 854,
-  "ivr": 814,
-  "connectRate": 93.13
+  "ivr": 816,
+  "connectRate": 93.14
  },
  "callRtWork": {
   "from": "07:59",
-  "at": "2026/11/19 22:31:38",
-  "total": 1744,
-  "ivr": 767,
+  "at": "2026/11/19 22:35:38",
+  "total": 1746,
+  "ivr": 769,
   "answered": 854,
   "turn": 977,
   "rate": 87.41,
-  "totalAllDay": 1791,
+  "totalAllDay": 1793,
   "answeredAllDay": 854
  },
  "call400Work": {
@@ -1156,7 +1156,7 @@
   "to": "20:30",
   "allDay": 85.86,
   "at": 1795098218252,
-  "agedMin": 8,
+  "agedMin": 12,
   "gap": 0,
   "complete": true,
   "src": "合力400报表"
@@ -1379,7 +1379,7 @@
     "assigned": 246,
     "current": 14,
     "max": 35,
-    "queue": 3,
+    "queue": 4,
     "onlineSeats": "1(刘谊鸽)",
     "done": 232,
     "answerRate": 90.11,
@@ -1431,14 +1431,14 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1535,
-    "assigned": 1395,
-    "current": 56,
+    "sessions": 1536,
+    "assigned": 1396,
+    "current": 52,
     "max": 35,
-    "queue": 23,
+    "queue": 22,
     "onlineSeats": "1(刘谊鸽)",
-    "done": 1262,
-    "answerRate": 90.88,
+    "done": 1267,
+    "answerRate": 90.89,
     "abandon": 140,
     "voicemail": 0,
     "satisfactionRate": 12.5
@@ -1755,11 +1755,11 @@
     "name": "官网严选寄卖售前咨询",
     "sessions": 53,
     "assigned": 51,
-    "current": 2,
+    "current": 1,
     "max": 35,
     "queue": 0,
     "onlineSeats": "1(刘谊鸽)",
-    "done": 49,
+    "done": 50,
     "answerRate": 96.23,
     "abandon": 2,
     "voicemail": 5,
@@ -2488,41 +2488,23 @@
   "capOnDay": 1230,
   "onHoursDay": 41,
   "in400": 1082,
-  "inOn": 677,
+  "inOn": 686,
   "load400": 83.2,
-  "loadOn": 55,
+  "loadOn": 55.8,
   "rate400": 85.9
  },
  "capacity_week": {
   "wDays": 5,
   "wIn400": 6706,
   "wAns400": 5411,
-  "wInOn": 4694,
+  "wInOn": 4703,
   "wExp400": 6500,
   "wExpOn": 6390,
   "load400": 103.2,
-  "loadOn": 73.5,
+  "loadOn": 73.6,
   "rate400": 80.7
  },
  "history": [
-  {
-   "ts": 1795020853759,
-   "skillRate400": null,
-   "skillQueue400": 0,
-   "callIn400": 0,
-   "signIn400": 0,
-   "onlineSessions": 0,
-   "onlineSeat": 0
-  },
-  {
-   "ts": 1795021149556,
-   "skillRate400": null,
-   "skillQueue400": 0,
-   "callIn400": 0,
-   "signIn400": 0,
-   "onlineSessions": 0,
-   "onlineSeat": 0
-  },
   {
    "ts": 1795021353844,
    "skillRate400": null,
@@ -6998,6 +6980,24 @@
   },
   {
    "ts": 1795098698513,
+   "skillRate400": 85.86,
+   "skillQueue400": 0,
+   "callIn400": 1082,
+   "signIn400": 1,
+   "onlineSessions": 672,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1795098818206,
+   "skillRate400": 85.86,
+   "skillQueue400": 0,
+   "callIn400": 1082,
+   "signIn400": 1,
+   "onlineSessions": 672,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1795098938676,
    "skillRate400": 85.86,
    "skillQueue400": 0,
    "callIn400": 1082,
