@@ -1,14 +1,14 @@
 {
- "ts": 1795105884624,
- "collectedAtCn": "2026/11/20 00:31:24",
+ "ts": 1795106123605,
+ "collectedAtCn": "2026/11/20 00:35:23",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "1",
   "坐席忙碌数": "0 (0)",
   "接通率": "0%",
   "满意率": "98.71%",
-  "呼入总数": "4",
-  "当前呼入数": "0",
+  "呼入总数": "5",
+  "当前呼入数": "1",
   "外呼总数": "0",
   "当前外呼数": "0",
   "呼入平均通话时长": "00:00:00",
@@ -714,8 +714,8 @@
   },
   {
    "service": "88236601(京东渠道（抖音引流）)",
-   "callIn": 0,
-   "ivr": 0,
+   "callIn": 1,
+   "ivr": 1,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -1138,14 +1138,14 @@
   "groups": [
    {
     "name": "官网严选瑕疵挽单",
-    "sessions": 14,
-    "assigned": 14,
+    "sessions": 0,
+    "assigned": 0,
     "current": 0,
     "max": 0,
     "queue": 0,
     "onlineSeats": "0",
     "done": 0,
-    "answerRate": 100,
+    "answerRate": 0,
     "abandon": 0,
     "voicemail": 0,
     "satisfactionRate": 0
@@ -1245,7 +1245,7 @@
     "done": 0,
     "answerRate": 0,
     "abandon": 0,
-    "voicemail": 1,
+    "voicemail": 2,
     "satisfactionRate": 0
    },
    {
@@ -2478,24 +2478,6 @@
   "rate400": 80.7
  },
  "history": [
-  {
-   "ts": 1795033203099,
-   "skillRate400": null,
-   "skillQueue400": 0,
-   "callIn400": 0,
-   "signIn400": 0,
-   "onlineSessions": 0,
-   "onlineSeat": 0
-  },
-  {
-   "ts": 1795033498400,
-   "skillRate400": null,
-   "skillQueue400": 0,
-   "callIn400": 0,
-   "signIn400": 0,
-   "onlineSessions": 0,
-   "onlineSeat": 0
-  },
   {
    "ts": 1795033702753,
    "skillRate400": null,
@@ -6971,6 +6953,24 @@
   },
   {
    "ts": 1795105884624,
+   "skillRate400": 0,
+   "skillQueue400": 0,
+   "callIn400": 1082,
+   "signIn400": 1,
+   "onlineSessions": 0,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1795106004108,
+   "skillRate400": 0,
+   "skillQueue400": 0,
+   "callIn400": 1082,
+   "signIn400": 1,
+   "onlineSessions": 0,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1795106123605,
    "skillRate400": 0,
    "skillQueue400": 0,
    "callIn400": 1082,
