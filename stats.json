@@ -1,6 +1,6 @@
 {
- "ts": 1795104439376,
- "collectedAtCn": "2026/11/20 00:07:19",
+ "ts": 1795104647591,
+ "collectedAtCn": "2026/11/20 00:10:47",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "1",
@@ -1180,17 +1180,17 @@
    },
    {
     "name": "品牌活动技能组",
-    "sessions": 39,
-    "assigned": 39,
+    "sessions": 0,
+    "assigned": 0,
     "current": 0,
     "max": 0,
     "queue": 0,
     "onlineSeats": "0",
-    "done": 39,
-    "answerRate": 100,
+    "done": 0,
+    "answerRate": 0,
     "abandon": 0,
     "voicemail": 0,
-    "satisfactionRate": 100
+    "satisfactionRate": 0
    },
    {
     "name": "多品类运动户外销售技能组",
@@ -1348,15 +1348,15 @@
    },
    {
     "name": "官网严选寄卖售后咨询",
-    "sessions": 2,
+    "sessions": 3,
     "assigned": 0,
     "current": 0,
     "max": 0,
-    "queue": 3,
+    "queue": 2,
     "onlineSeats": "0",
     "done": 0,
     "answerRate": 0,
-    "abandon": 2,
+    "abandon": 3,
     "voicemail": 0,
     "satisfactionRate": 0
    },
@@ -1404,15 +1404,15 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1,
+    "sessions": 3,
     "assigned": 0,
     "current": 0,
     "max": 0,
-    "queue": 10,
+    "queue": 8,
     "onlineSeats": "0",
     "done": 0,
     "answerRate": 0,
-    "abandon": 1,
+    "abandon": 3,
     "voicemail": 0,
     "satisfactionRate": 0
    },
@@ -1852,15 +1852,15 @@
    },
    {
     "name": "官网严选自营售前咨询",
-    "sessions": 1,
+    "sessions": 3,
     "assigned": 0,
     "current": 0,
     "max": 0,
-    "queue": 7,
+    "queue": 5,
     "onlineSeats": "0",
     "done": 0,
     "answerRate": 0,
-    "abandon": 1,
+    "abandon": 3,
     "voicemail": 0,
     "satisfactionRate": 0
    },
@@ -2456,15 +2456,15 @@
   "date": "2026-11-19",
   "p400": 10,
   "pOn": 2,
-  "cap400": 1300,
-  "capOn": 1230,
+  "cap400": 0,
+  "capOn": 0,
   "capOnDay": 1230,
   "onHoursDay": 41,
   "in400": 1082,
-  "inOn": 696,
-  "load400": 83.2,
-  "loadOn": 56.6,
-  "rate400": 85.9
+  "inOn": 672,
+  "load400": null,
+  "loadOn": null,
+  "rate400": 0
  },
  "capacity_week": {
   "wDays": 5,
@@ -2478,15 +2478,6 @@
   "rate400": 80.7
  },
  "history": [
-  {
-   "ts": 1795030955653,
-   "skillRate400": null,
-   "skillQueue400": 0,
-   "callIn400": 0,
-   "signIn400": 0,
-   "onlineSessions": 0,
-   "onlineSeat": 0
-  },
   {
    "ts": 1795031159935,
    "skillRate400": null,
@@ -6971,6 +6962,15 @@
   },
   {
    "ts": 1795104439376,
+   "skillRate400": 0,
+   "skillQueue400": 0,
+   "callIn400": 1082,
+   "signIn400": 1,
+   "onlineSessions": 672,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1795104647591,
    "skillRate400": 0,
    "skillQueue400": 0,
    "callIn400": 1082,
