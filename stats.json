@@ -1,13 +1,13 @@
 {
- "ts": 1795110548337,
- "collectedAtCn": "2026/11/20 01:49:08",
+ "ts": 1795110787266,
+ "collectedAtCn": "2026/11/20 01:53:07",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "1",
   "坐席忙碌数": "0 (0)",
   "接通率": "0%",
   "满意率": "98.71%",
-  "呼入总数": "13",
+  "呼入总数": "14",
   "当前呼入数": "0",
   "外呼总数": "0",
   "当前外呼数": "0",
@@ -464,8 +464,8 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 4,
-   "ivr": 4,
+   "callIn": 5,
+   "ivr": 5,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -1110,8 +1110,8 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 4,
-    "ivr": 4,
+    "callIn": 5,
+    "ivr": 5,
     "ringMissed": 0,
     "queueAbandon": 0,
     "answered": 0,
@@ -1129,9 +1129,9 @@
     "transferred": 0
    }
   ],
-  "total": 4,
+  "total": 5,
   "answered": 0,
-  "ivr": 4,
+  "ivr": 5,
   "connectRate": 100
  },
  "online": {
@@ -2416,41 +2416,12 @@
  "satisfaction": null,
  "attendance": {
   "today": "2026-11-19",
-  "duty400": [
-   "马艳",
-   "朱静珏",
-   "王雅雯",
-   "胡洁",
-   "王轩",
-   "周贝儿",
-   "彭静",
-   "程露芹",
-   "王婧",
-   "许玉娟"
-  ],
-  "dutyOnline": [
-   "侯勤裕",
-   "陈孝正"
-  ],
-  "on400": [
-   "王轩"
-  ],
-  "off400": [
-   "马艳",
-   "朱静珏",
-   "王雅雯",
-   "胡洁",
-   "周贝儿",
-   "彭静",
-   "程露芹",
-   "王婧",
-   "许玉娟"
-  ],
+  "duty400": [],
+  "dutyOnline": [],
+  "on400": [],
+  "off400": [],
   "onOnline": [],
-  "offOnline": [
-   "侯勤裕",
-   "陈孝正"
-  ]
+  "offOnline": []
  },
  "capacity": {
   "date": "2026-11-19",
@@ -2478,24 +2449,6 @@
   "rate400": 80.7
  },
  "history": [
-  {
-   "ts": 1795040764859,
-   "skillRate400": null,
-   "skillQueue400": 0,
-   "callIn400": 0,
-   "signIn400": 0,
-   "onlineSessions": 0,
-   "onlineSeat": 0
-  },
-  {
-   "ts": 1795041023503,
-   "skillRate400": null,
-   "skillQueue400": 0,
-   "callIn400": 0,
-   "signIn400": 0,
-   "onlineSessions": 0,
-   "onlineSeat": 0
-  },
   {
    "ts": 1795041227859,
    "skillRate400": null,
@@ -6971,6 +6924,24 @@
   },
   {
    "ts": 1795110548337,
+   "skillRate400": null,
+   "skillQueue400": 0,
+   "callIn400": 0,
+   "signIn400": 1,
+   "onlineSessions": 0,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1795110667713,
+   "skillRate400": null,
+   "skillQueue400": 0,
+   "callIn400": 0,
+   "signIn400": 1,
+   "onlineSessions": 0,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1795110787266,
    "skillRate400": null,
    "skillQueue400": 0,
    "callIn400": 0,
