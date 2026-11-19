@@ -1,13 +1,13 @@
 {
- "ts": 1795106451878,
- "collectedAtCn": "2026/11/20 00:40:51",
+ "ts": 1795106571733,
+ "collectedAtCn": "2026/11/20 00:42:51",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "1",
   "坐席忙碌数": "0 (0)",
   "接通率": "0%",
   "满意率": "98.71%",
-  "呼入总数": "5",
+  "呼入总数": "6",
   "当前呼入数": "0",
   "外呼总数": "0",
   "当前外呼数": "0",
@@ -694,8 +694,8 @@
   },
   {
    "service": "88236602(其他渠道4000166088)",
-   "callIn": 0,
-   "ivr": 0,
+   "callIn": 1,
+   "ivr": 1,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -1334,14 +1334,14 @@
    },
    {
     "name": "寄卖-爱果",
-    "sessions": 21,
-    "assigned": 21,
+    "sessions": 0,
+    "assigned": 0,
     "current": 0,
     "max": 0,
     "queue": 0,
     "onlineSeats": "0",
-    "done": 21,
-    "answerRate": 100,
+    "done": 0,
+    "answerRate": 0,
     "abandon": 0,
     "voicemail": 0,
     "satisfactionRate": 0
@@ -1698,17 +1698,17 @@
    },
    {
     "name": "寄卖商服",
-    "sessions": 259,
-    "assigned": 259,
+    "sessions": 0,
+    "assigned": 0,
     "current": 0,
     "max": 0,
     "queue": 0,
     "onlineSeats": "0",
-    "done": 259,
-    "answerRate": 100,
+    "done": 0,
+    "answerRate": 0,
     "abandon": 0,
     "voicemail": 0,
-    "satisfactionRate": 100
+    "satisfactionRate": 0
    },
    {
     "name": "拍机堂售后卖家技能组",
@@ -2478,15 +2478,6 @@
   "rate400": 80.7
  },
  "history": [
-  {
-   "ts": 1795034165855,
-   "skillRate400": null,
-   "skillQueue400": 0,
-   "callIn400": 0,
-   "signIn400": 0,
-   "onlineSessions": 0,
-   "onlineSeat": 0
-  },
   {
    "ts": 1795034370243,
    "skillRate400": null,
@@ -6971,6 +6962,15 @@
   },
   {
    "ts": 1795106451878,
+   "skillRate400": 0,
+   "skillQueue400": 0,
+   "callIn400": 1082,
+   "signIn400": 1,
+   "onlineSessions": 0,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1795106571733,
    "skillRate400": 0,
    "skillQueue400": 0,
    "callIn400": 1082,
