@@ -1,14 +1,14 @@
 {
- "ts": 1795132221781,
- "collectedAtCn": "2026/11/20 07:50:21",
+ "ts": 1795132550774,
+ "collectedAtCn": "2026/11/20 07:55:50",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "1",
   "坐席忙碌数": "0 (0)",
   "接通率": "0%",
   "满意率": "98.71%",
-  "呼入总数": "47",
-  "当前呼入数": "1",
+  "呼入总数": "53",
+  "当前呼入数": "0",
   "外呼总数": "0",
   "当前外呼数": "0",
   "呼入平均通话时长": "00:00:00",
@@ -464,8 +464,8 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 22,
-   "ivr": 22,
+   "callIn": 24,
+   "ivr": 24,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -744,8 +744,8 @@
   },
   {
    "service": "88236603(京东渠道4000990166)",
-   "callIn": 2,
-   "ivr": 2,
+   "callIn": 3,
+   "ivr": 3,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -754,8 +754,8 @@
   },
   {
    "service": "88236606(ahs物流收货)",
-   "callIn": 0,
-   "ivr": 0,
+   "callIn": 1,
+   "ivr": 1,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -864,8 +864,8 @@
   },
   {
    "service": "88236619(京东智能数码店)",
-   "callIn": 0,
-   "ivr": 0,
+   "callIn": 1,
+   "ivr": 1,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -1111,8 +1111,8 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 22,
-    "ivr": 22,
+    "callIn": 24,
+    "ivr": 24,
     "ringMissed": 0,
     "queueAbandon": 0,
     "answered": 0,
@@ -1130,9 +1130,9 @@
     "transferred": 0
    }
   ],
-  "total": 23,
+  "total": 25,
   "answered": 0,
-  "ivr": 23,
+  "ivr": 25,
   "connectRate": 100
  },
  "online": {
@@ -1246,7 +1246,7 @@
     "done": 0,
     "answerRate": 0,
     "abandon": 0,
-    "voicemail": 5,
+    "voicemail": 6,
     "satisfactionRate": 0
    },
    {
@@ -1615,14 +1615,14 @@
    },
    {
     "name": "多品类图书回收技能组",
-    "sessions": 30,
-    "assigned": 30,
+    "sessions": 0,
+    "assigned": 0,
     "current": 0,
     "max": 0,
     "queue": 0,
     "onlineSeats": "0",
-    "done": 30,
-    "answerRate": 100,
+    "done": 0,
+    "answerRate": 0,
     "abandon": 0,
     "voicemail": 0,
     "satisfactionRate": 0
@@ -2450,24 +2450,6 @@
   "rate400": 80.7
  },
  "history": [
-  {
-   "ts": 1795064788966,
-   "skillRate400": 80.04,
-   "skillQueue400": 2,
-   "callIn400": 506,
-   "signIn400": 15,
-   "onlineSessions": 233,
-   "onlineSeat": 2
-  },
-  {
-   "ts": 1795064905878,
-   "skillRate400": 80.55,
-   "skillQueue400": 0,
-   "callIn400": 509,
-   "signIn400": 15,
-   "onlineSessions": 233,
-   "onlineSeat": 2
-  },
   {
    "ts": 1795065054844,
    "skillRate400": 80.82,
@@ -6943,6 +6925,24 @@
   },
   {
    "ts": 1795132221781,
+   "skillRate400": null,
+   "skillQueue400": 0,
+   "callIn400": 0,
+   "signIn400": 2,
+   "onlineSessions": 0,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1795132431113,
+   "skillRate400": null,
+   "skillQueue400": 0,
+   "callIn400": 0,
+   "signIn400": 2,
+   "onlineSessions": 0,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1795132550774,
    "skillRate400": null,
    "skillQueue400": 0,
    "callIn400": 0,
