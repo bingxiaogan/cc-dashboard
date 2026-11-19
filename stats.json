@@ -1,13 +1,13 @@
 {
- "ts": 1795104767100,
- "collectedAtCn": "2026/11/20 00:12:47",
+ "ts": 1795105042810,
+ "collectedAtCn": "2026/11/20 00:17:22",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "1",
   "坐席忙碌数": "0 (0)",
-  "接通率": "15.25%",
+  "接通率": "0%",
   "满意率": "98.71%",
-  "呼入总数": "0",
+  "呼入总数": "2",
   "当前呼入数": "0",
   "外呼总数": "0",
   "当前外呼数": "0",
@@ -464,8 +464,8 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 0,
-   "ivr": 0,
+   "callIn": 2,
+   "ivr": 2,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -1110,8 +1110,8 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 0,
-    "ivr": 0,
+    "callIn": 2,
+    "ivr": 2,
     "ringMissed": 0,
     "queueAbandon": 0,
     "answered": 0,
@@ -1129,10 +1129,10 @@
     "transferred": 0
    }
   ],
-  "total": 0,
+  "total": 2,
   "answered": 0,
-  "ivr": 0,
-  "connectRate": null
+  "ivr": 2,
+  "connectRate": 100
  },
  "online": {
   "groups": [
@@ -1236,17 +1236,17 @@
    },
    {
     "name": "抖音售后",
-    "sessions": 67,
-    "assigned": 67,
+    "sessions": 0,
+    "assigned": 0,
     "current": 0,
     "max": 0,
     "queue": 0,
     "onlineSeats": "0",
-    "done": 67,
-    "answerRate": 100,
+    "done": 0,
+    "answerRate": 0,
     "abandon": 0,
-    "voicemail": 19,
-    "satisfactionRate": 100
+    "voicemail": 1,
+    "satisfactionRate": 0
    },
    {
     "name": "严选腕表-夜间留言",
@@ -1404,15 +1404,15 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 4,
+    "sessions": 5,
     "assigned": 0,
     "current": 0,
     "max": 0,
-    "queue": 7,
+    "queue": 6,
     "onlineSeats": "0",
     "done": 0,
     "answerRate": 0,
-    "abandon": 4,
+    "abandon": 5,
     "voicemail": 0,
     "satisfactionRate": 0
    },
@@ -1852,31 +1852,31 @@
    },
    {
     "name": "官网严选自营售前咨询",
-    "sessions": 4,
+    "sessions": 6,
     "assigned": 0,
     "current": 0,
     "max": 0,
-    "queue": 4,
+    "queue": 2,
     "onlineSeats": "0",
     "done": 0,
     "answerRate": 0,
-    "abandon": 4,
+    "abandon": 6,
     "voicemail": 0,
     "satisfactionRate": 0
    },
    {
     "name": "分类在线技能组",
-    "sessions": 672,
-    "assigned": 672,
+    "sessions": 0,
+    "assigned": 0,
     "current": 0,
     "max": 0,
     "queue": 0,
     "onlineSeats": "0",
-    "done": 671,
-    "answerRate": 100,
+    "done": 0,
+    "answerRate": 0,
     "abandon": 0,
     "voicemail": 0,
-    "satisfactionRate": 100
+    "satisfactionRate": 0
    },
    {
     "name": "废弃勿用",
@@ -2385,17 +2385,17 @@
   ],
   "fenlei": {
    "name": "分类在线技能组",
-   "sessions": 672,
-   "assigned": 672,
+   "sessions": 0,
+   "assigned": 0,
    "current": 0,
    "max": 0,
    "queue": 0,
    "onlineSeats": "0",
-   "done": 671,
-   "answerRate": 100,
+   "done": 0,
+   "answerRate": 0,
    "abandon": 0,
    "voicemail": 0,
-   "satisfactionRate": 100
+   "satisfactionRate": 0
   },
   "fenleiNW": {
    "name": "分类在线技能组非工作",
@@ -2478,24 +2478,6 @@
   "rate400": 80.7
  },
  "history": [
-  {
-   "ts": 1795031418540,
-   "skillRate400": null,
-   "skillQueue400": 0,
-   "callIn400": 0,
-   "signIn400": 0,
-   "onlineSessions": 0,
-   "onlineSeat": 0
-  },
-  {
-   "ts": 1795031626788,
-   "skillRate400": null,
-   "skillQueue400": 0,
-   "callIn400": 0,
-   "signIn400": 0,
-   "onlineSessions": 0,
-   "onlineSeat": 0
-  },
   {
    "ts": 1795031831091,
    "skillRate400": null,
@@ -6976,6 +6958,24 @@
    "callIn400": 1082,
    "signIn400": 1,
    "onlineSessions": 672,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1795104886949,
+   "skillRate400": 0,
+   "skillQueue400": 0,
+   "callIn400": 1082,
+   "signIn400": 1,
+   "onlineSessions": 672,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1795105042810,
+   "skillRate400": 0,
+   "skillQueue400": 0,
+   "callIn400": 1082,
+   "signIn400": 1,
+   "onlineSessions": 0,
    "onlineSeat": 0
   }
  ]
