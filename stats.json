@@ -1,13 +1,13 @@
 {
- "ts": 1795126210314,
- "collectedAtCn": "2026/11/20 06:10:10",
+ "ts": 1795126329702,
+ "collectedAtCn": "2026/11/20 06:12:09",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "1",
   "坐席忙碌数": "0 (0)",
   "接通率": "0%",
   "满意率": "98.71%",
-  "呼入总数": "18",
+  "呼入总数": "19",
   "当前呼入数": "0",
   "外呼总数": "0",
   "当前外呼数": "0",
@@ -744,8 +744,8 @@
   },
   {
    "service": "88236603(京东渠道4000990166)",
-   "callIn": 0,
-   "ivr": 0,
+   "callIn": 1,
+   "ivr": 1,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -2449,15 +2449,6 @@
   "rate400": 80.7
  },
  "history": [
-  {
-   "ts": 1795058735748,
-   "skillRate400": 79.09,
-   "skillQueue400": 0,
-   "callIn400": 373,
-   "signIn400": 15,
-   "onlineSessions": 151,
-   "onlineSeat": 2
-  },
   {
    "ts": 1795058848439,
    "skillRate400": 79.2,
@@ -6942,6 +6933,15 @@
   },
   {
    "ts": 1795126210314,
+   "skillRate400": null,
+   "skillQueue400": 0,
+   "callIn400": 0,
+   "signIn400": 1,
+   "onlineSessions": 0,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1795126329702,
    "skillRate400": null,
    "skillQueue400": 0,
    "callIn400": 0,
