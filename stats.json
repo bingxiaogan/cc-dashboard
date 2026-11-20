@@ -1,18 +1,18 @@
 {
- "ts": 1795180086855,
- "collectedAtCn": "2026/11/20 21:08:06",
+ "ts": 1795180303356,
+ "collectedAtCn": "2026/11/20 21:11:43",
  "overview": {
-  "总排队数": "0",
-  "坐席空闲数": "2",
-  "坐席忙碌数": "1 (0)",
+  "总排队数": "技能组",
+  "坐席空闲数": "0",
+  "坐席忙碌数": "0 (0)",
   "接通率": "20.61%",
-  "满意率": "98.18%",
-  "呼入总数": "12930",
-  "当前呼入数": "1",
-  "外呼总数": "5696",
-  "当前外呼数": "7",
-  "呼入平均通话时长": "00:02:41",
-  "AI通话数": "0 (3)"
+  "满意率": "0%",
+  "呼入总数": "0",
+  "当前呼入数": "呼入平均通话时长",
+  "外呼总数": "外呼成功数",
+  "当前外呼数": "0",
+  "呼入平均通话时长": "00:00:00",
+  "AI通话数": "0 (0)"
  },
  "skillGroups": [
   {
@@ -1191,7 +1191,7 @@
   "to": "20:00",
   "allDay": 85.48,
   "at": 1795179996839,
-  "agedMin": 3,
+  "agedMin": 7,
   "gap": 0,
   "complete": true,
   "src": "合力400报表"
@@ -1251,7 +1251,7 @@
     "done": 2,
     "answerRate": 100,
     "abandon": 0,
-    "voicemail": 5,
+    "voicemail": 3,
     "satisfactionRate": 0
    },
    {
@@ -1321,7 +1321,7 @@
     "done": 10,
     "answerRate": 100,
     "abandon": 0,
-    "voicemail": 0,
+    "voicemail": 1,
     "satisfactionRate": 0
    },
    {
@@ -1454,11 +1454,11 @@
     "name": "官网严选寄卖售后咨询",
     "sessions": 265,
     "assigned": 238,
-    "current": 9,
+    "current": 8,
     "max": 70,
     "queue": 9,
     "onlineSeats": "2(黄益群,刘亚森)",
-    "done": 229,
+    "done": 230,
     "answerRate": 89.81,
     "abandon": 27,
     "voicemail": 0,
@@ -1508,15 +1508,15 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1479,
-    "assigned": 1424,
-    "current": 74,
+    "sessions": 1490,
+    "assigned": 1433,
+    "current": 79,
     "max": 70,
-    "queue": 41,
+    "queue": 34,
     "onlineSeats": "2(黄益群,刘亚森)",
-    "done": 1289,
-    "answerRate": 96.28,
-    "abandon": 55,
+    "done": 1293,
+    "answerRate": 96.17,
+    "abandon": 57,
     "voicemail": 0,
     "satisfactionRate": 0
    },
@@ -1956,14 +1956,14 @@
    },
    {
     "name": "官网严选自营售前咨询",
-    "sessions": 414,
-    "assigned": 381,
-    "current": 34,
+    "sessions": 417,
+    "assigned": 384,
+    "current": 37,
     "max": 70,
-    "queue": 21,
+    "queue": 20,
     "onlineSeats": "2(黄益群,刘亚森)",
     "done": 340,
-    "answerRate": 92.03,
+    "answerRate": 92.09,
     "abandon": 33,
     "voicemail": 0,
     "satisfactionRate": 0
@@ -2582,15 +2582,6 @@
   "rate400": 81.4
  },
  "history": [
-  {
-   "ts": 1795109257050,
-   "skillRate400": null,
-   "skillQueue400": 0,
-   "callIn400": 0,
-   "signIn400": 1,
-   "onlineSessions": 0,
-   "onlineSeat": 0
-  },
   {
    "ts": 1795109376468,
    "skillRate400": null,
@@ -7075,6 +7066,15 @@
   },
   {
    "ts": 1795180086855,
+   "skillRate400": 85.48,
+   "skillQueue400": 0,
+   "callIn400": 1136,
+   "signIn400": 4,
+   "onlineSessions": 679,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1795180303356,
    "skillRate400": 85.48,
    "skillQueue400": 0,
    "callIn400": 1136,
