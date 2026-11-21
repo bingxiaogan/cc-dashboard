@@ -1,14 +1,14 @@
 {
- "ts": 1795297313881,
- "collectedAtCn": "2026/11/22 05:41:53",
+ "ts": 1795297608738,
+ "collectedAtCn": "2026/11/22 05:46:48",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "3",
   "坐席忙碌数": "0 (0)",
   "接通率": "0%",
   "满意率": "0%",
-  "呼入总数": "24",
-  "当前呼入数": "1",
+  "呼入总数": "25",
+  "当前呼入数": "0",
   "外呼总数": "0",
   "当前外呼数": "0",
   "呼入平均通话时长": "00:00:00",
@@ -497,8 +497,8 @@
   },
   {
    "service": "88236606(ahs物流收货)",
-   "callIn": 1,
-   "ivr": 1,
+   "callIn": 2,
+   "ivr": 2,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -2232,15 +2232,6 @@
   "rate400": 81.1
  },
  "history": [
-  {
-   "ts": 1795216239310,
-   "skillRate400": null,
-   "skillQueue400": 0,
-   "callIn400": 0,
-   "signIn400": 0,
-   "onlineSessions": 0,
-   "onlineSeat": 0
-  },
   {
    "ts": 1795216534100,
    "skillRate400": null,
@@ -6725,6 +6716,15 @@
   },
   {
    "ts": 1795297313881,
+   "skillRate400": null,
+   "skillQueue400": 0,
+   "callIn400": 0,
+   "signIn400": 0,
+   "onlineSessions": 0,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1795297608738,
    "skillRate400": null,
    "skillQueue400": 0,
    "callIn400": 0,
