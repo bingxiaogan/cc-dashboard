@@ -24,17 +24,17 @@
    "levelName": "正常",
    "color": "蓝",
    "vals": {
-    "load": 88.2,
+    "load": 88.3,
     "rate": 83.8,
     "lv": 0,
     "rv": 2,
     "src": "周报口径(今实时)",
     "wDays": 7,
     "sum": {
-     "call": 7186,
-     "ans": 6091,
-     "den400": 8150,
-     "on": 5409,
+     "call": 7217,
+     "ans": 6117,
+     "den400": 8173,
+     "on": 5421,
      "denOn": 8685
     },
     "wplan": {
@@ -68,29 +68,29 @@
      ],
      "todayKey": "2026-11-21",
      "lastDay": true,
-     "todayIn": 47,
-     "todayAns": 41,
+     "todayIn": 78,
+     "todayAns": 67,
      "from": "11-21",
      "to": "11-21",
      "weekEnd": "2026-11-21"
     }
    },
-   "ts": 1795223027883,
-   "tsCn": "2026/11/21 09:03:47",
+   "ts": 1795223355078,
+   "tsCn": "2026/11/21 09:09:15",
    "lastLevel": 1,
    "muted": false,
    "minLevel": 2,
    "lastAlertTs": 1794706625569
   },
   "onld": {
-   "level": 0,
-   "levelName": "低负荷",
-   "color": "绿",
+   "level": 1,
+   "levelName": "正常",
+   "color": "蓝",
    "vals": {
-    "load": 46.9
+    "load": 100
    },
-   "ts": 1795221068199,
-   "tsCn": "2026/11/21 08:31:08",
+   "ts": 1795223355078,
+   "tsCn": "2026/11/21 09:09:15",
    "lastLevel": 0,
    "muted": true,
    "minLevel": 99
@@ -100,19 +100,19 @@
    "levelName": "低负荷",
    "color": "绿",
    "vals": {
-    "load": 62.3,
+    "load": 62.4,
     "src": "周报口径(今实时)",
     "wDays": 7,
     "sum": {
-     "call": 7186,
-     "ans": 6091,
-     "den400": 8150,
-     "on": 5409,
+     "call": 7217,
+     "ans": 6117,
+     "den400": 8173,
+     "on": 5421,
      "denOn": 8685
     }
    },
-   "ts": 1795223027883,
-   "tsCn": "2026/11/21 09:03:47",
+   "ts": 1795223355078,
+   "tsCn": "2026/11/21 09:09:15",
    "lastLevel": 0,
    "muted": true,
    "minLevel": 99
@@ -130,8 +130,8 @@
     "rv": 1,
     "agents": 2
    },
-   "ts": 1795223027883,
-   "tsCn": "2026/11/21 09:03:47",
+   "ts": 1795223355078,
+   "tsCn": "2026/11/21 09:09:15",
    "lastLevel": 1,
    "muted": true,
    "minLevel": 99
@@ -151,6 +151,6 @@
    "minLevel": 99
   }
  },
- "updated": "2026/11/21 09:03:47",
- "updatedTs": 1795223027883
+ "updated": "2026/11/21 09:09:15",
+ "updatedTs": 1795223355078
 }
