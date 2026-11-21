@@ -1,13 +1,13 @@
 {
- "ts": 1795273493104,
- "collectedAtCn": "2026/11/21 23:04:53",
+ "ts": 1795273727631,
+ "collectedAtCn": "2026/11/21 23:08:47",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "3",
   "坐席忙碌数": "0 (0)",
   "接通率": "22.89%",
   "满意率": "98.76%",
-  "呼入总数": "13362",
+  "呼入总数": "13365",
   "当前呼入数": "0",
   "外呼总数": "6741",
   "当前外呼数": "0",
@@ -1156,7 +1156,7 @@
   "to": "20:30",
   "allDay": 81.41,
   "at": 1795272994565,
-  "agedMin": 10,
+  "agedMin": 14,
   "gap": 0,
   "complete": true,
   "src": "合力400报表"
@@ -1417,15 +1417,15 @@
    },
    {
     "name": "官网严选寄卖售后咨询",
-    "sessions": 289,
-    "assigned": 228,
-    "current": 2,
+    "sessions": 292,
+    "assigned": 230,
+    "current": 4,
     "max": 0,
-    "queue": 6,
+    "queue": 3,
     "onlineSeats": "0",
     "done": 226,
-    "answerRate": 78.89,
-    "abandon": 61,
+    "answerRate": 78.77,
+    "abandon": 62,
     "voicemail": 0,
     "satisfactionRate": 0
    },
@@ -1473,15 +1473,15 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1641,
-    "assigned": 1330,
+    "sessions": 1643,
+    "assigned": 1331,
     "current": 45,
     "max": 0,
-    "queue": 8,
+    "queue": 11,
     "onlineSeats": "0",
-    "done": 1222,
-    "answerRate": 81.05,
-    "abandon": 311,
+    "done": 1223,
+    "answerRate": 81.01,
+    "abandon": 312,
     "voicemail": 0,
     "satisfactionRate": 0
    },
@@ -1930,7 +1930,7 @@
     "done": 458,
     "answerRate": 87.25,
     "abandon": 70,
-    "voicemail": 0,
+    "voicemail": 1,
     "satisfactionRate": 0
    },
    {
@@ -2547,15 +2547,6 @@
   "rate400": 81.1
  },
  "history": [
-  {
-   "ts": 1795192295246,
-   "skillRate400": null,
-   "skillQueue400": 0,
-   "callIn400": 0,
-   "signIn400": 0,
-   "onlineSessions": 0,
-   "onlineSeat": 0
-  },
   {
    "ts": 1795192553710,
    "skillRate400": null,
@@ -7040,6 +7031,15 @@
   },
   {
    "ts": 1795273493104,
+   "skillRate400": 81.41,
+   "skillQueue400": 0,
+   "callIn400": 1329,
+   "signIn400": 1,
+   "onlineSessions": 838,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1795273727631,
    "skillRate400": 81.41,
    "skillQueue400": 0,
    "callIn400": 1329,
