@@ -1,13 +1,13 @@
 {
- "ts": 1795389197142,
- "collectedAtCn": "2026/11/23 07:13:17",
+ "ts": 1795389435766,
+ "collectedAtCn": "2026/11/23 07:17:15",
  "overview": {
   "总排队数": "1",
   "坐席空闲数": "4",
   "坐席忙碌数": "0 (0)",
   "接通率": "0%",
   "满意率": "99.16%",
-  "呼入总数": "23",
+  "呼入总数": "24",
   "当前呼入数": "0",
   "外呼总数": "0",
   "当前外呼数": "0",
@@ -694,8 +694,8 @@
   },
   {
    "service": "88236602(其他渠道4000166088)",
-   "callIn": 0,
-   "ivr": 0,
+   "callIn": 1,
+   "ivr": 1,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -2493,24 +2493,6 @@
   "rate400": 78.3
  },
  "history": [
-  {
-   "ts": 1795323467191,
-   "skillRate400": 80.43,
-   "skillQueue400": 1,
-   "callIn400": 598,
-   "signIn400": 11,
-   "onlineSessions": 326,
-   "onlineSeat": 2
-  },
-  {
-   "ts": 1795323613119,
-   "skillRate400": 80.2,
-   "skillQueue400": 1,
-   "callIn400": 606,
-   "signIn400": 11,
-   "onlineSessions": 327,
-   "onlineSeat": 2
-  },
   {
    "ts": 1795323726495,
    "skillRate400": 79.77,
@@ -6986,6 +6968,24 @@
   },
   {
    "ts": 1795389197142,
+   "skillRate400": null,
+   "skillQueue400": 1,
+   "callIn400": 0,
+   "signIn400": 3,
+   "onlineSessions": 0,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1795389316453,
+   "skillRate400": null,
+   "skillQueue400": 1,
+   "callIn400": 0,
+   "signIn400": 3,
+   "onlineSessions": 0,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1795389435766,
    "skillRate400": null,
    "skillQueue400": 1,
    "callIn400": 0,
