@@ -1,17 +1,17 @@
 {
- "ts": 1795352603224,
- "collectedAtCn": "2026/11/22 21:03:23",
+ "ts": 1795352723353,
+ "collectedAtCn": "2026/11/22 21:05:23",
  "overview": {
   "总排队数": "1",
-  "坐席空闲数": "7",
+  "坐席空闲数": "5",
   "坐席忙碌数": "0 (0)",
-  "接通率": "25.46%",
+  "接通率": "25.42%",
   "满意率": "99.16%",
-  "呼入总数": "12130",
-  "当前呼入数": "3",
-  "外呼总数": "5198",
-  "当前外呼数": "2",
-  "呼入平均通话时长": "00:02:35",
+  "呼入总数": "12149",
+  "当前呼入数": "1",
+  "外呼总数": "5201",
+  "当前外呼数": "3",
+  "呼入平均通话时长": "00:02:36",
   "AI通话数": "0 (3)"
  },
  "skillGroups": [
@@ -58,8 +58,8 @@
    "missed": 107,
    "rate": 85.73,
    "total": 746,
-   "current": 6,
-   "avgDuration": "00:03:05",
+   "current": 5,
+   "avgDuration": "00:03:06",
    "transferIn": 3,
    "transferOut": 0
   },
@@ -464,8 +464,8 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 2142,
-   "ivr": 855,
+   "callIn": 2148,
+   "ivr": 861,
    "ringMissed": 11,
    "queueAbandon": 220,
    "answered": 1056,
@@ -494,8 +494,8 @@
   },
   {
    "service": "88236633(88236633)",
-   "callIn": 81,
-   "ivr": 81,
+   "callIn": 83,
+   "ivr": 83,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -694,8 +694,8 @@
   },
   {
    "service": "88236602(其他渠道4000166088)",
-   "callIn": 416,
-   "ivr": 190,
+   "callIn": 417,
+   "ivr": 191,
    "ringMissed": 0,
    "queueAbandon": 31,
    "answered": 213,
@@ -704,8 +704,8 @@
   },
   {
    "service": "81198(上门按键转接)",
-   "callIn": 753,
-   "ivr": 408,
+   "callIn": 755,
+   "ivr": 410,
    "ringMissed": 6,
    "queueAbandon": 75,
    "answered": 290,
@@ -744,8 +744,8 @@
   },
   {
    "service": "88236603(京东渠道4000990166)",
-   "callIn": 376,
-   "ivr": 132,
+   "callIn": 377,
+   "ivr": 133,
    "ringMissed": 3,
    "queueAbandon": 35,
    "answered": 214,
@@ -834,8 +834,8 @@
   },
   {
    "service": "80409(奢侈品商家-门店验货报价)",
-   "callIn": 1171,
-   "ivr": 1171,
+   "callIn": 1174,
+   "ivr": 1174,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -1114,8 +1114,8 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 2142,
-    "ivr": 855,
+    "callIn": 2148,
+    "ivr": 861,
     "ringMissed": 11,
     "queueAbandon": 220,
     "answered": 1056,
@@ -1133,20 +1133,20 @@
     "transferred": 0
    }
   ],
-  "total": 2225,
+  "total": 2231,
   "answered": 1088,
-  "ivr": 899,
-  "connectRate": 89.3
+  "ivr": 905,
+  "connectRate": 89.33
  },
  "callRtWork": {
   "from": "08:02",
-  "at": "2026/11/22 21:03:23",
-  "total": 2191,
-  "ivr": 867,
+  "at": "2026/11/22 21:05:23",
+  "total": 2197,
+  "ivr": 873,
   "answered": 1086,
   "turn": 1324,
   "rate": 82.02,
-  "totalAllDay": 2225,
+  "totalAllDay": 2231,
   "answeredAllDay": 1088
  },
  "call400Work": {
@@ -1160,7 +1160,7 @@
   "to": "20:00",
   "allDay": 80.26,
   "at": 1795352002040,
-  "agedMin": 10,
+  "agedMin": 12,
   "gap": 0,
   "complete": true,
   "src": "合力400报表"
@@ -1318,7 +1318,7 @@
     "done": 92,
     "answerRate": 100,
     "abandon": 0,
-    "voicemail": 2,
+    "voicemail": 3,
     "satisfactionRate": 100
    },
    {
@@ -1477,14 +1477,14 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1425,
-    "assigned": 1181,
-    "current": 77,
+    "sessions": 1427,
+    "assigned": 1183,
+    "current": 78,
     "max": 105,
     "queue": 0,
     "onlineSeats": "3(王鹏,刘梓爱,刘亚森)",
-    "done": 1049,
-    "answerRate": 82.88,
+    "done": 1050,
+    "answerRate": 82.9,
     "abandon": 244,
     "voicemail": 0,
     "satisfactionRate": 0
@@ -1925,14 +1925,14 @@
    },
    {
     "name": "官网严选自营售前咨询",
-    "sessions": 438,
-    "assigned": 374,
-    "current": 30,
+    "sessions": 440,
+    "assigned": 376,
+    "current": 29,
     "max": 105,
     "queue": 0,
     "onlineSeats": "3(王鹏,刘梓爱,刘亚森)",
-    "done": 339,
-    "answerRate": 85.39,
+    "done": 342,
+    "answerRate": 85.45,
     "abandon": 64,
     "voicemail": 0,
     "satisfactionRate": 0
@@ -2095,15 +2095,15 @@
     "name": "爱回收官网接待组",
     "sessions": 863,
     "assigned": 863,
-    "current": 11,
+    "current": 8,
     "max": 0,
     "queue": 0,
     "onlineSeats": "0",
-    "done": 844,
+    "done": 847,
     "answerRate": 100,
     "abandon": 0,
     "voicemail": 0,
-    "satisfactionRate": 95.18
+    "satisfactionRate": 95.24
    },
    {
     "name": "基础服务部-黑龙江、天津省地区",
@@ -2551,15 +2551,6 @@
   "rate400": 78.3
  },
  "history": [
-  {
-   "ts": 1795275869646,
-   "skillRate400": 81.41,
-   "skillQueue400": 0,
-   "callIn400": 1329,
-   "signIn400": 1,
-   "onlineSessions": 838,
-   "onlineSeat": 0
-  },
   {
    "ts": 1795276074117,
    "skillRate400": 81.41,
@@ -7044,6 +7035,15 @@
   },
   {
    "ts": 1795352603224,
+   "skillRate400": 80.26,
+   "skillQueue400": 1,
+   "callIn400": 1469,
+   "signIn400": 5,
+   "onlineSessions": 997,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1795352723353,
    "skillRate400": 80.26,
    "skillQueue400": 1,
    "callIn400": 1469,
