@@ -1,6 +1,6 @@
 {
- "ts": 1795361938612,
- "collectedAtCn": "2026/11/22 23:38:58",
+ "ts": 1795362058303,
+ "collectedAtCn": "2026/11/22 23:40:58",
  "overview": {
   "总排队数": "1",
   "坐席空闲数": "4",
@@ -1138,7 +1138,7 @@
  },
  "callRtWork": {
   "from": "08:02",
-  "at": "2026/11/22 23:38:58",
+  "at": "2026/11/22 23:40:58",
   "total": 2265,
   "ivr": 941,
   "answered": 1086,
@@ -1158,7 +1158,7 @@
   "to": "20:30",
   "allDay": 80.26,
   "at": 1795361452665,
-  "agedMin": 8,
+  "agedMin": 10,
   "gap": 0,
   "complete": true,
   "src": "合力400报表"
@@ -1419,14 +1419,14 @@
    },
    {
     "name": "官网严选寄卖售后咨询",
-    "sessions": 262,
-    "assigned": 197,
-    "current": 8,
+    "sessions": 264,
+    "assigned": 199,
+    "current": 9,
     "max": 70,
     "queue": 0,
     "onlineSeats": "2(张慧敏,刘梓爱)",
-    "done": 189,
-    "answerRate": 75.19,
+    "done": 190,
+    "answerRate": 75.38,
     "abandon": 65,
     "voicemail": 0,
     "satisfactionRate": 0
@@ -1477,11 +1477,11 @@
     "name": "官网严选自营售后咨询",
     "sessions": 1552,
     "assigned": 1308,
-    "current": 24,
+    "current": 22,
     "max": 70,
     "queue": 0,
     "onlineSeats": "2(张慧敏,刘梓爱)",
-    "done": 1223,
+    "done": 1225,
     "answerRate": 84.28,
     "abandon": 244,
     "voicemail": 0,
@@ -2549,15 +2549,6 @@
   "rate400": 78.3
  },
  "history": [
-  {
-   "ts": 1795292128199,
-   "skillRate400": null,
-   "skillQueue400": 0,
-   "callIn400": 0,
-   "signIn400": 0,
-   "onlineSessions": 0,
-   "onlineSeat": 0
-  },
   {
    "ts": 1795292332368,
    "skillRate400": null,
@@ -7042,6 +7033,15 @@
   },
   {
    "ts": 1795361938612,
+   "skillRate400": 80.26,
+   "skillQueue400": 1,
+   "callIn400": 1469,
+   "signIn400": 3,
+   "onlineSessions": 997,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1795362058303,
    "skillRate400": 80.26,
    "skillQueue400": 1,
    "callIn400": 1469,
