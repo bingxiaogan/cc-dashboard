@@ -1,6 +1,6 @@
 {
- "ts": 1795356151116,
- "collectedAtCn": "2026/11/22 22:02:31",
+ "ts": 1795356270513,
+ "collectedAtCn": "2026/11/22 22:04:30",
  "overview": {
   "总排队数": "1",
   "坐席空闲数": "4",
@@ -1138,7 +1138,7 @@
  },
  "callRtWork": {
   "from": "08:02",
-  "at": "2026/11/22 22:02:31",
+  "at": "2026/11/22 22:04:30",
   "total": 2242,
   "ivr": 918,
   "answered": 1086,
@@ -1158,7 +1158,7 @@
   "to": "20:30",
   "allDay": 80.26,
   "at": 1795355941234,
-  "agedMin": 4,
+  "agedMin": 6,
   "gap": 0,
   "complete": true,
   "src": "合力400报表"
@@ -1421,11 +1421,11 @@
     "name": "官网严选寄卖售后咨询",
     "sessions": 250,
     "assigned": 185,
-    "current": 10,
+    "current": 8,
     "max": 105,
     "queue": 0,
     "onlineSeats": "3(张慧敏,王鹏,刘梓爱)",
-    "done": 175,
+    "done": 177,
     "answerRate": 74,
     "abandon": 65,
     "voicemail": 0,
@@ -1477,11 +1477,11 @@
     "name": "官网严选自营售后咨询",
     "sessions": 1491,
     "assigned": 1247,
-    "current": 60,
+    "current": 56,
     "max": 105,
     "queue": 0,
     "onlineSeats": "3(张慧敏,王鹏,刘梓爱)",
-    "done": 1126,
+    "done": 1130,
     "answerRate": 83.64,
     "abandon": 244,
     "voicemail": 0,
@@ -1925,11 +1925,11 @@
     "name": "官网严选自营售前咨询",
     "sessions": 465,
     "assigned": 401,
-    "current": 24,
+    "current": 23,
     "max": 105,
     "queue": 0,
     "onlineSeats": "3(张慧敏,王鹏,刘梓爱)",
-    "done": 372,
+    "done": 373,
     "answerRate": 86.24,
     "abandon": 64,
     "voicemail": 0,
@@ -2549,15 +2549,6 @@
   "rate400": 78.3
  },
  "history": [
-  {
-   "ts": 1795282038717,
-   "skillRate400": null,
-   "skillQueue400": 0,
-   "callIn400": 0,
-   "signIn400": 0,
-   "onlineSessions": 0,
-   "onlineSeat": 0
-  },
   {
    "ts": 1795282242838,
    "skillRate400": null,
@@ -7042,6 +7033,15 @@
   },
   {
    "ts": 1795356151116,
+   "skillRate400": 80.26,
+   "skillQueue400": 1,
+   "callIn400": 1469,
+   "signIn400": 3,
+   "onlineSessions": 997,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1795356270513,
    "skillRate400": 80.26,
    "skillQueue400": 1,
    "callIn400": 1469,
