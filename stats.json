@@ -1,13 +1,13 @@
 {
- "ts": 1795446590736,
- "collectedAtCn": "2026/11/23 23:09:50",
+ "ts": 1795446826304,
+ "collectedAtCn": "2026/11/23 23:13:46",
  "overview": {
   "总排队数": "0",
-  "坐席空闲数": "1",
+  "坐席空闲数": "2",
   "坐席忙碌数": "0 (0)",
   "接通率": "23.94%",
   "满意率": "97.94%",
-  "呼入总数": "11194",
+  "呼入总数": "11195",
   "当前呼入数": "0",
   "外呼总数": "5995",
   "当前外呼数": "0",
@@ -1157,7 +1157,7 @@
   "to": "20:30",
   "allDay": 80.7,
   "at": 1795446087093,
-  "agedMin": 10,
+  "agedMin": 14,
   "gap": 0,
   "complete": true,
   "src": "合力400报表"
@@ -1474,14 +1474,14 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1514,
-    "assigned": 1485,
-    "current": 36,
+    "sessions": 1518,
+    "assigned": 1489,
+    "current": 37,
     "max": 70,
     "queue": 0,
     "onlineSeats": "2(刘梓爱,陈可)",
-    "done": 1362,
-    "answerRate": 98.08,
+    "done": 1365,
+    "answerRate": 98.09,
     "abandon": 29,
     "voicemail": 0,
     "satisfactionRate": 15.38
@@ -2548,15 +2548,6 @@
   "rate400": 78.5
  },
  "history": [
-  {
-   "ts": 1795369251938,
-   "skillRate400": null,
-   "skillQueue400": 0,
-   "callIn400": 0,
-   "signIn400": 3,
-   "onlineSessions": 0,
-   "onlineSeat": 0
-  },
   {
    "ts": 1795369407489,
    "skillRate400": null,
@@ -7041,6 +7032,15 @@
   },
   {
    "ts": 1795446590736,
+   "skillRate400": 80.7,
+   "skillQueue400": 0,
+   "callIn400": 1254,
+   "signIn400": 2,
+   "onlineSessions": 943,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1795446826304,
    "skillRate400": 80.7,
    "skillQueue400": 0,
    "callIn400": 1254,
