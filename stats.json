@@ -1,14 +1,14 @@
 {
- "ts": 1795529652091,
- "collectedAtCn": "2026/11/24 22:14:12",
+ "ts": 1795529858313,
+ "collectedAtCn": "2026/11/24 22:17:38",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "1",
   "坐席忙碌数": "0 (0)",
   "接通率": "24.42%",
   "满意率": "98.93%",
-  "呼入总数": "10178",
-  "当前呼入数": "1",
+  "呼入总数": "10180",
+  "当前呼入数": "0",
   "外呼总数": "4673",
   "当前外呼数": "0",
   "呼入平均通话时长": "00:02:39",
@@ -1156,7 +1156,7 @@
   "to": "20:30",
   "allDay": 80.69,
   "at": 1795528899614,
-  "agedMin": 14,
+  "agedMin": 18,
   "gap": 0,
   "complete": true,
   "src": "合力400报表"
@@ -1314,7 +1314,7 @@
     "done": 71,
     "answerRate": 100,
     "abandon": 0,
-    "voicemail": 8,
+    "voicemail": 9,
     "satisfactionRate": 100
    },
    {
@@ -1417,14 +1417,14 @@
    },
    {
     "name": "官网严选寄卖售后咨询",
-    "sessions": 265,
-    "assigned": 231,
+    "sessions": 266,
+    "assigned": 232,
     "current": 18,
     "max": 140,
     "queue": 0,
     "onlineSeats": "4(张慧敏,陈可,王鹏,刘梓爱)",
-    "done": 213,
-    "answerRate": 87.17,
+    "done": 214,
+    "answerRate": 87.22,
     "abandon": 34,
     "voicemail": 0,
     "satisfactionRate": 0
@@ -1473,14 +1473,14 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1457,
-    "assigned": 1282,
-    "current": 69,
+    "sessions": 1460,
+    "assigned": 1285,
+    "current": 67,
     "max": 140,
     "queue": 0,
     "onlineSeats": "4(张慧敏,陈可,王鹏,刘梓爱)",
-    "done": 1155,
-    "answerRate": 87.99,
+    "done": 1160,
+    "answerRate": 88.01,
     "abandon": 175,
     "voicemail": 0,
     "satisfactionRate": 11.11
@@ -1921,14 +1921,14 @@
    },
    {
     "name": "官网严选自营售前咨询",
-    "sessions": 543,
-    "assigned": 457,
-    "current": 28,
+    "sessions": 545,
+    "assigned": 459,
+    "current": 29,
     "max": 140,
     "queue": 0,
     "onlineSeats": "4(张慧敏,陈可,王鹏,刘梓爱)",
-    "done": 428,
-    "answerRate": 84.16,
+    "done": 429,
+    "answerRate": 84.22,
     "abandon": 86,
     "voicemail": 0,
     "satisfactionRate": 0
@@ -2547,15 +2547,6 @@
   "rate400": 78.4
  },
  "history": [
-  {
-   "ts": 1795444631127,
-   "skillRate400": 80.7,
-   "skillQueue400": 0,
-   "callIn400": 1254,
-   "signIn400": 2,
-   "onlineSessions": 943,
-   "onlineSeat": 0
-  },
   {
    "ts": 1795444871702,
    "skillRate400": 80.7,
@@ -7040,6 +7031,15 @@
   },
   {
    "ts": 1795529652091,
+   "skillRate400": 80.69,
+   "skillQueue400": 0,
+   "callIn400": 1186,
+   "signIn400": 1,
+   "onlineSessions": 726,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1795529858313,
    "skillRate400": 80.69,
    "skillQueue400": 0,
    "callIn400": 1186,
