@@ -1,6 +1,6 @@
 {
- "ts": 1795531624809,
- "collectedAtCn": "2026/11/24 22:47:04",
+ "ts": 1795531831158,
+ "collectedAtCn": "2026/11/24 22:50:31",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "1",
@@ -1156,7 +1156,7 @@
   "to": "20:30",
   "allDay": 80.69,
   "at": 1795531534790,
-  "agedMin": 3,
+  "agedMin": 7,
   "gap": 0,
   "complete": true,
   "src": "合力400报表"
@@ -1419,11 +1419,11 @@
     "name": "官网严选寄卖售后咨询",
     "sessions": 272,
     "assigned": 238,
-    "current": 14,
+    "current": 13,
     "max": 70,
     "queue": 0,
     "onlineSeats": "2(陈可,刘梓爱)",
-    "done": 224,
+    "done": 225,
     "answerRate": 87.5,
     "abandon": 34,
     "voicemail": 0,
@@ -1473,14 +1473,14 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1489,
-    "assigned": 1314,
+    "sessions": 1492,
+    "assigned": 1317,
     "current": 57,
     "max": 70,
     "queue": 0,
     "onlineSeats": "2(陈可,刘梓爱)",
-    "done": 1198,
-    "answerRate": 88.25,
+    "done": 1201,
+    "answerRate": 88.27,
     "abandon": 175,
     "voicemail": 0,
     "satisfactionRate": 11.11
@@ -1921,14 +1921,14 @@
    },
    {
     "name": "官网严选自营售前咨询",
-    "sessions": 557,
-    "assigned": 471,
-    "current": 22,
+    "sessions": 560,
+    "assigned": 474,
+    "current": 25,
     "max": 70,
-    "queue": 0,
+    "queue": 1,
     "onlineSeats": "2(陈可,刘梓爱)",
     "done": 448,
-    "answerRate": 84.56,
+    "answerRate": 84.64,
     "abandon": 86,
     "voicemail": 0,
     "satisfactionRate": 0
@@ -2547,15 +2547,6 @@
   "rate400": 78.4
  },
  "history": [
-  {
-   "ts": 1795446590736,
-   "skillRate400": 80.7,
-   "skillQueue400": 0,
-   "callIn400": 1254,
-   "signIn400": 2,
-   "onlineSessions": 943,
-   "onlineSeat": 0
-  },
   {
    "ts": 1795446826304,
    "skillRate400": 80.7,
@@ -7040,6 +7031,15 @@
   },
   {
    "ts": 1795531624809,
+   "skillRate400": 80.69,
+   "skillQueue400": 0,
+   "callIn400": 1186,
+   "signIn400": 1,
+   "onlineSessions": 726,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1795531831158,
    "skillRate400": 80.69,
    "skillQueue400": 0,
    "callIn400": 1186,
