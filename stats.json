@@ -1,18 +1,18 @@
 {
- "ts": 1795550994148,
- "collectedAtCn": "2026/11/25 04:09:54",
+ "ts": 1795551198167,
+ "collectedAtCn": "2026/11/25 04:13:18",
  "overview": {
   "总排队数": "技能组",
   "坐席空闲数": "0",
   "坐席忙碌数": "0 (0)",
   "接通率": "呼入总数",
   "满意率": "0%",
-  "呼入总数": "0",
+  "呼入总数": "18",
   "当前呼入数": "呼入平均通话时长",
   "外呼总数": "外呼成功数",
   "当前外呼数": "0",
   "呼入平均通话时长": "00:00:00",
-  "AI通话数": "0 (0)"
+  "AI通话数": "0 (3)"
  },
  "skillGroups": [],
  "skillSummary": {
@@ -26,9 +26,19 @@
  },
  "services": [
   {
+   "service": "4001581707(4001581707)",
+   "callIn": 8,
+   "ivr": 8,
+   "ringMissed": 0,
+   "queueAbandon": 0,
+   "answered": 0,
+   "other": 0,
+   "transferred": 0
+  },
+  {
    "service": "合计",
-   "callIn": 0,
-   "ivr": 0,
+   "callIn": 8,
+   "ivr": 8,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -38,11 +48,22 @@
  ],
  "signInAgents400": [],
  "keyServices": {
-  "list": [],
-  "total": 0,
+  "list": [
+   {
+    "service": "4001581707(4001581707)",
+    "callIn": 8,
+    "ivr": 8,
+    "ringMissed": 0,
+    "queueAbandon": 0,
+    "answered": 0,
+    "other": 0,
+    "transferred": 0
+   }
+  ],
+  "total": 8,
   "answered": 0,
-  "ivr": 0,
-  "connectRate": null
+  "ivr": 8,
+  "connectRate": 100
  },
  "online": {
   "groups": [
@@ -1401,15 +1422,6 @@
   "rate400": 78.4
  },
  "history": [
-  {
-   "ts": 1795466066534,
-   "skillRate400": null,
-   "skillQueue400": 0,
-   "callIn400": 0,
-   "signIn400": 0,
-   "onlineSessions": 0,
-   "onlineSeat": 0
-  },
   {
    "ts": 1795466272700,
    "skillRate400": null,
@@ -5894,6 +5906,15 @@
   },
   {
    "ts": 1795550994148,
+   "skillRate400": null,
+   "skillQueue400": 0,
+   "callIn400": 0,
+   "signIn400": 0,
+   "onlineSessions": 0,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1795551198167,
    "skillRate400": null,
    "skillQueue400": 0,
    "callIn400": 0,
