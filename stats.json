@@ -1,16 +1,16 @@
 {
- "ts": 1795613217510,
- "collectedAtCn": "2026/11/25 21:26:57",
+ "ts": 1795613422921,
+ "collectedAtCn": "2026/11/25 21:30:22",
  "overview": {
   "总排队数": "0",
-  "坐席空闲数": "3",
+  "坐席空闲数": "2",
   "坐席忙碌数": "0 (0)",
   "接通率": "27.91%",
   "满意率": "98.62%",
-  "呼入总数": "8499",
-  "当前呼入数": "1",
+  "呼入总数": "8506",
+  "当前呼入数": "2",
   "外呼总数": "5148",
-  "当前外呼数": "19",
+  "当前外呼数": "0",
   "呼入平均通话时长": "00:02:47",
   "AI通话数": "0 (3)"
  },
@@ -1156,7 +1156,7 @@
   "to": "20:00",
   "allDay": 80.43,
   "at": 1795612477928,
-  "agedMin": 14,
+  "agedMin": 17,
   "gap": 0,
   "complete": true,
   "src": "合力400报表"
@@ -1417,13 +1417,13 @@
    },
    {
     "name": "官网严选寄卖售后咨询",
-    "sessions": 234,
-    "assigned": 232,
-    "current": 12,
+    "sessions": 236,
+    "assigned": 234,
+    "current": 13,
     "max": 105,
-    "queue": 3,
+    "queue": 4,
     "onlineSeats": "3(陈可,刘梓爱,黄益群)",
-    "done": 220,
+    "done": 221,
     "answerRate": 99.15,
     "abandon": 2,
     "voicemail": 0,
@@ -1473,13 +1473,13 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1257,
-    "assigned": 1244,
+    "sessions": 1258,
+    "assigned": 1245,
     "current": 73,
     "max": 105,
-    "queue": 14,
+    "queue": 13,
     "onlineSeats": "3(陈可,刘梓爱,黄益群)",
-    "done": 1103,
+    "done": 1104,
     "answerRate": 98.97,
     "abandon": 13,
     "voicemail": 0,
@@ -2543,15 +2543,6 @@
   "rate400": 77.9
  },
  "history": [
-  {
-   "ts": 1795529858313,
-   "skillRate400": 80.69,
-   "skillQueue400": 0,
-   "callIn400": 1186,
-   "signIn400": 1,
-   "onlineSessions": 726,
-   "onlineSeat": 0
-  },
   {
    "ts": 1795530067900,
    "skillRate400": 80.69,
@@ -7036,6 +7027,15 @@
   },
   {
    "ts": 1795613217510,
+   "skillRate400": 80.43,
+   "skillQueue400": 0,
+   "callIn400": 1216,
+   "signIn400": 1,
+   "onlineSessions": 751,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1795613422921,
    "skillRate400": 80.43,
    "skillQueue400": 0,
    "callIn400": 1216,
