@@ -1,17 +1,17 @@
 {
- "ts": 1795566180658,
- "collectedAtCn": "2026/11/25 08:23:00",
+ "ts": 1795566390146,
+ "collectedAtCn": "2026/11/25 08:26:30",
  "overview": {
   "总排队数": "2",
   "坐席空闲数": "5",
   "坐席忙碌数": "0 (0)",
-  "接通率": "15.50%",
+  "接通率": "15.33%",
   "满意率": "100.00%",
-  "呼入总数": "129",
-  "当前呼入数": "4",
+  "呼入总数": "137",
+  "当前呼入数": "3",
   "外呼总数": "7",
-  "当前外呼数": "1",
-  "呼入平均通话时长": "00:03:02",
+  "当前外呼数": "0",
+  "呼入平均通话时长": "00:03:04",
   "AI通话数": "0 (3)"
  },
  "skillGroups": [
@@ -21,13 +21,13 @@
    "signIn": 4,
    "members": "李华,孟佳欢,赵晓晓,黄天琦",
    "ring": 0,
-   "queue": 1,
-   "todayAnswered": 13,
+   "queue": 0,
+   "todayAnswered": 14,
    "missed": 6,
-   "rate": 68.42,
+   "rate": 70,
    "total": 20,
-   "current": 2,
-   "avgDuration": "00:03:18",
+   "current": 0,
+   "avgDuration": "00:03:20",
    "transferIn": 0,
    "transferOut": 0
   },
@@ -85,12 +85,12 @@
    "signIn": 4,
    "members": "李华,孟佳欢,赵晓晓,黄天琦",
    "ring": 0,
-   "queue": 0,
+   "queue": 1,
    "todayAnswered": 0,
    "missed": 0,
    "rate": 0,
-   "total": 0,
-   "current": 0,
+   "total": 1,
+   "current": 1,
    "avgDuration": "00:00:00",
    "transferIn": 0,
    "transferOut": 0
@@ -263,9 +263,9 @@
    "ring": 0,
    "queue": 1,
    "todayAnswered": 3,
-   "missed": 1,
+   "missed": 2,
    "rate": 60,
-   "total": 5,
+   "total": 6,
    "current": 1,
    "avgDuration": "00:01:32",
    "transferIn": 0,
@@ -274,10 +274,10 @@
  ],
  "skillSummary": {
   "idleSeats": 0,
-  "answered": 20,
-  "missed": 8,
-  "rate": 66.67,
-  "total": 30,
+  "answered": 21,
+  "missed": 9,
+  "rate": 65.63,
+  "total": 32,
   "queue": 2,
   "signIn": 4
  },
@@ -464,11 +464,11 @@
   },
   {
    "service": "4001581707(4001581707)",
-   "callIn": 78,
-   "ivr": 50,
+   "callIn": 83,
+   "ivr": 53,
    "ringMissed": 1,
-   "queueAbandon": 7,
-   "answered": 20,
+   "queueAbandon": 8,
+   "answered": 21,
    "other": 0,
    "transferred": 0
   },
@@ -694,8 +694,8 @@
   },
   {
    "service": "88236602(其他渠道4000166088)",
-   "callIn": 5,
-   "ivr": 5,
+   "callIn": 6,
+   "ivr": 6,
    "ringMissed": 0,
    "queueAbandon": 0,
    "answered": 0,
@@ -1113,11 +1113,11 @@
    },
    {
     "service": "4001581707(4001581707)",
-    "callIn": 78,
-    "ivr": 50,
+    "callIn": 83,
+    "ivr": 53,
     "ringMissed": 1,
-    "queueAbandon": 7,
-    "answered": 20,
+    "queueAbandon": 8,
+    "answered": 21,
     "other": 0,
     "transferred": 0
    },
@@ -1132,21 +1132,21 @@
     "transferred": 0
    }
   ],
-  "total": 78,
-  "answered": 20,
-  "ivr": 50,
-  "connectRate": 89.74
+  "total": 83,
+  "answered": 21,
+  "ivr": 53,
+  "connectRate": 89.16
  },
  "callRtWork": {
   "from": "07:59",
-  "at": "2026/11/25 08:23:00",
-  "total": 49,
-  "ivr": 21,
-  "answered": 20,
-  "turn": 28,
-  "rate": 71.43,
-  "totalAllDay": 78,
-  "answeredAllDay": 20
+  "at": "2026/11/25 08:26:30",
+  "total": 54,
+  "ivr": 24,
+  "answered": 21,
+  "turn": 30,
+  "rate": 70,
+  "totalAllDay": 83,
+  "answeredAllDay": 21
  },
  "online": {
   "groups": [
@@ -1460,14 +1460,14 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 22,
-    "assigned": 19,
-    "current": 19,
+    "sessions": 24,
+    "assigned": 21,
+    "current": 21,
     "max": 35,
     "queue": 0,
     "onlineSeats": "1(张馨月)",
     "done": 0,
-    "answerRate": 86.36,
+    "answerRate": 87.5,
     "abandon": 3,
     "voicemail": 0,
     "satisfactionRate": 0
@@ -2530,15 +2530,6 @@
   "rate400": 78.3
  },
  "history": [
-  {
-   "ts": 1795481068088,
-   "skillRate400": 75.68,
-   "skillQueue400": 1,
-   "callIn400": 37,
-   "signIn400": 4,
-   "onlineSessions": 0,
-   "onlineSeat": 0
-  },
   {
    "ts": 1795481188311,
    "skillRate400": 75.61,
@@ -7026,6 +7017,15 @@
    "skillRate400": 66.67,
    "skillQueue400": 2,
    "callIn400": 30,
+   "signIn400": 4,
+   "onlineSessions": 0,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1795566390146,
+   "skillRate400": 65.63,
+   "skillQueue400": 2,
+   "callIn400": 32,
    "signIn400": 4,
    "onlineSessions": 0,
    "onlineSeat": 0
