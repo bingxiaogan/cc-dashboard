@@ -1402,8 +1402,13 @@ function render400() {
   const rtRate = (rtTurn > 0) ? +((rtAns / rtTurn) * 100).toFixed(2) : null;
   const rtScope = useRtBase ? `${rtFromHm} 起` : (useRtWork ? `${rtWFrom} 起` : '今日 0 点起');
   const rtFrom = useRtBase ? rtFromHm : (useRtWork ? rtWFrom : '8:00');
-  /* 口径来源标签：工时口径时不能写「实时 · 通话监控」，否则又是两个口径混着说。 */
-  const rtSrcTag = useRtBase ? '实时 · 通话监控 4 线' : (useRtWork ? '工时报表 4 线' : '实时 · 通话监控 4 线');
+  /* 口径来源标签：工时口径时不能写「实时 · 通话监控」，否则又是两个口径混着说。
+     2026-11-27 加：采集器 8 点前没跑时，采集器会用报表 08:00 段补到实时增量前面
+     （`rt.stitched`），这时要标明「8:00 段取报表」，不能让人以为是通话监控自己从 8 点算的。 */
+  const rtStitched = !!(rt && rt.stitched);
+  const rtSrcTag = useRtBase
+    ? ('实时 · 通话监控 4 线' + (rtStitched ? '（8:00 段取报表）' : ''))
+    : (useRtWork ? '工时报表 4 线' : '实时 · 通话监控 4 线');
 
   /* —— 实时卡「超预测多少」（2026-11-02 用户要求，与调控策略区同一套形状模型）——
      · 窗口 = [实时真实起点, 实时截至时间]，不是硬编码 8:00：否则 09:05 起的实时数
