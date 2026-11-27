@@ -1,13 +1,13 @@
 {
- "ts": 1795789802627,
- "collectedAtCn": "2026/11/27 22:30:02",
+ "ts": 1795790008965,
+ "collectedAtCn": "2026/11/27 22:33:28",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "1",
   "坐席忙碌数": "0 (0)",
   "接通率": "28.03%",
   "满意率": "98.08%",
-  "呼入总数": "8319",
+  "呼入总数": "8320",
   "当前呼入数": "0",
   "外呼总数": "4506",
   "当前外呼数": "0",
@@ -1166,7 +1166,7 @@
   "to": "20:30",
   "allDay": 83.38,
   "at": 1795789505006,
-  "agedMin": 7,
+  "agedMin": 10,
   "gap": 0,
   "complete": true,
   "src": "合力400报表"
@@ -1497,17 +1497,17 @@
    },
    {
     "name": "官网严选自营售后咨询",
-    "sessions": 1376,
-    "assigned": 1343,
-    "current": 64,
+    "sessions": 1377,
+    "assigned": 1344,
+    "current": 63,
     "max": 70,
-    "queue": 2,
+    "queue": 5,
     "onlineSeats": "2(张慧敏,陈可)",
-    "done": 1211,
+    "done": 1213,
     "answerRate": 97.6,
     "abandon": 33,
     "voicemail": 0,
-    "satisfactionRate": 10
+    "satisfactionRate": 9.09
    },
    {
     "name": "寄卖商服理赔",
@@ -1949,7 +1949,7 @@
     "assigned": 482,
     "current": 19,
     "max": 70,
-    "queue": 1,
+    "queue": 3,
     "onlineSeats": "2(张慧敏,陈可)",
     "done": 456,
     "answerRate": 97.77,
@@ -2571,15 +2571,6 @@
   "rate400": 78.6
  },
  "history": [
-  {
-   "ts": 1795690026785,
-   "skillRate400": 79.89,
-   "skillQueue400": 2,
-   "callIn400": 1104,
-   "signIn400": 8,
-   "onlineSessions": 635,
-   "onlineSeat": 2
-  },
   {
    "ts": 1795690142997,
    "skillRate400": 79.93,
@@ -7064,6 +7055,15 @@
   },
   {
    "ts": 1795789802627,
+   "skillRate400": 83.38,
+   "skillQueue400": 0,
+   "callIn400": 1149,
+   "signIn400": 1,
+   "onlineSessions": 795,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1795790008965,
    "skillRate400": 83.38,
    "skillQueue400": 0,
    "callIn400": 1149,
