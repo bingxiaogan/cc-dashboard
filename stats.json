@@ -1,13 +1,13 @@
 {
- "ts": 1795793282079,
- "collectedAtCn": "2026/11/27 23:28:02",
+ "ts": 1795793522672,
+ "collectedAtCn": "2026/11/27 23:32:02",
  "overview": {
   "总排队数": "0",
   "坐席空闲数": "0",
   "坐席忙碌数": "0 (0)",
   "接通率": "28.03%",
   "满意率": "98.08%",
-  "呼入总数": "8353",
+  "呼入总数": "8354",
   "当前呼入数": "0",
   "外呼总数": "4506",
   "当前外呼数": "0",
@@ -1165,8 +1165,8 @@
   "from": "08:00",
   "to": "20:30",
   "allDay": 83.38,
-  "at": 1795792125911,
-  "agedMin": 21,
+  "at": 1795793432645,
+  "agedMin": 3,
   "gap": 0,
   "complete": true,
   "src": "合力400报表"
@@ -1296,7 +1296,7 @@
     "done": 4,
     "answerRate": 100,
     "abandon": 0,
-    "voicemail": 3,
+    "voicemail": 4,
     "satisfactionRate": 0
    },
    {
@@ -1499,15 +1499,15 @@
     "name": "官网严选自营售后咨询",
     "sessions": 1412,
     "assigned": 1379,
-    "current": 37,
+    "current": 36,
     "max": 35,
-    "queue": 3,
+    "queue": 5,
     "onlineSeats": "1(陈可)",
-    "done": 1274,
+    "done": 1275,
     "answerRate": 97.66,
     "abandon": 33,
     "voicemail": 0,
-    "satisfactionRate": 9.09
+    "satisfactionRate": 8.33
    },
    {
     "name": "寄卖商服理赔",
@@ -2571,15 +2571,6 @@
   "rate400": 78.6
  },
  "history": [
-  {
-   "ts": 1795692020980,
-   "skillRate400": 80.1,
-   "skillQueue400": 0,
-   "callIn400": 1146,
-   "signIn400": 9,
-   "onlineSessions": 674,
-   "onlineSeat": 2
-  },
   {
    "ts": 1795692163310,
    "skillRate400": 80.14,
@@ -7064,6 +7055,15 @@
   },
   {
    "ts": 1795793282079,
+   "skillRate400": 83.38,
+   "skillQueue400": 0,
+   "callIn400": 1149,
+   "signIn400": 1,
+   "onlineSessions": 795,
+   "onlineSeat": 0
+  },
+  {
+   "ts": 1795793522672,
    "skillRate400": 83.38,
    "skillQueue400": 0,
    "callIn400": 1149,
