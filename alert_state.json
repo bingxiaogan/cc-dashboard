@@ -24,18 +24,18 @@
    "levelName": "正常",
    "color": "蓝",
    "vals": {
-    "load": 97.8,
-    "rate": 81,
+    "load": 100.2,
+    "rate": 80.8,
     "lv": 1,
     "rv": 2,
     "src": "周报口径(今实时)",
     "wDays": 7,
     "sum": {
-     "call": 8321,
-     "ans": 6824,
-     "den400": 8505,
-     "on": 7235,
-     "denOn": 8130
+     "call": 7173,
+     "ans": 5867,
+     "den400": 7158,
+     "on": 6440,
+     "denOn": 6900
     },
     "wplan": {
      "days": [
@@ -68,15 +68,15 @@
      ],
      "todayKey": "2026-11-28",
      "lastDay": true,
-     "todayIn": 1149,
-     "todayAns": 958,
+     "todayIn": 1,
+     "todayAns": 1,
      "from": "11-28",
      "to": "11-28",
      "weekEnd": "2026-11-28"
     }
    },
-   "ts": 1795824099567,
-   "tsCn": "2026/11/28 08:01:39",
+   "ts": 1795824339650,
+   "tsCn": "2026/11/28 08:05:39",
    "lastLevel": 1,
    "muted": false,
    "minLevel": 2,
@@ -96,24 +96,24 @@
    "minLevel": 99
   },
   "onlw": {
-   "level": 0,
-   "levelName": "低负荷",
-   "color": "绿",
+   "level": 1,
+   "levelName": "正常",
+   "color": "蓝",
    "vals": {
-    "load": 89,
+    "load": 93.3,
     "src": "周报口径(今实时)",
     "wDays": 7,
     "sum": {
-     "call": 8321,
-     "ans": 6824,
-     "den400": 8505,
-     "on": 7235,
-     "denOn": 8130
+     "call": 7173,
+     "ans": 5867,
+     "den400": 7158,
+     "on": 6440,
+     "denOn": 6900
     }
    },
-   "ts": 1795824099567,
-   "tsCn": "2026/11/28 08:01:39",
-   "lastLevel": 0,
+   "ts": 1795824339650,
+   "tsCn": "2026/11/28 08:05:39",
+   "lastLevel": 1,
    "muted": true,
    "minLevel": 99
   },
@@ -130,8 +130,8 @@
     "rv": 1,
     "agents": 2
    },
-   "ts": 1795824099567,
-   "tsCn": "2026/11/28 08:01:39",
+   "ts": 1795824339650,
+   "tsCn": "2026/11/28 08:05:39",
    "lastLevel": 1,
    "muted": true,
    "minLevel": 99
@@ -151,6 +151,6 @@
    "minLevel": 99
   }
  },
- "updated": "2026/11/28 08:01:39",
- "updatedTs": 1795824099567
+ "updated": "2026/11/28 08:05:39",
+ "updatedTs": 1795824339650
 }
